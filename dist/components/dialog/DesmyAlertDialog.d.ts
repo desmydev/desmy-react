@@ -6,6 +6,7 @@ interface DialogProps {
     settings: {
         title?: string;
         hint?: string;
+        zIndex: number;
         btnPosition?: string;
         btnNegative?: string;
         type: typeof State.ERROR | typeof State.NOTICE;
@@ -98,6 +99,6 @@ declare class DesmyModalHandler extends React.Component<ModalHandlerProps, Modal
     constructor(props: ModalHandlerProps);
     componentDidMount(): void;
     componentWillUnmount(): void;
-    render(): JSX.Element;
+    render(): React.ReactPortal;
 }
 export { Dialog, DesmyModalHandler };

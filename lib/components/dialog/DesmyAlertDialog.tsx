@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { State } from '../apis/Constants';
 import Commons from '../apis/Commons'; 
 
@@ -7,6 +8,7 @@ interface DialogProps {
     settings: {
       title?: string;
       hint?: string;
+      zIndex: number;
       btnPosition?: string;
       btnNegative?: string;
       type: typeof State.ERROR | typeof State.NOTICE;
@@ -195,29 +197,29 @@ class Dialog extends React.Component<DialogProps, DialogState> {
                   :null
                 }
             </div>
-            <div className="mt-4  sm:flex sm:flex-row-reverse">
-              {
-                (settings.btnPosition != null && settings.btnPosition !== undefined && !Commons.isEmptyOrNull(settings.btnPosition))?
-                <span className="flex w-full rounded-md sm:ml-3 sm:w-auto">
-                    <button type="button" onClick={() => this.handleClose(true)}
-                        className=" uppercase inline-flex justify-center w-full rounded-md border border-transparent px-2 py-2 font-poppinsBold text-primary dark:text-white  focus:outline-none focus:shadow-outline-green transition ease-in-out duration-150 text-sm">
-                        {settings.btnPosition}
-                    </button>
-                </span>
-                :null
-              }
-              {
-                (settings.btnNegative != null && settings.btnNegative !== undefined && !Commons.isEmptyOrNull(settings.btnNegative)) ?
-                <span className="mt-3 flex w-full rounded-md sm:mt-0 sm:w-auto">
-                    <button type="button" onClick={() => this.handleClose(false)}
-                        className="uppercase inline-flex justify-center w-full rounded-md border border-transparent px-2 py-2 font-poppinsBold text-primary dark:text-white  focus:outline-none focus:shadow-outline-green transition ease-in-out duration-150 text-sm">
-                        {settings.btnNegative}
-                    </button>
-                </span>
-                :null
-              }
-                
-                
+            <div className='flex w-full justify-end'>
+              <div className="mt-4  sm:flex sm:flex-row-reverse">
+                {
+                  (settings.btnPosition != null && settings.btnPosition !== undefined && !Commons.isEmptyOrNull(settings.btnPosition))?
+                  <span className="flex w-full rounded-md sm:ml-3 sm:w-auto">
+                      <button type="button" onClick={() => this.handleClose(true)}
+                          className=" uppercase inline-flex justify-center w-full rounded-md border border-transparent px-2 py-2 font-poppinsBold text-primary dark:text-white  focus:outline-none focus:shadow-outline-green transition ease-in-out duration-150 text-sm">
+                          {settings.btnPosition}
+                      </button>
+                  </span>
+                  :null
+                }
+                {
+                  (settings.btnNegative != null && settings.btnNegative !== undefined && !Commons.isEmptyOrNull(settings.btnNegative)) ?
+                  <span className="mt-3 flex w-full rounded-md sm:mt-0 sm:w-auto">
+                      <button type="button" onClick={() => this.handleClose(false)}
+                          className="uppercase inline-flex justify-center w-full rounded-md border border-transparent px-2 py-2 font-poppinsBold text-primary dark:text-white  focus:outline-none focus:shadow-outline-green transition ease-in-out duration-150 text-sm">
+                          {settings.btnNegative}
+                      </button>
+                  </span>
+                  :null
+                }
+              </div>
             </div>
         </div>
          }
@@ -227,7 +229,7 @@ class Dialog extends React.Component<DialogProps, DialogState> {
   }
   
   class DesmyModalHandler extends React.Component<ModalHandlerProps, ModalHandlerState> {
-    private modalContainer: React.RefObject<HTMLDivElement>; // Adjust type
+    private modalContainer: HTMLDivElement;
   
     constructor(props: ModalHandlerProps) {
       super(props);
@@ -236,6 +238,7 @@ class Dialog extends React.Component<DialogProps, DialogState> {
         settings: {
           title: "",
           hint: "",
+          zIndex: 3000,
           btnPosition: "",
           btnNegative: "",
           type: State.ERROR,
@@ -264,25 +267,98 @@ class Dialog extends React.Component<DialogProps, DialogState> {
           }
         }
       };
-      this.modalContainer = React.createRef<HTMLDivElement>(); // Adjust initialization
+      this.modalContainer = document.createElement('div');
+      this.modalContainer.className = 'modal-container';
     }
   
     componentDidMount() {
-      // Logic goes here
+      try {
+        const settings = { ...this.state.settings };
+        const data = this.props.settings;
+    
+        if (data.title !== undefined)
+          settings.title = data.title;
+    
+        if (data.forceLoading !== undefined)
+          settings.forceLoading = data.forceLoading;
+    
+        if (data.hint !== undefined)
+          settings.hint = data.hint;
+    
+        if (data.handleOnClose !== undefined)
+          settings.handleOnClose = data.handleOnClose;
+    
+        if (data.btnPosition !== undefined)
+          settings.btnPosition = data.btnPosition;
+    
+        if (data.btnNegative !== undefined)
+          settings.btnNegative = data.btnNegative;
+    
+        if (data.type !== undefined)
+          settings.type = data.type;
+    
+        if (data.loading !== undefined)
+          settings.loading = data.loading;
+    
+        if (data.loadinghint !== undefined)
+          settings.loadinghint = data.loadinghint;
+    
+        if (data.showDateRange !== undefined)
+          settings.showDateRange = data.showDateRange;
+    
+        if (data.date !== undefined)
+          settings.date = data.date;
+    
+        if (data.time !== undefined)
+          settings.time = data.time;
+    
+        if (data.showDateRangeTitle !== undefined)
+          settings.showDateRangeTitle = data.showDateRangeTitle;
+    
+        if (data.inputFieldLabel !== undefined)
+          settings.inputFieldLabel = data.inputFieldLabel;
+    
+        if (data.zIndex !== undefined)
+          settings.zIndex = data.zIndex;
+    
+        if (data.datalist !== undefined)
+          settings.datalist = data.datalist;
+    
+        this.setState({ settings, loaded: true });
+      } catch (e) {
+        // Handle error
+      }
+    
+      document.body.appendChild(this.modalContainer);
     }
+    
   
     componentWillUnmount() {
-      document.body.removeChild(this.modalContainer.current!); // Adjust usage
+      document.body.removeChild(this.modalContainer);
     }
   
     render() {
-        const { children } = this.props;
-        return (<div className="modal-wrapper">
-            <div className="modal-body">
-                {children}
-            </div>
-        </div>)
+      const modalComponent = (
+        <>
+          <div className={`fixed z-[10000] inset-0 overflow-y-auto`}>
+            <div className="fixed justify-items-center px-2 backdrop-blur-sm top-0 right-0 left-0 z-40 w-full inset-0 h-modal h-full justify-center items-center overflow-y-auto">
+              <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+                <div className="fixed inset-0 transition-opacity">
+                  <div className="absolute inset-0 bg-black/25 opacity-75"></div>
+                </div>
+                <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
+                <Dialog settings={this.props.settings} data={this.props.data} onClose={this.props.onClose}>
+                  {this.props.children}
+                </Dialog>
+              </div>
+            </div>   
+          </div>
+        </>
+      );
+    
+      return ReactDOM.createPortal(modalComponent, this.modalContainer);
     }
+    
   }
   
   export { Dialog, DesmyModalHandler };
