@@ -25,7 +25,7 @@ class Auth {
 
     getAccount(): string | null {
         // Assuming aesEncryptionInstance is defined elsewhere
-        return aesEncryptionInstance.decrypt(localStorage.getItem('account_req'));
+        return localStorage.getItem('account_req')
     }
 
     isDebug(): boolean {
@@ -60,10 +60,6 @@ class Auth {
         return this.authenticated;
     }
 
-    isAdminAuthenticated(): boolean {
-        return this.authenticated && (Cookies.get('_rq') === 'true');
-    }
-
     getCookie(name: string): string | null {
         let cookieValue: string | null = null;
 
@@ -83,7 +79,7 @@ class Auth {
         return cookieValue;
     }
 
-    fetchAccount(session: any, cb: () => void): void {
+    fetchAccount(cb: () => void): void {
         // Define this method as needed
         cb();
     }
