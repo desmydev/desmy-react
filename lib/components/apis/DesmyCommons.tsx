@@ -1,4 +1,4 @@
-class Commons {
+class DesmyCommons {
     getFileSize(file: File): string {
         let _size = file.size;
         const fSExt = ['Bytes', 'KB', 'MB', 'GB'];
@@ -296,4 +296,4 @@ class Commons {
     
 }
 
-export default new Commons();
+export default new DesmyCommons();

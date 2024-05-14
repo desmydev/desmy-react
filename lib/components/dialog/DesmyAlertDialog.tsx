@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { State } from '../apis/Constants';
-import Commons from '../apis/Commons'; 
+import Commons from '../apis/DesmyCommons'; 
 
 interface DialogProps {
     children?: React.ReactNode;

@@ -2,7 +2,7 @@
   "name": "desmy-react",
   "description": "Introducing an easy-to-use, lightning-fast React.js component that streamlines your development process. Our solution prioritizes simplicity, speed, and optimization, making it a breeze to build projects in React.",
   "private": false,
-  "version": "1.2.2",
+  "version": "1.2.4",
   "type": "module",
   "main": "dist/index.umd.js",
   "module": "dist/index.es.js",
@@ -14,9 +14,9 @@
   },
   "keywords": [
     "react",
-    "react-components",
-    "desmy-react",
-    "react-dropdown",
+    "react-components","react-modal-container",
+    "desmy-react","react-ui","react-commons",
+    "react-dropdown","react-auth",
     "react-modal",
     "react-clickoutside"
   ],

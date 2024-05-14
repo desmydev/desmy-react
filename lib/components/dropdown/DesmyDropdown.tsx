@@ -1,8 +1,8 @@
 import React, { Component, RefObject, ChangeEvent } from 'react';
 import Popper from "popper.js";
 import axios from 'axios'; 
-import Commons from '../apis/Commons';
-import Auth from '../apis/Auth'
+import Commons from '../apis/DesmyCommons';
+import Auth from '../apis/DesmyAuth'
 import { DesmyClickOutsideListener } from '../clickoutsidelistener/DesmyClickOutsideListener';
 
 interface DropdownItem {
@@ -253,7 +253,7 @@ class DesmyDropdown extends Component<Props, State> {
       fetch = async (): Promise<void> => {
         const { request } = this.props;
         const {error} = this.state
-        const headerToken = request?.token ?? Auth.getSession();
+        const headerToken = request?.token;
         error['state'] = false
         this.setState({isLoading:true,error})
         try {
@@ -480,7 +480,7 @@ class DesmyDropdown extends Component<Props, State> {
                               <div className="flex w-full flex-col min-h-24 max-h-96 overflow-auto bg-white dark:bg-slate-800 text-black dark:text-white">
                                 
                                 {
-                                  !(this.state.error.state && this.props.request !==undefined) ? 
+                                  (this.state.error.state && this.props.request !==undefined) ? 
                                   <div className='flex flex-col w-full text-red-500 justify-center items-center h-24'>
                                       <div className='text-xs'>{this.state.error.message}</div>
                                       <div onClick={()=>this.fetch()} className='text-xs uppercase bg-red-500 hover:bg-red-600 transition-all rounded-full text-white px-4 py-2 font-poppinsBold mt-2 cursor-pointer'>Retry</div>

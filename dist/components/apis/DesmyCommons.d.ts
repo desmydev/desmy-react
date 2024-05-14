@@ -1,4 +1,4 @@
-declare class Commons {
+declare class DesmyCommons {
     getFileSize(file: File): string;
     getExtension(filename: string): string;
     getFileName(filename: string): string;
@@ -36,5 +36,5 @@ declare class Commons {
     getTimeAgoAndCustomDate(timestamp: string | number | Date): string;
     roundTo2dp(data: string): string;
 }
-declare const _default: Commons;
+declare const _default: DesmyCommons;
 export default _default;

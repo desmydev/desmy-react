@@ -13,6 +13,10 @@ Currently working on other components, contact  [desmydev@gmail.com](https://mai
 * DesmyClickOutsideListener
 * DesmyModalContainer
 
+## Utilities
+* DesmyAuth 
+* DesmyCommons
+
 ## Installation
 
 ```bash
@@ -179,4 +183,65 @@ Make sure to add the line `{this.state.modal}` to your component's render method
         )
       }
   }
+```
+## `DesmyAuth` usage
+
+A simple authentication utility for `managing sessions` and `data storage`.
+
+```javascript
+import {DesmyAuth} from 'desmy-react';
+// Example usage
+DesmyAuth.save('username', 'kekeli');// Save data
+DesmyAuth.get('username'); // Output: kekeli
+DesmyAuth.remove('username');// Remove data
+DesmyAuth.clear();// Clear all data
+DesmyAuth.logout();// Logout user
+const cookieValue = DesmyAuth.getCookie('session');// Get cookie value
+
+// Save list of data
+const dataList = [
+  { key: 'username', value: 'kekeli' },
+  { key: 'email', value: 'robinsongbaya@desmydev.com' }
+];
+
+auth.saveList(dataList, (success) => {
+  console.log('Data saved successfully:', success);
+});
+```
+
+
+## `DesmyCommons` usage
+
+A utility library for `common` JavaScript tasks.
+
+```javascript
+import {DesmyCommons} from 'desmy-react';
+
+// Example usage
+const fileSize = DesmyCommons.getFileSize(myFile);
+const extension = DesmyCommons.getExtension('desmydev.txt');
+const fileName = DesmyCommons.getFileName('desmydev.txt');
+const isValidUrl = DesmyCommons.isValidHttpUrl('https://desmydev.com');
+const uniqueId = DesmyCommons.makeUniqueid();
+const textFromName = DesmyCommons.nameToText('desmydev');
+const randomColor = DesmyCommons.getRandomColor();
+const key = DesmyCommons.generateKey();
+const concatenated = DesmyCommons.concat('desmy', 'dev');
+const isEmptyOrNull = DesmyCommons.isEmptyOrNull(null);
+const toStringDefault = DesmyCommons.toStringDefault(123, 'default');
+const toStringData = DesmyCommons.toString(123);
+const isEmpty = DesmyCommons.isEmpty('');
+const passwordsValid = DesmyCommons.validatePasswords('pass1', 'pass1');
+const passwordValidation = DesmyCommons.validatePassword('Password1!');
+const isNotEmpty = DesmyCommons.isNotEmpty('desmy');
+const underscoreToSpace = DesmyCommons.convertUnderscoreToSpaceString('desmy_dev');
+const imageDimensions = await DesmyCommons.imageSize(imageBlob);
+const capitalized = DesmyCommons.capitalizeEachWord('desmy dev');
+const formattedDate = DesmyCommons.formatDateString('2024-05-14');
+const emailValid = DesmyCommons.validateEmail('desmydev@gmail.com');
+const convertedNumber = DesmyCommons.convertNumber(123);
+const daysRemaining = DesmyCommons.daysLeft('2024-12-31');
+const customFormattedDate = DesmyCommons.formatDateToCustomFormat(new Date());
+const timeAgo = DesmyCommons.getTimeAgoAndCustomDate(new Date());
+const roundedData = DesmyCommons.roundTo2dp('3.14159');
 ```
