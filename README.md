@@ -11,6 +11,7 @@ Currently working on other components, contact  [desmydev@gmail.com](https://mai
 * DesmyModalHandler
 * DesmyDropDown
 * DesmyClickOutsideListener
+* DesmyModalContainer
 
 ## Installation
 
@@ -153,4 +154,29 @@ Make sure to add the line `{this.state.modal}` to your component's render method
   export default App
   }
 ```
+## `DesmyModalContainer` usage
+```javascript
+  import { DesmyModalContainer } from 'desmy-react';
 
+  class App extends React.Component {
+
+      constructor(props) {
+          super(props);
+      }
+      handleOnClose=()=>{
+
+      }
+      render(){
+        return (
+          <>
+              <DesmyModalContainer data={{title:"Create User"}} onClose={()=>this.handleOnClose()}>
+                <form method="POST">
+                    <input type="text" placeholder="username"/>
+                    <input type="submit" value="create"/>
+                </form>
+              </DesmyModalContainer>
+          </>
+        )
+      }
+  }
+```
