@@ -1,8 +1,8 @@
 {
   "name": "desmy-react",
-  "description": "A light weight and fastest react components",
+  "description": "Introducing an easy-to-use, lightning-fast React.js component that streamlines your development process. Our solution prioritizes simplicity, speed, and optimization, making it a breeze to build projects in React.",
   "private": false,
-  "version": "1.0.7",
+  "version": "1.2.0",
   "type": "module",
   "main": "dist/index.umd.js",
   "module": "dist/index.es.js",
@@ -12,6 +12,14 @@
     "type": "git",
     "url": "https://github.com/desmydev/desmy-react.git"
   },
+  "keywords": [
+    "react",
+    "react-components",
+    "desmy-react",
+    "react-dropdown",
+    "react-modal",
+    "react-clickoutside"
+  ],
   "exports": {
     ".": {
       "import": "./dist/index.es.js",
@@ -48,6 +56,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-jsx-runtime": "^1.0.0-alpha.1",
+    "react-router-dom": "^6.23.1",
     "react-tailwindcss-datepicker": "^1.6.6"
   },
   "devDependencies": {

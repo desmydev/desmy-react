@@ -12,7 +12,7 @@ interface DialogProps {
         type: typeof State.ERROR | typeof State.NOTICE;
         loading: boolean;
         forceLoading: boolean;
-        loadinghint?: string;
+        loadinghint: string;
         showDateRange: boolean;
         date: {
             show: boolean;
@@ -32,7 +32,7 @@ interface DialogProps {
         datalist: {
             title: string;
             data: any[];
-            default_value?: any;
+            default_value: string;
             onchange?: string;
             is_multiple?: boolean;
             encrypted?: boolean;
@@ -45,7 +45,7 @@ interface DialogProps {
 }
 interface DialogState {
     isLoading: boolean;
-    loadinghint?: string;
+    loadinghint: string;
     data: any;
     value: {
         startDate?: Date | null;
@@ -70,7 +70,7 @@ interface DialogState {
     data_value: any;
     datalist: {
         title: string;
-        defaultvalue?: any;
+        default_value: string;
         onchange?: string;
         data: any[];
     };
@@ -87,6 +87,7 @@ interface ModalHandlerState {
 }
 declare class Dialog extends React.Component<DialogProps, DialogState> {
     constructor(props: DialogProps);
+    componentDidMount(): Promise<void>;
     handleValueChange: (newValue: {
         startDate?: Date | null;
         endDate?: Date | null;

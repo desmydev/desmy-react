@@ -1,15 +1,16 @@
 # Desmy-react
 
-A light weight and fastest react components.
+
+Introducing an `easy-to-use`, `lightning-fast` React.js component that streamlines your development process. Our solution prioritizes `simplicity`, `speed`, and `optimization`, making it a breeze to build projects in React.
 
 Currently working on other components, contact  [desmydev@gmail.com](https://mail.google.com/mail/?view=cm&fs=1&to=desmydev@gmail.com) for assistance 
 
 - Zero-dependency (pre-built bundle)
 
 ## Features
+* DesmyModalHandler
 * DesmyDropDown
 * DesmyClickOutsideListener
-* DesmyModalHandler
 
 ## Installation
 

@@ -14,7 +14,7 @@ interface DialogProps {
       type: typeof State.ERROR | typeof State.NOTICE;
       loading: boolean;
       forceLoading: boolean;
-      loadinghint?: string;
+      loadinghint: string;
       showDateRange: boolean;
       date: {
         show: boolean;
@@ -34,7 +34,7 @@ interface DialogProps {
       datalist: {
         title: string;
         data: any[]; // Define a more specific type based on the actual data structure
-        default_value?: any;
+        default_value: string;
         onchange?: string;
         is_multiple?: boolean;
         encrypted?: boolean;
@@ -48,7 +48,7 @@ interface DialogProps {
   
 interface DialogState {
     isLoading: boolean;
-    loadinghint?: string;
+    loadinghint: string;
     data: any;
     value: {
       startDate?: Date | null; // Adjust type to accept null
@@ -73,7 +73,7 @@ interface DialogState {
     data_value: any; // Define more specifically
     datalist: {
       title: string;
-      defaultvalue?: any;
+      default_value: string; // Make sure defaultvalue is required here
       onchange?: string;
       data: any[]; // Define more specifically
     };
@@ -122,12 +122,42 @@ class Dialog extends React.Component<DialogProps, DialogState> {
         data_value: "",
         datalist: {
           title: "",
-          defaultvalue: "",
+          default_value: "",
           onchange: "",
           data: [],
         }
       }
     }
+    async componentDidMount(): Promise<void> {
+      try {
+        if (this.props.settings !== undefined) {
+          if (this.props.data !== undefined) {
+            if (this.props.settings.showDateRange) {
+              let value: any = { ...this.state.value }; // Assuming value type
+              let data: any = { ...this.state.data }; // Assuming data type
+              value.startDate = this.props.data.start_date;
+              value.endDate = this.props.data.end_date;
+              this.setState({ value, data });
+            }
+          }
+          if (this.props.settings.forceLoading) {
+            this.setState({
+              isLoading: true,
+              loadinghint: this.props.settings.loadinghint, // Assuming loadingHint is correct
+            });
+          }
+          if (this.props.settings.datalist !== undefined) {
+            this.setState({
+              data_value: this.props.settings.datalist.default_value, // Assuming defaultValue exists in dataList
+              datalist: this.props.settings.datalist,
+            });
+          }
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    
     handleValueChange = (newValue: { startDate?: Date | null; endDate?: Date | null }) => {
       try {
         const { data } = this.state;
@@ -263,7 +293,9 @@ class Dialog extends React.Component<DialogProps, DialogState> {
           showDateRangeTitle: "",
           datalist: {
             title: "",
-            data: []
+            default_value: "",
+            onchange: "",
+            data:[]
           }
         }
       };
