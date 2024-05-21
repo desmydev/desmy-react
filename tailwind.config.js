@@ -5,9 +5,12 @@ export default {
     "./lib/**/*.{js,ts,jsx,tsx}",
     "./dist/**/*.{js,ts,jsx,tsx}",
   ],
+  important: true,
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms'),
+  ],
 }
 

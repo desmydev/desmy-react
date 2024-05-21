@@ -11,7 +11,7 @@ interface DropdownRequest {
     token?: string;
 }
 interface Props {
-    defaultValue?: DropdownItem | DropdownItem[];
+    defaultValue?: string | any | DropdownItem | DropdownItem[];
     data?: DropdownItem[];
     request?: DropdownRequest;
     selectedData?: DropdownItem[];
@@ -23,7 +23,6 @@ interface Props {
     disabled?: boolean;
     showPlaceHolderHint?: boolean;
     placeholder?: string;
-    isLoading: boolean;
     all?: string;
     dropdownClass?: string;
     dropdownListClass?: string;

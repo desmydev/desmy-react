@@ -31,6 +31,7 @@ interface DialogProps {
         showDateRangeTitle?: string;
         datalist: {
             title: string;
+            url: String;
             data: any[];
             default_value: string;
             onchange?: string;
@@ -42,6 +43,10 @@ interface DialogProps {
     };
     data?: any;
     onClose: (data: any) => void;
+}
+interface DataObject {
+    id: number;
+    [key: string]: any;
 }
 interface DialogState {
     isLoading: boolean;
@@ -72,6 +77,7 @@ interface DialogState {
         title: string;
         default_value: string;
         onchange?: string;
+        is_multiple?: boolean;
         data: any[];
     };
 }
@@ -88,6 +94,7 @@ interface ModalHandlerState {
 declare class Dialog extends React.Component<DialogProps, DialogState> {
     constructor(props: DialogProps);
     componentDidMount(): Promise<void>;
+    handleDataChange: (data: DataObject[] | any) => void;
     handleValueChange: (newValue: {
         startDate?: Date | null;
         endDate?: Date | null;

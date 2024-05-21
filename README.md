@@ -12,6 +12,7 @@ Currently working on other components, contact  [desmydev@gmail.com](https://mai
 * DesmyDropDown
 * DesmyClickOutsideListener
 * DesmyModalContainer
+* DesmyTextInput
 
 ## Utilities
 * DesmyAuth 

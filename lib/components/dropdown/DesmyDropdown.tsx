@@ -18,7 +18,7 @@ interface DropdownRequest {
 }
 
 interface Props {
-    defaultValue?: DropdownItem | DropdownItem[];
+    defaultValue?: string | any | DropdownItem | DropdownItem[];
     data?: DropdownItem[];
     request?: DropdownRequest;
     selectedData?: DropdownItem[];
@@ -30,7 +30,6 @@ interface Props {
     disabled?: boolean;
     showPlaceHolderHint?: boolean;
     placeholder?: string;
-    isLoading: boolean;
     all?: string;
     dropdownClass?: string;
     dropdownListClass?: string;
@@ -108,7 +107,7 @@ class DesmyDropdown extends Component<Props, State> {
         }
         if (prevProps.selectedData !== undefined && prevProps.selectedData !== null) {
           if (prevProps.selectedData.length > 0 && this.state.selectedMultiple.length === 0 && !this.state.clear) {
-            this.handleSelectedMultiple(prevProps.selectedData).then((data) => {
+             this.handleSelectedMultiple(prevProps.selectedData).then((data) => {
               this.setState({ selectedMultiple: data });
               this.handleSelectedMultiple(data);
               if (this.props.handleChange) {
@@ -135,6 +134,8 @@ class DesmyDropdown extends Component<Props, State> {
                 });
                 return;
             }
+        }else{
+            this.handleDefault()
         }
         const datalist: DropdownItem[] = this.props.data || [];
     
@@ -164,27 +165,32 @@ class DesmyDropdown extends Component<Props, State> {
     };
     
     handleSelectedMultiple = async (datalist: any[]): Promise<any[]> => {
-        const { data } = this.props;
-        if (!data) {
-            return [];
+        try{
+            const { data } = this.props;
+            if (!data ||  !Array.isArray(datalist)) {
+                return [];
+            }
+            
+            const c = datalist.map((data) => {
+                const ldata = data.id !== undefined ? data : data.id === undefined ? undefined : data.find((x: any) => (x.id === this.handleEncrypt(data)));
+                return ldata;
+            }).filter((x: any) => x !== undefined);
+        
+            return c;
+        }catch(e){
+            return []
         }
-    
-        const c = datalist.map((data) => {
-            const ldata = data.id !== undefined ? data : data.id === undefined ? undefined : data.find((x: any) => (x.id === this.handleEncrypt(data)));
-            return ldata;
-        }).filter((x: any) => x !== undefined);
-    
-        return c;
+        
     }
     
     handleDefault = async (): Promise<void> => {
         try {
             const datalist = (this.props.data !== undefined && this.props.data !== null) ? this.props.data : this.state.datalist;
     
+
             if (datalist.length > 0 && this.props.defaultValue !== undefined && this.props.defaultValue !== null) {
     
                 const is_multiple = !(this.props.is_multiple === undefined || this.props.is_multiple === false);
-    
                 if (is_multiple) {
                     const defaultValueArray = Array.isArray(this.props.defaultValue) ? this.props.defaultValue : [this.props.defaultValue];
                     const filteredDefaultData = datalist.filter((data) =>
@@ -230,7 +236,7 @@ class DesmyDropdown extends Component<Props, State> {
             }
     
         } catch (e) {
-    
+            console.log(e)
         }
     };
     
@@ -423,18 +429,21 @@ class DesmyDropdown extends Component<Props, State> {
                             <div className={`flex flex-col w-full h-12 relative border-[1px] border-black dark:border-white`}>
                               <div className='absolute bottom-0  px-2 pb-3 left-0 right-0'>
                                 <div className='flex'>
-                                  <div className={`text-[11px]  line-clamp-1  px-1 -mt-6 ${((this.props.showPlaceHolderHint ===undefined || this.props.showPlaceHolderHint !==false) ? ((this.props.placeholder != undefined && (this.state.selectedList.name != null || this.state.selectedMultiple.length > 0) || this.props.all !==undefined) ) ? `bg-white dark:bg-gray-900`:`bg-transparent` :`bg-transparent`)} dark:text-white items-center`}>
+                                  <div className={`flex text-[11px]  line-clamp-1  px-1 -mt-6 ${((this.props.showPlaceHolderHint ===undefined || this.props.showPlaceHolderHint !==false) ? ((this.props.placeholder != undefined && (this.state.selectedList.name != null || this.state.selectedMultiple.length > 0) || this.props.all !==undefined) ) ? `bg-white dark:bg-gray-900`:`bg-transparent` :`bg-transparent`)} dark:text-white items-center`}>
                                     { (this.props.showPlaceHolderHint ===undefined || this.props.showPlaceHolderHint !==false) ? ((this.props.placeholder != undefined && (this.state.selectedList.name != null || this.state.selectedMultiple.length > 0) || this.props.all !==undefined) ) ? this.props.placeholder : '' : ''}
                                   </div>
                                 </div>
                                 <div className="flex w-full justify-between">
-                                    <div className={`flex mr-2 text-black dark:text-white w-full line-clamp-1  ${this.props.selectedRef}`}>
-                                      {
+                                    <div className={`mr-2 bg-transparent text-black dark:text-white w-full justify-start text-start line-clamp-1  ${this.props.selectedRef}`}>
+                                        {
                                         (this.props.is_multiple !=undefined && this.props.is_multiple && this.state.selectedMultiple.length > 0) ? this.handleSelectMessage(this.state.selectedMultiple) 
-                                        : (!Commons.isEmptyOrNull(this.state.selectedList.name)) ? <div className="flex w-full line-clamp-1 text-start justify-start" title={`${this.handleEncrypt(this.state.selectedList.name)}`}>{ (!Commons.isEmptyOrNull(this.state.selectedList.icon)) ? <img className="object-fill w-4 h-4 mr-2 items-center text-start justify-start" alt={`image`} src={`${this.handleEncrypt(this.state.selectedList.icon)}`} />:""}<div className='w-full line-clamp-1 justify-start text-start'>{this.handleEncrypt(this.state.selectedList.name)}</div></div>
-                                        : (this.props.all !== undefined) ? `${this.props.all}`: (!Commons.isEmptyOrNull(this.props.placeholder)) ? this.props.placeholder : null
+                                        : (!Commons.isEmptyOrNull(this.state.selectedList.name)) ? 
+                                        
+                                            <span className="flex w-full line-clamp-1 text-start justify-start" title={`${this.handleEncrypt(this.state.selectedList.name)}`}>
+                                                { (!Commons.isEmptyOrNull(this.state.selectedList.icon)) ? <img className="object-fill w-4 h-4 mr-2 items-center text-start justify-start" alt={`image`} src={`${this.handleEncrypt(this.state.selectedList.icon)}`} />:""}
+                                                <div className='w-full line-clamp-1 justify-start text-start'>{this.handleEncrypt(this.state.selectedList.name)}</div></span>
+                                        : <div className='w-full line-clamp-1'>{(this.props.all !== undefined) ? `${this.props.all}`: (!Commons.isEmptyOrNull(this.props.placeholder)) ? this.props.placeholder : null}</div>
                                       }
-                                  
                                     </div>
                                     {
                                        (!(this.props.disabled !==undefined && this.props.disabled)) ? 

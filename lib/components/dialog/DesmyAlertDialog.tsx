@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { State } from '../apis/Constants';
 import Commons from '../apis/DesmyCommons'; 
+import { DesmyDropdown } from '../dropdown/DesmyDropdown';
 
 interface DialogProps {
     children?: React.ReactNode;
@@ -33,6 +34,7 @@ interface DialogProps {
       showDateRangeTitle?: string;
       datalist: {
         title: string;
+        url : String;
         data: any[]; // Define a more specific type based on the actual data structure
         default_value: string;
         onchange?: string;
@@ -45,7 +47,11 @@ interface DialogProps {
     data?: any; // Define a more specific type based on the actual data structure
     onClose: (data: any) => void; // Define the parameter type more specifically if possible
 }
-  
+interface DataObject {
+  id: number;
+  [key: string]: any; // This allows for additional properties in the data object
+}
+
 interface DialogState {
     isLoading: boolean;
     loadinghint: string;
@@ -75,6 +81,7 @@ interface DialogState {
       title: string;
       default_value: string; // Make sure defaultvalue is required here
       onchange?: string;
+      is_multiple?: boolean;
       data: any[]; // Define more specifically
     };
 }
@@ -157,7 +164,15 @@ class Dialog extends React.Component<DialogProps, DialogState> {
         console.log(e);
       }
     }
-    
+    handleDataChange = (data: DataObject[] | any): void => {
+      const data_value = (this.state.datalist.is_multiple !== undefined)
+        ? (Array.isArray(data) && data.length > 0)
+          ? data.map((object: DataObject) => object.id)
+          : []
+        : data;
+  
+      this.setState({ data_value });
+    };
     handleValueChange = (newValue: { startDate?: Date | null; endDate?: Date | null }) => {
       try {
         const { data } = this.state;
@@ -214,7 +229,24 @@ class Dialog extends React.Component<DialogProps, DialogState> {
                    
                     <div className="flex flex-col w-full my-5">
                         <div className='flex w-full'>{this.props.children}</div>
-                       
+                        <div className='flex w-full relative'>
+                               {(settings.datalist != undefined && (!Commons.isEmptyOrNull(settings.datalist.url) ||  settings.datalist.data != undefined)) ? 
+                               <DesmyDropdown data={(settings.datalist.data != undefined) ? settings.datalist.data : []} 
+                                  request={{
+                                      url:`${!(Commons.isEmptyOrNull(settings.datalist.url)) ? settings.datalist.url: ""}`,
+                                  }}
+                                  selectedData={this.state.data_value}
+                                  defaultValue={settings.datalist.default_value}
+                                  handleChange={this.handleDataChange} 
+                                  is_multiple = {(settings.datalist.is_multiple !==undefined) ? settings.datalist.is_multiple:false}
+                                  dropdownClass={`bg-black dark:text-white`}
+                                  enableDecrypt={(settings.datalist.encrypted !== undefined) ? settings.datalist.encrypted : false}
+                                  placeholder={`${settings.datalist.title}`} 
+                                  dropdownListClass={`flex w-full text-black hover:bg-gray-200`} 
+                                  className={`flex w-full text-sm dark:text-white border-0 py-2.5 bg-transparent outline-none focus:outline-none`}/>
+                               
+                               :null}
+                            </div>
                     </div>
                 </div>
                 {
@@ -293,6 +325,7 @@ class Dialog extends React.Component<DialogProps, DialogState> {
           showDateRangeTitle: "",
           datalist: {
             title: "",
+            url:"",
             default_value: "",
             onchange: "",
             data:[]

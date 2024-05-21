@@ -3,5 +3,10 @@ export enum State {
     ERROR = "ERROR",
     LOADED = "LOADED",
     WAITING = "WAITING",
-    NOTICE="NOTICE"
+    NOTICE="NOTICE",
+    TEXT = "TEXT",
+    EMAIL = "EMAIL",
+    PHONE = "PHONE",
+    NUMBER = "NUMBER",
+    PASSWORD = "PASSWORD"
 }
