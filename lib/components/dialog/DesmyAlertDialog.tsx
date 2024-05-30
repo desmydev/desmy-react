@@ -9,14 +9,14 @@ interface DialogProps {
     settings: {
       title?: string;
       hint?: string;
-      zIndex: number;
+      zIndex?: number;
       btnPosition?: string;
       btnNegative?: string;
-      type: typeof State.ERROR | typeof State.NOTICE;
-      loading: boolean;
-      forceLoading: boolean;
-      loadinghint: string;
-      showDateRange: boolean;
+      type: string;
+      loading?: boolean;
+      forceLoading?: boolean;
+      loadinghint?: string;
+      showDateRange?: boolean;
       date: {
         show: boolean;
         minDate: Date | null;
@@ -47,6 +47,7 @@ interface DialogProps {
     data?: any; // Define a more specific type based on the actual data structure
     onClose: (data: any) => void; // Define the parameter type more specifically if possible
 }
+
 interface DataObject {
   id: number;
   [key: string]: any; // This allows for additional properties in the data object
@@ -54,7 +55,7 @@ interface DataObject {
 
 interface DialogState {
     isLoading: boolean;
-    loadinghint: string;
+    loadinghint?: string;
     data: any;
     value: {
       startDate?: Date | null; // Adjust type to accept null
@@ -203,7 +204,7 @@ class Dialog extends React.Component<DialogProps, DialogState> {
     render() {
       const { settings } = this.props;
       return (
-        <div className="inline-block align-bottom font-poppinsRegular bg-white dark:bg-slate-800 dark:text-white px-4 pt-5 pb-0 text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full sm:p-6">
+        <div className="inline-block align-bottom font-poppinsRegular bg-white dark:bg-darkPrimary dark:text-white px-4 pt-5 pb-0 text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full sm:p-6">
         {
           (this.state.isLoading) ? 
           <div className='flex flex-col w-full h-48 justify-center text-primary dark:text-white items-center'>
@@ -231,6 +232,7 @@ class Dialog extends React.Component<DialogProps, DialogState> {
                         <div className='flex w-full'>{this.props.children}</div>
                         <div className='flex w-full relative'>
                                {(settings.datalist != undefined && (!Commons.isEmptyOrNull(settings.datalist.url) ||  settings.datalist.data != undefined)) ? 
+                               (settings.datalist.data.length > 0) ? 
                                <DesmyDropdown data={(settings.datalist.data != undefined) ? settings.datalist.data : []} 
                                   request={{
                                       url:`${!(Commons.isEmptyOrNull(settings.datalist.url)) ? settings.datalist.url: ""}`,
@@ -239,13 +241,11 @@ class Dialog extends React.Component<DialogProps, DialogState> {
                                   defaultValue={settings.datalist.default_value}
                                   handleChange={this.handleDataChange} 
                                   is_multiple = {(settings.datalist.is_multiple !==undefined) ? settings.datalist.is_multiple:false}
-                                  dropdownClass={`bg-black dark:text-white`}
+                                  containerClassName={`bg-inherit`}
                                   enableDecrypt={(settings.datalist.encrypted !== undefined) ? settings.datalist.encrypted : false}
                                   placeholder={`${settings.datalist.title}`} 
-                                  dropdownListClass={`flex w-full text-black hover:bg-gray-200`} 
-                                  className={`flex w-full text-sm dark:text-white border-0 py-2.5 bg-transparent outline-none focus:outline-none`}/>
-                               
-                               :null}
+                                  />
+                               :null:null}
                             </div>
                     </div>
                 </div>

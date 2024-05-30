@@ -1,19 +1,18 @@
 import { default as React } from 'react';
-import { State } from '../apis/Constants';
 
 interface DialogProps {
     children?: React.ReactNode;
     settings: {
         title?: string;
         hint?: string;
-        zIndex: number;
+        zIndex?: number;
         btnPosition?: string;
         btnNegative?: string;
-        type: typeof State.ERROR | typeof State.NOTICE;
-        loading: boolean;
-        forceLoading: boolean;
-        loadinghint: string;
-        showDateRange: boolean;
+        type: string;
+        loading?: boolean;
+        forceLoading?: boolean;
+        loadinghint?: string;
+        showDateRange?: boolean;
         date: {
             show: boolean;
             minDate: Date | null;
@@ -50,7 +49,7 @@ interface DataObject {
 }
 interface DialogState {
     isLoading: boolean;
-    loadinghint: string;
+    loadinghint?: string;
     data: any;
     value: {
         startDate?: Date | null;

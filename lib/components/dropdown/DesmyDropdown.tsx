@@ -21,7 +21,7 @@ interface Props {
     defaultValue?: string | any | DropdownItem | DropdownItem[];
     data?: DropdownItem[];
     request?: DropdownRequest;
-    selectedData?: DropdownItem[];
+    selectedData?: DropdownItem | DropdownItem[] | undefined;
     is_multiple?: boolean;
     type?: string;
     handleChange?: (data: DropdownItem | DropdownItem[]) => void;
@@ -33,6 +33,7 @@ interface Props {
     all?: string;
     dropdownClass?: string;
     dropdownListClass?: string;
+    containerClassName?:string;
     selectedRef?: string;
     enableDecrypt?: boolean;
     onClear?: string;
@@ -86,7 +87,7 @@ class DesmyDropdown extends Component<Props, State> {
             isLoading:false,
             clear: false,
             requestUrl: "",
-            bgColor: 'dark:bg-slate-800',
+            bgColor: 'dark:bg-darkDialogBackground',
             input: {
                 search: ''
             },
@@ -105,21 +106,28 @@ class DesmyDropdown extends Component<Props, State> {
         if (this.props.request !== undefined) {
           this.handleRequestData();
         }
-        if (prevProps.selectedData !== undefined && prevProps.selectedData !== null) {
+        if (Array.isArray(prevProps.selectedData)) {
           if (prevProps.selectedData.length > 0 && this.state.selectedMultiple.length === 0 && !this.state.clear) {
-             this.handleSelectedMultiple(prevProps.selectedData).then((data) => {
+            this.handleSelectedMultiple(prevProps.selectedData).then((data) => {
               this.setState({ selectedMultiple: data });
               this.handleSelectedMultiple(data);
               if (this.props.handleChange) {
                 this.props.handleChange(data);
-            }
+              }
             }).catch((e) => {
-                console.log(e) 
+              console.log(e);
             });
           }
+        } else if (prevProps.selectedData) { // If selectedData is not an array but truthy
+          // Handle the case when selectedData is a single DropdownItem
+          const data = [prevProps.selectedData]; // Convert to array for consistency
+          this.setState({ selectedMultiple: data });
+          this.handleSelectedMultiple(data);
+          if (this.props.handleChange) {
+            this.props.handleChange(data);
+          }
         }
-    }
-
+      }
     async componentDidMount(): Promise<void> {
         if (this.props.onRef)
             this.props.onRef(this);
@@ -424,69 +432,67 @@ class DesmyDropdown extends Component<Props, State> {
           <>
        
         <DesmyClickOutsideListener onClickOutside={this.handleClickAway}>
-            <div className="flex flex-col w-full font-poppinsRegular ">
-            <div className={`${this.props.className} cursor-pointer`} ref={this.btnDropdownRef} onClick={() => { this.state.dropdownPopoverShow ? this.closeDropdownPopover() : this.openDropdownPopover()}} >
-                            <div className={`flex flex-col w-full h-12 relative border-[1px] border-black dark:border-white`}>
-                              <div className='absolute bottom-0  px-2 pb-3 left-0 right-0'>
-                                <div className='flex'>
-                                  <div className={`flex text-[11px]  line-clamp-1  px-1 -mt-6 ${((this.props.showPlaceHolderHint ===undefined || this.props.showPlaceHolderHint !==false) ? ((this.props.placeholder != undefined && (this.state.selectedList.name != null || this.state.selectedMultiple.length > 0) || this.props.all !==undefined) ) ? `bg-white dark:bg-gray-900`:`bg-transparent` :`bg-transparent`)} dark:text-white items-center`}>
-                                    { (this.props.showPlaceHolderHint ===undefined || this.props.showPlaceHolderHint !==false) ? ((this.props.placeholder != undefined && (this.state.selectedList.name != null || this.state.selectedMultiple.length > 0) || this.props.all !==undefined) ) ? this.props.placeholder : '' : ''}
-                                  </div>
-                                </div>
-                                <div className="flex w-full justify-between">
-                                    <div className={`mr-2 bg-transparent text-black dark:text-white w-full justify-start text-start line-clamp-1  ${this.props.selectedRef}`}>
-                                        {
-                                        (this.props.is_multiple !=undefined && this.props.is_multiple && this.state.selectedMultiple.length > 0) ? this.handleSelectMessage(this.state.selectedMultiple) 
-                                        : (!Commons.isEmptyOrNull(this.state.selectedList.name)) ? 
-                                        
-                                            <span className="flex w-full line-clamp-1 text-start justify-start" title={`${this.handleEncrypt(this.state.selectedList.name)}`}>
-                                                { (!Commons.isEmptyOrNull(this.state.selectedList.icon)) ? <img className="object-fill w-4 h-4 mr-2 items-center text-start justify-start" alt={`image`} src={`${this.handleEncrypt(this.state.selectedList.icon)}`} />:""}
-                                                <div className='w-full line-clamp-1 justify-start text-start'>{this.handleEncrypt(this.state.selectedList.name)}</div></span>
-                                        : <div className='w-full line-clamp-1'>{(this.props.all !== undefined) ? `${this.props.all}`: (!Commons.isEmptyOrNull(this.props.placeholder)) ? this.props.placeholder : null}</div>
-                                      }
+            <div className={`flex flex-col w-full font-poppinsRegular ${(this.props.containerClassName !=undefined) ? this.props.containerClassName :`bg-white dark:bg-darkBackground`}`}>
+                    <div className={`bg-inherit ${this.props.className} cursor-pointer `} ref={this.btnDropdownRef} onClick={() => { this.state.dropdownPopoverShow ? this.closeDropdownPopover() : this.openDropdownPopover()}} >
+                                    <div className={`flex flex-col w-full h-12  bg-inherit relative border-[1px] border-black dark:border-white`}>
+                                    <div className={`absolute bottom-0 ${(this.props.showPlaceHolderHint ===undefined || this.props.showPlaceHolderHint !==false) ? ((this.props.placeholder != undefined && (this.state.selectedList.name != null || this.state.selectedMultiple.length > 0) || this.props.all !==undefined) ) ? `bg-inherit`:``:``} px-2 pb-3 left-0 right-0`}>
+                                        <div className='flex bg-inherit '>
+                                        <div className={`flex text-[11px]  line-clamp-1  px-1 -mt-6 bg-inherit dark:text-white items-center`}>
+                                            { (this.props.showPlaceHolderHint ===undefined || this.props.showPlaceHolderHint !==false) ? ((this.props.placeholder != undefined && (this.state.selectedList.name != null || this.state.selectedMultiple.length > 0) || this.props.all !==undefined) ) ? this.props.placeholder : '' : ''}
+                                        </div>
+                                        </div>
+                                        <div className="flex w-full justify-between">
+                                            <div className={`mr-2 bg-inherit text-black text-sm dark:text-white w-full justify-start text-start line-clamp-1  ${this.props.selectedRef}`}>
+                                                {
+                                                (this.props.is_multiple !=undefined && this.props.is_multiple && this.state.selectedMultiple.length > 0) ? this.handleSelectMessage(this.state.selectedMultiple) 
+                                                : (!Commons.isEmptyOrNull(this.state.selectedList.name)) ? 
+                                                
+                                                    <span className="flex w-full line-clamp-1 text-start justify-start" title={`${this.handleEncrypt(this.state.selectedList.name)}`}>
+                                                        { (!Commons.isEmptyOrNull(this.state.selectedList.icon)) ? <img className="object-fill w-4 h-4 mr-2 items-center text-start justify-start" alt={`image`} src={`${this.handleEncrypt(this.state.selectedList.icon)}`} />:""}
+                                                        <div className='w-full line-clamp-1 justify-start text-start'>{this.handleEncrypt(this.state.selectedList.name)}</div></span>
+                                                : <div className='w-full line-clamp-1'>{(this.props.all !== undefined) ? `${this.props.all}`: (!Commons.isEmptyOrNull(this.props.placeholder)) ? this.props.placeholder : null}</div>
+                                            }
+                                            </div>
+                                            {
+                                            (!(this.props.disabled !==undefined && this.props.disabled)) ? 
+                                            <div>
+                                                {
+                                                    (!this.state.dropdownPopoverShow) ? 
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 dark:text-white" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                                                    </svg>
+                                                    :
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 dark:text-white" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fillRule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clipRule="evenodd" />
+                                                    </svg>
+                                                }
+                                            </div>
+                                            
+                                            :null
+                                            }
+                                            
+                                        </div>
                                     </div>
-                                    {
-                                       (!(this.props.disabled !==undefined && this.props.disabled)) ? 
-                                       <div>
-                                        {
-                                            (!this.state.dropdownPopoverShow) ? 
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 dark:text-white" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                                            </svg>
-                                            :
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 dark:text-white" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fillRule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clipRule="evenodd" />
-                                            </svg>
-                                        }
-                                    </div>
-                                       
-                                       :null
-                                    }
-                                    
-                                </div>
-                              </div>
-                           </div>
-                           
-                          
-            </div>
+                                </div>  
+                    </div>
                 {
                     (this.props.data != undefined || this.props.request !=undefined) ? 
-                        <div>
+                        <div className='bg-inherit'>
                           <div ref={this.popoverDropdownRef}
                                   className={
                                       (this.state.dropdownPopoverShow ? "inline-block " : "hidden ") +
-                                      (this.props.dropdownClass)+
-                                      "absolute border-[1px] z-[800] border-gray-200 dark:border-gray-700 text-base w-96 float-left py-2 bg-white dark:bg-slate-800  text-white list-none text-left rounded shadow-lg mt-1"
+                                      "absolute border-[1px] z-[800] border-gray-200 dark:border-gray-700 text-base w-96 float-left py-2 bg-inherit  text-white list-none text-left rounded shadow-lg mt-1 "+
+                                      (this.props.dropdownClass)
                                   }
                                   style={{ minWidth: "12rem" }}
                               >
-                              <div className='flex w-full justify-between items-center bg-white text-black dark:bg-slate-800'>
+                              <div className='flex w-full justify-between items-center text-black'>
                                 <div className="flex w-full relative z-0 mx-3 my-2 group border-b border-black dark:border-white">
-                                    <input type="text" name="search" autoFocus autoComplete="off" ref={this.searchRef} value={this.state.input.search} onChange={this.handleChange} className="block py-2.5 text-xs 2xl:text-sm px-0 w-full text-black bg-transparent border-0 border-b-2 border-black appearance-none dark:text-white dark:border-gray-600 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-black peer" placeholder=" " />
+                                    <input type="text" name="search" autoFocus autoComplete="off" ref={this.searchRef} value={this.state.input.search} onChange={this.handleChange} className="block py-2.5 text-xs 2xl:text-sm px-0 bg-inherit w-full text-black bg- border-0 border-b-2 border-black appearance-none dark:text-white dark:border-white dark:focus:border-white focus:outline-none focus:ring-0 focus:border-black peer" placeholder=" " />
                                     <label htmlFor="floating_search" className="absolute text-sm text-black dark:text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-black dark:peer-focus:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Search here....</label>
                                 </div>
                               </div>
-                              <div className="flex w-full flex-col min-h-24 max-h-96 overflow-auto bg-white dark:bg-slate-800 text-black dark:text-white">
+                              <div className="flex w-full flex-col min-h-24 max-h-96 overflow-auto bg-inherit text-black dark:text-white">
                                 
                                 {
                                   (this.state.error.state && this.props.request !==undefined) ? 
@@ -508,7 +514,7 @@ class DesmyDropdown extends Component<Props, State> {
                                   <div className={`flex flex-col w-full`}>
                                     {
                                       (this.props.all !==undefined) ? 
-                                        <div className={`flex text-sm py-2 px-4 font-normal cursor-pointer w-full whitespace-no-wrap dark:hover:bg-gray-500 ${this.props.dropdownListClass} ${ (this.state.selectedMultiple.length ==0) ? ' font-poppinsBold' : 'font-normal'} `}
+                                        <div className={`flex text-sm py-2 px-4 font-normal cursor-pointer w-full whitespace-no-wrap dark:hover:bg-white dark:hover:text-black ${this.props.dropdownListClass} ${ (this.state.selectedMultiple.length ==0) ? ' font-poppinsBold' : 'font-normal'} `}
                                         onClick={this.handleClearSelected}>
                                             <div className="mr-2"></div>
                                             <div className={`flex w-full text-maxlines whitespace-no-wrap dark:text-white overflow-hidden h-6`}>  {this.props.all}</div>
@@ -517,7 +523,7 @@ class DesmyDropdown extends Component<Props, State> {
                                     }
                                     {
                                       (this.props.onClear !==undefined) ? 
-                                        <div className={`flex text-sm py-2 px-4 font-normal cursor-pointer w-full whitespace-no-wrap dark:hover:bg-gray-500 ${this.props.dropdownListClass}`}
+                                        <div className={`flex text-sm py-2 px-4 font-normal cursor-pointer w-full whitespace-no-wrap dark:hover:bg-white dark:hover:text-black ${this.props.dropdownListClass}`}
                                         onClick={this.handleClearSelected}>
                                             <div className="mr-2"></div>
                                             <div className={`flex w-full text-maxlines whitespace-no-wrap dark:text-white overflow-hidden h-6`}>  {this.props.onClear}</div>
@@ -529,7 +535,7 @@ class DesmyDropdown extends Component<Props, State> {
                                       this.state.datalist.filter(name => Commons.toString(this.handleEncrypt(name.name)).toLowerCase().includes(this.state.input.search.toLowerCase())).map((data,i)=>{
                                         var searchFound = this.handleSearch(this.state.selectedMultiple,data.id)  
                                         return <div key={`${i}`}
-                                              className={`flex text-sm py-2 px-4 font-normal cursor-pointer w-full whitespace-no-wrap dark:hover:bg-gray-900 dark:text-white ${this.props.dropdownListClass} ${ (this.props.is_multiple != undefined && this.props.is_multiple) ? (searchFound) ? ' font-poppinsBold' :'font-normal' : (Commons.toString(this.state.selectedList.id) == Commons.toString( data.id)) ? ' font-poppinsBold' : 'font-normal'} `}
+                                              className={`flex text-sm py-2 px-4 font-normal cursor-pointer w-full whitespace-no-wrap  dark:hover:bg-white dark:hover:text-black transition duration-500 ease-in-out dark:text-white ${this.props.dropdownListClass} ${ (this.props.is_multiple != undefined && this.props.is_multiple) ? (searchFound) ? ' font-poppinsBold' :'font-normal' : (Commons.toString(this.state.selectedList.id) == Commons.toString( data.id)) ? ' font-poppinsBold' : 'font-normal'} `}
                                               onClick={e => this.handleSelectedItem(e,data)}
                                           >
                                             <div className="mr-2">

@@ -14,7 +14,7 @@ interface Props {
     defaultValue?: string | any | DropdownItem | DropdownItem[];
     data?: DropdownItem[];
     request?: DropdownRequest;
-    selectedData?: DropdownItem[];
+    selectedData?: DropdownItem | DropdownItem[] | undefined;
     is_multiple?: boolean;
     type?: string;
     handleChange?: (data: DropdownItem | DropdownItem[]) => void;
@@ -26,6 +26,7 @@ interface Props {
     all?: string;
     dropdownClass?: string;
     dropdownListClass?: string;
+    containerClassName?: string;
     selectedRef?: string;
     enableDecrypt?: boolean;
     onClear?: string;

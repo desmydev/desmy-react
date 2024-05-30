@@ -3,7 +3,9 @@ import { default as React, Component } from 'react';
 interface TextInputProps {
     defaultValue?: string;
     type?: string;
-    email_contains?: string;
+    className?: string;
+    inputClassName?: string;
+    emailExtension?: string;
     onChange: (value: string) => void;
     onRef?: (instance: DesmyTextInput | null) => void;
     autoFocus?: boolean;

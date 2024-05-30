@@ -5,6 +5,10 @@ import  {DesmyClickOutsideListener} from "./components/clickoutsidelistener/Desm
 import  {DesmyDropdown} from "./components/dropdown/DesmyDropdown";
 import  {DesmyModalContainer} from "./components/modalcontainer/DesmyModalContainer";
 import  {DesmyTextInput} from "./components/input/DesmyTextInput";
+import  {DesmyDataTable} from "./components/datatable/DesmyDataTable";
+import  {DesmyReadMoreOrLess} from "./components/apis/DesmyReadMoreOrLess";
+import  {DesmyButton} from './components/button/DesmyButton'
+import  {DesmyPopupMenu} from './components/popupmenu/DesmyPopupMenu'
 import './index.css';
 export  {
             DesmyDropdown,
@@ -13,5 +17,9 @@ export  {
             DesmyClickOutsideListener,
             DesmyAuth,
             DesmyCommons,
-            DesmyTextInput
+            DesmyTextInput,
+            DesmyDataTable,
+            DesmyReadMoreOrLess,
+            DesmyButton,
+            DesmyPopupMenu
         }

@@ -5,5 +5,9 @@ import { DesmyClickOutsideListener } from './components/clickoutsidelistener/Des
 import { DesmyDropdown } from './components/dropdown/DesmyDropdown';
 import { DesmyModalContainer } from './components/modalcontainer/DesmyModalContainer';
 import { DesmyTextInput } from './components/input/DesmyTextInput';
+import { DesmyDataTable } from './components/datatable/DesmyDataTable';
+import { DesmyReadMoreOrLess } from './components/apis/DesmyReadMoreOrLess';
+import { DesmyButton } from './components/button/DesmyButton';
+import { DesmyPopupMenu } from './components/popupmenu/DesmyPopupMenu';
 
-export { DesmyDropdown, DesmyModalHandler, DesmyModalContainer, DesmyClickOutsideListener, DesmyAuth, DesmyCommons, DesmyTextInput };
+export { DesmyDropdown, DesmyModalHandler, DesmyModalContainer, DesmyClickOutsideListener, DesmyAuth, DesmyCommons, DesmyTextInput, DesmyDataTable, DesmyReadMoreOrLess, DesmyButton, DesmyPopupMenu };
