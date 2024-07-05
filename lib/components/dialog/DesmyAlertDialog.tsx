@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { State } from '../apis/Constants';
+import { DesmyState } from '../apis/DesmyState';
 import Commons from '../apis/DesmyCommons'; 
 import { DesmyDropdown } from '../dropdown/DesmyDropdown';
 
 interface DialogProps {
     children?: React.ReactNode;
+    containerDropDownClassName? : string,
     settings: {
       title?: string;
       hint?: string;
@@ -162,7 +163,7 @@ class Dialog extends React.Component<DialogProps, DialogState> {
           }
         }
       } catch (e) {
-        console.log(e);
+        
       }
     }
     handleDataChange = (data: DataObject[] | any): void => {
@@ -227,7 +228,13 @@ class Dialog extends React.Component<DialogProps, DialogState> {
             <div className="relative sm:flex sm:items-start items-center">
                 
                 <div className="flex w-full flex-col mt-5 text-center sm:mt-0  sm:text-left items-center">
-                   
+                    {
+                          (settings.title != null && settings.title != undefined && !Commons.isEmptyOrNull(settings.title)) ? 
+                            <div className={`flex w-full justify-center items-center text-start lg:justify-start text-md uppercase xl:text-base mt-1.5 ${ (settings.type==DesmyState.ERROR) ? `text-red-600`:`text-gray-900 dark:text-white`} font-poppinsBold`}>
+                              {settings.title}
+                            </div>
+                          :null
+                    }
                     <div className="flex flex-col w-full my-5">
                         <div className='flex w-full'>{this.props.children}</div>
                         <div className='flex w-full relative'>
@@ -241,7 +248,7 @@ class Dialog extends React.Component<DialogProps, DialogState> {
                                   defaultValue={settings.datalist.default_value}
                                   handleChange={this.handleDataChange} 
                                   is_multiple = {(settings.datalist.is_multiple !==undefined) ? settings.datalist.is_multiple:false}
-                                  containerClassName={`bg-inherit`}
+                                  containerClassName={!(Commons.isEmptyOrNull(this.props.containerDropDownClassName)) ? this.props.containerDropDownClassName:`bg-white dark:bg-darkPrimary`}
                                   enableDecrypt={(settings.datalist.encrypted !== undefined) ? settings.datalist.encrypted : false}
                                   placeholder={`${settings.datalist.title}`} 
                                   />
@@ -303,7 +310,7 @@ class Dialog extends React.Component<DialogProps, DialogState> {
           zIndex: 3000,
           btnPosition: "",
           btnNegative: "",
-          type: State.ERROR,
+          type: DesmyState.ERROR,
           loading: false,
           forceLoading: false,
           loadinghint: "",

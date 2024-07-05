@@ -23,6 +23,7 @@ interface Props {
     disabled?: boolean;
     showPlaceHolderHint?: boolean;
     placeholder?: string;
+    emptymessage?: string;
     all?: string;
     dropdownClass?: string;
     dropdownListClass?: string;
@@ -45,6 +46,7 @@ interface State {
     input: {
         search: string;
     };
+    selectedAll?: Boolean;
     selectedList: {
         id: string;
         name: string | null;
@@ -81,6 +83,8 @@ declare class DesmyDropdown extends Component<Props, State> {
     handleSelectedItem: (e: React.MouseEvent<HTMLDivElement>, data: any) => void;
     handleClearSearch: () => void;
     handleClickAway: () => void;
+    handleClear: () => void;
+    handleSelectAll: () => void;
     handleClearSelected: () => void;
     closeDropdownPopover: () => void;
     render(): JSX.Element;

@@ -22,7 +22,10 @@ declare class DesmyCommons {
         allValidationsPassed: boolean;
     };
     isNotEmpty(value: string): boolean;
+    columnHead(value: string): string;
     convertUnderscoreToSpaceString(str: string): string;
+    isDarkTheme(): boolean;
+    sync_theme(callback?: (isDark: boolean) => void): Promise<void>;
     imageSize(image: Blob): Promise<{
         width: number;
         height: number;

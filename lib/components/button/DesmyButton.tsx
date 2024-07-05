@@ -1,9 +1,12 @@
 import React from 'react';
+import { DesmyState } from '../apis/DesmyState';
+import DesmyCommons from '../apis/DesmyCommons';
 
 interface DesmyButtonProps {
     onClick: () => void;
     hasRequest: boolean;
     label?: string;
+    type?: string,
     label_request?: string;
     icon?: React.ReactNode;
     className? : string
@@ -20,7 +23,7 @@ class DesmyButton extends React.Component<DesmyButtonProps> {
                 type="button"
                 onClick={this.props.onClick}
                 disabled={this.props.hasRequest}
-                className={`text-xs px-6 py-4 uppercase text-white bg-primary hover:bg-primary/75 dark:bg-darkPrimary dark:hover:bg-white dark:hover:text-black rounded-full cursor-pointer  transition duration-500 ease-in-out`}
+                className={`${(this.props.type ===DesmyState.SMALL) ? ` px-4 py-3 `:` px-6 py-4 `} text-xs justifiy-center items-center w-full lg:w-auto ${!(DesmyCommons.isEmptyOrNull(this.props.className)) ? this.props.className :`bg-primary hover:bg-primary/75  text-white dark:bg-darkPrimary dark:hover:bg-white dark:hover:text-black`}  font-poppinsRegular items-center   rounded-full cursor-pointer  transition duration-500 ease-in-out`}
             >
                 {this.props.hasRequest ? (
                     <div className="flex items-center">
@@ -43,7 +46,7 @@ class DesmyButton extends React.Component<DesmyButtonProps> {
                         <span>{this.props.label_request}...</span>
                     </div>
                 ) : (
-                    <div className="flex items-center">
+                    <div className="flex justify-center items-center">
                         {this.props.icon}
                         <span>{this.props.label}</span>
                     </div>

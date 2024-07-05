@@ -60,7 +60,11 @@ class DesmyCommons {
     }
 
     isEmptyOrNull(data: any): boolean {
-        return data === "" || data == null || data == undefined;
+        if (Array.isArray(data)) {
+            return data.length == 0
+        }else{
+            return data === "" || data == null || data == undefined;
+        }
     }
 
     toStringDefault(data: any, defaultValue = ""): string {
@@ -111,11 +115,53 @@ class DesmyCommons {
     isNotEmpty(value: string): boolean {
         return value !== "";
     }
-
+    columnHead(value: string): string {
+        let header = value.split('_');
+        if (header.length > 1 && header.slice(-1)[0].toLowerCase()) {
+            return header.slice(0, -1).join(' ').toUpperCase();
+        } else {
+            return header.join(' ').toUpperCase();
+        }
+    }
+    
     convertUnderscoreToSpaceString(str: string): string {
         return str.replace(/_/g, ' ');
     }
+    
+    isDarkTheme(): boolean {
+        return localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    }
+    async  sync_theme(callback?: (isDark: boolean) => void): Promise<void> {
+        let isDark: boolean;
+        const colorTheme = localStorage.getItem('color-theme');
+        
+        if (colorTheme) {
+            if (colorTheme === 'light') {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+                isDark = true;
+            } else {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+                isDark = false;
+            }
+        } else {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+                isDark = false;
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+                isDark = true;
+            }
+        }
 
+        // Execute the callback if provided, passing the isDark parameter
+        if (callback) {
+            callback(isDark);
+        }
+    }
     async imageSize(image: Blob): Promise<{ width: number, height: number }> {
         return new Promise((resolve, reject) => {
             try {
@@ -295,5 +341,4 @@ class DesmyCommons {
     }
     
 }
-
-export default new DesmyCommons();
+export default  new DesmyCommons();

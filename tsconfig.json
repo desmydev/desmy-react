@@ -9,7 +9,9 @@
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
+    "declaration": true,
+    "declarationDir": "./dist/types",
+    "emitDeclarationOnly": true,
     "jsx": "react-jsx",
     "strict": true,
     "noUnusedLocals": true,
@@ -21,6 +23,6 @@
     "typeRoots": ["./dist/index.d.ts"]
   },
   /* include /index.ts*/
-  "include": ["lib", "./index.tsx"],
+  "include": ["lib/**/*.ts", "lib/**/*.tsx", "lib/**/*.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

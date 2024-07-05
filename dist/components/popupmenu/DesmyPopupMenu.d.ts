@@ -1,8 +1,9 @@
 import { default as React, Component } from 'react';
 
 interface RequestProps {
-    url: string;
+    url?: string;
     isEnable?: boolean;
+    showarrow?: boolean;
     serverRequest: boolean;
     list?: Array<{
         name: string;

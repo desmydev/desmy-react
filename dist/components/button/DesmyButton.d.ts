@@ -4,6 +4,7 @@ interface DesmyButtonProps {
     onClick: () => void;
     hasRequest: boolean;
     label?: string;
+    type?: string;
     label_request?: string;
     icon?: React.ReactNode;
     className?: string;

@@ -30,6 +30,7 @@ interface Props {
     disabled?: boolean;
     showPlaceHolderHint?: boolean;
     placeholder?: string;
+    emptymessage?:string,
     all?: string;
     dropdownClass?: string;
     dropdownListClass?: string;
@@ -53,6 +54,7 @@ interface State {
     input: {
         search: string;
     };
+    selectedAll?: Boolean,
     selectedList: {
         id: string;
         name: string | null;
@@ -86,6 +88,7 @@ class DesmyDropdown extends Component<Props, State> {
             hasLoaded: false,
             isLoading:false,
             clear: false,
+            selectedAll:false,
             requestUrl: "",
             bgColor: 'dark:bg-darkDialogBackground',
             input: {
@@ -114,8 +117,8 @@ class DesmyDropdown extends Component<Props, State> {
               if (this.props.handleChange) {
                 this.props.handleChange(data);
               }
-            }).catch((e) => {
-              console.log(e);
+            }).catch((_e) => {
+                
             });
           }
         } else if (prevProps.selectedData) { // If selectedData is not an array but truthy
@@ -243,8 +246,8 @@ class DesmyDropdown extends Component<Props, State> {
                 }
             }
     
-        } catch (e) {
-            console.log(e)
+        } catch (_e) {
+            
         }
     };
     
@@ -381,17 +384,17 @@ class DesmyDropdown extends Component<Props, State> {
             const datafound = this.state.selectedMultiple.find(obj => obj.id === data.id);
             if (!datafound) {
                 selectedMultiple.push(data);
-                this.setState({ selectedMultiple, clear: false });
+                this.setState({ selectedMultiple, clear: false,selectedAll:false});
                 if(this.props.handleChange)
                     this.props.handleChange(selectedMultiple);
             } else {
                 selectedMultiple = this.deleteItems(data.id);
-                this.setState({ selectedMultiple, clear: false });
+                this.setState({ selectedMultiple, clear: false,selectedAll:false });
                 if(this.props.handleChange)
                     this.props.handleChange(selectedMultiple);
             }
         } else {
-            this.setState({ selectedList: data, clear: false });
+            this.setState({ selectedList: data, clear: false,selectedAll:false });
         }
     
         if (this.props.handleDropdownChange !== undefined) {
@@ -408,19 +411,29 @@ class DesmyDropdown extends Component<Props, State> {
     handleClearSearch =() : void=>{
         const {input} = this.state
         input['search'] = ""
-        this.setState({input})
+        this.setState({input,selectedAll:false})
     }
     handleClickAway = (): void => {
         this.closeDropdownPopover();
     };
-
+    handleClear=():void=>{
+        this.setState({ selectedMultiple: [], selectedList: {id: '',  name: null, icon: null, data: null}, clear: true }, this.handleClickAway);
+        
+    }
+    handleSelectAll=() : void=>{
+        if (this.props.handleChange) {
+            this.props.handleChange(this.state.datalist)
+        }
+        this.setState({selectedAll:true},this.handleClear)
+       
+    }
     handleClearSelected = (): void => {
         const data: any = (this.props.is_multiple !== undefined && this.props.is_multiple) ? [] : {};
     
-        this.setState({ selectedMultiple: [], selectedList: {id: '',  name: null, icon: null, data: null}, clear: true }, this.handleClickAway);
         if (this.props.handleChange) {
             this.props.handleChange(data);
         }
+        this.setState({selectedAll:false},this.handleClear)
     };
     
     closeDropdownPopover = (): void => {
@@ -433,12 +446,12 @@ class DesmyDropdown extends Component<Props, State> {
        
         <DesmyClickOutsideListener onClickOutside={this.handleClickAway}>
             <div className={`flex flex-col w-full font-poppinsRegular ${(this.props.containerClassName !=undefined) ? this.props.containerClassName :`bg-white dark:bg-darkBackground`}`}>
-                    <div className={`bg-inherit ${this.props.className} cursor-pointer `} ref={this.btnDropdownRef} onClick={() => { this.state.dropdownPopoverShow ? this.closeDropdownPopover() : this.openDropdownPopover()}} >
-                                    <div className={`flex flex-col w-full h-12  bg-inherit relative border-[1px] border-black dark:border-white`}>
-                                    <div className={`absolute bottom-0 ${(this.props.showPlaceHolderHint ===undefined || this.props.showPlaceHolderHint !==false) ? ((this.props.placeholder != undefined && (this.state.selectedList.name != null || this.state.selectedMultiple.length > 0) || this.props.all !==undefined) ) ? `bg-inherit`:``:``} px-2 pb-3 left-0 right-0`}>
+                    <div className={`bg-inherit ${this.props.className} cursor-pointer  line-clamp-1`} ref={this.btnDropdownRef} onClick={() => { this.state.dropdownPopoverShow ? this.closeDropdownPopover() : this.openDropdownPopover()}} >
+                                    <div className={`flex flex-col w-full h-12 line-clamp-1  bg-inherit relative border-[1px] border-black dark:border-white`}>
+                                    <div className={`absolute bottom-0 ${(this.props.showPlaceHolderHint ===undefined || this.props.showPlaceHolderHint !==false) ? ((this.props.placeholder != undefined && (this.state.selectedList.name != null || this.state.selectedMultiple.length > 0) || ((this.props.all !== undefined && this.state.selectedAll))) ) ? `bg-inherit`:``:``} px-2 pb-3 left-0 right-0 line-clamp-1`}>
                                         <div className='flex bg-inherit '>
-                                        <div className={`flex text-[11px]  line-clamp-1  px-1 -mt-6 bg-inherit dark:text-white items-center`}>
-                                            { (this.props.showPlaceHolderHint ===undefined || this.props.showPlaceHolderHint !==false) ? ((this.props.placeholder != undefined && (this.state.selectedList.name != null || this.state.selectedMultiple.length > 0) || this.props.all !==undefined) ) ? this.props.placeholder : '' : ''}
+                                        <div className={`w-full text-[11px]  line-clamp-1  px-1 -mt-6 bg-inherit dark:text-white items-center`}>
+                                            { (this.props.showPlaceHolderHint ===undefined || this.props.showPlaceHolderHint !==false) ? ((this.props.placeholder != undefined && (this.state.selectedList.name != null || this.state.selectedMultiple.length > 0) || (this.props.all !== undefined && this.state.selectedAll)) ) ? this.props.placeholder : '' : ''}
                                         </div>
                                         </div>
                                         <div className="flex w-full justify-between">
@@ -447,10 +460,10 @@ class DesmyDropdown extends Component<Props, State> {
                                                 (this.props.is_multiple !=undefined && this.props.is_multiple && this.state.selectedMultiple.length > 0) ? this.handleSelectMessage(this.state.selectedMultiple) 
                                                 : (!Commons.isEmptyOrNull(this.state.selectedList.name)) ? 
                                                 
-                                                    <span className="flex w-full line-clamp-1 text-start justify-start" title={`${this.handleEncrypt(this.state.selectedList.name)}`}>
+                                                    <span className={`${(!Commons.isEmptyOrNull(this.state.selectedList.icon)) ? `flex`:``} w-full line-clamp-1 text-start justify-start`} title={`${this.handleEncrypt(this.state.selectedList.name)}`}>
                                                         { (!Commons.isEmptyOrNull(this.state.selectedList.icon)) ? <img className="object-fill w-4 h-4 mr-2 items-center text-start justify-start" alt={`image`} src={`${this.handleEncrypt(this.state.selectedList.icon)}`} />:""}
                                                         <div className='w-full line-clamp-1 justify-start text-start'>{this.handleEncrypt(this.state.selectedList.name)}</div></span>
-                                                : <div className='w-full line-clamp-1'>{(this.props.all !== undefined) ? `${this.props.all}`: (!Commons.isEmptyOrNull(this.props.placeholder)) ? this.props.placeholder : null}</div>
+                                                : <div className='w-full line-clamp-1'>{(this.props.all !== undefined && this.state.selectedAll) ? `${this.props.all}`: (!Commons.isEmptyOrNull(this.props.placeholder)) ? this.props.placeholder : null}</div>
                                             }
                                             </div>
                                             {
@@ -513,20 +526,20 @@ class DesmyDropdown extends Component<Props, State> {
                                   :<>
                                   <div className={`flex flex-col w-full`}>
                                     {
-                                      (this.props.all !==undefined) ? 
-                                        <div className={`flex text-sm py-2 px-4 font-normal cursor-pointer w-full whitespace-no-wrap dark:hover:bg-white dark:hover:text-black ${this.props.dropdownListClass} ${ (this.state.selectedMultiple.length ==0) ? ' font-poppinsBold' : 'font-normal'} `}
-                                        onClick={this.handleClearSelected}>
+                                      (this.props.all !==undefined &&  this.props.is_multiple && (this.state.datalist.length != 0)) ? 
+                                        <div className={`flex text-sm py-2 px-4 font-normal cursor-pointer w-full whitespace-no-wrap dark:hover:bg-white dark:hover:text-black ${this.props.dropdownListClass} ${ ((this.state.selectedAll)) ? ' font-poppinsBold' : 'font-normal'}  transition duration-500 ease-in-out`}
+                                        onClick={this.handleSelectAll}>
                                             <div className="mr-2"></div>
-                                            <div className={`flex w-full text-maxlines whitespace-no-wrap dark:text-white overflow-hidden h-6`}>  {this.props.all}</div>
+                                            <div className={`flex w-full text-maxlines whitespace-no-wrap overflow-hidden h-6`}>  {this.props.all}</div>
                                         </div> 
                                       : null
                                     }
                                     {
                                       (this.props.onClear !==undefined) ? 
-                                        <div className={`flex text-sm py-2 px-4 font-normal cursor-pointer w-full whitespace-no-wrap dark:hover:bg-white dark:hover:text-black ${this.props.dropdownListClass}`}
+                                        <div className={`flex text-sm py-2 px-4 font-normal cursor-pointer w-full whitespace-no-wrap dark:hover:bg-white dark:hover:text-black ${this.props.dropdownListClass} transition duration-500 ease-in-out`}
                                         onClick={this.handleClearSelected}>
                                             <div className="mr-2"></div>
-                                            <div className={`flex w-full text-maxlines whitespace-no-wrap dark:text-white overflow-hidden h-6`}>  {this.props.onClear}</div>
+                                            <div className={`flex w-full text-maxlines whitespace-no-wrap overflow-hidden h-6`}>  {this.props.onClear}</div>
                                         </div> 
                                       : null
                                     }
@@ -555,7 +568,7 @@ class DesmyDropdown extends Component<Props, State> {
                                           </div>
                                       })
                                       
-                                      : null
+                                      : <div className='flex w-full h-24 text-sm dark:text-white text-center justify-center items-center'>{(!(Commons.isEmptyOrNull(this.props.emptymessage))) ? this.props.emptymessage: 'No data found'}</div>
                                       
                                   }
                                 </div>
@@ -565,7 +578,7 @@ class DesmyDropdown extends Component<Props, State> {
                                 
                               </div>
                               {
-                                (this.props.is_multiple !== undefined && this.props.is_multiple) ? 
+                                (this.props.is_multiple !== undefined && this.props.is_multiple && (this.state.datalist.length != 0) ) ? 
                                   <div className='flex w-full mt-4'>
                                     <div onClick={()=>this.handleClickAway()} className='flex px-3 py-3 w-full text-black text-center justify-center rounded uppercase mx-2 cursor-pointer text-xs border border-gray-800 bg-white font-poppinsSemiBold'>Done</div>
                                   </div>

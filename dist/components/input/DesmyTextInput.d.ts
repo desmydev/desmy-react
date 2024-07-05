@@ -9,6 +9,8 @@ interface TextInputProps {
     onChange: (value: string) => void;
     onRef?: (instance: DesmyTextInput | null) => void;
     autoFocus?: boolean;
+    disabled?: boolean;
+    rows?: number;
     label: string;
 }
 interface TextInputState {
@@ -17,9 +19,12 @@ interface TextInputState {
     };
 }
 declare class DesmyTextInput extends Component<TextInputProps, TextInputState> {
+    enteredInput: string;
     constructor(props: TextInputProps);
     componentDidMount(): void;
-    componentDidUpdate: (prevProps: TextInputProps, prevState: TextInputState) => Promise<false | undefined>;
+    handleDefaultRequest: () => void;
+    componentDidUpdate: (_prevProps: TextInputProps, _prevState: TextInputState) => Promise<void>;
+    handleTextAreaChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
     handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     render(): JSX.Element;
 }

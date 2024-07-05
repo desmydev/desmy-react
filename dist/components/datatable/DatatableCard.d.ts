@@ -61,7 +61,7 @@ declare class DatatableCard extends Component<Props, State> {
     componentDidMount(): Promise<void>;
     extra_handle: () => false | {
         name: string;
-        icon: import('react').ReactNode;
+        icon: React.ReactNode;
     } | undefined;
     render(): JSX.Element;
 }

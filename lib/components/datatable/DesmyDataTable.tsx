@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { Component, ChangeEvent,ReactNode, KeyboardEvent } from 'react';
 import Commons from '../apis/DesmyCommons';
 import { DesmyDropdown } from '../dropdown/DesmyDropdown';
-import { State as CommonState } from '../apis/Constants'; // Assuming State is already exported as CommonState
+import { DesmyState as CommonState } from '../apis/DesmyState'; // Assuming State is already exported as CommonState
 import ReactDOM from 'react-dom';
 import DatatableCard from './DatatableCard';
 import DesmyAuth from '../apis/DesmyAuth';
@@ -119,7 +119,7 @@ class DatatableModalHandler extends React.Component<Props, State> {
               <div className="absolute inset-0 bg-black/25 opacity-75"></div>
             </div>
             <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
-            <div className="inline-block align-bottom font-poppinsRegular bg-white dark:bg-slate-800 dark:text-white px-4 pt-5 pb-0 text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full sm:p-6">
+            <div className="inline-block align-bottom font-poppinsRegular bg-white dark:bg-darkBackground dark:text-white px-4 pt-5 pb-0 text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full sm:p-6">
               <div className='flex flex-col lg:-ml-2 w-full'>
                 <div className="relative sm:flex sm:items-start items-center">
                   <div className="flex w-full flex-col mt-5 text-center sm:mt-0 sm:ml-4 sm:text-left items-center">
@@ -836,7 +836,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
               <div>
                 
               </div>
-              <div className={`scrollable_table flex flex-col min-h-[200px] ${(this.renderedSettings.length > 10) ? `h-[calc(100vh-160px)]`:`h-auto`} overflow-auto  scrollbar-width`} onScroll={this.handleScroll}>
+              <div className={`scrollable_table flex flex-col min-h-[200px] ${(this.renderedSettings.length > 10) ? `h-[80vh]`:`h-auto`} overflow-auto  scrollbar-width`} onScroll={this.handleScroll}>
                 <div className='flex flex-col '>
                 <div>
                   {

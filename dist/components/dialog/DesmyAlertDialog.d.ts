@@ -2,6 +2,7 @@ import { default as React } from 'react';
 
 interface DialogProps {
     children?: React.ReactNode;
+    containerDropDownClassName?: string;
     settings: {
         title?: string;
         hint?: string;

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios'; 
 import { DesmyClickOutsideListener } from '../clickoutsidelistener/DesmyClickOutsideListener';
-import { State as CommonState } from '../apis/Constants';
+import { DesmyState as CommonState } from '../apis/DesmyState';
 import DesmyAuth from '../apis/DesmyAuth';
 
 interface RequestProps {
-    url: string;
+    url?: string;
     isEnable?: boolean;
+    showarrow? :boolean;
     serverRequest: boolean;
     list?: Array<{ name: string }>;
     onSelect: (data: any) => void;
@@ -48,12 +49,13 @@ class DesmyPopupMenu extends Component<PopupMenuProps, PopupMenuState> {
     };
 
     componentDidMount = async () => {
+        
         this.setState({ isLoading: true }, this.fetch);
     };
 
     fetch = async () => {
         const { serverRequest, url, list } = this.props.request;
-        if (serverRequest) {
+        if (serverRequest && url != null) {
             try {
                 const response = await axios.get(url, {
                     headers: {
@@ -95,11 +97,30 @@ class DesmyPopupMenu extends Component<PopupMenuProps, PopupMenuState> {
                 <div className="inline-block text-left dropdown font-poppinsRegular dark:text-white">
                     <span className="rounded-md shadow-sm">
                         <div
-                            className={`${this.props.className}`}
+                            className={`flex relative ${this.props.className}`}
                             onClick={this.toggleDropdown}
                             aria-expanded={this.state.isOpen ? 'true' : 'false'}
                         >
-                            {this.props.children}
+                            <div className='flex w-full justify-between'>
+                                <div className='w-full'>{this.props.children}</div>
+                                {
+                                    (this.props.request.showarrow) ? 
+                                    <div className=' justify-center items-center mt-1 ml-1'>
+                                    {
+                                        (!this.state.isOpen) ? 
+                                        <svg fill="currentColor" viewBox="0 0 16 16" className='w-4 h-4'>
+                                            <path d="M7.247 4.86l-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 00.753-1.659l-4.796-5.48a1 1 0 00-1.506 0z" />
+                                        </svg>:
+                                        <svg fill="currentColor" viewBox="0 0 16 16" className='w-4 h-4'>
+                                            <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 01.753 1.659l-4.796 5.48a1 1 0 01-1.506 0z" />
+                                        </svg>  
+                                    }
+                                   
+                                </div>
+                                    :null
+                                }
+                                
+                            </div>
                         </div>
                     </span>
                     <div
@@ -108,7 +129,7 @@ class DesmyPopupMenu extends Component<PopupMenuProps, PopupMenuState> {
                         } dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 scale-95 z-20 mt-3`}
                     >
                         <div
-                            className={`absolute flex flex-col w-72 min-h-24 -top-5 lg:min-w-96 lg:max-w-96 mt-2 py-3 max-h-96 overflow-auto origin-top-right bg-white dark:bg-darkPrimary  border border-[#e5e7eb] dark:border-[#1a1a1a] divide-y dark:divide-[#1a1a1a] divide-[#f3f4f6]  rounded-md shadow-sm outline-none ${this.props.dropdownClassName}`}
+                            className={`absolute flex flex-col w-72 min-h-24 -top-5 lg:min-w-96 z-20 lg:max-w-96 mt-2 py-3 max-h-96 overflow-auto origin-top-right bg-white dark:bg-darkPrimary  border border-[#e5e7eb] dark:border-[#1a1a1a] divide-y dark:divide-[#1a1a1a] divide-[#f3f4f6]  rounded-md shadow-sm outline-none ${this.props.dropdownClassName}`}
                         >
                             {this.state.isLoading ? (
                                 <></>
