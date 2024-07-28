@@ -17,6 +17,7 @@ import  {DesmyNetworkError} from './components/errors/DesmyNetworkError'
 import  {DesmyEmpty} from './components/errors/DesmyEmpty'
 import  {DesmyModalWrapper} from './components/modalcontainer/DesmyModalWrapper'
 import  {DesmyRxServices} from './components/apis/DesmyRxServices'
+import  {DesmyTableCard} from './components/datatable/DesmyTableCard'
 import './index.css';
 export  {
             DesmyState,
@@ -37,5 +38,6 @@ export  {
             DesmyListCard,
             DesmyEmpty,
             DesmyNetworkError,
-            DesmyRxServices
+            DesmyRxServices,
+            DesmyTableCard
         }

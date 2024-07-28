@@ -4,14 +4,16 @@ import { DesmyPopupMenu } from '../popupmenu/DesmyPopupMenu';
 import DesmyCommons from '../apis/DesmyCommons';
 
 interface HomeProps {
+  children?: React.ReactNode;
   isLoading: boolean;
-  name:string,
+  name?:string,
   image?:string,
   caption? :string,
   data: {
     name: string;
     level: number;
   };
+  optionList?: MenuItem[];
   onAction: (action: any) => void;
   className?: string;
 }
@@ -30,12 +32,16 @@ class DesmyListCard extends Component<HomeProps, HomeState> {
       content: null,
     };
   }
-
   render() {
-    const menuItems: MenuItem[] = [
-        { id:CommonState.EDIT, name: 'Edit' },
-        { id :CommonState.DELETE,name: 'Delete' },
-      ];
+    const defaultMenuItems: MenuItem[] = [
+      { id: CommonState.EDIT, name: 'Edit' },
+      { id: CommonState.DELETE, name: 'Delete' },
+    ];
+
+    const menuItems: MenuItem[] = this.props.optionList && this.props.optionList.length > 0 
+      ? this.props.optionList 
+      : defaultMenuItems;
+
     return (
       <>
         {this.props.isLoading ? (
@@ -54,9 +60,11 @@ class DesmyListCard extends Component<HomeProps, HomeState> {
               },
             }}
           >
-            <div className={`flex flex-col w-full border border-l-4 rounded-lg group hover:bg-primary hover:dark:bg-white dark:text-black hover:text-white cursor-pointer uppercase hover:border-l-white dark:hover:border-l-white  border-l-primary dark:border-l-darkDialogBackground bg-white dark:bg-darkPrimary justify-center items-center h-24 dark:border-darkDialogBackground border-gray-200 group`}>
+            <div className={`flex flex-col w-full border border-l-4 rounded-lg group hover:bg-primary dark:hover:bg-white  dark:text-black hover:text-white dark:hover:text-black cursor-pointer uppercase hover:border-l-white dark:hover:border-l-white  border-l-primary dark:border-l-darkDialogBackground bg-white dark:bg-darkPrimary justify-center items-center min-h-24 dark:border-darkDialogBackground border-gray-200 group`}>
                 <div className='px-4 py-4'>
                     <div className='flex flex-col w-full'>
+                      {
+                        this.props.name !== null && this.props.name !== undefined ? <>
                         {
                             (!DesmyCommons.isEmptyOrNull(this.props.image)) ? 
                             <div className='flex h-24 mb-2'>
@@ -73,6 +81,10 @@ class DesmyListCard extends Component<HomeProps, HomeState> {
                                 <div className='w-full text-xs line-clamp-1 lowercase justify-center lg:text-center text-gray-600 dark:text-white group-hover:text-white dark:group-hover:text-black lg:line-clamp-2'>({this.props.caption})</div>
                             :null
                         }
+                        
+                        </>
+                        : this.props.children 
+                      }
                         
                     </div>
                 </div>

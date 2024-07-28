@@ -29,7 +29,7 @@ class DesmyModalWrapper extends Component<ModalWrapperProps, ModalWrapperState> 
   render() {
     return (
       <>
-        <div className={`fixed z-[3000] inset-0 overflow-y-auto font-poppinsRegular`}>
+        <div className={`fixed z-[4000] inset-0 overflow-y-auto font-poppinsRegular`}>
             <div className="fixed justify-items-center px-2 backdrop-blur-sm top-0 right-0 left-0 z-40 w-full inset-0 h-modal h-full justify-center items-center overflow-y-auto">
             <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
                 <div className="fixed inset-0 transition-opacity">

@@ -239,7 +239,6 @@ class Dialog extends React.Component<DialogProps, DialogState> {
                         <div className='flex w-full'>{this.props.children}</div>
                         <div className='flex w-full relative'>
                                {(settings.datalist != undefined && (!Commons.isEmptyOrNull(settings.datalist.url) ||  settings.datalist.data != undefined)) ? 
-                               (settings.datalist.data.length > 0) ? 
                                <DesmyDropdown data={(settings.datalist.data != undefined) ? settings.datalist.data : []} 
                                   request={{
                                       url:`${!(Commons.isEmptyOrNull(settings.datalist.url)) ? settings.datalist.url: ""}`,
@@ -252,7 +251,7 @@ class Dialog extends React.Component<DialogProps, DialogState> {
                                   enableDecrypt={(settings.datalist.encrypted !== undefined) ? settings.datalist.encrypted : false}
                                   placeholder={`${settings.datalist.title}`} 
                                   />
-                               :null:null}
+                               :null}
                             </div>
                     </div>
                 </div>

@@ -28,11 +28,11 @@ class DesmyModalContainer extends Component<ModalContainerProps, ModalContainerS
     return (
       <>
         {this.state.modal}
-        <div className="fixed z-[3000] inset-0 overflow-y-hidden bg-white/75 dark:bg-darkBackground/75 md:bg-transparent">
+        <div className="fixed z-[3000] inset-0 overflow-y-hidden  dark:bg-[#1a1a1a]/75 bg-white/75 md:bg-transparent">
           <div className="fixed justify-items-center px-2 backdrop-blur-lg top-0 overflow-hidden right-0 left-0 z-40 w-full inset-0 h-modal h-full justify-center items-center overflow-y-auto">
             <div className="flex items-center h-[calc(100vh-160px)] overflow-auto justify-center min-h-screen px-4 pt-20 md:pt-4 pb-20 text-center sm:block sm:p-0">
               <div className="fixed w-full h-full inset-0 transition-opacity">
-                <div className="absolute px-4 xl:px-0 inset-0 bg-transparent md:bg-white/75 md:dark:bg-darkBackground/75 dark:text-white w-full h-full">
+                <div className="absolute px-4 xl:px-0 inset-0 bg-transparent  md:dark:bg-darkBackground/75 md:bg-white/75 dark:text-white w-full h-full">
                   <div className="hidden md:flex md:container mx-auto my-10 px-10 text-start uppercase justify-between font-poppinsBlack text-2xl 2xl:text-4xl">
                     <div>{this.props.data.title}</div>
                     <div className="flex justify-end">
@@ -49,7 +49,7 @@ class DesmyModalContainer extends Component<ModalContainerProps, ModalContainerS
                 </div>
               </div>
               <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
-              <div className="inline-block align-bottom min-h-96 font-poppinsRegular dark:text-white px-4 pt-5 pb-0 text-left transform transition-all sm:my-8 sm:align-middle sm:max-w-6xl w-full sm:p-2">
+              <div className="inline-block align-bottom min-h-96 font-poppinsRegular dark:text-white px-4 pt-5 pb-0 text-left transform transition-all sm:my-8 sm:align-middle sm:max-w-7xl w-full sm:p-2">
                 <div className="md:hidden flex md:container mx-auto my-10 text-start uppercase justify-between font-poppinsBlack text-2xl 2xl:text-4xl">
                   <div>{this.props.data.title}</div>
                   <div className="flex justify-end">
