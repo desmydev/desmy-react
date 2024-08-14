@@ -6,6 +6,10 @@ class DesmyAuth {
     logout(): void {
         this.clear()
     }
+    logoutApplication(): void {
+      localStorage.removeItem('a_token')
+      localStorage.removeItem('app_req')
+    }
     clearList(datallist: { key: string, value: any }[], callback: (arg0: boolean) => void): void {
         try {
             if (datallist && datallist.length > 0) {

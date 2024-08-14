@@ -14,7 +14,7 @@ interface DialogProps {
         forceLoading?: boolean;
         loadinghint?: string;
         showDateRange?: boolean;
-        date: {
+        date?: {
             show: boolean;
             minDate: Date | null;
             title: string;
@@ -23,13 +23,13 @@ interface DialogProps {
                 endDate?: Date | null;
             };
         };
-        time: {
+        time?: {
             show: boolean;
             value: string;
             title: string;
         };
         showDateRangeTitle?: string;
-        datalist: {
+        datalist?: {
             title: string;
             url: String;
             data: any[];

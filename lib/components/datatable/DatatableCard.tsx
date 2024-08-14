@@ -36,6 +36,7 @@ interface State {
   imageExtensions: string[];
   imgColumnTypes: string[];
   title: string;
+  contentlist:any[],
   header: string;
   request: { delete: boolean };
   error: { state: boolean; message: string; type: string; color: string };
@@ -54,6 +55,7 @@ class DatatableCard extends Component<Props, State> {
       imageExtensions: ['jpg', 'jpeg', 'png', 'svg'],
       imgColumnTypes: ['picture', 'photo'],
       title: '',
+      contentlist:[],
       header: '',
       request: { delete: false },
       error: { state: false, message: '', type: ModalState.ERROR, color: '' },
@@ -69,30 +71,7 @@ class DatatableCard extends Component<Props, State> {
         btnPosition: 'delete',
         btnNegative: 'cancel',
         type: ModalState.NOTICE, // Providing default value
-        loading: false, // Providing default valuez\\
-        forceLoading: false, // Providing default value
-        loadinghint: '', // Providing default value
-        showDateRange: false, // Providing default value
-        date: { // Providing default value
-          show: false,
-          minDate: null,
-          title: '',
-          value: {
-            startDate: null,
-            endDate: null,
-          },
-        },
-        time: { // Providing default value
-          show: false,
-          value: '',
-          title: '',
-        },
-        datalist: { // Providing default value
-          title: '',
-          url: '',
-          data: [],
-          default_value: '',
-        },
+        
       };
 
     const handleClose = (state: { status: boolean }) => {
@@ -186,9 +165,7 @@ class DatatableCard extends Component<Props, State> {
     let data = user[headers[key]];
     this.header = Commons.toString(headers[key]).toLowerCase();
     this.status = user['status'];
-    this.setState({ title: Commons.toString(data) });
-
-   
+    this.setState({ title: !Array.isArray(data) ? Commons.toString(data) : "",contentlist:Array.isArray(data) ? data:[] });   
   }
 
   extra_handle = () => {
@@ -242,9 +219,18 @@ class DatatableCard extends Component<Props, State> {
                 <img onClick={() => this.onImageClick(this.state.title)} title="View photo" className={`object-center object-cover w-6 h-6 2xl:w-8 2xl:h-8 ${(!(this.props.settings.image == null || this.props.settings.image.rounded == false)) ? 'rounded-full' : ''} cursor-pointer mx-auto`} alt={`photo`} src={imageurl} />
             </div> :
             <span className="text-xs 2xl:text-sm px-4 py-2 flex items-center">
-                <DesmyReadMoreOrLess charLimit={(this.props.settings.read_more_limit !== undefined) ? this.props.settings.read_more_limit : 50}>
+                {this.state.contentlist.length > 0 ? (
+                    <ul className='space-y-1'>
+                        {this.state.contentlist.map((item, index) => (
+                            <li key={index}>{index+1}. {item.name}</li>
+                        ))}
+                    </ul>
+                ) : (
+                  <DesmyReadMoreOrLess charLimit={(this.props.settings.read_more_limit !== undefined) ? this.props.settings.read_more_limit : 50}>
                     {this.state.title}
-                </DesmyReadMoreOrLess>
+                 </DesmyReadMoreOrLess>
+                )}
+                
             </span>
 }
 

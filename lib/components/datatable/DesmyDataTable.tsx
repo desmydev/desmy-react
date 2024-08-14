@@ -858,7 +858,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
                   }
                 </div>
                 <table>
-                  <thead>
+                  <thead className='w-full'>
                     <tr className="text-sm">{ this.tableHeads() }</tr>
                   </thead>
                   <tbody>

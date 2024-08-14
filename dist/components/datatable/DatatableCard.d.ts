@@ -36,6 +36,7 @@ interface State {
     imageExtensions: string[];
     imgColumnTypes: string[];
     title: string;
+    contentlist: any[];
     header: string;
     request: {
         delete: boolean;

@@ -18,6 +18,7 @@ interface TextInputProps {
 
 
 interface TextInputState {
+    hasPressed:Boolean,
     input: {
         [key: string]: string;
     };
@@ -28,6 +29,7 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
     constructor(props: TextInputProps) {
         super(props);
         this.state = {
+            hasPressed:false,
             input: {
                 data: Commons.toStringDefault(this.props.defaultValue, "")
             }
@@ -62,29 +64,9 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
     }
     componentDidUpdate = async (_prevProps: TextInputProps, _prevState: TextInputState) => {
         try{
-            this.handleDefaultRequest()
-            // const data = Commons.toStringDefault(this.props.defaultValue, "");
-            // // console.log(data)
-            // const type = Commons.toStringDefault(this.props.type, DesmyState.TEXT);
-            // const { input } = this.state;
-            
-            // if(!Commons.isEmptyOrNull(data) && Commons.isEmptyOrNull(this.enteredInput)){
-            //     if (type === DesmyState.EMAIL) {
-            //         if(Commons.isEmptyOrNull(input.data)){
-            //             input['data'] = data;
-            //             this.setState({ input });
-            //             this.enteredInput = data
-            //         }
-            //     }else{
-            //         if (data !== input.data) {
-            //             input['data'] = data;
-            //             this.setState({ input });
-            //             this.enteredInput = data
-            //         }
-            //     }
-            // }
-            
-            
+            if(!this.state.hasPressed){
+                this.handleDefaultRequest()
+            }
         }catch(e){
 
         }
@@ -108,20 +90,23 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
             const input = this.state.input;
             const type = Commons.toStringDefault(this.props.type, DesmyState.TEXT);
             const inputValue = event.target.value;
-            
+            if(Commons.isEmptyOrNull(inputValue)){
+                input[event.target.name] = inputValue;
+                this.setState({input,hasPressed:true},()=> this.props.onChange(inputValue))
+            }
             if (type === DesmyState.PHONE) {
                 if (/^[0-9+]*$/.test(inputValue)) {
                     input[event.target.name] = inputValue;
-                    this.setState({ input }, () => { this.props.onChange(inputValue); });
+                    this.setState({ input ,hasPressed:true}, () => { this.props.onChange(inputValue); });
                 }
             } else if (type === DesmyState.NUMBER) {
                 if (/^[0-9]*$/.test(inputValue)) {
                     input[event.target.name] = inputValue;
-                    this.setState({ input }, () => { this.props.onChange(inputValue); });
+                    this.setState({ input ,hasPressed:true}, () => { this.props.onChange(inputValue); });
                 }
             } else {
                 input[event.target.name] = inputValue;
-                this.setState({ input }, () => {
+                this.setState({ input ,hasPressed:true}, () => {
                     if (type === DesmyState.EMAIL) {
                         const email_extension = Commons.toStringDefault(this.props.emailExtension, "");
                         const email = inputValue;
@@ -167,7 +152,7 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
                         autoFocus={this.props.autoFocus ? this.props.autoFocus : false}
                         value={this.state.input.data}
                         onChange={this.handleChange}
-                        className={`peer bg-transparent h-12 border border-black dark:border-white  dark:text-white placeholder-transparent text-xs 2xl:text-sm ring-0 px-2 w-full focus:outline-none focus:ring-0 dark:focus:border-white ${this.props.inputClassName}`} 
+                        className={`peer bg-transparent h-12 border border-black ${(this.props.disabled) ? `cursor-not-allowed`:``} dark:border-white  dark:text-white placeholder-transparent text-xs 2xl:text-sm ring-0 px-2 w-full focus:outline-none focus:ring-0 dark:focus:border-white ${this.props.inputClassName}`} 
                         placeholder={`${this.props.label}`}/>
                     }
                     

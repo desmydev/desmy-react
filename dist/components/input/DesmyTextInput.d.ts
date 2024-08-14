@@ -14,6 +14,7 @@ interface TextInputProps {
     label: string;
 }
 interface TextInputState {
+    hasPressed: Boolean;
     input: {
         [key: string]: string;
     };

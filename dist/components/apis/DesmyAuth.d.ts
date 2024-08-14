@@ -1,6 +1,7 @@
 declare class DesmyAuth {
     constructor();
     logout(): void;
+    logoutApplication(): void;
     clearList(datallist: {
         key: string;
         value: any;

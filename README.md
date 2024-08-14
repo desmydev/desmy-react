@@ -9,14 +9,29 @@ Currently working on other components, contact  [desmydev@gmail.com](https://mai
 
 ## Features
 * DesmyModalHandler
+* DesmyModalWrapper
 * DesmyDropDown
+* DesmyAlertDialog
+* DesmyButton (Types : NORMAL, SMALL, LARGE. Request state and icon supported)
 * DesmyClickOutsideListener
 * DesmyModalContainer
-* DesmyTextInput
+* DesmyTextInput (Support email address, phone number, number validations)
+* DesmyFilePicker
+* DesmyAccordion 
+* DesmyDataTable
+* DesmyCustomDataTable (Cards and custom views support)
+* DesmyDataSetTable (Expandable and Collapsable)
+* DesmyPopupMenu
+* DesmyListCard (Card views)
 
 ## Utilities
 * DesmyAuth 
+* DesmyState
+* DesmyAlert
 * DesmyCommons
+* DesmyLazyLoading
+* DesmyRxServices
+* DesmyReadMoreOrLess
 
 ## Installation
 
