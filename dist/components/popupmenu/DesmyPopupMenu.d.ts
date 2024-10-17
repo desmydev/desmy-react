@@ -1,38 +1,48 @@
 import { default as React, Component } from 'react';
 
+interface DropdownOption {
+    id?: string;
+    name: string;
+    icon?: any;
+    data?: any;
+}
 interface RequestProps {
     url?: string;
     isEnable?: boolean;
     showarrow?: boolean;
     serverRequest: boolean;
-    list?: Array<{
-        name: string;
-    }>;
+    options: DropdownOption[];
     onSelect: (data: any) => void;
 }
-interface PopupMenuProps {
+interface DesmyPopupMenuProps {
     request: RequestProps;
     className?: string;
-    dropdownClassName?: string;
+    dropdownId?: string;
     children: React.ReactNode;
 }
-interface PopupMenuState {
+interface DesmyPopupMenuState {
     isOpen: boolean;
+    isLoading: boolean;
     datalist: Array<{
         name: string;
+        icon?: any;
+        id?: string;
+        data?: any;
     }>;
-    isLoading: boolean;
 }
-declare class DesmyPopupMenu extends Component<PopupMenuProps, PopupMenuState> {
-    constructor(props: PopupMenuProps);
-    toggleDropdown: () => void;
-    componentDidMount: () => Promise<void>;
+declare class DesmyPopupMenu extends Component<DesmyPopupMenuProps, DesmyPopupMenuState> {
+    private dropdownRef;
+    private buttonRef;
+    constructor(props: DesmyPopupMenuProps);
     fetch: () => Promise<void>;
+    handleAlert: (_message?: string) => void;
+    toggleDropdown: () => void;
+    handleClickOutside: (event: MouseEvent) => void;
+    componentDidMount(): void;
+    componentWillUnmount(): void;
     handleOnSelect: (data: {
         name: string;
     }) => void;
-    handleClickAway: () => void;
-    handleAlert: (_message?: string) => void;
     render(): JSX.Element;
 }
 export { DesmyPopupMenu };

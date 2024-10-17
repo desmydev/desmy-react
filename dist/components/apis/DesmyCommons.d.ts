@@ -8,7 +8,9 @@ declare class DesmyCommons {
     getRandomColor(): string;
     generateKey: () => number;
     concat(a: string, b: string): string;
+    isObject(data: any): boolean;
     isEmptyOrNull(data: any): boolean;
+    toBoolean(data: any): boolean;
     toStringDefault(data: any, defaultValue?: string): string;
     toString(data: any): string;
     isEmpty(text: string | null | undefined): boolean;
@@ -32,6 +34,7 @@ declare class DesmyCommons {
     }>;
     capitalizeEachWord(data: string): string;
     formatDateString(inputDate: string): string;
+    formatDate(dateString: string): string;
     validateEmail(email: string): boolean;
     convertNumber(number: number): string;
     daysLeft(data: string): number;

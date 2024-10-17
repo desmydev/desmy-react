@@ -31,7 +31,7 @@ interface DesmyCustomDataTableProps {
       columns: any[];
       table_data: any[];
     };
-    handleOnLoaded: (data: any[], state: CommonState) => void;
+    handleOnLoaded: (data: any[], state: CommonState, message? :string) => void;
   }
   
 interface DesmyCustomState {
@@ -183,7 +183,7 @@ class DesmyCustomDataTable extends Component<DesmyCustomDataTableProps, DesmyCus
     try {
       const error = { ...this.state.error, state: true, message: Commons.isEmptyOrNull(message) ? CommonState.ERROR_MESSAGE : message, type: CommonState.ERROR, color: "red" };
       this.setState({ isLoading: false, error }, () => {
-        this.props.handleOnLoaded(this.renderedSettings, CommonState.ERROR);
+        this.props.handleOnLoaded(this.renderedSettings, CommonState.ERROR,message);
       });
     } catch (e) {
       // Handle the error
@@ -211,7 +211,7 @@ class DesmyCustomDataTable extends Component<DesmyCustomDataTableProps, DesmyCus
         entities.meta = data.data.meta;
         this.setState({ isLoading: false, entities }, this.initialChunck);
       } else {
-        this.handleError();
+        this.handleError(data.message);
       }
     } catch (e) {
       this.handleError();

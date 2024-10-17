@@ -58,15 +58,42 @@ class DesmyCommons {
     concat(a: string, b: string): string {
         return `${a} ${b}`;
     }
-
+    isObject(data: any): boolean {
+        return typeof data === 'object' && data !== null && !Array.isArray(data) && !(data instanceof File);
+    }
     isEmptyOrNull(data: any): boolean {
+        
         if (Array.isArray(data)) {
-            return data.length == 0
-        }else{
-            return data === "" || data == null || data == undefined;
+            return data.length === 0;
         }
+        if (this.isObject(data)) {
+            return Object.keys(data).length === 0 || !Object.values(data as Record<string, any>).every(value => {
+                if (typeof value === 'string') {
+                    return value.trim() !== "";
+                } else if (typeof value === 'boolean') {
+                    return value === true; 
+                } else if (typeof value === 'number') {
+                    return value !== 0;
+                } else if (Array.isArray(value)) {
+                    return value.length !== 0;
+                } else if (value instanceof File) {
+                    return value.size !== 0;
+                } else if (this.isObject(value)) {
+                    return Object.keys(value).length !== 0;
+                }
+                return value != null && value !== undefined; 
+            });
+        }
+
+        if (data instanceof File) {
+            return data.size === 0;
+        }
+        return data === "" || data == null || data === undefined;
     }
 
+    toBoolean(data: any): boolean {
+        return String(data).toLowerCase() === "true";
+    }
     toStringDefault(data: any, defaultValue = ""): string {
         return (!this.isEmptyOrNull(data)) ? data : defaultValue.toString();
     }
@@ -198,22 +225,29 @@ class DesmyCommons {
     }
 
     formatDateString(inputDate: string): string {
-        // Parse the input date string (assuming it's in the format dd/mm/yyyy)
         const match = inputDate.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
         if (!match) {
             throw new Error("Invalid date format. Please provide date in dd/mm/yyyy format.");
         }
     
-        // Extract day, month, and year from the match
         const [, day, month, year] = match;
     
-        // Format the date as yyyy-mm-dd
         const formattedDate = `${year}-${month}-${day}`;
     
         return formattedDate;
     }
     
-
+    formatDate(dateString : string) {
+        const date = new Date(dateString);
+        
+        // Extracting the parts of the date
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based in JS
+        const day = String(date.getDate()).padStart(2, '0');
+    
+        return `${year}-${month}-${day}`;
+      };
+    
     validateEmail(email: string): boolean {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);

@@ -1,7 +1,10 @@
 import { Component } from 'react';
 
 interface NetworkErrorProps {
+    icon?: string;
     errormessage?: string;
+    onRetry: () => void;
+    onCancel?: () => void;
 }
 interface NetworkErrorState {
 }

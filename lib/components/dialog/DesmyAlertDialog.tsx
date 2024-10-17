@@ -236,7 +236,7 @@ class Dialog extends React.Component<DialogProps, DialogState> {
                           :null
                     }
                     <div className="flex flex-col w-full my-5">
-                        <div className='flex w-full'>{this.props.children}</div>
+                        <div className='flex w-full justify-start text-start items-start'>{this.props.children}</div>
                         <div className='flex w-full relative'>
                                {(settings.datalist != undefined && (!Commons.isEmptyOrNull(settings.datalist.url) ||  settings.datalist.data != undefined)) ? 
                                <DesmyDropdown data={(settings.datalist.data != undefined) ? settings.datalist.data : []} 

@@ -25,7 +25,7 @@ interface DesmyCustomDataTableProps {
         columns: any[];
         table_data: any[];
     };
-    handleOnLoaded: (data: any[], state: CommonState) => void;
+    handleOnLoaded: (data: any[], state: CommonState, message?: string) => void;
 }
 interface DesmyCustomState {
     selected: number;

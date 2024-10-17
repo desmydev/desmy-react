@@ -85,31 +85,36 @@ const DesmyClickOutsideListener: FunctionComponent<Props> = ({
 
 	useEffect(() => {
 		const nodeDocument = node.current?.ownerDocument ?? document;
-
+	
 		const handleEvents = (event: Events): void => {
 			if (!mountedRef.current) return;
-
+	
+			// If the click is inside the dropdown or on any of its children, ignore it
 			if (
-				(node.current && node.current.contains(event.target as Node)) ||
-				bubbledEventTarget.current === event.target ||
-				!nodeDocument.contains(event.target as Node)
+				node.current?.contains(event.target as Node) ||
+				bubbledEventTarget.current === event.target
 			) {
 				return;
 			}
-
-			onClickOutside(event);
+	
+			// Ensure the event is happening in the current document, and invoke the onClickOutside
+			if (nodeDocument.contains(event.target as Node)) {
+				onClickOutside(event);
+			}
 		};
-
+	
 		nodeDocument.addEventListener(mouseEvent, handleEvents);
 		nodeDocument.addEventListener(touchEvent, handleEvents);
 		nodeDocument.addEventListener(focusEvent, handleEvents);
-
+	
 		return () => {
 			nodeDocument.removeEventListener(mouseEvent, handleEvents);
 			nodeDocument.removeEventListener(touchEvent, handleEvents);
 			nodeDocument.removeEventListener(focusEvent, handleEvents);
 		};
 	}, [focusEvent, mouseEvent, onClickOutside, touchEvent]);
+	
+	
 
 	const mappedMouseEvent = eventTypeMapping[mouseEvent];
 	const mappedTouchEvent = eventTypeMapping[touchEvent];

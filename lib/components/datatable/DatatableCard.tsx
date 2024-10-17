@@ -222,7 +222,7 @@ class DatatableCard extends Component<Props, State> {
                 {this.state.contentlist.length > 0 ? (
                     <ul className='space-y-1'>
                         {this.state.contentlist.map((item, index) => (
-                            <li key={index}>{index+1}. {item.name}</li>
+                            <li key={index} className='w-full line-clamp-1' title={`${item.name}`}>{(this.state.contentlist.length > 1) ? `${(index+1)}.` : ''} {item.name}</li>
                         ))}
                     </ul>
                 ) : (

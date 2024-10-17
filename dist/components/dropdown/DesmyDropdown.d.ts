@@ -62,9 +62,11 @@ declare class DesmyDropdown extends Component<Props, State> {
     private popoverDropdownRef;
     private btnDropdownRef;
     private searchRef;
+    private divRef;
     constructor(props: Props);
     componentDidUpdate(prevProps: Props, prevState: State): void;
     componentDidMount(): Promise<void>;
+    componentWillUnmount(): void;
     handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
     handleRequestData: () => void;
     handleSelectedMultiple: (datalist: any[]) => Promise<any[]>;
@@ -87,6 +89,7 @@ declare class DesmyDropdown extends Component<Props, State> {
     handleSelectAll: () => void;
     handleClearSelected: () => void;
     closeDropdownPopover: () => void;
+    handleClickOutside: (event: MouseEvent) => void;
     render(): JSX.Element;
 }
 export { DesmyDropdown };

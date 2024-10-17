@@ -1,169 +1,146 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import axios from 'axios'; 
-import { DesmyClickOutsideListener } from '../clickoutsidelistener/DesmyClickOutsideListener';
-import { DesmyState as CommonState } from '../apis/DesmyState';
+import { DesmyState } from '../apis/DesmyState';
 import DesmyAuth from '../apis/DesmyAuth';
+import DesmyCommons from '../apis/DesmyCommons';
+
+interface DropdownOption {
+  id?:string,
+  name: string;
+  icon?: any,
+  data?: any;
+}
 
 interface RequestProps {
     url?: string;
     isEnable?: boolean;
     showarrow? :boolean;
     serverRequest: boolean;
-    list?: Array<{ name: string }>;
+    options: DropdownOption[];
     onSelect: (data: any) => void;
 }
-
-interface PopupMenuProps {
-    request: RequestProps;
-    className?: string;
-    dropdownClassName?: string;
-    children: React.ReactNode;
+interface DesmyPopupMenuProps {
+  request: RequestProps;
+  className?: string;
+  dropdownId?:string,
+  children: React.ReactNode;
 }
 
-interface PopupMenuState {
-    isOpen: boolean;
-    datalist: Array<{ name: string }>;
-    isLoading: boolean;
+interface DesmyPopupMenuState {
+  isOpen: boolean;
+  isLoading: boolean;
+  datalist: Array<{ name: string,icon? :any,id?:string,data?:any }>;
 }
 
-class DesmyPopupMenu extends Component<PopupMenuProps, PopupMenuState> {
-    constructor(props: PopupMenuProps) {
-        super(props);
-        this.state = {
-            isOpen: false,
-            datalist: [],
-            isLoading: false,
-        };
-    }
+class DesmyPopupMenu extends Component<DesmyPopupMenuProps, DesmyPopupMenuState> {
+    private dropdownRef = createRef<HTMLDivElement>();
+    private buttonRef = createRef<HTMLDivElement>();
 
-    toggleDropdown = () => {
+  constructor(props: DesmyPopupMenuProps) {
+    super(props);
+    this.state = {
+      isOpen: false,
+      isLoading: true,
+      datalist: [],
+    };
+  }
+  fetch = async () => {
+    const { url, options } = this.props.request;
+    if (!DesmyCommons.isEmptyOrNull(url)) {
         try {
-            if (this.props.request.isEnable === undefined || this.props.request.isEnable) {
-                this.setState(prevState => ({
-                    isOpen: !prevState.isOpen
-                }));
-            }
-        } catch (e) {
-            console.error(e);
-        }
-    };
-
-    componentDidMount = async () => {
-        
-        this.setState({ isLoading: true }, this.fetch);
-    };
-
-    fetch = async () => {
-        const { serverRequest, url, list } = this.props.request;
-        if (serverRequest && url != null) {
-            try {
-                const response = await axios.get(url, {
-                    headers: {
-                        "X-CSRFToken": `${DesmyAuth.getCookie('csrftoken')}`,
-                        "Authorization": `Token ${DesmyAuth.get(CommonState.ACCESS_TOKEN)}`,
-                    },
-                });
-                const data = response.data;
-                if (data.success) {
-                    this.setState({ datalist: data.data, isLoading: false });
-                } else {
-                    this.handleAlert();
-                }
-            } catch (e) {
+            const response = await axios.get(DesmyCommons.toString(url), {
+                headers: {
+                    "X-CSRFToken": `${DesmyAuth.getCookie('csrftoken')}`,
+                    "Authorization": `Token ${DesmyAuth.get(DesmyState.ACCESS_TOKEN)}`,
+                },
+            });
+            const data = response.data;
+            if (data.success) {
+                this.setState({ datalist: data.data, isLoading: false });
+            } else {
                 this.handleAlert();
             }
-        } else if (list) {
-            this.setState({ datalist: list, isLoading: false });
+        } catch (e) {
+            this.handleAlert();
         }
-    };
-
-    handleOnSelect = (data: { name: string }) => {
-        this.setState({ isOpen: false }, () => {
-            this.props.request.onSelect(data);
-        });
-    };
-
-    handleClickAway = () => {
-        this.setState({ isOpen: false });
-    };
-
-    handleAlert = (_message?: string) => {
-        this.setState({ isLoading: false });
-    };
-
-    render() {
-        return (
-            <DesmyClickOutsideListener onClickOutside={this.handleClickAway}>
-                <div className="inline-block text-left dropdown font-poppinsRegular dark:text-white">
-                    <span className="rounded-md shadow-sm">
-                        <div
-                            className={`flex relative ${this.props.className}`}
-                            onClick={this.toggleDropdown}
-                            aria-expanded={this.state.isOpen ? 'true' : 'false'}
-                        >
-                            <div className='flex w-full justify-between'>
-                                <div className='w-full'>{this.props.children}</div>
-                                {
-                                    (this.props.request.showarrow) ? 
-                                    <div className=' justify-center items-center mt-1 ml-1'>
-                                    {
-                                        (!this.state.isOpen) ? 
-                                        <svg fill="currentColor" viewBox="0 0 16 16" className='w-4 h-4'>
-                                            <path d="M7.247 4.86l-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 00.753-1.659l-4.796-5.48a1 1 0 00-1.506 0z" />
-                                        </svg>:
-                                        <svg fill="currentColor" viewBox="0 0 16 16" className='w-4 h-4'>
-                                            <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 01.753 1.659l-4.796 5.48a1 1 0 01-1.506 0z" />
-                                        </svg>  
-                                    }
-                                   
-                                </div>
-                                    :null
-                                }
-                                
-                            </div>
-                        </div>
-                    </span>
-                    <div
-                        className={`${
-                            this.state.isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
-                        } dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 scale-95 z-20 mt-3`}
-                    >
-                        <div
-                            className={`absolute flex flex-col w-72 min-h-24 -top-5 lg:min-w-96 z-20 lg:max-w-96 mt-2 py-3 max-h-96 overflow-auto origin-top-right bg-white dark:bg-darkPrimary  border border-[#e5e7eb] dark:border-[#1a1a1a] divide-y dark:divide-[#1a1a1a] divide-[#f3f4f6]  rounded-md shadow-sm outline-none ${this.props.dropdownClassName}`}
-                        >
-                            {this.state.isLoading ? (
-                                <></>
-                            ) : (
-                                this.state.datalist.map((data, i) => (
-                                    <div
-                                        key={`piexmxx${i}`}
-                                        className="px-4 py-3 text-sm cursor-pointer hover:bg-gray-100  dark:hover:bg-white dark:hover:text-black transition ease-in-out duration-150"
-                                        onClick={() => this.handleOnSelect(data)}
-                                    >
-                                        {data.name}
-                                    </div>
-                                ))
-                            )}
-                        </div>
-                    </div>
-                </div>
-            </DesmyClickOutsideListener>
-        );
+    } else if (options) {
+        this.setState({ datalist: options, isLoading: false });
     }
 }
+handleAlert = (_message?: string) => {
+    this.setState({ isLoading: false });
+}
+  toggleDropdown = () => {
+    this.setState((prevState) => ({ isOpen: !prevState.isOpen }));
+  };
 
-export {DesmyPopupMenu};
+  handleClickOutside = (event: MouseEvent) => {
+    const dropdown = this.dropdownRef.current;
+    const button = this.buttonRef.current;
 
-/*
-    <PopupMenu
-        request={{
-            url: "api url here",
-            isEnable: Boolean,
-            serverRequest: Boolean, // true or false
-            onSelect: (e) => { // when data is selected
+    if (
+      dropdown && !dropdown.contains(event.target as Node) &&
+      button && !button.contains(event.target as Node)
+    ) {
+      this.setState({ isOpen: false });
+    }
+  };
 
-            }
-        }}
-    >
-    </PopupMenu>
-*/
+  componentDidMount() {
+    this.fetch()
+    document.addEventListener('click', this.handleClickOutside);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleClickOutside);
+  }
+  handleOnSelect = (data: { name: string }) => {
+    this.setState({ isOpen: false }, () => {
+        this.props.request.onSelect(data);
+    })
+  };
+
+  render() {
+    const { children } = this.props;
+    const { isOpen } = this.state;
+
+    return (
+      <div className="relative inline-block text-left">
+        <div>
+          <div onClick={this.toggleDropdown}  ref={this.buttonRef} id="dropdownButton" className="cursor-pointer">
+            {children}
+          </div>
+        </div>
+
+        <div id="dropdownMenu" ref={this.dropdownRef} className={`absolute right-0 mt-2 w-max rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition-all duration-200 ease-in-out ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'} ${this.props.className}`}>
+            <div role="menu">
+                {
+                
+                this.state.isLoading ? (
+                    <></>
+                ) :this.state.datalist.length > 0 ? (
+                this.state.datalist?.map((option, index) => (
+                    <div key={`option-${index}`}>
+                    <div
+                        onClick={() => this.handleOnSelect(option)}
+                        className={`flex w-full space-x-3 items-center px-6 py-4 cursor-pointer text-sm hover:bg-gray-100 ${(option.id == DesmyState.DELETE) ? 'text-red-500' : 'text-gray-700'}`}
+                    >
+                        {option.icon ? option.icon : null}
+                        <span>{option.name}</span>
+                    </div>
+                    {/* Add a divider after certain options or between items */}
+                    {index !== this.state.datalist?.length - 1 && (
+                        <hr className="border-t border-gray-200" />
+                    )}
+                    </div>
+                ))
+                ) : null}
+            </div>
+        </div>
+
+      </div>
+    );
+  }
+}
+
+export { DesmyPopupMenu };

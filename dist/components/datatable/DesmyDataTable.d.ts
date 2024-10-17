@@ -112,6 +112,7 @@ interface DataTableState {
         message?: string;
         type?: string;
         color?: string;
+        retry?: boolean;
     };
     alerterror: {
         state: boolean;
@@ -142,7 +143,7 @@ declare class DesmyDataTable extends Component<DataTableProps, DataTableState> {
         color: string;
     }) => void;
     handleReset: () => void;
-    handleError: (message?: string) => void;
+    handleError: (message?: string, retry?: boolean) => void;
     fetchEntities(): Promise<void>;
     columnHead(value: string): string;
     sortByColumn(column: string): void;

@@ -273,6 +273,7 @@ interface DataTableState {
     message?: string;
     type?: string;
     color?: string;
+    retry?: boolean
   };
   alerterror: {
     state: boolean;
@@ -345,7 +346,8 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
         state: false,
         message: '',
         type: CommonState.ERROR,
-        color: ""
+        color: "",
+        retry:true
       },
       alerterror: {
         state: false,
@@ -382,7 +384,6 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
       
       const { settings } = this.props;
       if (settings.filter && !this.filterloaded && Array.isArray(settings.filter.data) && settings.filter.data.length > 0) {
-        // Clone the current filters from props to avoid mutating props
         const newFilters = { ...settings.filter };
         this.setState({ filters: newFilters });
         this.filterloaded = true;
@@ -408,7 +409,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     this.setState({ alerterror: { state: false, message: '', type: CommonState.ERROR, color: "" } });
   }
 
-  handleError = (message = "") => {
+  handleError = (message = "",retry=true) => {
     try {
       var error = this.state.error;
       var input = this.state.input;
@@ -417,6 +418,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
       error["message"] = (Commons.isEmptyOrNull(message)) ? CommonState.ERROR_MESSAGE : message;
       error["type"] = CommonState.ERROR;
       error["color"] = "red";
+      error["retry"] = retry
       this.setState({ isLoading: false, error, input });
     } catch (e) {
       console.error(e);
@@ -456,14 +458,12 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
           this.setState({ isLoading: false, entities }, this.initialChunck);
         } else {
           this.hasLoadLastData = true;
-          this.handleError();
+          this.handleError(data.message,false);
         }
-      }).catch(e => {
-        console.log(e);
+      }).catch(_e => {
         this.handleError();
       });
-    } catch (e) {
-      console.log(e);
+    } catch (_e) {
       this.handleError();
     }
   }
@@ -750,7 +750,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
   handleHint=()=>{
     try{
       if(this.state.settings.header.hint){
-          return this.state.settings.header.hint
+          return this.state.settings.header.hint +" | Loaded "+this.state.entities.meta.total
       }else{
         return (!this.state.error.state) ? "Loaded "+this.state.entities.meta.total+" data":"";
       }
@@ -775,10 +775,10 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     return (
       <>
         {this.state.dtablemodal}
-        <div className={`flex flex-col`}>
+        <div className={`flex flex-col w-full`}>
               <div className='flex flex-col w-full mb-5'>
                   <header className="flex w-full flex-col lg:flex-row justify-start lg:justify-between items-center">
-                    <div className="flex flex-col w-full lg:w-auto">
+                    <div className="flex flex-col w-full ">
                       {
                         (this.state.settings.header !== undefined) ?
                           <div className="flex w-full flex-col">
@@ -792,13 +792,13 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
                         : null
                       }
                     </div>
-                    <div className="flex w-full lg:max-w-2xl flex-col lg:items-end justify-start lg:justify-end">
+                    <div className="flex w-full  flex-col lg:items-end justify-start lg:justify-end">
                       <div className="flex flex-col lg:items-end justify-start lg:justify-end ">
                         <div className="flex items-center w-full lg:max-w-md justify-start lg:justify-end mt-5 lg:mt-0">
                           <div className="flex w-full text-grey font-thin text-sm dark:text-white">
                                   <div className='w-full'>
                                     <div className='flex w-full relative'>
-                                      <input className="rounded lg:rounded-full w-full py-3 px-4 dark:focus:border-white dark:focus:ring-0 text-gray-700 text-xs 2xl:text-sm leading-tight border focus:outline-none focus:border-transparent focus:ring-0  bg-inherit dark:text-white" name="search" onChange={this.onChangeValue} onKeyDown={this.handleKeyDown} id="search" type="text" placeholder="Search"/>
+                                      <input className="rounded-full lg:rounded-full w-full py-3 px-4 dark:focus:border-white dark:focus:ring-0 text-gray-700 text-xs 2xl:text-sm leading-tight border focus:outline-none focus:border-primary  focus:ring-0  bg-inherit dark:text-white" name="search" onChange={this.onChangeValue} onKeyDown={this.handleKeyDown} id="search" type="text" placeholder="Search"/>
                                       {
                                         (this.state.input.is_searching && !Commons.isEmptyOrNull(this.search)) ? 
                                           <svg role="status" className="inline absolute top-2.5 bottom-0 right-2 w-4 h-4 2xl:w-6 2xl:h-6 text-primary dark:text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -810,11 +810,12 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
                                     </div>
                                   </div>
                                   <div className='flex w-10 h-10 2xl:w-12 2xl:h-12 ml-2 flex-shrink-0 justify-center items-center rounded-full dark:hover:text-black bg-gray-200 border border-gray-200 hover:bg-gray-100 dark:border-gray-800 bg-inherit  cursor-pointer' onClick={()=>this.handleRetry()}>
-                                    <svg viewBox="0 0 512 512" fill="currentColor" className='w-4 h-4 2xl:w-5 2xl:h-5'>
-                                      <path fill="none" stroke="currentColor" strokeLinecap="round" strokeMiterlimit={10} strokeWidth={32} d="M320 146s24.36-12-64-12a160 160 0 10160 160"/>
-                                      <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={32} d="M256 58l80 80-80 80" />
-                                    </svg>
-                                  </div>
+                                      <svg viewBox="0 0 512 512" fill="currentColor" className='w-4 h-4 2xl:w-5 2xl:h-5'>
+                                        <path fill="none" stroke="currentColor" strokeLinecap="round" strokeMiterlimit={10} strokeWidth={32} d="M320 146s24.36-12-64-12a160 160 0 10160 160"/>
+                                        <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={32} d="M256 58l80 80-80 80" />
+                                      </svg>
+                                    </div>
+                                  
                                   {
                                     (this.props.settings.filter !== undefined && this.props.settings.filter !==null) ? 
                                     <div className='flex w-10 h-10 2xl:w-12 2xl:h-12 ml-2 flex-shrink-0 justify-center items-center rounded-full bg-gray-200 border border-gray-200 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 cursor-pointer' onClick={()=>this.handleFiltered()}>
@@ -884,7 +885,9 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
                     
                     }
                       <div className='flex w-full text-sm justify-center text-center'>{(this.state.error.state) ? this.state.error.message:(!Commons.isEmptyOrNull(this.search)) ?<span className=' font-poppinsSemiBold'> Sorry we couldn't find anything!</span> :`No data available to show`}</div>
-                     { (Commons.isEmptyOrNull(this.search)) ? <div onClick={()=>this.handleRetry()} className={`uppercase flex font-poppinsSemiBold ${(this.state.error.state) ? `bg-red-400 text-red-700`:``} px-6 py-2 cursor-pointer rounded-full my-4`}>{(this.state.error.state) ? `RETRY`:`REFRESH`}</div> : null}
+                      {this.state.error?.retry ?
+                         (Commons.isEmptyOrNull(this.search)) ? <div onClick={()=>this.handleRetry()} className={`uppercase flex font-poppinsSemiBold ${(this.state.error.state) ? `bg-red-400 text-red-700`:``} px-6 py-2 cursor-pointer rounded-full my-4`}>{(this.state.error.state) ? `RETRY`:`REFRESH`}</div> : null
+                      :null}
                   </div>
                 :(this.state.isLoading) ? 
                   <div className='flex flex-col w-full mt-10 justify-center dark:text-white items-center space-y-4'>

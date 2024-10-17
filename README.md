@@ -23,6 +23,7 @@ Currently working on other components, contact  [desmydev@gmail.com](https://mai
 * DesmyDataSetTable (Expandable and Collapsable)
 * DesmyPopupMenu
 * DesmyListCard (Card views)
+* DesmyToast (support custom component)
 
 ## Utilities
 * DesmyAuth 

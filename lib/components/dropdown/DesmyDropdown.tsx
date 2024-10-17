@@ -1,4 +1,4 @@
-import React, { Component, RefObject, ChangeEvent } from 'react';
+import React, { Component,createRef, RefObject, ChangeEvent } from 'react';
 import Popper from "popper.js";
 import axios from 'axios'; 
 import Commons from '../apis/DesmyCommons';
@@ -71,6 +71,7 @@ class DesmyDropdown extends Component<Props, State> {
     private popoverDropdownRef: RefObject<HTMLDivElement>;
     private btnDropdownRef: RefObject<HTMLDivElement>;
     private searchRef: RefObject<HTMLInputElement>;
+    private divRef: RefObject<HTMLDivElement>;
 
     constructor(props: Props) {
         super(props);
@@ -78,6 +79,7 @@ class DesmyDropdown extends Component<Props, State> {
         this.popoverDropdownRef = React.createRef();
         this.btnDropdownRef = React.createRef();
         this.searchRef = React.createRef();
+        this.divRef = createRef();
 
         this.state = {
             dropdownPopoverShow: false,
@@ -105,6 +107,10 @@ class DesmyDropdown extends Component<Props, State> {
         prevState.isLoading
         if (!Commons.isEmptyOrNull(this.props.defaultValue) && !this.state.hasLoaded && (this.props.data !== undefined && this.props.data !== null)) {
           this.handleDefault();
+        }
+        if(Commons.isEmptyOrNull(this.props.defaultValue) && this.state.hasLoaded ){
+            console.log("fdafdsaf")
+            // this.onClear()
         }
         if (this.props.request !== undefined) {
           this.handleRequestData();
@@ -134,7 +140,8 @@ class DesmyDropdown extends Component<Props, State> {
     async componentDidMount(): Promise<void> {
         if (this.props.onRef)
             this.props.onRef(this);
-    
+        
+        document.addEventListener('mousedown', this.handleClickOutside);
         const request = this.props.request;
         if (request !== undefined) {
             if (!Commons.isEmptyOrNull(request.url)) {
@@ -155,6 +162,9 @@ class DesmyDropdown extends Component<Props, State> {
         });
     }
     
+    componentWillUnmount() {
+        document.removeEventListener('mousedown', this.handleClickOutside);
+    }
     
 
     handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -198,19 +208,19 @@ class DesmyDropdown extends Component<Props, State> {
         try {
             const datalist = (this.props.data !== undefined && this.props.data !== null) ? this.props.data : this.state.datalist;
     
-
-            if (datalist.length > 0 && this.props.defaultValue !== undefined && this.props.defaultValue !== null) {
+            if (!Commons.isEmptyOrNull(datalist) && !Commons.isEmptyOrNull(this.props.defaultValue)) {
     
                 const is_multiple = !(this.props.is_multiple === undefined || this.props.is_multiple === false);
+    
                 if (is_multiple) {
                     const defaultValueArray = Array.isArray(this.props.defaultValue) ? this.props.defaultValue : [this.props.defaultValue];
                     const filteredDefaultData = datalist.filter((data) =>
-                        defaultValueArray.some((type) => type?.id === data.id || Commons.toString(type)  === Commons.toString(data.id))
+                        defaultValueArray.some((type) => type?.id === data.id || Commons.toString(type) === Commons.toString(data.id))
                     );
                     if (filteredDefaultData !== undefined && this.props.handleChange !== undefined) {
-                        this.setState({ selectedMultiple: filteredDefaultData, hasLoaded: true }, () =>{
+                        this.setState({ selectedMultiple: filteredDefaultData, hasLoaded: true }, () => {
                             if (this.props.handleChange !== undefined) {
-                             this.props.handleChange(filteredDefaultData)
+                                this.props.handleChange(filteredDefaultData);
                             }
                         });
                     }
@@ -219,21 +229,20 @@ class DesmyDropdown extends Component<Props, State> {
                     const defaultValue = Array.isArray(this.props.defaultValue) ? this.props.defaultValue[0] : this.props.defaultValue;
                     const data = datalist.find((x) => {
                         if (typeof defaultValue === 'object' && defaultValue !== null) {
-                            if (Commons.toString(x.id).toLowerCase() === Commons.toString(defaultValue?.id).toLowerCase())
-                                return x;
+                            return Commons.toString(x.id).toLowerCase() === Commons.toString(defaultValue?.id).toLowerCase();
                         } else {
-                            if (Commons.toString(x.id).toLowerCase() === Commons.toString(defaultValue).toLowerCase() || Commons.toString(x.name).toLowerCase() === Commons.toString(defaultValue).toLowerCase())
-                                return x;
+                            return Commons.toString(x.id).toLowerCase() === Commons.toString(defaultValue).toLowerCase() ||
+                                Commons.toString(x.name).toLowerCase() === Commons.toString(defaultValue).toLowerCase();
                         }
                     });
+    
                     if (data !== undefined && this.props.handleChange !== undefined) {
                         const encrypted_id = this.handleEncrypt(data?.id);
+                        const { id, ...restData } = data; // Destructure id from the data object and store the rest of the properties in restData
                         const newState = {
                             selectedList: {
-                                id: (Commons.isEmptyOrNull(encrypted_id)) ? data?.id : encrypted_id,
-                                name: data?.name,
-                                icon: data?.icon,
-                                data: data?.data
+                                id: encrypted_id || id, // Use encrypted_id or original id
+                                ...restData // Spread the rest of the data fields
                             },
                             hasLoaded: true
                         };
@@ -244,12 +253,13 @@ class DesmyDropdown extends Component<Props, State> {
                         });
                     }
                 }
-            }
-    
+            } 
         } catch (_e) {
-            
+            // Handle errors here
         }
     };
+    
+    
     
     handleEncrypt = (data: any): any => {
         if (this.props.enableDecrypt) {
@@ -284,6 +294,8 @@ class DesmyDropdown extends Component<Props, State> {
             const data = response.data;
             if (data.success) {
                 const responseData = data.data;
+                this.onClear()
+                this.props.handleChange && this.props.handleChange(this.props.is_multiple  ? [] as DropdownItem[] : {} as DropdownItem)
                 this.setState({ datalist: responseData, isLoading: false }, this.handleDelayedProcess);
             } else {
                 this.handleError(data.message);
@@ -414,7 +426,7 @@ class DesmyDropdown extends Component<Props, State> {
         this.setState({input,selectedAll:false})
     }
     handleClickAway = (): void => {
-        this.closeDropdownPopover();
+        // this.closeDropdownPopover();
     };
     handleClear=():void=>{
         this.setState({ selectedMultiple: [], selectedList: {id: '',  name: null, icon: null, data: null}, clear: true }, this.handleClickAway);
@@ -439,15 +451,20 @@ class DesmyDropdown extends Component<Props, State> {
     closeDropdownPopover = (): void => {
         this.setState({ dropdownPopoverShow: false });
     };
-    
+    handleClickOutside = (event: MouseEvent) => {
+        if (this.divRef.current && !this.divRef.current.contains(event.target as Node)) {
+            this.closeDropdownPopover()
+        }
+    };
+
     render(){
         return (
           <>
        
         <DesmyClickOutsideListener onClickOutside={this.handleClickAway}>
-           <div className={`flex flex-col w-full relative ${(this.props.containerClassName !=undefined) ? this.props.containerClassName :`bg-white dark:bg-darkBackground`}`}>
+           <div className={`flex flex-col w-full relative ${(this.props.containerClassName !=undefined) ? this.props.containerClassName :`bg-white dark:bg-darkBackground`}`}  ref={this.divRef} >
             <div className={`relative w-full h-12 border font-poppinsRegular bg-inherit border-black  dark:border-white  `}>
-                    <div className='relative h-full w-full text-sm bg-inherit' ref={this.btnDropdownRef} onClick={() => { this.state.dropdownPopoverShow ? this.closeDropdownPopover() : this.openDropdownPopover()}}>
+                    <div className='relative h-full w-full text-sm bg-inherit' ref={this.btnDropdownRef} onClick={() => { this.openDropdownPopover()}}>
                         <div className={`absolute left-1.5  ${ ((this.props.placeholder != undefined && (this.state.selectedList.name != null || this.state.selectedMultiple.length > 0) || ((this.props.all !== undefined && this.state.selectedAll))) ) ? `-top-2.5  text-xs`:` text-sm top-2.5`} px-2 bg-inherit transition-all`}>{this.props.placeholder}</div>
                         <div className='flex relative h-12 cursor-pointer px-2 items-center w-full'>
                             <div className="flex w-full justify-between">
@@ -576,7 +593,7 @@ class DesmyDropdown extends Component<Props, State> {
                         {
                             (this.props.is_multiple !== undefined && this.props.is_multiple && (this.state.datalist.length != 0) ) ? 
                             <div className='flex w-full mt-4'>
-                                <div onClick={()=>this.handleClickAway()} className='flex px-3 py-3 w-full text-black text-center justify-center rounded uppercase mx-2 cursor-pointer text-xs border border-gray-800 bg-white font-poppinsSemiBold'>Done</div>
+                                <div onClick={()=>this.closeDropdownPopover()} className='flex px-3 py-3 w-full text-black text-center justify-center rounded uppercase mx-2 cursor-pointer text-xs border border-gray-800 bg-white font-poppinsSemiBold'>Done</div>
                             </div>
                             :null
                         }
@@ -585,7 +602,7 @@ class DesmyDropdown extends Component<Props, State> {
                     </div>
                     :null
                     }
-                </div>
+            </div>
         </DesmyClickOutsideListener>
             
       </>

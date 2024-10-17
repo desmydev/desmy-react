@@ -1,17 +1,57 @@
-import { default as React, Component, ChangeEvent } from 'react';
+import { default as React, Component, ReactNode } from 'react';
+import { DesmyState as CommonState } from '../apis/DesmyState';
 
-interface DataSetTableProps {
-    children?: React.ReactNode;
-    onRef?: (ref: DesmyDataSetTable) => void;
-    settings: any;
-    data?: any;
-    handleOnLoaded: (renderedSettings: any[], status: string) => void;
+interface DesmyDataSetTableProps {
+    onRef?: (instance: DesmyDataSetTable) => void;
     className?: string;
+    children?: React.ReactNode;
+    settings: {
+        url: string;
+        default_sorted_column: string;
+        pagination: {
+            per_page: number;
+        };
+        search?: boolean;
+        filter?: boolean;
+        header: {
+            title: string;
+            class: string;
+            hint: string;
+        };
+        deleteinfo: {
+            id: string;
+        };
+        headers: any[];
+        columns: any[];
+        table_data: any[];
+    };
+    handleOnLoaded: (data: any[], state: CommonState) => void;
 }
-interface DataSetTableState {
+interface DesmyCustomState {
+    dtablemodal: React.ReactNode | null;
+    hasRequest: boolean;
     exceptionalColumns: string[];
     selected: number;
     isLoading: boolean;
+    filterhead: {
+        name: string;
+        data: string;
+    }[];
+    filters: {
+        search?: {
+            [key: string]: {
+                id: string;
+                name: string;
+            };
+        };
+        data: {
+            name: string;
+            data: string;
+            defaults?: {
+                [key: string]: string;
+            };
+        }[];
+    };
     input: {
         search: string;
         is_searching: boolean;
@@ -30,7 +70,7 @@ interface DataSetTableState {
     };
     custom_settings: {
         sorted_column: string;
-        order: 'asc' | 'desc';
+        order: "asc" | "desc";
         first_page: number;
         current_page: number;
         offset: number;
@@ -41,10 +81,14 @@ interface DataSetTableState {
             title: string;
             class: string;
             hint: string;
+            search?: boolean;
         };
-        headers: string[];
+        headers: any[];
         columns: string[];
-        table_data: any[];
+        table_data?: {
+            name: string;
+            class: string;
+        }[];
     };
     error: {
         state?: boolean;
@@ -59,43 +103,43 @@ interface DataSetTableState {
         color: string;
     };
 }
-declare class DesmyDataSetTable extends Component<DataSetTableProps, DataSetTableState> {
-    renderedSettings: any[];
-    dataCollection: any[];
-    chunkSize: number;
-    currentIndex: number;
-    hasClear: boolean;
-    isLoading: boolean;
-    hasLoadLastData: boolean;
-    current_page: number;
-    search: string;
-    constructor(props: DataSetTableProps);
+declare class DesmyDataSetTable extends Component<DesmyDataSetTableProps, DesmyCustomState> {
+    private renderedSettings;
+    private dataCollection;
+    private chunkSize;
+    private currentIndex;
+    private hasClear;
+    private isLoading;
+    private current_page;
+    private search;
+    constructor(props: DesmyDataSetTableProps);
     componentDidMount(): Promise<void>;
     handleScroll(event: React.UIEvent<HTMLDivElement>): void;
-    errors: (data: any) => void;
+    errors: (data: {
+        state: boolean;
+        message: string;
+        type: string;
+        color: string;
+    }) => void;
     handleReset: () => void;
     handleError: (message?: string) => void;
     fetchEntities(): Promise<void>;
-    columnHead(value: string): string;
-    sortByColumn(column: string): void;
-    tableHeads: () => any;
     handleFetchEntities: () => void;
+    handleFiltered: () => void;
     handleRetry: () => void;
     handleClear: () => void;
     initialChunck(): void;
+    loadNextPage: () => void;
+    handleOnSuccess: (index: number) => void;
     loadNextBatch: () => void;
     renderChunk(): void;
-    loadNextPage: () => void;
-    handleFilterInput(event: React.ChangeEvent<HTMLInputElement>): void;
-    onSearch(): void;
-    handleRenderStatus: (status: string) => void;
-    handleOnLoaded: () => void;
-    handleOnLoading: () => void;
-    handleHint: () => string;
-    onChangeValue: (event: ChangeEvent<HTMLInputElement>) => void;
+    onChangeValue: (event: React.ChangeEvent<HTMLInputElement>) => void;
     handleKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-    handleSearching(): void;
-    handleFiltered: () => void;
+    handleSearching: () => void;
+    columnHead(value: string): string;
+    sortByColumn(column: string): void;
+    tableHeads: () => ReactNode[];
+    handleHint: () => string;
     render(): JSX.Element;
 }
 export { DesmyDataSetTable };
