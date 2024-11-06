@@ -23,6 +23,9 @@ Currently working on other components, contact  [desmydev@gmail.com](https://mai
 * DesmyDataSetTable (Expandable and Collapsable)
 * DesmyPopupMenu
 * DesmyListCard (Card views)
+* DesmyUploadManager
+* DesmyTabLayout
+* DesmySmartFormUpload
 * DesmyToast (support custom component)
 
 ## Utilities
