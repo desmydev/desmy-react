@@ -5,7 +5,7 @@ import DesmyCommons from '../apis/DesmyCommons';
 interface NetworkErrorProps {
   icon? : string,
   errormessage?: string;
-  onRetry:()=> void,
+  onRetry?:()=> void,
   onCancel?: ()=>void
 }
 

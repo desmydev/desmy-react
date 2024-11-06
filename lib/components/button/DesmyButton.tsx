@@ -3,7 +3,7 @@ import { DesmyState } from '../apis/DesmyState';
 
 interface DesmyButtonProps {
     onClick: () => void;
-    hasRequest: boolean;
+    hasRequest?: boolean;
     label?: string;
     type?: string,
     label_request?: string;

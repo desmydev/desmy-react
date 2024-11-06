@@ -6,7 +6,7 @@ import Auth from '../apis/DesmyAuth'
 import { DesmyClickOutsideListener } from '../clickoutsidelistener/DesmyClickOutsideListener';
 
 interface DropdownItem {
-    id: number;
+    id: number | null;
     name: string | null;
     icon: string | null;
     data: any;
@@ -45,6 +45,7 @@ interface State {
     dropdownPopoverShow: boolean;
     selectedMultiple: any[];
     datalist: DropdownItem[];
+    defaultValue?:string,
     intervalId: number;
     hasLoaded: boolean;
     clear: boolean;
@@ -85,6 +86,7 @@ class DesmyDropdown extends Component<Props, State> {
             dropdownPopoverShow: false,
             selectedList: { id: "", name: null, icon: null, data: null },
             selectedMultiple: [],
+            defaultValue:"",
             datalist: [],
             intervalId: 0,
             hasLoaded: false,
@@ -103,40 +105,26 @@ class DesmyDropdown extends Component<Props, State> {
         };
     }
 
-    componentDidUpdate(prevProps: Props, prevState: State): void {
-        prevState.isLoading
-        if (!Commons.isEmptyOrNull(this.props.defaultValue) && !this.state.hasLoaded && (this.props.data !== undefined && this.props.data !== null)) {
-          this.handleDefault();
-        }
-        if(Commons.isEmptyOrNull(this.props.defaultValue) && this.state.hasLoaded ){
-            console.log("fdafdsaf")
-            // this.onClear()
+    componentDidUpdate(_prevProps: Props, _prevState: State): void {
+        
+        if (!Commons.isEmptyOrNull(this.props.defaultValue) && !(Commons.isEmptyOrNull(this.props.data))) {
+            if(!this.state.hasLoaded)
+                this.handleDefault()
+            
+            else if(Commons.isEmptyOrNull(this.state.datalist)){
+                this.setState({datalist:this.props.data ?? this.state.datalist,hasLoaded:true},this.handleDefault)
+            }
+        }else if(!(Commons.isEmptyOrNull(this.props.data))){
+            if(!this.state.hasLoaded){
+                this.setState({datalist:this.props.data ?? this.state.datalist,hasLoaded:true})
+            }
+                
         }
         if (this.props.request !== undefined) {
           this.handleRequestData();
         }
-        if (Array.isArray(prevProps.selectedData)) {
-          if (prevProps.selectedData.length > 0 && this.state.selectedMultiple.length === 0 && !this.state.clear) {
-            this.handleSelectedMultiple(prevProps.selectedData).then((data) => {
-              this.setState({ selectedMultiple: data });
-              this.handleSelectedMultiple(data);
-              if (this.props.handleChange) {
-                this.props.handleChange(data);
-              }
-            }).catch((_e) => {
-                
-            });
-          }
-        } else if (prevProps.selectedData) { // If selectedData is not an array but truthy
-          // Handle the case when selectedData is a single DropdownItem
-          const data = [prevProps.selectedData]; // Convert to array for consistency
-          this.setState({ selectedMultiple: data });
-          this.handleSelectedMultiple(data);
-          if (this.props.handleChange) {
-            this.props.handleChange(data);
-          }
-        }
-      }
+    }
+    
     async componentDidMount(): Promise<void> {
         if (this.props.onRef)
             this.props.onRef(this);
@@ -207,51 +195,52 @@ class DesmyDropdown extends Component<Props, State> {
     handleDefault = async (): Promise<void> => {
         try {
             const datalist = (this.props.data !== undefined && this.props.data !== null) ? this.props.data : this.state.datalist;
-    
-            if (!Commons.isEmptyOrNull(datalist) && !Commons.isEmptyOrNull(this.props.defaultValue)) {
+            
+            if (!Commons.isEmptyOrNull(datalist) || !Commons.isEmptyOrNull(this.props.defaultValue)) {
     
                 const is_multiple = !(this.props.is_multiple === undefined || this.props.is_multiple === false);
-    
                 if (is_multiple) {
                     const defaultValueArray = Array.isArray(this.props.defaultValue) ? this.props.defaultValue : [this.props.defaultValue];
                     const filteredDefaultData = datalist.filter((data) =>
                         defaultValueArray.some((type) => type?.id === data.id || Commons.toString(type) === Commons.toString(data.id))
                     );
-                    if (filteredDefaultData !== undefined && this.props.handleChange !== undefined) {
-                        this.setState({ selectedMultiple: filteredDefaultData, hasLoaded: true }, () => {
-                            if (this.props.handleChange !== undefined) {
-                                this.props.handleChange(filteredDefaultData);
-                            }
-                        });
-                    }
-    
+                    this.setState({datalist:datalist,defaultValue:this.props.defaultValue, hasLoaded: true },()=>{
+                        if (filteredDefaultData !== undefined && this.props.handleChange !== undefined) {
+                            this.setState({ selectedMultiple: filteredDefaultData}, () => {
+                                if (this.props.handleChange !== undefined) {
+                                    this.props.handleChange(filteredDefaultData);
+                                }
+                            });
+                        }
+                    })
                 } else {
                     const defaultValue = Array.isArray(this.props.defaultValue) ? this.props.defaultValue[0] : this.props.defaultValue;
                     const data = datalist.find((x) => {
-                        if (typeof defaultValue === 'object' && defaultValue !== null) {
+                        if (typeof defaultValue === 'object' && !Commons.isEmptyOrNull(defaultValue)) {
                             return Commons.toString(x.id).toLowerCase() === Commons.toString(defaultValue?.id).toLowerCase();
                         } else {
                             return Commons.toString(x.id).toLowerCase() === Commons.toString(defaultValue).toLowerCase() ||
                                 Commons.toString(x.name).toLowerCase() === Commons.toString(defaultValue).toLowerCase();
                         }
                     });
-    
-                    if (data !== undefined && this.props.handleChange !== undefined) {
-                        const encrypted_id = this.handleEncrypt(data?.id);
-                        const { id, ...restData } = data; // Destructure id from the data object and store the rest of the properties in restData
-                        const newState = {
-                            selectedList: {
-                                id: encrypted_id || id, // Use encrypted_id or original id
-                                ...restData // Spread the rest of the data fields
-                            },
-                            hasLoaded: true
-                        };
-                        this.setState(newState, () => {
-                            if (this.props.handleChange !== undefined) {
-                                this.props.handleChange(newState.selectedList);
-                            }
-                        });
-                    }
+                    this.setState({datalist:datalist, hasLoaded: true },()=>{
+                        if(!Commons.isEmptyOrNull(data) && data !=null){
+                            const encrypted_id = this.handleEncrypt(data?.id);
+                            const { id, ...restData } = data; 
+                            const newState = {
+                                selectedList: {
+                                    id: encrypted_id || id,
+                                    ...restData 
+                                }
+                            };
+                            this.setState(newState, () => {
+                                if (this.props.handleChange !== undefined) {
+                                    this.props.handleChange(newState.selectedList);
+                                }
+                            });
+                        }
+                    })
+                    
                 }
             } 
         } catch (_e) {
@@ -437,6 +426,7 @@ class DesmyDropdown extends Component<Props, State> {
             this.props.handleChange(this.state.datalist)
         }
         this.setState({selectedAll:true},this.handleClear)
+        this.closeDropdownPopover()
        
     }
     handleClearSelected = (): void => {
@@ -466,7 +456,7 @@ class DesmyDropdown extends Component<Props, State> {
             <div className={`relative w-full h-12 border font-poppinsRegular bg-inherit border-black  dark:border-white  `}>
                     <div className='relative h-full w-full text-sm bg-inherit' ref={this.btnDropdownRef} onClick={() => { this.openDropdownPopover()}}>
                         <div className={`absolute left-1.5  ${ ((this.props.placeholder != undefined && (this.state.selectedList.name != null || this.state.selectedMultiple.length > 0) || ((this.props.all !== undefined && this.state.selectedAll))) ) ? `-top-2.5  text-xs`:` text-sm top-2.5`} px-2 bg-inherit transition-all`}>{this.props.placeholder}</div>
-                        <div className='flex relative h-12 cursor-pointer px-2 items-center w-full'>
+                        <div className={`flex relative h-12 ${(this.props.disabled !==undefined && this.props.disabled) ? ` cursor-not-allowed`:`cursor-pointer`}  px-2 items-center w-full`}>
                             <div className="flex w-full justify-between">
                                 <div className={`mr-2 bg-inherit text-black text-sm dark:text-white w-full justify-start text-start line-clamp-1  ${this.props.selectedRef}`}>
                                     {
@@ -563,6 +553,7 @@ class DesmyDropdown extends Component<Props, State> {
                                     return <div key={`${i}`}
                                         className={`flex text-sm py-2 px-4 font-normal cursor-pointer w-full whitespace-no-wrap hover:bg-gray-200  dark:hover:bg-white dark:hover:text-black transition duration-500 ease-in-out dark:text-white ${this.props.dropdownListClass} ${ (this.props.is_multiple != undefined && this.props.is_multiple) ? (searchFound) ? ' font-poppinsBold' :'font-normal' : (Commons.toString(this.state.selectedList.id) == Commons.toString( data.id)) ? ' font-poppinsBold' : 'font-normal'} `}
                                         onClick={e => this.handleSelectedItem(e,data)}
+                                        title={this.handleEncrypt(data.name)}
                                     >
                                         <div className="mr-2">
                                             {

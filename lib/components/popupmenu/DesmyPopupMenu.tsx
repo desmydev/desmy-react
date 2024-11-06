@@ -5,36 +5,38 @@ import DesmyAuth from '../apis/DesmyAuth';
 import DesmyCommons from '../apis/DesmyCommons';
 
 interface DropdownOption {
-  id?:string,
+  id?: string;
   name: string;
-  icon?: any,
+  icon?: any;
   data?: any;
 }
 
 interface RequestProps {
-    url?: string;
-    isEnable?: boolean;
-    showarrow? :boolean;
-    serverRequest: boolean;
-    options: DropdownOption[];
-    onSelect: (data: any) => void;
+  url?: string;
+  isEnable?: boolean;
+  showarrow?: boolean;
+  serverRequest: boolean;
+  options: DropdownOption[];
+  onSelect: (data: any) => void;
 }
+
 interface DesmyPopupMenuProps {
   request: RequestProps;
   className?: string;
-  dropdownId?:string,
+  dropdownId?: string;
   children: React.ReactNode;
+  style?: React.CSSProperties;  // New prop for inline styles
 }
 
 interface DesmyPopupMenuState {
   isOpen: boolean;
   isLoading: boolean;
-  datalist: Array<{ name: string,icon? :any,id?:string,data?:any }>;
+  datalist: Array<{ name: string; icon?: any; id?: string; data?: any }>;
 }
 
 class DesmyPopupMenu extends Component<DesmyPopupMenuProps, DesmyPopupMenuState> {
-    private dropdownRef = createRef<HTMLDivElement>();
-    private buttonRef = createRef<HTMLDivElement>();
+  private dropdownRef = createRef<HTMLDivElement>();
+  private buttonRef = createRef<HTMLDivElement>();
 
   constructor(props: DesmyPopupMenuProps) {
     super(props);
@@ -44,32 +46,35 @@ class DesmyPopupMenu extends Component<DesmyPopupMenuProps, DesmyPopupMenuState>
       datalist: [],
     };
   }
+
   fetch = async () => {
     const { url, options } = this.props.request;
     if (!DesmyCommons.isEmptyOrNull(url)) {
-        try {
-            const response = await axios.get(DesmyCommons.toString(url), {
-                headers: {
-                    "X-CSRFToken": `${DesmyAuth.getCookie('csrftoken')}`,
-                    "Authorization": `Token ${DesmyAuth.get(DesmyState.ACCESS_TOKEN)}`,
-                },
-            });
-            const data = response.data;
-            if (data.success) {
-                this.setState({ datalist: data.data, isLoading: false });
-            } else {
-                this.handleAlert();
-            }
-        } catch (e) {
-            this.handleAlert();
+      try {
+        const response = await axios.get(DesmyCommons.toString(url), {
+          headers: {
+            "X-CSRFToken": `${DesmyAuth.getCookie('csrftoken')}`,
+            "Authorization": `Token ${DesmyAuth.get(DesmyState.ACCESS_TOKEN)}`,
+          },
+        });
+        const data = response.data;
+        if (data.success) {
+          this.setState({ datalist: data.data, isLoading: false });
+        } else {
+          this.handleAlert();
         }
+      } catch (e) {
+        this.handleAlert();
+      }
     } else if (options) {
-        this.setState({ datalist: options, isLoading: false });
+      this.setState({ datalist: options, isLoading: false });
     }
-}
-handleAlert = (_message?: string) => {
+  }
+
+  handleAlert = (_message?: string) => {
     this.setState({ isLoading: false });
-}
+  }
+
   toggleDropdown = () => {
     this.setState((prevState) => ({ isOpen: !prevState.isOpen }));
   };
@@ -87,17 +92,18 @@ handleAlert = (_message?: string) => {
   };
 
   componentDidMount() {
-    this.fetch()
+    this.fetch();
     document.addEventListener('click', this.handleClickOutside);
   }
 
   componentWillUnmount() {
     document.removeEventListener('click', this.handleClickOutside);
   }
+
   handleOnSelect = (data: { name: string }) => {
     this.setState({ isOpen: false }, () => {
-        this.props.request.onSelect(data);
-    })
+      this.props.request.onSelect(data);
+    });
   };
 
   render() {
@@ -107,37 +113,40 @@ handleAlert = (_message?: string) => {
     return (
       <div className="relative inline-block text-left">
         <div>
-          <div onClick={this.toggleDropdown}  ref={this.buttonRef} id="dropdownButton" className="cursor-pointer">
+          <div onClick={this.toggleDropdown} ref={this.buttonRef} id="dropdownButton" className="cursor-pointer">
             {children}
           </div>
         </div>
 
-        <div id="dropdownMenu" ref={this.dropdownRef} className={`absolute right-0 mt-2 w-max rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition-all duration-200 ease-in-out ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'} ${this.props.className}`}>
-            <div role="menu">
-                {
-                
-                this.state.isLoading ? (
-                    <></>
-                ) :this.state.datalist.length > 0 ? (
-                this.state.datalist?.map((option, index) => (
-                    <div key={`option-${index}`}>
+        <div
+          id="dropdownMenu"
+          ref={this.dropdownRef}
+          style={this.props.style}  // Apply the passed style prop
+          className={`absolute top-1/2 z-50 right-0 transform translate-x-1/2 mt-2 w-max rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition-all duration-200 ease-in-out ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'} ${this.props.className}`}
+        >
+          <div role="menu">
+            {
+              this.state.isLoading ? (
+                <></>
+              ) : this.state.datalist.length > 0 ? (
+                this.state.datalist.map((option, index) => (
+                  <div key={`option-${index}`}>
                     <div
-                        onClick={() => this.handleOnSelect(option)}
-                        className={`flex w-full space-x-3 items-center px-6 py-4 cursor-pointer text-sm hover:bg-gray-100 ${(option.id == DesmyState.DELETE) ? 'text-red-500' : 'text-gray-700'}`}
+                      onClick={() => this.handleOnSelect(option)}
+                      className={`flex w-full space-x-3 items-center px-6 py-4 cursor-pointer text-sm hover:bg-gray-100 ${(option.id == DesmyState.DELETE) ? 'text-red-500' : 'text-gray-700'}`}
                     >
-                        {option.icon ? option.icon : null}
-                        <span>{option.name}</span>
+                      {option.icon ? option.icon : null}
+                      <span>{option.name}</span>
                     </div>
                     {/* Add a divider after certain options or between items */}
-                    {index !== this.state.datalist?.length - 1 && (
-                        <hr className="border-t border-gray-200" />
+                    {index !== this.state.datalist.length - 1 && (
+                      <hr className="border-t border-gray-200" />
                     )}
-                    </div>
+                  </div>
                 ))
-                ) : null}
-            </div>
+              ) : null}
+          </div>
         </div>
-
       </div>
     );
   }

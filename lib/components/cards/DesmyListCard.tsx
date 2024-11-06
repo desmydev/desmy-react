@@ -14,12 +14,13 @@ interface HomeProps {
     name: string;
     level: number;
   };
+  is_open?: boolean;
   optionList?: MenuItem[];
   onAction: (action: any) => void;
   className?: string;
-  style?: CSSProperties;  // New prop for inline styles
-  edit_permission: boolean;  // New prop for edit permission
-  delete_permission: boolean; // New prop for delete permission
+  style?: CSSProperties; 
+  edit_permission: boolean; 
+  delete_permission: boolean;
 }
 
 interface HomeState {
@@ -43,6 +44,15 @@ class DesmyListCard extends Component<HomeProps, HomeState> {
 
   render() {
     const defaultMenuItems: MenuItem[] = [
+      {
+        id: CommonState.OPEN,
+        name: 'Open',
+        icon: (
+          <svg fill="none" viewBox="0 0 15 15"  className="w-4 h-4">
+            <path fill="currentColor" fillRule="evenodd" d="M3 2a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1V8.5a.5.5 0 00-1 0V12H3V3h3.5a.5.5 0 000-1H3zm9.854.146a.5.5 0 01.146.351V5.5a.5.5 0 01-1 0V3.707L6.854 8.854a.5.5 0 11-.708-.708L11.293 3H9.5a.5.5 0 010-1h3a.499.499 0 01.354.146z" clipRule="evenodd" />
+          </svg>
+        ),
+      },
       {
         id: CommonState.EDIT,
         name: 'Edit',
@@ -72,6 +82,9 @@ class DesmyListCard extends Component<HomeProps, HomeState> {
       if (item.id === CommonState.DELETE && !this.props.delete_permission) {
         return false;
       }
+      if (item.id === CommonState.OPEN && !this.props.is_open) {
+        return false;
+      }
       return true;
     });
 
@@ -99,7 +112,7 @@ class DesmyListCard extends Component<HomeProps, HomeState> {
             }}
           >
             <div
-              className={`flex flex-col w-full rounded-lg cursor-pointer uppercase group min-h-24 ${this.props.className}`}
+              className={`flex flex-col w-full rounded-lg cursor-pointer uppercase group min-h-24 ${this.props.className ?? `border border-l-4 hover:bg-primary dark:hover:bg-white dark:text-black hover:text-white dark:hover:text-black uppercase hover:border-l-white dark:hover:border-l-white border-l-primary dark:border-l-darkDialogBackground bg-white dark:bg-darkPrimary dark:border-darkDialogBackground border-gray-200 `}`}
               style={this.props.style} // Use the passed style prop here
             >
               <div className="px-4 py-4">

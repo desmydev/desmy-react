@@ -9,8 +9,9 @@ import {DesmyAlert as Alert} from '../apis/DesmyAlert';
 // Define the TypeScript interfaces for the component props and state
 interface DesmyDataSetTableProps {
     onRef?: (instance: DesmyDataSetTable) => void;
-    className?: string; // Optional, as it might not always be provided
+    className?: string; 
     children?: React.ReactNode; 
+    data?: any;
     settings: {
       url: string;
       default_sorted_column: string;
@@ -24,6 +25,9 @@ interface DesmyDataSetTableProps {
         class: string;
         hint: string;
       };
+      server_request:{
+        enable?: boolean
+      },
       deleteinfo: {
         id: string;
       };
@@ -208,7 +212,20 @@ class DesmyDataSetTable extends Component<DesmyDataSetTableProps, DesmyCustomSta
 
   async fetchEntities() {
     try {
+      
       const entities = { ...this.state.entities };
+      if (!this.props.settings.server_request.enable) {
+        var dataset = this.props.data
+        entities.data.length = 0
+        if (this.hasClear) {
+          this.handleClear()
+        }
+        this.dataCollection = this.dataCollection.concat(dataset.data)
+        this.hasClear = false
+        entities['meta'] = dataset.meta
+        this.setState({ isLoading: false, entities }, this.initialChunck)
+        return
+      }
       const fetchUrl = `${this.props.settings.url}/?page=${this.state.custom_settings.current_page}&column=${this.state.custom_settings.sorted_column}&order=${this.state.custom_settings.order}&per_page=${this.state.entities.meta.per_page}&search=${this.search}`;
       const response = await axios.get(fetchUrl, {
         headers: {
@@ -438,7 +455,7 @@ handleOnSuccess=(index : number)=>{
                 </div>
 
                 {
-                  (this.state.settings.header?.search == undefined || this.state.settings.header?.search) ? 
+                  (this.state.settings?.header?.search == undefined || this.state.settings?.header?.search) ? 
                   <div className="flex w-full lg:max-w-2xl flex-col lg:items-end justify-start lg:justify-end">
                   <div className="flex flex-col lg:items-end justify-start lg:justify-end ">
                     <div className="flex items-center w-full lg:max-w-md justify-start lg:justify-end mt-5 lg:mt-0">
@@ -463,7 +480,7 @@ handleOnSuccess=(index : number)=>{
                                 </svg>
                               </div>
                               {
-                                (this.props.settings.filter !== undefined && this.props.settings.filter !==null) ? 
+                                (this.props.settings?.filter !== undefined && this.props.settings?.filter !==null) ? 
                                 <div className='flex w-10 h-10 2xl:w-12 2xl:h-12 ml-2 flex-shrink-0 justify-center items-center rounded-full bg-gray-200 border border-gray-200 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 cursor-pointer' onClick={()=>this.handleFiltered()}>
                                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />

@@ -5,11 +5,13 @@ import DesmyCommons from '../apis/DesmyCommons';
 interface ChildItem {
   url: string;
   label: string;
+  has_permission?:boolean
 }
 
 interface DesmySideBarItemProps {
   location: { pathname: string };
   exact?: boolean;
+  className?:string,
   pattern?: string | string[]; // Accept string or array of strings
   name: string;
   items?: ChildItem[];
@@ -97,7 +99,7 @@ class DesmySideBarItem extends Component<DesmySideBarItemProps, DesmySideBarItem
       <div className='flex flex-col w-full'>
         <a
           onClick={this.handleOnClick}
-          className={`flex space-x-3 text-xs xl:text-sm font-poppinsRegular text-black dark:text-white py-2 px-4 items-center rounded transition duration-200 hover:bg-gradient-to-r hover:bg-primary/75 dark:hover:bg-white dark:hover:text-black hover:text-white ${this.state.is_active ? 'dark:text-white bg-gray-200 dark:bg-darkBackground font-poppinsSemiBold' : 'dark:text-white'}`}
+          className={`flex space-x-3 text-xs font-poppinsRegular ${this.props.className ?? `text-black dark:text-white hover:bg-primary/75 dark:hover:bg-white dark:hover:text-black hover:text-white`}  py-2 px-4 items-center rounded transition duration-200 hover:bg-gradient-to-r  ${this.state.is_active ? 'dark:text-white bg-gray-200 dark:bg-darkBackground font-poppinsSemiBold' : 'dark:text-white'}`}
           href={this.props.url}
         >
           <div className='w-6 h-6 flex-shrink-0'>{this.props.icon}</div>
@@ -117,16 +119,18 @@ class DesmySideBarItem extends Component<DesmySideBarItemProps, DesmySideBarItem
             )}
           </div>
         </a>
-        <div className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'} flex flex-col ml-10 text-xs 2xl:text-sm font-poppinsRegular`}>
-          {this.props.items?.map((data, index) => (
-            <a
-              key={`fte${index}`}
-              onClick={(e) => this.handleOnChildClick(e, data)}
-              href={data.url}
-              className="flex py-2 px-2.5 mb-2"
-            >
-              <span>{data.label}</span>
-            </a>
+        <div className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'} flex flex-col ml-10 text-xs font-poppinsRegular`}>
+        {this.props.items?.map((data, index) => (
+            data.has_permission && ( 
+              <a
+                key={`fte${index}`}
+                onClick={(e) => this.handleOnChildClick(e, data)}
+                href={data.url}
+                className="flex py-2 px-2.5 mb-2"
+              >
+                <span>{data.label}</span>
+              </a>
+            )
           ))}
         </div>
       </div>

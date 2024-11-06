@@ -26,6 +26,9 @@ import  {DesmyTableCard} from './components/datatable/DesmyTableCard'
 import  {DesmyAccordion} from './components/accordions/DesmyAccordion'
 import  {DesmyToastProvider} from './components/toasify/DesmyToastProvider'
 import  {DesmyToast} from './components/toasify/DesmyToastService'
+import  {DesmyTabLayout} from './components/tablayout/DesmyTabLayout'
+import  {DesmyUploadManager} from './components/uploads/DesmyUploadManager'
+import  {DesmySmartFormUpload} from './components/forms/DesmySmartFormUpload'
 import './index.css';
 export  {
             DesmyState,
@@ -47,6 +50,7 @@ export  {
             DesmyDataSetTable,
             DesmyCustomDataTable,
             DesmyReadMoreOrLess,
+            DesmyTabLayout,
             DesmyButton,
             DesmyPopupMenu,
             DesmyFilePicker,
@@ -55,5 +59,7 @@ export  {
             DesmyNetworkError,
             DesmyRxServices,
             DesmyTableCard,
-            DesmySideBarItem
+            DesmySideBarItem,
+            DesmyUploadManager,
+            DesmySmartFormUpload
         }

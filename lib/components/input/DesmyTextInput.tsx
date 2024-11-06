@@ -16,6 +16,7 @@ interface TextInputProps {
     onRef?: (instance: DesmyTextInput | null) => void;
     autoFocus?: boolean;
     disabled?: boolean;
+    maxLength?: number;
     rows? : number;
     label: string;
 }
@@ -60,7 +61,6 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
         try{
            
             if(this.props.defaultValue != undefined){
-                console.log(this.props.defaultValue)
                 const data = Commons.toStringDefault(this.props.defaultValue, "");
                 const { input } = this.state;
                 if(!Commons.isEmptyOrNull(data) && Commons.isEmptyOrNull(this.state.input.data)){
@@ -73,16 +73,6 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
 
         }
     }
-    // componentDidUpdate = async (_prevProps: TextInputProps, _prevState: TextInputState) => {
-    //     try{
-    //         if(!this.state.hasPressed){
-    //             this.handleDefaultRequest()
-    //         }
-    //     }catch(e){
-
-    //     }
-        
-    // }
 
     handleTextAreaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         try{
@@ -101,45 +91,50 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
             const input = this.state.input;
             const type = Commons.toStringDefault(this.props.type, DesmyState.TEXT);
             const inputValue = event.target.value;
-            if(Commons.isEmptyOrNull(inputValue)){
+            
+            // Save cursor position
+            const cursorPosition = event.target.selectionStart;
+    
+            if (Commons.isEmptyOrNull(inputValue)) {
                 input[event.target.name] = inputValue;
-                this.setState({input,hasPressed:true},()=> this.props.onChange(inputValue))
-            }
-            if (type === DesmyState.PHONE) {
-                if (/^[0-9+]*$/.test(inputValue)) {
-                    input[event.target.name] = inputValue;
-                    this.setState({ input ,hasPressed:true}, () => { this.props.onChange(inputValue); });
-                }
-            } else if (type === DesmyState.NUMBER) {
-                if (/^[0-9]*$/.test(inputValue)) {
-                    input[event.target.name] = inputValue;
-                    this.setState({ input ,hasPressed:true}, () => { this.props.onChange(inputValue); });
-                }
+                this.setState({ input, hasPressed: true }, () => {
+                    this.props.onChange(inputValue);
+                    setTimeout(() => event.target.setSelectionRange(cursorPosition, cursorPosition), 0);
+                });
+            } else if (type === DesmyState.PHONE && /^[0-9+]*$/.test(inputValue)) {
+                input[event.target.name] = inputValue;
+                this.setState({ input, hasPressed: true }, () => {
+                    this.props.onChange(inputValue);
+                    setTimeout(() => event.target.setSelectionRange(cursorPosition, cursorPosition), 0);
+                });
+            } else if (type === DesmyState.NUMBER && /^[0-9]*$/.test(inputValue)) {
+                input[event.target.name] = inputValue;
+                this.setState({ input, hasPressed: true }, () => {
+                    this.props.onChange(inputValue);
+                    setTimeout(() => event.target.setSelectionRange(cursorPosition, cursorPosition), 0);
+                });
             } else {
                 input[event.target.name] = inputValue;
-                this.setState({ input ,hasPressed:true}, () => {
+                this.setState({ input, hasPressed: true }, () => {
                     if (type === DesmyState.EMAIL) {
                         const email_extension = Commons.toStringDefault(this.props.emailExtension, "");
                         const email = inputValue;
                         if (Commons.validateEmail(email)) {
-                            if (Commons.isEmptyOrNull(email_extension)) {
+                            if (Commons.isEmptyOrNull(email_extension) || email.endsWith(email_extension)) {
                                 this.props.onChange(inputValue);
-                                return;
-                            } else if (email.endsWith(email_extension)) {
-                                this.props.onChange(inputValue);
-                                return;
                             }
                         }
                     } else {
                         this.props.onChange(inputValue);
                     }
+                    setTimeout(() => event.target.setSelectionRange(cursorPosition, cursorPosition), 0);
                 });
             }
-
         } catch (e) {
             // Handle error
         }
-    }
+    };
+    
 
     handleFocus = (_event: React.FocusEvent<HTMLInputElement>) => {
         if(this.props.type==DesmyState.COLOR){
@@ -165,6 +160,7 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
                             disabled={this.props.disabled ? this.props.disabled : false}
                             autoFocus={this.props.autoFocus ? this.props.autoFocus : false}
                             placeholder={`${this.props.label}`}
+                            maxLength={this.props.maxLength}
                             defaultValue={(this.props.defaultValue != this.state.input.data) ? this.props.defaultValue : this.state.input.data}
                             onChange={this.handleTextAreaChange}
                             className={`peer bg-transparent border border-black text-xs/7 dark:border-white  dark:text-white placeholder-transparent 2xl:text-sm/7 ring-0 px-2 w-full focus:outline-none focus:ring-0 dark:focus:border-white ${this.props.inputClassName}`} 
@@ -173,6 +169,7 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
                         type="text" 
                         id="data" 
                         name="data" 
+                        maxLength={this.props.maxLength}
                         onFocus={this.handleFocus} 
                         disabled={this.props.disabled ? this.props.disabled : false}
                         autoFocus={this.props.autoFocus ? this.props.autoFocus : false}
@@ -182,7 +179,7 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
                         placeholder={`${this.props.label}`}/>
                     }
                     
-                    <label htmlFor="data" className="before:content[' '] after:content[' ']  pointer-events-none absolute cursor-text left-0 -top-3.5  text-[11px] dark:text-white bg-inherit mx-1 px-2 peer-placeholder-shown:text-sm  dark:peer-placeholder-shown:text-white peer-placeholder-shown:top-3 peer-focus:-top-3 peer-focus:text-black dark:peer-focus:text-white peer-focus:text-[11px] transition-all">{this.props.label}</label>
+                    <label htmlFor="data" className="before:content[' '] after:content[' ']  pointer-events-none absolute cursor-text left-0 -top-3.5  text-[11px] dark:text-white bg-inherit backdrop-blur-xl mx-1 px-2 peer-placeholder-shown:text-sm  dark:peer-placeholder-shown:text-white peer-placeholder-shown:top-3 peer-focus:-top-3 peer-focus:text-black dark:peer-focus:text-white peer-focus:text-[11px] transition-all">{this.props.label}</label>
                     {
                         (this.props.type==DesmyState.COLOR) ? 
                             <div onClick={this.handleColorPicker} className='absolute top-0 bottom-0 right-2 rounded-2xl cursor-pointer w-12 my-auto h-8 ' style={{background:`${this.state.input.data}`}}></div>

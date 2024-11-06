@@ -35,13 +35,14 @@ interface State {
   stateList: string[];
   imageExtensions: string[];
   imgColumnTypes: string[];
-  title: string;
+  title?: any;
   contentlist:any[],
   header: string;
   request: { delete: boolean };
   error: { state: boolean; message: string; type: string; color: string };
   isLoading: boolean;
   modal?: JSX.Element;
+  viewAll: boolean; 
 }
 
 class DatatableCard extends Component<Props, State> {
@@ -60,46 +61,53 @@ class DatatableCard extends Component<Props, State> {
       request: { delete: false },
       error: { state: false, message: '', type: ModalState.ERROR, color: '' },
       isLoading: false,
+      viewAll: false, 
     };
     this.header = '';
     this.status = '';
   }
-
   handleDelete = () => {
     const settings = {
-        title: 'Confirmation!',
-        btnPosition: 'delete',
-        btnNegative: 'cancel',
-        type: ModalState.NOTICE, // Providing default value
-        
-      };
-
+      title: 'Confirmation!',
+      btnPosition: 'delete',
+      btnNegative: 'cancel',
+      type: ModalState.NOTICE,
+    };
+  
     const handleClose = (state: { status: boolean }) => {
-      let request = { ...this.state.request };
-
-      if (request.delete) {
+      if (this.state.request.delete) {
         return;
       }
-      request.delete = state.status;
+  
       if (state.status) {
         this.handleDeleteRequest();
         this.props.error({});
       }
-      this.setState({ request, modal: undefined });
+  
+      this.setState(prevState => ({
+        request: { ...prevState.request, delete: state.status },
+        modal: undefined,
+      }));
     };
-
+  
+    const deleteInfoName = typeof this.props.user[this.props.settings.deleteinfo.name] === 'object'
+      ? this.props.user[this.props.settings.deleteinfo.name]?.name
+      : this.props.user[this.props.settings.deleteinfo.name];
+  
     const modal = (
       <DesmyModalHandler settings={settings} onClose={handleClose}>
         <div className="w-full py-2 text-sm">
-          Are you sure you want to delete 
-          <span className="text-primary dark:text-white ml-1 font-poppinsBold">
-            {this.props.user[this.props.settings.deleteinfo.name]}?
+          Are you sure you want to delete
+          <span className="text-red-500 ml-1 font-poppinsBold">
+            {deleteInfoName}?
           </span>
         </div>
       </DesmyModalHandler>
     );
+  
     this.setState({ modal });
   };
+  
 
   handleError = (message: string="") => {
     try {
@@ -113,6 +121,7 @@ class DatatableCard extends Component<Props, State> {
       error.color = 'red';
       this.setState({ request });
       this.props.error(error);
+      
     } catch (e) {}
   };
 
@@ -121,7 +130,7 @@ class DatatableCard extends Component<Props, State> {
       let error = { ...this.state.error };
       error.state = false;
       axios
-        .get(`${this.props.settings.request_url}/${this.props.user[this.props.settings.deleteinfo.id]}/delete/`, {
+        .delete(`${this.props.settings.request_url}/${this.props.user[this.props.settings.deleteinfo.id]}/delete/`, {
           headers: {
             'X-CSRFToken': `${Auth.getCookie('csrftoken')}`,
             Authorization: `Token ${DesmyAuth.get(ModalState.ACCESS_TOKEN)}`,
@@ -165,9 +174,13 @@ class DatatableCard extends Component<Props, State> {
     let data = user[headers[key]];
     this.header = Commons.toString(headers[key]).toLowerCase();
     this.status = user['status'];
-    this.setState({ title: !Array.isArray(data) ? Commons.toString(data) : "",contentlist:Array.isArray(data) ? data:[] });   
+    this.setState({ title: !Array.isArray(data) ? data?.name ?? Commons.toString(data) : "",contentlist:Array.isArray(data) ? data:[] });   
   }
-
+  toggleView = () => {
+    this.setState(prevState => ({
+      viewAll: !prevState.viewAll
+    }));
+  };
   extra_handle = () => {
     if (this.props.settings.extra_handle) {
       return this.props.settings.extra_handle.find((o) => o.name === this.header);
@@ -183,6 +196,9 @@ class DatatableCard extends Component<Props, State> {
     // const _roleBtn = <span className="text-black dark:text-white cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4"><path fillRule="evenodd" d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12a4.49 4.49 0 01-1.549 3.397 4.491 4.491 0 01-1.307 3.497 4.491 4.491 0 01-3.497 1.307A4.49 4.49 0 0112 21.75a4.49 4.49 0 01-3.397-1.549 4.49 4.49 0 01-3.498-1.306 4.491 4.491 0 01-1.307-3.498A4.49 4.49 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.497 4.49 4.49 0 013.497-1.307zm7.007 6.387a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clipRule="evenodd" /></svg></span>
     // const infoBtn = <span className="text-black dark:text-white cursor-pointer "><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4"><path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 01.67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 11-.671-1.34l.041-.022zM12 9a.75.75 0 100-1.5.75.75 0 000 1.5z" clipRule="evenodd" /></svg></span>
     const imageurl = (Commons.isEmptyOrNull(this.state.title) && this.props.settings.image !== undefined) ? this.props.settings.image.placeholder: this.state.title
+    const { viewAll, contentlist } = this.state;
+    const itemsToShow = viewAll ? contentlist : contentlist.slice(0, 1);
+    const listClass = viewAll ? 'collapsible-content expanded' : 'collapsible-content';
     return(
         <>
         {this.state.modal}
@@ -220,10 +236,29 @@ class DatatableCard extends Component<Props, State> {
             </div> :
             <span className="text-xs 2xl:text-sm px-4 py-2 flex items-center">
                 {this.state.contentlist.length > 0 ? (
-                    <ul className='space-y-1'>
-                        {this.state.contentlist.map((item, index) => (
-                            <li key={index} className='w-full line-clamp-1' title={`${item.name}`}>{(this.state.contentlist.length > 1) ? `${(index+1)}.` : ''} {item.name}</li>
-                        ))}
+                     <ul className={`flex flex-col w-full ${listClass}`}>
+                      {itemsToShow.map((item, index) => (
+                        <li key={index} onClick={this.toggleView} className={`w-full ${(itemsToShow.length > 1) ? `line-clamp-1`:``}`} title={`${item.name}`}>
+                          <div className='flex'>
+                              <div className='mr-3'>{(this.state.contentlist.length > 1) ? `${(index+1)}. ` : ''} {item.name}</div>
+                              {index==0 && contentlist.length > 2 && (
+                                <div>
+                                  <svg onClick={this.toggleView} viewBox="0 0 24 24" fill="currentColor" className='w-5 h-5 cursor-pointer'>
+                                    <path d="M12 18.17L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83z" />
+                                  </svg>
+                                </div>
+                              )}
+                              
+                          </div>
+                        </li>
+                      ))}
+                      {/* {contentlist.length > 2 && (
+                        <div className='flex w-full '>
+                          <div className="mt-2 text-xs font-bold cursor-pointer text-blue-500 hover:text-blue-700 focus:outline-none" onClick={this.toggleView}>
+                          {viewAll ? 'Collapse' : <span>Expand <span>+{contentlist.length - 1}</span></span>}
+                        </div>
+                        </div>
+                      )} */}
                     </ul>
                 ) : (
                   <DesmyReadMoreOrLess charLimit={(this.props.settings.read_more_limit !== undefined) ? this.props.settings.read_more_limit : 50}>

@@ -224,6 +224,8 @@ interface DataTableProps {
 }
 
 interface DataTableState {
+  isFocused?: boolean;
+  searchText?:string,
   dtablemodal: React.ReactNode | null;
   hasRequest: boolean;
   exceptionalColumns: string[];
@@ -500,7 +502,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     } else {
       icon = <svg className="w-3 h-3 2xl:w-4 2xl:h-4 dark:text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
     }
-    return this.props.settings.headers.map((column, index) => {
+    return this.state.settings.headers.map((column, index) => {
       const exceptionalColumns = this.state.exceptionalColumns.includes(column.toLowerCase());
       const columnClass = this.state.settings.table_data?.find((item) => item.name === column.toLowerCase() );
       return <th key={index} onClick={() => this.sortByColumn(this.props.settings.columns[index])}  className={`py-2 sticky ${(exceptionalColumns) ? `w-4`:(columnClass) ? columnClass.class:``}  top-0 border-b border-gray-200 text-xs 2xl:text-sm bg-gray-100 dark:border-gray-700 dark:bg-darkPrimary`}>
@@ -531,6 +533,39 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
   initialChunck(){
     this.loadNextBatch();
   }
+  addHeaderAndColumn = (header: string, column: string): void => {
+    this.setState((prevState) => {
+      const newHeaders = [...prevState.settings.headers, header];
+      const newColumns = [...prevState.settings.columns, column];
+      return {
+        settings: {
+          ...prevState.settings,
+          headers: newHeaders,
+          columns: newColumns,
+        },
+      };
+    });
+  };
+  removeHeaderAndColumn = (header: string): void => {
+    this.setState((prevState) => {
+      const headerIndex = prevState.settings.headers.indexOf(header);
+      if (headerIndex === -1) {
+        return null;
+      }
+
+      const newHeaders = prevState.settings.headers.filter((_, index) => index !== headerIndex);
+      const newColumns = prevState.settings.columns.filter((_, index) => index !== headerIndex);
+
+      return {
+        ...prevState,
+        settings: {
+          ...prevState.settings,
+          headers: newHeaders,
+          columns: newColumns,
+        },
+      };
+    });
+  };
   clearFetchEntities = () => {
     let custom_settings = this.state.custom_settings;
     custom_settings['current_page'] = 1;
@@ -583,13 +618,23 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     }
   }
 
+  handleFocus = () => {
+    this.setState({ isFocused: true });
+  };
+
+  handleBlur = () => {
+    this.setState({ isFocused: false });
+  };
+
   onChangeValue = (event: React.ChangeEvent<HTMLInputElement>): void => {
     try {
       this.search = event.target.value;
       
+     this.setState({searchText:event.target.value},()=>{
       if (Commons.isEmptyOrNull(this.search) && !this.state.input.is_searching) {
         this.handleSearhing();
       }
+     })
     } catch (e) {
       console.error(e);
     }
@@ -772,12 +817,14 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     this.props.settings.handleEdit(user)
   }
   render() {
+    const { isFocused, searchText } = this.state;
+    const isExpanded = isFocused && searchText !== '';
     return (
       <>
         {this.state.dtablemodal}
         <div className={`flex flex-col w-full`}>
               <div className='flex flex-col w-full mb-5'>
-                  <header className="flex w-full flex-col lg:flex-row justify-start lg:justify-between items-center">
+                  <header className="flex w-full flex-col lg:flex-row justify-start lg:justify-between items-center space-x-6">
                     <div className="flex flex-col w-full ">
                       {
                         (this.state.settings.header !== undefined) ?
@@ -792,13 +839,18 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
                         : null
                       }
                     </div>
-                    <div className="flex w-full  flex-col lg:items-end justify-start lg:justify-end">
+                    <div className="flex w-max  flex-col lg:items-end justify-start lg:justify-end">
                       <div className="flex flex-col lg:items-end justify-start lg:justify-end ">
                         <div className="flex items-center w-full lg:max-w-md justify-start lg:justify-end mt-5 lg:mt-0">
                           <div className="flex w-full text-grey font-thin text-sm dark:text-white">
                                   <div className='w-full'>
                                     <div className='flex w-full relative'>
-                                      <input className="rounded-full lg:rounded-full w-full py-3 px-4 dark:focus:border-white dark:focus:ring-0 text-gray-700 text-xs 2xl:text-sm leading-tight border focus:outline-none focus:border-primary  focus:ring-0  bg-inherit dark:text-white" name="search" onChange={this.onChangeValue} onKeyDown={this.handleKeyDown} id="search" type="text" placeholder="Search"/>
+                                      <input 
+                                       className={`rounded-full lg:rounded-full py-3 px-4 dark:focus:border-white dark:focus:ring-0 text-gray-700 text-xs 2xl:text-sm leading-tight border focus:outline-none focus:border-primary focus:ring-0 bg-inherit dark:text-white transition-all duration-300 ease-in-out
+                                        ${isExpanded ? 'w-[300px]' : 'w-[200px]'}`}
+                                        onFocus={this.handleFocus}
+                                        onBlur={this.handleBlur}
+                                      name="search" onChange={this.onChangeValue} onKeyDown={this.handleKeyDown} id="search" type="text" placeholder="Search"/>
                                       {
                                         (this.state.input.is_searching && !Commons.isEmptyOrNull(this.search)) ? 
                                           <svg role="status" className="inline absolute top-2.5 bottom-0 right-2 w-4 h-4 2xl:w-6 2xl:h-6 text-primary dark:text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">

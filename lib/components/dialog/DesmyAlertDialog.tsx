@@ -205,7 +205,7 @@ class Dialog extends React.Component<DialogProps, DialogState> {
     render() {
       const { settings } = this.props;
       return (
-        <div className="inline-block align-bottom font-poppinsRegular bg-white dark:bg-darkPrimary dark:text-white px-4 pt-5 pb-0 text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full sm:p-6">
+        <div className=" w-full h-full font-poppinsRegular bg-white dark:bg-darkPrimary dark:text-white px-4 pt-5 pb-0 text-left shadow-xl transform transition-all sm:my-8 sm:p-6">
         {
           (this.state.isLoading) ? 
           <div className='flex flex-col w-full h-48 justify-center text-primary dark:text-white items-center'>
@@ -411,18 +411,16 @@ class Dialog extends React.Component<DialogProps, DialogState> {
     render() {
       const modalComponent = (
         <>
-          <div className={`fixed z-[10000] inset-0 overflow-y-auto`}>
-            <div className="fixed justify-items-center px-2 backdrop-blur-sm top-0 right-0 left-0 z-40 w-full inset-0 h-modal h-full justify-center items-center overflow-y-auto">
-              <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-                <div className="fixed inset-0 transition-opacity">
-                  <div className="absolute inset-0 bg-black/25 opacity-75"></div>
+         <div className={`fixed z-[10000] inset-0 overflow-hidden w-dvw h-dvh flex justify-center items-center`}>
+            <div className='w-full h-screen flex justify-center items-center backdrop-blur-sm inset-0'>
+              <div className='max-w-lg w-full'>
+                <div className='w-full inline-block align-middle'>
+                  <Dialog settings={this.props.settings} data={this.props.data} onClose={this.props.onClose}>
+                    {this.props.children}
+                  </Dialog>
                 </div>
-                <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
-                <Dialog settings={this.props.settings} data={this.props.data} onClose={this.props.onClose}>
-                  {this.props.children}
-                </Dialog>
               </div>
-            </div>   
+            </div>
           </div>
         </>
       );

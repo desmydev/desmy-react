@@ -61,45 +61,81 @@ class DesmyCommons {
     isObject(data: any): boolean {
         return typeof data === 'object' && data !== null && !Array.isArray(data) && !(data instanceof File);
     }
-    isEmptyOrNull(data: any): boolean {
+    
+    isEmptyOrNull(data: any, isForce: boolean = false): boolean {
+        if (data == null) {
+            return true; // handles null and undefined
+        }
         
+    
         if (Array.isArray(data)) {
             return data.length === 0;
         }
-        if (this.isObject(data)) {
-            return Object.keys(data).length === 0 || !Object.values(data as Record<string, any>).every(value => {
-                if (typeof value === 'string') {
-                    return value.trim() !== "";
-                } else if (typeof value === 'boolean') {
-                    return value === true; 
-                } else if (typeof value === 'number') {
-                    return value !== 0;
-                } else if (Array.isArray(value)) {
-                    return value.length !== 0;
-                } else if (value instanceof File) {
-                    return value.size !== 0;
-                } else if (this.isObject(value)) {
-                    return Object.keys(value).length !== 0;
-                }
-                return value != null && value !== undefined; 
-            });
+    
+        if (typeof data === 'object' && !Array.isArray(data) && !(data instanceof File)) {
+            const keys = Object.keys(data);
+    
+            if (keys.length === 0) {
+                return true; // Empty object
+            }
+    
+            if (isForce) {
+                return keys.every(key => {
+                    const value = data[key];
+                    if (typeof value === 'string') {
+                        return value.trim() === "";
+                    } else if (typeof value === 'boolean') {
+                        return value === false;
+                    } else if (typeof value === 'number') {
+                        return value === 0;
+                    } else if (Array.isArray(value)) {
+                        return value.length === 0;
+                    } else if (value instanceof File) {
+                        return value.size === 0;
+                    } else if (typeof value === 'object' && value !== null) {
+                        return Object.keys(value).length === 0;
+                    }
+                    return value == null;
+                });
+            } else {
+                return !keys.some(key => {
+                    const value = data[key];
+                    if (typeof value === 'string') {
+                        return value.trim() !== "";
+                    } else if (typeof value === 'boolean') {
+                        return value === true;
+                    } else if (typeof value === 'number') {
+                        return value !== 0;
+                    } else if (Array.isArray(value)) {
+                        return value.length !== 0;
+                    } else if (value instanceof File) {
+                        return value.size !== 0;
+                    } else if (typeof value === 'object' && value !== null) {
+                        return Object.keys(value).length !== 0;
+                    }
+                    return value != null;
+                });
+            }
         }
-
+        
         if (data instanceof File) {
+            
             return data.size === 0;
         }
-        return data === "" || data == null || data === undefined;
+    
+        return data === "";
     }
+    
 
     toBoolean(data: any): boolean {
         return String(data).toLowerCase() === "true";
     }
     toStringDefault(data: any, defaultValue = ""): string {
-        return (!this.isEmptyOrNull(data)) ? data : defaultValue.toString();
+        return (!this.isEmptyOrNull(data)) ? `${data}` : `${defaultValue}`;
     }
 
     toString(data: any): string {
-        return data + "";
+        return  `${data}`;
     }
 
     isEmpty(text: string | null | undefined): boolean {

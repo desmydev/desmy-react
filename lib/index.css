@@ -2,7 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+.collapsible-content {
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+  max-height: auto; /* Initial state is collapsed */
+}
 
+.collapsible-content.expanded {
+  max-height: 1000px; /* Sufficiently large to accommodate content */
+  padding: 10px 0; /* Provide some padding when expanded */
+}
 
 /* Sidebar.css */
 
