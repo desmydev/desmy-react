@@ -44,7 +44,13 @@ interface Props {
     url?:string,
     title?:string,
     token?:string,
-    key_name?: string
+    template_url?:string,
+    key_name?: string,
+    ui:{
+      label?:string,
+      icon?:string
+    }
+    
   }
 }
 
@@ -118,9 +124,7 @@ class DesmySmartFormUpload extends Component<Props, State> {
         if (rows.length === 0) return;
         
         const headers = rows[0].map((header)=>(`${header}`).toLowerCase().replace(/\s+/g, '_'))
-        rows = rows.slice(1); // Remove the header row
-
-        // Step 1: Filter and get all parent data
+        rows = rows.slice(1); 
         
         const parentUnitIndex = headers.indexOf(this.props.filter_column.parent);
         const uniqueFieldIndex = headers.indexOf(this.props.filter_column.unique_field);
@@ -208,14 +212,12 @@ class DesmySmartFormUpload extends Component<Props, State> {
 
     return (
       <>
-        <form className='flex flex-col w-full mt-10 overflow-auto'>
+        <form className='flex flex-col w-full overflow-auto'>
           <div className='w-full font-poppinsRegular '>
             <div className='flex flex-col h-full w-full'>
               {this.state.data.data.length === 0 ? (
-                <div className='flex flex-col w-full space-y-4'>
-                  <div
-                    className={`bg-gray-200 dark:bg-darkPrimary rounded-lg w-[600px] mx-auto shadow-sm h-80 cursor-pointer relative overflow-hidden group`}
-                  >
+                <div className='w-full  my-16 space-y-4'>
+                  <div className={`bg-gray-200 dark:bg-darkPrimary rounded-lg w-full max-w-xl  mx-auto shadow-sm h-80 cursor-pointer relative overflow-hidden group`}>
                     <input
                       type="file"
                       disabled={this.state.hasRequest}
@@ -228,20 +230,24 @@ class DesmySmartFormUpload extends Component<Props, State> {
                         <img
                           className={`object-center object-cover w-full h-full cursor-pointer m-auto`}
                           alt={`photo`}
-                          src={`/static/images/excel.png`}
+                          src={this.props.reader?.ui?.icon  ?? `./excel.png`}
                         />
                       </div>
-                      <div>[Drag and Drop or Click to Upload Excel]</div>
+                      <div className='text-xs md:text-sm'>{this.props.reader?.ui?.label  ?? `[Drag and Drop or Click to Upload Excel]`}</div>
                     </div>
                   </div>
-
-                  <div className={`w-[600px] mx-auto`}>
-                    <div className='flex w-full justify-end'>
-                      <a href="/api/service/courses/template/export/to/excel/" target='_blank' className='uppercase text-xs bg-green-700 text-white px-4 py-3 rounded-full cursor-pointer'>
-                        Download Template
-                      </a>
-                    </div>
-                  </div>
+                  {
+                    !(DesmyCommons.isEmptyOrNull(this.props.reader.template_url)) ? 
+                      <div className={` w-full max-w-xl mx-auto`}>
+                        <div className='flex w-full justify-end'>
+                          <a href={`${this.props.reader.template_url}`} target='_blank' className='uppercase text-xs bg-green-700 text-white px-4 py-3 rounded-full cursor-pointer'>
+                            Download Template
+                          </a>
+                        </div>
+                      </div>
+                    :null
+                  }
+                  
                 </div>
               ) : (
                 <div className='z-5'>

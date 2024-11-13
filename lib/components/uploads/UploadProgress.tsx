@@ -178,9 +178,9 @@ class UploadManager extends Component<UploadManagerProps, UploadManagerState> {
                 </div>
               )}
             </div>
-            <div className="flex justify-end">
+            <div className="flex justify-end mt-2">
               <button
-                className="text-xs bg-yellow-300 text-yellow-600 px-5 py-3 rounded-full cursor-pointer hover:bg-yellow-600 hover:text-white mr-2"
+                className="text-xs bg-red-300 text-red-600 px-5 py-3 rounded-full cursor-pointer hover:bg-red-600 hover:text-white mr-2"
                 onClick={this.skipUpload}
               >
                 Skip

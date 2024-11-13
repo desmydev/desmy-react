@@ -37,7 +37,12 @@ interface ReadTableProps {
     url?:string,
     title?:string,
     token?:string,
-    key_name?: string
+    template_url?:string,
+    key_name?: string,
+    ui:{
+      label?:string,
+      icon?:string
+    }
   }
   onClose?: () => void;
   settings: {
@@ -48,7 +53,7 @@ interface ReadTableProps {
     };
     search?: boolean;
     filter?: boolean;
-    header: {
+    header?: {
       title: string;
       class: string;
       hint: string;

@@ -1,5 +1,6 @@
 import { DesmyModalHandler } from './components/dialog/DesmyAlertDialog';
 import { default as DesmyAuth } from './components/apis/DesmyAuth';
+import { DesmyHelmetSEO } from './components/apis/DesmyHelmetSEO';
 import { default as DesmyCommons } from './components/apis/DesmyCommons';
 import { default as DesmyPermissions } from './components/apis/DesmyPermissions';
 import { DesmyRouter } from './components/apis/DesmyRouter';
@@ -29,5 +30,6 @@ import { DesmyToast } from './components/toasify/DesmyToastService';
 import { DesmyTabLayout } from './components/tablayout/DesmyTabLayout';
 import { DesmyUploadManager } from './components/uploads/DesmyUploadManager';
 import { DesmySmartFormUpload } from './components/forms/DesmySmartFormUpload';
+import { DesmyPassportPicker } from './components/filepicker/DesmyPassportPicker';
 
-export { DesmyState, DesmyPermissions, DesmyLazyloading, DesmyToast, DesmyToastProvider, DesmyRouter, DesmyDropdown, DesmyModalHandler, DesmyModalContainer, DesmyModalWrapper, DesmyClickOutsideListener, DesmyAuth, DesmyCommons, DesmyAccordion, DesmyTextInput, DesmyDataTable, DesmyDataSetTable, DesmyCustomDataTable, DesmyReadMoreOrLess, DesmyTabLayout, DesmyButton, DesmyPopupMenu, DesmyFilePicker, DesmyListCard, DesmyEmpty, DesmyNetworkError, DesmyRxServices, DesmyTableCard, DesmySideBarItem, DesmyUploadManager, DesmySmartFormUpload };
+export { DesmyState, DesmyHelmetSEO, DesmyPermissions, DesmyLazyloading, DesmyToast, DesmyToastProvider, DesmyRouter, DesmyDropdown, DesmyModalHandler, DesmyModalContainer, DesmyModalWrapper, DesmyClickOutsideListener, DesmyAuth, DesmyCommons, DesmyAccordion, DesmyTextInput, DesmyDataTable, DesmyDataSetTable, DesmyCustomDataTable, DesmyReadMoreOrLess, DesmyTabLayout, DesmyButton, DesmyPopupMenu, DesmyFilePicker, DesmyListCard, DesmyEmpty, DesmyNetworkError, DesmyRxServices, DesmyTableCard, DesmySideBarItem, DesmyUploadManager, DesmySmartFormUpload, DesmyPassportPicker };

@@ -31,8 +31,8 @@ class DesmyModalContainer extends Component<ModalContainerProps, ModalContainerS
         <div className="fixed z-[3000] inset-0 overflow-y-hidden dark:bg-[#1a1a1a]/75 bg-white/75">
           <div className="flex w-screen h-screen  px-2 backdrop-blur-xl justify-center items-center">
             <div className="flex flex-col w-full h-screen max-w-7xl">
-              <div className="hidden md:flex md:container mx-auto my-10 px-10 text-start uppercase justify-between font-poppinsBlack text-2xl 2xl:text-4xl">
-                    <div>{this.props.data.title}</div>
+              <div className="flex bg-transparent md:container mx-auto mt-5 md:my-10  px-5 md:px-10 text-start uppercase justify-between font-poppinsBlack text-2xl 2xl:text-4xl">
+                    <div className='w-full line-clamp-2'>{this.props.data.title}</div>
                     <div className="flex justify-end">
                       <svg
                         viewBox="0 0 1024 1024"

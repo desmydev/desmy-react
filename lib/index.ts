@@ -1,5 +1,6 @@
 import  {DesmyModalHandler} from "./components/dialog/DesmyAlertDialog";
 import  DesmyAuth from './components/apis/DesmyAuth';
+import  {DesmyHelmetSEO} from './components/apis/DesmyHelmetSEO'
 import  DesmyCommons from './components/apis/DesmyCommons';
 import  DesmyPermissions from './components/apis/DesmyPermissions';
 import  {DesmyRouter} from './components/apis/DesmyRouter'
@@ -29,9 +30,11 @@ import  {DesmyToast} from './components/toasify/DesmyToastService'
 import  {DesmyTabLayout} from './components/tablayout/DesmyTabLayout'
 import  {DesmyUploadManager} from './components/uploads/DesmyUploadManager'
 import  {DesmySmartFormUpload} from './components/forms/DesmySmartFormUpload'
+import  {DesmyPassportPicker} from './components/filepicker/DesmyPassportPicker'
 import './index.css';
 export  {
             DesmyState,
+            DesmyHelmetSEO,
             DesmyPermissions,
             DesmyLazyloading,
             DesmyToast,
@@ -61,5 +64,6 @@ export  {
             DesmyTableCard,
             DesmySideBarItem,
             DesmyUploadManager,
-            DesmySmartFormUpload
+            DesmySmartFormUpload,
+            DesmyPassportPicker
         }

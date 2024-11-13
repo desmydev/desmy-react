@@ -240,10 +240,10 @@ class DatatableCard extends Component<Props, State> {
                       {itemsToShow.map((item, index) => (
                         <li key={index} onClick={this.toggleView} className={`w-full ${(itemsToShow.length > 1) ? `line-clamp-1`:``}`} title={`${item.name}`}>
                           <div className='flex'>
-                              <div className='mr-3'>{(this.state.contentlist.length > 1) ? `${(index+1)}. ` : ''} {item.name}</div>
-                              {index==0 && contentlist.length > 2 && (
-                                <div>
-                                  <svg onClick={this.toggleView} viewBox="0 0 24 24" fill="currentColor" className='w-5 h-5 cursor-pointer'>
+                              <div className='mr-3'>{item.name}</div>
+                              {index==0 && contentlist.length > 1 && (
+                                <div onClick={this.toggleView}>
+                                  <svg viewBox="0 0 24 24" fill="currentColor" className='w-5 h-5 cursor-pointer'>
                                     <path d="M12 18.17L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83z" />
                                   </svg>
                                 </div>

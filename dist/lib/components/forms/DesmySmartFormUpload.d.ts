@@ -42,7 +42,12 @@ interface Props {
         url?: string;
         title?: string;
         token?: string;
+        template_url?: string;
         key_name?: string;
+        ui: {
+            label?: string;
+            icon?: string;
+        };
     };
 }
 interface State {

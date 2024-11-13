@@ -20,7 +20,7 @@ interface DesmyDataSetTableProps {
       };
       search?: boolean;
       filter?: boolean;
-      header: {
+      header?: {
         title: string;
         class: string;
         hint: string;
@@ -74,7 +74,7 @@ interface DesmyCustomState {
   };
   settings: {
     default_sorted_column: string;
-    header: {
+    header?: {
       title: string;
       class: string;
       hint: string;
@@ -423,7 +423,7 @@ handleOnSuccess=(index : number)=>{
   }
   handleHint = () => {
     try {
-      if (this.state.settings.header.hint) {
+      if (this.state.settings?.header?.hint) {
         return this.state.settings.header.hint;
       } else {
         return (!this.state.error.state) ? `Loaded ${this.state.entities.meta.total} data` : "";
@@ -438,11 +438,12 @@ handleOnSuccess=(index : number)=>{
         <>
         <div className={`flex flex-col`}>
           <div className='flex flex-col w-full mb-5'>
+            {
+              (this.state.settings.header !== undefined) ?
+            
               <header className="flex w-full flex-col lg:flex-row justify-start lg:justify-between items-center">
                 <div className="flex w-full flex-col 2xl:w-auto">
-                  {
-                    (this.state.settings.header !== undefined) ?
-                      <div className="flex w-full flex-col">
+                  <div className="flex w-full flex-col">
                         <h3 className={`${(this.state.settings.header !==undefined) ? !(Commons.isEmptyOrNull(this.state.settings.header.class)) ? this.state.settings.header.class: ` text-grey-darkest uppercase text-3xl 2xl:text-5xl dark:text-white font-poppinsBlack`:``}`}>
                           {this.state.settings.header.title}
                         </h3>
@@ -450,8 +451,6 @@ handleOnSuccess=(index : number)=>{
                           {this.handleHint()}
                         </div>        
                       </div>
-                    : null
-                  }
                 </div>
 
                 {
@@ -498,6 +497,8 @@ handleOnSuccess=(index : number)=>{
                 }
                
               </header>
+              :null
+              }
               {(this.state.alerterror.state) ? 
                   <Alert error={this.state.alerterror} handleCloseAlert={this.handleReset}/>
               : null}

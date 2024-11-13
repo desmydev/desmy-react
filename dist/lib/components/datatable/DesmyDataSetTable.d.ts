@@ -14,7 +14,7 @@ interface DesmyDataSetTableProps {
         };
         search?: boolean;
         filter?: boolean;
-        header: {
+        header?: {
             title: string;
             class: string;
             hint: string;
@@ -81,7 +81,7 @@ interface DesmyCustomState {
     };
     settings: {
         default_sorted_column: string;
-        header: {
+        header?: {
             title: string;
             class: string;
             hint: string;
