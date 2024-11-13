@@ -190,11 +190,13 @@ export default App;
 Make sure to add this code to the parent component in order to use the upload progress dialog:
 
 ```javascript
+import {DesmyUploadManager} from "desmy-react"
+
 <DesmyUploadManager className={` font-poppinsRegular`} {...this.props} />
 ```
 
 ```javascript
-import { DesmyDataTable } from 'desmy-react';
+import { DesmyAuth, DesmyModalContainer,DesmyCommons, DesmySmartFormUpload, DesmyState, DesmyTabLayout  } from 'desmy-react';
 
 class App extends React.Component {
   constructor(props) {
