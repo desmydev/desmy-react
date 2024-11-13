@@ -1,9 +1,8 @@
 # Desmy-react
 
+Introducing an `easy-to-use`, `lightning-fast` React.js component library that streamlines your development process. Our solution prioritizes `simplicity`, `speed`, and `optimization`, making it a breeze to build projects in React.
 
-Introducing an `easy-to-use`, `lightning-fast` React.js component that streamlines your development process. Our solution prioritizes `simplicity`, `speed`, and `optimization`, making it a breeze to build projects in React.
-
-Currently working on other components, contact  [desmydev@gmail.com](https://mail.google.com/mail/?view=cm&fs=1&to=desmydev@gmail.com) for assistance 
+Currently working on other components, contact [desmydev@gmail.com](https://mail.google.com/mail/?view=cm&fs=1&to=desmydev@gmail.com) for assistance.
 
 - Zero-dependency (pre-built bundle)
 
@@ -15,18 +14,19 @@ Currently working on other components, contact  [desmydev@gmail.com](https://mai
 * DesmyButton (Types : NORMAL, SMALL, LARGE. Request state and icon supported)
 * DesmyClickOutsideListener
 * DesmyModalContainer
-* DesmyTextInput (Support email address, phone number, number validations)
+* DesmyTextInput (Supports email address, phone number, number validations)
 * DesmyFilePicker
 * DesmyAccordion 
 * DesmyDataTable
 * DesmyCustomDataTable (Cards and custom views support)
-* DesmyDataSetTable (Expandable and Collapsable)
+* DesmyDataSetTable (Expandable and Collapsible)
 * DesmyPopupMenu
 * DesmyListCard (Card views)
 * DesmyUploadManager
 * DesmyTabLayout
 * DesmySmartFormUpload
-* DesmyToast (support custom component)
+* DesmyToast (Supports custom components)
+* DesmyPassportPicker
 
 ## Utilities
 * DesmyAuth 
@@ -47,195 +47,360 @@ $ yarn add desmy-react
 $ npm i --save desmy-react
 ```
 
+> **Note:** This library requires Node.js version 14 or higher for optimal compatibility and performance.
+
 ### Using desmy-react library
 The library utilizes dynamically created CSS by including 'desmy-react/dist/style.css' in your main.jsx or App.jsx file.
 
 ```javascript
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'// Import your own components
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App.jsx'; // Import your own components
 import 'desmy-react/dist/style.css'; // Import the library CSS file
-import './index.css'
+import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
-)
+);
 ```
-## `DesmyModalHandler` usage
-To enable the modal functionality, include the following code snippet in your index.html body tag
+
+## `DesmyModalHandler` Usage
+To enable the modal functionality, include the following code snippet in your `index.html` body tag:
+
 ```html
 <!-- This div will act as the container for your modal -->
-    <div id="modal-root"></div>
+<div id="modal-root"></div>
 ```
 
 ```javascript
-  import { DesmyModalHandler } from 'desmy-react';
+import { DesmyModalHandler } from 'desmy-react';
 
-  class App extends React.Component {
-
-      constructor(props) {
-          super(props);
-          this.state = {
-              modal: null // Initialize modal state
-          }
-      }
-      handleSubmit=(e)=>{
-          e.preventDefault()
-          try{
-            var settings={
-                btnPosition:`Continue`,
-                btnNegative:`Cancel`
-            }
-            const handleClose = (state) => {
-                this.setState({modal:null,}) // Close modal by setting modal state to null
-            }
-            const modal = <DesmyModalHandler settings={settings} onClose={handleClose}>
-                <div className='flex flex-col text-sm w-full py-2'>Testing dialog Desmy react?</div>
-            </DesmyModalHandler>;
-            
-            this.setState({ modal }); // Set modal to be rendered
-        }catch(e){
-           // Handle errors
-        }
-      }
-
-      render(){
-        return (
-          <>
-              {this.state.modal}  {/* Render the modal here */}
-              <form method="POST" onSubmit={this.handleSubmit}>
-                  <button>Click to confirm</button>
-              </form>
-          </>
-        )
-      }
-  }
-```
-Make sure to add the line `{this.state.modal}` to your component's render method to display the modal.
-
-## `DesmyDropdown` usage
-
-```javascript
-
-  import React from 'react';
-  import { DesmyDropdown } from 'desmy-react';
-
-  class App extends React.Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      genderlist:[{id:"FEMALE",name:"Female"},{id:"MALE",name:"Male"}],
-      input:{
-        gender:""
-      }
+      modal: null, // Initialize modal state
+    };
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    try {
+      var settings = {
+        btnPosition: `Continue`,
+        btnNegative: `Cancel`,
+      };
+      const handleClose = (state) => {
+        this.setState({ modal: null }); // Close modal by setting modal state to null
+      };
+      const modal = (
+        <DesmyModalHandler settings={settings} onClose={handleClose}>
+          <div className='flex flex-col text-sm w-full py-2'>Testing dialog Desmy react?</div>
+        </DesmyModalHandler>
+      );
+
+      this.setState({ modal }); // Set modal to be rendered
+    } catch (e) {
+      // Handle errors
     }
+  };
 
-  }
-  render(){
+  render() {
     return (
-    <>
-      <form method="POST" onSubmit={this.handleSubmit}>
-          <div className="relative w-full group">
-              # Local
-              <DesmyDropdown 
-                  data={this.state.genderlist} 
-                  defaultValue={this.state.input.gender}
-                  handleChange={(data)=>{
-                      var {input} = this.state
-                      input['gender'] = data.id
-                      this.setState({input})
-                  }} 
-                  dropdownClass={`bg-black text-black border`}
-                  placeholder={`Placeholer`} 
-                  dropdownListClass={`flex w-full bg-white dark:bg-slate-900 text-black dark:text-white hover:bg-gray-200`} 
-                  className={`flex w-full dark:text-white text-sm border-0 border-black dark:border-gray-300 bg-transparent outline-none focus:outline-none`}
-              />
-
-              # Server Request
-              <DesmyDropdown 
-                  request={{
-                      url:"endpoint_url_here"//https://example.com/1/
-                  }}
-                  defaultValue={this.state.input.gender}
-                  handleChange={(data)=>{
-                      var {input} = this.state
-                      input['gender'] = data.id
-                      this.setState({input})
-                  }} 
-                  dropdownClass={`bg-black text-black border`}
-                  placeholder={`Placeholer`} 
-                  dropdownListClass={`flex w-full bg-white dark:bg-slate-900 text-black dark:text-white hover:bg-gray-200`} 
-                  className={`flex w-full dark:text-white text-sm border-0 border-black dark:border-gray-300 bg-transparent outline-none focus:outline-none`}
-              />
-                                                  
-          </div>
-      </form>
-    </>
-    )
+      <>
+        {this.state.modal} {/* Render the modal here */}
+        <form method="POST" onSubmit={this.handleSubmit}>
+          <button>Click to confirm</button>
+        </form>
+      </>
+    );
   }
-  export default App
-  }
+}
 ```
-## `DesmyModalContainer` usage
+Make sure to add the line `{this.state.modal}` to your component's render method to display the modal.
+
+## `DesmyDropdown` Usage
+
 ```javascript
-  import { DesmyModalContainer } from 'desmy-react';
+import React from 'react';
+import { DesmyDropdown } from 'desmy-react';
 
-  class App extends React.Component {
-
-      constructor(props) {
-          super(props);
-      }
-      handleOnClose=()=>{
-
-      }
-      render(){
-        return (
-          <>
-              <DesmyModalContainer data={{title:"Create User"}} onClose={()=>this.handleOnClose()}>
-                <form method="POST">
-                    <input type="text" placeholder="username"/>
-                    <input type="submit" value="create"/>
-                </form>
-              </DesmyModalContainer>
-          </>
-        )
-      }
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      genderlist: [
+        { id: "FEMALE", name: "Female" },
+        { id: "MALE", name: "Male" },
+      ],
+      data: [],
+      input: {
+        gender: "",
+        data: [],
+      },
+    };
   }
+
+  render() {
+    return (
+      <>
+        <form method="POST" onSubmit={this.handleSubmit}>
+          <div className="relative w-full group">
+            {/* Local */}
+            <DesmyDropdown
+              data={this.state.genderlist}
+              defaultValue={this.state.input.gender}
+              handleChange={(data) => {
+                var { input } = this.state;
+                input['gender'] = data.id;
+                this.setState({ input });
+              }}
+              placeholder={`Select Gender`}
+            />
+
+            {/* Server Request */}
+            <DesmyDropdown
+              request={{
+                url: "endpoint_url_here", // https://example.com/1/
+                token: DesmyAuth.get(DesmyState.ACCESS_TOKEN),
+              }}
+              defaultValue={this.state.input.data}
+              is_multiple={true}
+              handleChange={(data) => {
+                if (!DesmyCommons.isEmptyOrNull(data)) {
+                  var { input } = this.state;
+                  input['parent_course'] = data.id;
+                  this.setState({ input });
+                }
+              }}
+              placeholder={`Select Multiple Options`}
+            />
+          </div>
+        </form>
+      </>
+    );
+  }
+}
+export default App;
 ```
-## `DesmyAuth` usage
+
+## `DesmySmartUpload Form and DesmyTabLayout` Usage
+Make sure to add this code to the parent component in order to use the upload progress dialog:
+
+```javascript
+<DesmyUploadManager className={` font-poppinsRegular`} {...this.props} />
+```
+
+```javascript
+import { DesmyDataTable } from 'desmy-react';
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      database: [
+        { id: "name", readOnly: true },
+        { id: "description", readOnly: true },
+        { id: "total", readOnly: true },
+      ],
+      filter_column: { unique_field: "name" },
+      reader: {
+        sheet_name: `Sheet1`,
+        url: "api/endpoint_url_here", // https://example.com/1/
+        title: "Uploading Title",
+        template_url: "endpoint_url_here", // https://example.com/1/ to download excel template
+        token: DesmyAuth.get(DesmyState.ACCESS_TOKEN),
+        ui: {
+          icon: `/static/images/excel.png`,
+        },
+        key_name: "course_title", // excel column to display title when uploading
+      },
+      settings: {
+        pagination: {
+          per_page: 100,
+        },
+        deleteinfo: {
+          id: "name",
+        },
+        server_request: {
+          enable: false,
+          url: "",
+        },
+        char_limit: 100,
+        encrypt: true,
+        default_sorted_column: "name",
+        read_more_limit: 100,
+        headers: this.props.headers,
+        columns: [this.props.headers],
+        table_data: [{ name: "action", class: `w-24` }],
+      },
+    };
+  }
+
+  render() {
+    return (
+      <>
+        <DesmyModalContainer data={{ title: "Title Here" }} onClose={() => this.props.onClose()}>
+          <form className='flex flex-col w-full'>
+            <div className='w-full font-poppinsRegular '>
+              <div className='flex flex-col h-[calc(100vh-50px)] w-full'>
+                {
+                  !(DesmyCommons.isEmptyOrNull(this.props.content)) ?
+                    <div className="flex p-4 h-full font-poppinsRegular"><Create {...this.props} /></div>
+                    : <DesmyTabLayout tabs={[
+                      { label: 'Data Entry' },
+                      { label: 'Upload Excel' }
+                    ]}>
+                      <div className="flex p-4 h-full font-poppinsRegular"><Create {...this.props} /></div>
+                      <div className="p-4 h-full overflow-auto font-poppinsRegular">
+                        <div className='flex w-full'>
+                          <DesmySmartFormUpload reader={this.state.reader} settings={this.state.settings} database={this.state.database} filter_column={this.state.filter_column} {...this.props} />
+                        </div>
+                      </div>
+                    </DesmyTabLayout>
+                }
+              </div>
+            </div>
+          </form>
+        </DesmyModalContainer>
+      </>
+    );
+  }
+}
+```
+
+## `DesmyDataTable` Usage
+```javascript
+import { DesmyDataTable } from 'desmy-react';
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.customDatatableRef = React.createRef();
+    this.state = {
+      settings: {
+        pagination: {
+          per_page: 100,
+        },
+        header: {
+          title: "Title Here",
+        },
+        image: {
+          rounded: true,
+        },
+        deleteinfo: {
+          id: "id",
+          name: "name",
+        },
+        extra_handle: [
+          { icon: (
+            // SVG icon or icon here
+          ), name: "data" },
+        ],
+        handleOnClickExtra: this.handleOnClick,
+        handleEdit: this.handleEdit,
+        url: "endpoint_url_here", // https://example.com/1/
+        request_url: '/api/endpoint_here',
+        char_limit: 100,
+        encrypt: true,
+        default_sorted_column: "column here",
+        read_more_limit: 100,
+        headers: ['name', 'description'], // Table columns here
+        columns: ['id', 'name', 'description'], // Database columns
+        table_data: [{ name: "data", class: `w-24` }], // Format a column
+      },
+    };
+  }
+
+  // Refresh or retry loading datatable
+  handleOnSuccess = () => {
+    try {
+      this.setState({ show: false });
+      if (this.customDatatableRef.current) {
+        this.customDatatableRef.current.handleRetry();
+      }
+    } catch (e) {
+      // Handle errors
+    }
+  }
+
+  render() {
+    return (
+      <>
+        <DesmyDataTable settings={this.state.settings} onRef={ref => (this.customDatatableRef.current = ref)} />
+      </>
+    );
+  }
+}
+
+// Example of settings object structure
+const settings = {
+  pagination: {
+    per_page: 100, // Number of rows per page
+  },
+  header: {
+    title: "Title Here", // Title displayed at the top of the table
+  },
+  image: {
+    rounded: true, // Whether the images in the table should have rounded corners
+  },
+  deleteinfo: {
+    id: "id", // ID field used for deleting rows
+    name: "name", // Name field used for reference during deletion
+  },
+  extra_handle: [
+    { icon: (
+      // SVG icon or icon here
+    ), name: "data" },
+  ],
+  handleOnClickExtra: this.handleOnClick, // Function called on clicking extra handle
+  handleEdit: this.handleEdit, // Function called for editing a row
+  url: "endpoint_url_here", // URL for data requests
+  request_url: '/api/endpoint_here', // Endpoint for server requests
+  char_limit: 100, // Character limit for table data
+  encrypt: true, // Whether to encrypt data
+  default_sorted_column: "column here", // Default column to sort by
+  read_more_limit: 100, // Character limit before showing 'read more'
+  headers: ['name', 'description'], // Table headers
+  columns: ['id', 'name', 'description'], // Database columns
+  table_data: [{ name: "data", class: `w-24` }], // Custom formatting for table columns
+};
+```
+
+## `DesmyAuth` Usage
 
 A simple authentication utility for `managing sessions` and `data storage`.
 
 ```javascript
-import {DesmyAuth} from 'desmy-react';
+import { DesmyAuth } from 'desmy-react';
+
 // Example usage
-DesmyAuth.save('username', 'kekeli');// Save data
+DesmyAuth.save('username', 'kekeli'); // Save data
 DesmyAuth.get('username'); // Output: kekeli
-DesmyAuth.remove('username');// Remove data
-DesmyAuth.clear();// Clear all data
-DesmyAuth.logout();// Logout user
-const cookieValue = DesmyAuth.getCookie('session');// Get cookie value
+DesmyAuth.remove('username'); // Remove data
+DesmyAuth.clear(); // Clear all data
+DesmyAuth.logout(); // Logout user
+const cookieValue = DesmyAuth.getCookie('session'); // Get cookie value
 
 // Save list of data
 const dataList = [
   { key: 'username', value: 'kekeli' },
-  { key: 'email', value: 'robinsongbaya@desmydev.com' }
+  { key: 'email', value: 'robinsongbaya@desmydev.com' },
 ];
 
-auth.saveList(dataList, (success) => {
+DesmyAuth.saveList(dataList, (success) => {
   console.log('Data saved successfully:', success);
 });
 ```
 
-
-## `DesmyCommons` usage
+## `DesmyCommons` Usage
 
 A utility library for `common` JavaScript tasks.
 
 ```javascript
-import {DesmyCommons} from 'desmy-react';
+import { DesmyCommons } from 'desmy-react';
 
 // Example usage
 const fileSize = DesmyCommons.getFileSize(myFile);
