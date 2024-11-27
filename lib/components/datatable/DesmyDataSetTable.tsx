@@ -214,13 +214,14 @@ class DesmyDataSetTable extends Component<DesmyDataSetTableProps, DesmyCustomSta
     try {
       
       const entities = { ...this.state.entities };
-      if (!this.props.settings.server_request.enable) {
-        var dataset = this.props.data
-        entities.data.length = 0
-        if (this.hasClear) {
-          this.handleClear()
-        }
-        this.dataCollection = this.dataCollection.concat(dataset.data)
+      if (!this.props.settings.server_request?.enable) {
+          var dataset = this.props.data
+          entities.data.length = 0
+          if (this.hasClear) {
+            this.handleClear()
+          }
+        if(Commons.isEmptyOrNull(dataset?.data))
+          this.dataCollection = this.dataCollection.concat(dataset.data)
         this.hasClear = false
         entities['meta'] = dataset.meta
         this.setState({ isLoading: false, entities }, this.initialChunck)
@@ -247,6 +248,7 @@ class DesmyDataSetTable extends Component<DesmyDataSetTableProps, DesmyCustomSta
         this.handleError();
       }
     } catch (e) {
+      console.log(e)
       this.handleError();
     }
   }

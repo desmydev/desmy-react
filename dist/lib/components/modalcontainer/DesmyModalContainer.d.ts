@@ -6,6 +6,7 @@ interface ModalContainerProps {
     };
     onClose: () => void;
     className?: string;
+    backdropClass?: string;
     containerClassName?: string;
     children: ReactNode;
 }

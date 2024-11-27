@@ -8,6 +8,7 @@ interface ModalContainerProps {
   };
   onClose: () => void;
   className?:string;
+  backdropClass?:string,
   containerClassName?:string,
   children: ReactNode;
 }
@@ -40,6 +41,7 @@ class DesmyModalContainer extends Component<ModalContainerProps, ModalContainerS
         <MultiStepModal
           isOpen={this.state.isOpen}
           onClose={this.handleClose}
+          backdropClass={this.props.backdropClass}
           className={this.props.className}
         >
           <CSSTransition unmountOnExit={true} in={true} timeout={400} classNames="modal-content">
