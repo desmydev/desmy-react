@@ -508,8 +508,8 @@ handleOnSuccess=(index : number)=>{
           </div>
           <div className={`scrollable_table flex flex-col h-[calc(100vh-290px)] overflow-auto  scrollbar-width ${this.props.className}`} onScroll={this.handleScroll}>
               <div className='flex flex-col w-full'>
-                <div className='flex w-full'>
-                <table className='w-full'>
+                <div className='w-full overflow-x-auto'>
+                <table className='w-full whitespace-nowrap'>
                   <thead className=' w-full '>
                     <tr className="text-left text-sm w-full bg-white dark:bg-darkPrimary">{ this.tableHeads() }</tr>
                   </thead>

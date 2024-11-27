@@ -137,13 +137,17 @@ class ReadTable extends Component<ReadTableProps, ReadTableState> {
           handleOnLoaded={this.handleOnLoaded}
         >
           {stateDatalist.length > 0 ? (
-            stateDatalist.map((data, i) => (
+           stateDatalist.map((data, i) => {
+            const bg = i % 2 === 0 ? "dark:bg-[#1c1c1c] bg-[#f3f4f6] dark:hover:bg-white" : "bg-inherit";
+            return (
               <DesmyTableCard
                 data={data}
+                background={bg}
                 headers={headers}
                 key={`camp${data.id}${i}`}
               />
-            ))
+            );
+          })
           ) : loadState !== DesmyState.LOADING ? (
             <tr>
               <td colSpan={20}>

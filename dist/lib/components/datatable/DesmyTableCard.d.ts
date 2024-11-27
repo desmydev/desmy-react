@@ -3,6 +3,7 @@ import { Component } from 'react';
 interface Props {
     data?: Record<string, any>;
     url?: string;
+    background?: string;
     headers?: string[];
     isLoading?: boolean;
 }

@@ -32,7 +32,7 @@ class DesmyTabLayout extends Component<TabLayoutProps, TabLayoutState> {
     const { activeTabIndex } = this.state;
 
     return (
-      <div className="w-full mt-8">
+      <div className="w-full">
         <div className='flex flex-col w-full'>
         <div className="flex border-b border-gray-300">
           {tabs.map((tab, index) => (
@@ -42,8 +42,8 @@ class DesmyTabLayout extends Component<TabLayoutProps, TabLayoutState> {
               className={classNames(
                 'py-2 px-4 cursor-pointer text-sm font-medium focus:outline-none transition-all flex items-center',
                 {
-                  'border-b-2 border-blue-500 text-blue-500': activeTabIndex === index,
-                  'text-gray-600 hover:text-blue-500': activeTabIndex !== index,
+                  'border-b-2 border-blue-500 text-blue-500 dark:text-white dark:border-white': activeTabIndex === index,
+                  'text-gray-600 hover:text-blue-500 dark:hover:text-white': activeTabIndex !== index,
                 }
               )}
             >

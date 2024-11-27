@@ -11,7 +11,7 @@ interface Props {
     filter_column: {
         parent: string;
         custom: string;
-        unique_field: string;
+        unique_fields: string[];
     };
     [key: string]: any;
     settings: {

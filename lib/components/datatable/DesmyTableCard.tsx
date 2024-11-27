@@ -8,6 +8,7 @@ import DesmyAuth from '../apis/DesmyAuth';
 interface Props {
   data?: Record<string, any>;
   url?: string;
+  background?:string,
   headers?: string[];
   isLoading?: boolean;
 }
@@ -70,7 +71,6 @@ class DesmyTableCard extends Component<Props, State> {
 
       this.handleAlert(response.data.success ? DesmyState.SUCCESS : DesmyState.ERROR);
     } catch (error) {
-      console.error("Request failed:", error);
       this.handleAlert(DesmyState.ERROR);
     }
   };
@@ -87,9 +87,9 @@ class DesmyTableCard extends Component<Props, State> {
       const value = DesmyCommons.toStringDefault(data[field], "");
 
       return (
-        <td key={index} className="px-6 py-3">
+        <td key={index} className={`px-6 py-3 `}>
           {DesmyCommons.toString(field).toLowerCase() !== "action" ? (
-            value
+            <div className='w-full line-clamp-1' title={value}>{value}</div>
           ) : (
             <span className="flex w-full justify-center text-xs">
               {this.state.hasRequest ? (
@@ -146,7 +146,7 @@ class DesmyTableCard extends Component<Props, State> {
             <td>Loading...</td>
           </tr>
         ) : (
-          <tr className="text-sm cursor-pointer hover:bg-gray-200 dark:hover:bg-white">
+          <tr className={`text-sm cursor-pointer hover:bg-gray-200 dark:text-white dark:hover:bg-white dark:hover:text-black ${this.props.background} transition-all ease-in-out duration-150`}>
             {this.renderTableData()}
           </tr>
         )}

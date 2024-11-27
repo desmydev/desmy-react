@@ -13,7 +13,7 @@ interface Props {
   filter_column: {
     parent: string;
     custom: string;
-    unique_field: string;
+    unique_fields: string[];
   };
   [key: string]: any;
   settings: {
@@ -127,15 +127,17 @@ class DesmySmartFormUpload extends Component<Props, State> {
         rows = rows.slice(1); 
         
         const parentUnitIndex = headers.indexOf(this.props.filter_column.parent);
-        const uniqueFieldIndex = headers.indexOf(this.props.filter_column.unique_field);
+        const uniqueFieldIndices = this.props.filter_column.unique_fields.map(field => headers.indexOf(field));
         const parentData: { [key: string]: any } = {};
 
-        if (parentUnitIndex !== -1 && uniqueFieldIndex !== -1) {
+        if (parentUnitIndex !== -1 && uniqueFieldIndices.some(index => index !== -1)) {
             rows.forEach((row) => {
-                const uniqueFieldValue = DesmyCommons.toString(row[uniqueFieldIndex]).toLowerCase();
-                if (uniqueFieldValue) {
-                    parentData[uniqueFieldValue] = row;
-                }
+                uniqueFieldIndices.forEach(uniqueFieldIndex => {
+                  const uniqueFieldValue = DesmyCommons.toString(row[uniqueFieldIndex]).toLowerCase();
+                  if (uniqueFieldValue) {
+                      parentData[uniqueFieldValue] = row;
+                  }
+                });
             });
         }
         
@@ -170,9 +172,11 @@ class DesmySmartFormUpload extends Component<Props, State> {
               }
             }
             
-            if (rowData[this.props.filter_column.unique_field]) {
-              rowData.extra = `${rowData[this.props.filter_column.unique_field]}`;
-            }
+            uniqueFieldIndices.forEach(uniqueFieldIndex => {
+              if (rowData[headers[uniqueFieldIndex]]) {
+                rowData.extra = `${rowData[headers[uniqueFieldIndex]]}`;
+              }
+            });
 
             return rowData;
           })
@@ -183,17 +187,15 @@ class DesmySmartFormUpload extends Component<Props, State> {
             total: this.state.data.data.length + chunkData.length,
             to: this.state.data.data.length + chunkData.length,
           };
-
           const dataset = {
             ...this.state.data,
             data: [...this.state.data.data, ...chunkData],
             meta: newMeta,
           };
           this.setState({ filedata: [...this.state.filedata, ...currentChunk], data: dataset }, () => {
-            // Process the next chunk if there are rows left
             if (endIndex < rows.length) {
               startIndex = endIndex;
-              setTimeout(processChunk, 0); // Allow the event loop to process other tasks
+              setTimeout(processChunk, 0);
             }
           });
           

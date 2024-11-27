@@ -191,6 +191,7 @@ class DatatableModalHandler extends React.Component<Props, State> {
 interface DataTableProps {
   settings: {
     default_sorted_column: string;
+    onURLClick: (url :any)=>void,
     header: {
       title: string;
       class: string;
@@ -200,7 +201,7 @@ interface DataTableProps {
       name: string;
       id: string;
     };
-    
+    breadcrumb?: { name: string; url: string }[];
     request_url: string;
     handleOnViewClick: (user: any) => void;
     handleOnClickExtra: (user: any, name: string) => void;
@@ -266,6 +267,8 @@ interface DataTableState {
       class: string;
       hint: string;
     };
+
+    breadcrumb?: { name: string; url: string }[];
     headers:any[];
     columns: string[];
     table_data?: { name: string; class: string }[];
@@ -391,7 +394,6 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
         this.filterloaded = true;
       }
     } catch (e) {
-      console.error(e);
     }
   }
   
@@ -423,7 +425,6 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
       error["retry"] = retry
       this.setState({ isLoading: false, error, input });
     } catch (e) {
-      console.error(e);
     }
   }
 
@@ -491,7 +492,6 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
       
       this.setState({ isLoading: true, error: {}, custom_settings }, this.fetchEntities);
     } catch (e) {
-      console.error(e);
     }
   }
 
@@ -636,7 +636,6 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
       }
      })
     } catch (e) {
-      console.error(e);
     }
   }
   
@@ -646,7 +645,6 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
         this.handleSearhing();
       }
     } catch (e) {
-      console.error(e);
     }
   }
   loadNextBatch = () => {
@@ -694,7 +692,6 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
         }
       }
     } catch (e) {
-      console.error(e);
     }
   }
   
@@ -727,7 +724,6 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
       this.handleClear();
       this.setState({ filterhead: updatedFilters, filters: filter }, this.fetchEntities);
     } catch (e) {
-      console.error(e);
     }
   }
   
@@ -815,6 +811,39 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
   }
   handleEdit=(user: any)=>{
     this.props.settings.handleEdit(user)
+  }
+  handleBreadCrumbNavigations(e: React.MouseEvent, url: string) {
+    e.preventDefault();
+    this.props.settings.onURLClick(url)
+  }
+  renderBreadcrumb() {
+    const { breadcrumb } = this.state.settings;
+    if (!breadcrumb || breadcrumb.length === 0) {
+      return null;
+    }
+
+    return (
+      <nav className="flex text-sm mb-4" aria-label="Breadcrumb">
+        <ol className="inline-flex items-center space-x-1 md:space-x-3">
+          {breadcrumb.map((item, index) => (
+            <li key={index} className="inline-flex items-center">
+              {index !== breadcrumb.length - 1 ? (
+                <a href={item.url} onClick={(e)=>this.handleBreadCrumbNavigations(e,item.url)} className="text-gray-700 dark:text-white/75 dark:hover:text-blue-500 hover:text-blue-600">
+                  {item.name}
+                </a>
+              ) : (
+                <span className="text-gray-500 dark:text-white/75" aria-current="page">{item.name}</span>
+              )}
+              {index !== breadcrumb.length - 1 && (
+                <svg className="w-4 h-4 mx-2 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"></path>
+                </svg>
+              )}
+            </li>
+          ))}
+        </ol>
+      </nav>
+    );
   }
   render() {
     const { isFocused, searchText } = this.state;
@@ -910,6 +939,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
                     </div> : null
                   }
                 </div>
+                {this.renderBreadcrumb()}
                 <table>
                   <thead className='w-full'>
                     <tr className="text-sm">{ this.tableHeads() }</tr>

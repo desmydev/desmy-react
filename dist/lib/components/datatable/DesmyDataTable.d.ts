@@ -3,6 +3,7 @@ import { default as React, Component, ChangeEvent, ReactNode, KeyboardEvent } fr
 interface DataTableProps {
     settings: {
         default_sorted_column: string;
+        onURLClick: (url: any) => void;
         header: {
             title: string;
             class: string;
@@ -12,6 +13,10 @@ interface DataTableProps {
             name: string;
             id: string;
         };
+        breadcrumb?: {
+            name: string;
+            url: string;
+        }[];
         request_url: string;
         handleOnViewClick: (user: any) => void;
         handleOnClickExtra: (user: any, name: string) => void;
@@ -102,6 +107,10 @@ interface DataTableState {
             class: string;
             hint: string;
         };
+        breadcrumb?: {
+            name: string;
+            url: string;
+        }[];
         headers: any[];
         columns: string[];
         table_data?: {
@@ -186,6 +195,8 @@ declare class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     handleHint: () => string;
     handleOnSuccess: (index: number) => void;
     handleEdit: (user: any) => void;
+    handleBreadCrumbNavigations(e: React.MouseEvent, url: string): void;
+    renderBreadcrumb(): import("react/jsx-runtime").JSX.Element | null;
     render(): import("react/jsx-runtime").JSX.Element;
 }
 export { DesmyDataTable };

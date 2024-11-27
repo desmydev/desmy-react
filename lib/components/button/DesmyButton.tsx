@@ -9,6 +9,7 @@ interface DesmyButtonProps {
     label_request?: string;
     icon?: React.ReactNode;
     className? : string
+    labelClassName? : string
 }
 
 class DesmyButton extends React.Component<DesmyButtonProps> {
@@ -22,7 +23,7 @@ class DesmyButton extends React.Component<DesmyButtonProps> {
                 type="button"
                 onClick={this.props.onClick}
                 disabled={this.props.hasRequest}
-                className={`${(this.props.type ===DesmyState.SMALL) ? ` px-4 py-3 `:` px-6 py-4 `} justifiy-center items-center w-full md:w-auto bg-[#212174] hover:bg-[#212174]/75  text-white dark:bg-[#282828]  text-xs  dark:hover:bg-white dark:hover:text-black ${this.props.className}  font-poppinsRegular items-center   rounded-full cursor-pointer  transition duration-500 ease-in-out`}
+                className={`${(this.props.type ===DesmyState.SMALL) ? ` px-4 py-3 `:` px-5 py-3 `} justifiy-center items-center w-full md:w-auto bg-[#212174] hover:bg-[#212174]/75  text-white dark:bg-[#282828]  text-xs  dark:hover:bg-white dark:hover:text-black ${this.props.className}  font-poppinsRegular items-center   rounded-full cursor-pointer  transition duration-500 ease-in-out`}
             >
                 {this.props.hasRequest ? (
                     <div className="flex items-center">
@@ -42,12 +43,12 @@ class DesmyButton extends React.Component<DesmyButtonProps> {
                                 fill="currentColor"
                             />
                         </svg>
-                        <span>{this.props.label_request}...</span>
+                        <span className='hidden lg:flex'>{this.props.label_request}...</span>
                     </div>
                 ) : (
                     <div className="flex justify-center items-center">
                         {this.props.icon}
-                        <span>{this.props.label}</span>
+                        <span className={this.props.labelClassName}>{this.props.label}</span>
                     </div>
                 )}
             </button>

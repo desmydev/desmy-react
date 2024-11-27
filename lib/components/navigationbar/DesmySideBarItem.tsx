@@ -41,14 +41,14 @@ class DesmySideBarItem extends Component<DesmySideBarItemProps, DesmySideBarItem
   }
 
   componentDidUpdate(prevProps: DesmySideBarItemProps) {
-    if (this.props.location.pathname !== prevProps.location.pathname) {
+    if (this.props.location?.pathname !== prevProps.location?.pathname) {
       this.toggleMenuRequest();
     }
   }
 
   toggleMenuRequest = () => {
     const { location, exact, pattern } = this.props;
-    const path = location.pathname || '';
+    const path = location?.pathname || '';
     
     const patterns = Array.isArray(pattern) ? pattern : (pattern ? [pattern] : []);
   
@@ -99,12 +99,13 @@ class DesmySideBarItem extends Component<DesmySideBarItemProps, DesmySideBarItem
       <div className='flex flex-col w-full'>
         <a
           onClick={this.handleOnClick}
+          title={this.props.name}
           className={`flex space-x-3 text-xs font-poppinsRegular ${this.props.className ?? `text-black dark:text-white hover:bg-primary/75 dark:hover:bg-white dark:hover:text-black hover:text-white`}  py-2 px-4 items-center rounded transition duration-200 hover:bg-gradient-to-r  ${this.state.is_active ? 'dark:text-white bg-gray-200 dark:bg-darkBackground font-poppinsSemiBold' : 'dark:text-white'}`}
           href={this.props.url}
         >
           <div className='w-6 h-6 flex-shrink-0'>{this.props.icon}</div>
           <div className='flex w-full justify-between'>
-            <div>{this.props.name}</div>
+            <div className=' text-* w-full line-clamp-1'>{this.props.name}</div>
             {this.props.items && (
               <svg
                 className={`ml-2 h-4 w-4 flex-shrink-0 transition-transform ${isOpen ? 'rotate-180' : 'rotate-0'}`}
@@ -119,14 +120,14 @@ class DesmySideBarItem extends Component<DesmySideBarItemProps, DesmySideBarItem
             )}
           </div>
         </a>
-        <div className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'} flex flex-col ml-10 text-xs font-poppinsRegular`}>
+        <div className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'} flex flex-col ml-10 font-poppinsRegular`}>
         {this.props.items?.map((data, index) => (
             data.has_permission && ( 
               <a
                 key={`fte${index}`}
                 onClick={(e) => this.handleOnChildClick(e, data)}
                 href={data.url}
-                className="flex py-2 px-2.5 mb-2"
+                className="flex py-2 px-2.5 mb-2 text-xs"
               >
                 <span>{data.label}</span>
               </a>

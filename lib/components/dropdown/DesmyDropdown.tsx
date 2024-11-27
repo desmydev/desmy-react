@@ -452,7 +452,7 @@ class DesmyDropdown extends Component<Props, State> {
           <>
        
         <DesmyClickOutsideListener onClickOutside={this.handleClickAway}>
-           <div className={`flex flex-col w-full relative ${(this.props.containerClassName !=undefined) ? this.props.containerClassName :`bg-white dark:bg-darkBackground`}`}  ref={this.divRef} >
+           <div className={`flex flex-col w-full relative ${(this.props.containerClassName !=undefined) ? this.props.containerClassName :`bg-white dark:bg-darkBackground dark:text-white`}`}  ref={this.divRef} >
             <div className={`relative w-full h-12 border font-poppinsRegular bg-inherit border-black  dark:border-white  `}>
                     <div className='relative h-full w-full text-sm bg-inherit' ref={this.btnDropdownRef} onClick={() => { this.openDropdownPopover()}}>
                         <div className={`absolute left-1.5  ${ ((this.props.placeholder != undefined && (this.state.selectedList.name != null || this.state.selectedMultiple.length > 0) || ((this.props.all !== undefined && this.state.selectedAll))) ) ? `-top-2.5  text-xs`:` text-sm top-2.5`} px-2 bg-inherit transition-all`}>{this.props.placeholder}</div>

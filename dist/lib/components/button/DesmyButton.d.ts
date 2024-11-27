@@ -8,6 +8,7 @@ interface DesmyButtonProps {
     label_request?: string;
     icon?: React.ReactNode;
     className?: string;
+    labelClassName?: string;
 }
 declare class DesmyButton extends React.Component<DesmyButtonProps> {
     constructor(props: DesmyButtonProps);

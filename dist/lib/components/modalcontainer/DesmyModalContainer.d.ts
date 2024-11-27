@@ -5,10 +5,12 @@ interface ModalContainerProps {
         title: string;
     };
     onClose: () => void;
+    className?: string;
+    containerClassName?: string;
     children: ReactNode;
 }
 interface ModalContainerState {
-    modal: ReactNode | null;
+    isOpen: boolean;
 }
 declare class DesmyModalContainer extends Component<ModalContainerProps, ModalContainerState> {
     constructor(props: ModalContainerProps);

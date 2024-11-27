@@ -148,7 +148,7 @@ class UploadManager extends Component<UploadManagerProps, UploadManagerState> {
     return (
       <CSSTransition in={true} appear={true} timeout={500} classNames="fade">
         <div className="my-5">
-          <div className="bg-white relative border shadow-md inset-1 rounded-lg p-6 w-full max-w-md">
+          <div className="bg-white dark:bg-darkDialogBackground dark:text-white relative border shadow-md inset-1 rounded-lg p-6 w-full max-w-md">
             <svg
               onClick={this.cancelUpload}
               viewBox="0 0 512 512"
@@ -161,13 +161,13 @@ class UploadManager extends Component<UploadManagerProps, UploadManagerState> {
             <h2 className="w-full line-clamp-1 text-lg font-semibold mb-4">
               {data?.title ?? 'Upload Progress'}
             </h2>
-            <div className={`w-full ${error ? 'bg-red-100' : 'bg-gray-200'} rounded-full h-2 mb-4`}>
+            <div className={`w-full ${error ? 'bg-red-100 dark:bg-red-300' : 'bg-gray-200 dark:bg-darkBackground'} rounded-full h-2 mb-4`}>
               <div
-                className={`h-2 rounded-full ${error ? 'bg-red-500' : 'bg-blue-500'}`}
+                className={`h-2 rounded-full transition-all ease-in-out duration-150 ${error ? 'bg-red-500 dark:bg-red-600' : 'bg-blue-500 dark:bg-white'}`}
                 style={{ width: `${progress}%` }}
               ></div>
             </div>
-            <div className={`${error ? 'text-red-500' : 'text-gray-700'} space-y-1`}>
+            <div className={`${error ? 'text-red-500' : 'text-gray-700 dark:text-white'} space-y-1`}>
               <div className="flex w-full justify-between items-center text-xs">
                 <div>{currentUploadName}</div>
                 <div className="font-bold">({currentIndex + 1}/{totalDatalist})</div>
@@ -195,7 +195,7 @@ class UploadManager extends Component<UploadManagerProps, UploadManagerState> {
               ) : (
                 !uploading && (
                   <button
-                    className="text-xs bg-blue-300 text-blue-600 px-5 py-3 rounded-full cursor-pointer hover:bg-blue-600 hover:text-white mr-2"
+                    className="text-xs bg-blue-300 text-blue-600 dark:bg-white dark:text-black dark:hover:bg-white px-5 py-3 rounded-full cursor-pointer hover:bg-blue-600 hover:text-white mr-2"
                     onClick={this.startUpload}
                   >
                     Start Upload

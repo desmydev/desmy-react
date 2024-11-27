@@ -74,7 +74,7 @@ class DesmyUploadManager extends Component<HomeProps, HomeState> {
     return (
       <div
         ref={this.modalContainerRef}
-        className={`fixed right-2 bottom-6 z-[10000] w-full md:w-[500px] lg:w-[500px] max-h-[90vh] overflow-y-auto ${className}`}
+        className={`fixed right-2 bottom-6 z-[10000] w-full md:w-[500px] lg:w-[500px] max-h-[90vh]  overflow-y-auto ${className}`}
         style={{ scrollbarWidth: 'thin', scrollbarColor: '#888 #f5f5f5' }}
       >
         {modals.map((modal) => (
