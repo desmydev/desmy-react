@@ -48,6 +48,7 @@ interface DataTableProps {
         url: string;
         handleEdit: (user: any) => void;
     };
+    className?: string;
     onRef?: (ref: DesmyDataTable | null) => void;
 }
 interface DataTableState {

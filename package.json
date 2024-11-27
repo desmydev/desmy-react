@@ -2,7 +2,7 @@
   "name": "desmy-react",
   "description": "Introducing an easy-to-use, lightning-fast React.js component that streamlines your development process. Our solution prioritizes simplicity, speed, and optimization, making it a breeze to build projects in React.",
   "private": false,
-  "version": "1.4.5",
+  "version": "1.4.6",
   "author": "Desmond Charles Boamah",
   "license": "MIT",
   "type": "module",

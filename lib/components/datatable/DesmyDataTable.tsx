@@ -221,6 +221,7 @@ interface DataTableProps {
     url: string;
     handleEdit: (user: any) => void;
   };
+  className?:string,
   onRef?: (ref: DesmyDataTable | null) => void;
 }
 
@@ -851,7 +852,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     return (
       <>
         {this.state.dtablemodal}
-        <div className={`flex flex-col w-full`}>
+        <div className={`flex flex-col w-full ${this.props.className}`}>
               <div className='flex flex-col w-full mb-5'>
                   <header className="flex w-full flex-col lg:flex-row justify-start lg:justify-between items-center space-x-6">
                     <div className="flex flex-col w-full ">

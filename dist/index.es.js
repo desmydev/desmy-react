@@ -7396,7 +7396,7 @@ class ky extends ge {
     const { isFocused: t, searchText: n } = this.state, i = t && n !== "";
     return /* @__PURE__ */ u.jsxs(u.Fragment, { children: [
       this.state.dtablemodal,
-      /* @__PURE__ */ u.jsxs("div", { className: "flex flex-col w-full", children: [
+      /* @__PURE__ */ u.jsxs("div", { className: `flex flex-col w-full ${this.props.className}`, children: [
         /* @__PURE__ */ u.jsx("div", { className: "flex flex-col w-full mb-5", children: /* @__PURE__ */ u.jsxs("header", { className: "flex w-full flex-col lg:flex-row justify-start lg:justify-between items-center space-x-6", children: [
           /* @__PURE__ */ u.jsx("div", { className: "flex flex-col w-full ", children: this.state.settings.header !== void 0 ? /* @__PURE__ */ u.jsxs("div", { className: "flex w-full flex-col", children: [
             /* @__PURE__ */ u.jsx("h3", { className: `${this.state.settings.header !== void 0 ? R.isEmptyOrNull(this.state.settings.header.class) ? " text-grey-darkest uppercase text-3xl 2xl:text-5xl dark:text-white font-poppinsBlack" : this.state.settings.header.class : ""}`, children: this.state.settings.header.title }),
