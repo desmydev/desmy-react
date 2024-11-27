@@ -7,7 +7,7 @@ type PermissionGroup = {
 };
 declare class DesmyPermissions {
     constructor();
-    hasGrantedPermissions: (permissions: PermissionGroup[] | undefined, granted: string[], has_access: boolean) => boolean;
+    hasGrantedPermissions: (permissions: PermissionGroup[] | undefined, granted: string[], _has_access: boolean) => boolean;
     hasUserGrantedPermissions: (user: any, granted: string[], checkHasAccess?: boolean) => boolean;
     hasGrantedPermissionGroup: (permissions: PermissionGroup[] | undefined, groups: string[]) => boolean;
     hasUserGrantedPermissionGroup: (user: any, groups: string[], checkHasAccess?: boolean) => boolean;

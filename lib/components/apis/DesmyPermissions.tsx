@@ -15,10 +15,9 @@ type Permission = {
     hasGrantedPermissions = (
         permissions: PermissionGroup[] | undefined,
         granted: string[],
-        has_access : boolean
+        _has_access : boolean
       ): boolean => {
         if (!permissions || !granted.length) return false;
-        console.log(has_access)
         return permissions.some((permissionGroup) =>
           permissionGroup.permissions.some(({ name }) =>
             granted.some((grantedPermission) =>
@@ -35,7 +34,7 @@ type Permission = {
         
         if(!checkHasAccess) return false
 
-        if (user.has_access && checkHasAccess) return true;
+        if (user?.has_access && checkHasAccess) return true;
         const permissions = user.groups;
       
         if (DesmyCommons.isEmptyOrNull(permissions) || DesmyCommons.isEmptyOrNull(granted)) return false;
@@ -68,7 +67,7 @@ type Permission = {
         checkHasAccess:boolean=true
     ): boolean => {
       
-        if (user.has_access && checkHasAccess) return true;
+        if (user?.has_access && checkHasAccess) return true;
         const permissions = user.groups;
     
         if (DesmyCommons.isEmptyOrNull(permissions) || DesmyCommons.isEmptyOrNull(groups)) return false;
