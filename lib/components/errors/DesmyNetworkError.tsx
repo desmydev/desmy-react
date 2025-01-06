@@ -37,7 +37,7 @@ class DesmyNetworkError extends Component<NetworkErrorProps, NetworkErrorState> 
           </div>
           <div className='flex w-full justify-center items-center space-x-4'>
             {
-              (this.props.onRetry !=undefined) ? <div className='bg-primary text-white px-6 py-3 rounded-full text-xs uppercase cursor-pointer border hover:border-black hover:bg-white hover:text-black transition-all' onClick={this.props.onRetry}>Retry</div> :null
+              (this.props.onRetry !=undefined) ? <div className='bg-primary text-white px-6 py-3 rounded-full text-xs uppercase cursor-pointer border hover:border-black dark:bg-darkDialogBackground hover:bg-white hover:text-black transition-all' onClick={this.props.onRetry}>Retry</div> :null
             }
             {
               (this.props.onCancel !=undefined) ?   <div className='bg-red-500 text-white px-6 py-3 border border-red-500 rounded-full text-xs uppercase cursor-pointer hover:bg-red-700 hover:border-red-700 transition-all' onClick={this.props.onCancel}>Cancel</div>:null

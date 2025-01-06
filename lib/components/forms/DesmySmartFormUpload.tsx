@@ -118,36 +118,46 @@ class DesmySmartFormUpload extends Component<Props, State> {
     try {
       const { database } = this.props;
       const file = event.target.files?.[0];
-
+  
       if (!file) return;
-      readXlsxFile(file, { sheet: this.props.reader.sheet_name }).then((rows : Row[]) => {
+  
+      readXlsxFile(file, { sheet: this.props.reader.sheet_name }).then((rows: Row[]) => {
         if (rows.length === 0) return;
-        
-        const headers = rows[0].map((header)=>(`${header}`).toLowerCase().replace(/\s+/g, '_'))
-        rows = rows.slice(1); 
-        
+  
+        const headers = rows[0].map((header) =>
+          `${header}`.toLowerCase().replace(/\s+/g, '_')
+        );
+        rows = rows.slice(1);
+  
         const parentUnitIndex = headers.indexOf(this.props.filter_column.parent);
-        const uniqueFieldIndices = this.props.filter_column.unique_fields.map(field => headers.indexOf(field));
+        const uniqueFieldIndices = this.props.filter_column.unique_fields
+          ? this.props.filter_column.unique_fields.map((field) =>
+              headers.indexOf(field)
+            )
+          : [];
+  
         const parentData: { [key: string]: any } = {};
-
-        if (parentUnitIndex !== -1 && uniqueFieldIndices.some(index => index !== -1)) {
-            rows.forEach((row) => {
-                uniqueFieldIndices.forEach(uniqueFieldIndex => {
-                  const uniqueFieldValue = DesmyCommons.toString(row[uniqueFieldIndex]).toLowerCase();
-                  if (uniqueFieldValue) {
-                      parentData[uniqueFieldValue] = row;
-                  }
-                });
+  
+        if (parentUnitIndex !== -1 && uniqueFieldIndices.some((index) => index !== -1)) {
+          rows.forEach((row) => {
+            uniqueFieldIndices.forEach((uniqueFieldIndex) => {
+              const uniqueFieldValue = DesmyCommons.toString(
+                row[uniqueFieldIndex]
+              ).toLowerCase();
+              if (uniqueFieldValue) {
+                parentData[uniqueFieldValue] = row;
+              }
             });
+          });
         }
-        
-        let chunkSize = 100; 
+  
+        let chunkSize = 100;
         let startIndex = 0;
-
-        const processChunk = async() => {
+  
+        const processChunk = async () => {
           const endIndex = Math.min(startIndex + chunkSize, rows.length);
           const currentChunk = rows.slice(startIndex, endIndex);
-
+  
           const chunkData = currentChunk.map((row) => {
             const rowData: Record<string, any> = {};
             headers.forEach((header, index) => {
@@ -158,9 +168,12 @@ class DesmySmartFormUpload extends Component<Props, State> {
             });
 
             if (!DesmyCommons.isEmptyOrNull(rowData?.parent_unit)) {
-              const parentCode = DesmyCommons.toStringDefault(row[parentUnitIndex], '').toLowerCase();
+              const parentCode = DesmyCommons.toStringDefault(
+                row[parentUnitIndex],
+                ''
+              ).toLowerCase();
               const foundParent = parentData[parentCode];
-
+  
               if (foundParent) {
                 const parentObject: { [key: string]: any } = {};
                 headers.forEach((header, index) => {
@@ -168,45 +181,54 @@ class DesmySmartFormUpload extends Component<Props, State> {
                     parentObject[header] = foundParent[index];
                   }
                 });
-                rowData[this.props.filter_column.custom] = JSON.stringify(parentObject);
+                rowData[this.props.filter_column.custom] = JSON.stringify(
+                  parentObject
+                );
               }
             }
-            
-            uniqueFieldIndices.forEach(uniqueFieldIndex => {
-              if (rowData[headers[uniqueFieldIndex]]) {
-                rowData.extra = `${rowData[headers[uniqueFieldIndex]]}`;
-              }
-            });
-
+            if (uniqueFieldIndices.length > 0) {
+              uniqueFieldIndices.forEach((uniqueFieldIndex) => {
+                if (rowData[headers[uniqueFieldIndex]]) {
+                  rowData.extra = `${rowData[headers[uniqueFieldIndex]]}`;
+                }
+              });
+            }
             return rowData;
-          })
-
+          });
+  
           const newMeta = {
             ...this.state.data.meta,
             count: this.state.data.data.length + chunkData.length,
             total: this.state.data.data.length + chunkData.length,
             to: this.state.data.data.length + chunkData.length,
           };
+  
           const dataset = {
             ...this.state.data,
             data: [...this.state.data.data, ...chunkData],
             meta: newMeta,
           };
-          this.setState({ filedata: [...this.state.filedata, ...currentChunk], data: dataset }, () => {
-            if (endIndex < rows.length) {
-              startIndex = endIndex;
-              setTimeout(processChunk, 0);
+  
+          this.setState(
+            {
+              filedata: [...this.state.filedata, ...currentChunk],
+              data: dataset,
+            },
+            () => {
+              if (endIndex < rows.length) {
+                startIndex = endIndex;
+                setTimeout(processChunk, 0);
+              }
             }
-          });
-          
-        }
+          );
+        };
         processChunk();
-      })
-      
+      });
     } catch (e) {
       console.error(e);
     }
   };
+  ;
 
   render() {
     const databaseIds = this.props.database.map((column) => column.id);
@@ -219,7 +241,7 @@ class DesmySmartFormUpload extends Component<Props, State> {
             <div className='flex flex-col h-full w-full'>
               {this.state.data.data.length === 0 ? (
                 <div className='w-full  my-16 space-y-4'>
-                  <div className={`bg-gray-200 dark:bg-darkPrimary rounded-lg w-full max-w-xl  mx-auto shadow-sm h-80 cursor-pointer relative overflow-hidden group`}>
+                  <div className={`bg-gray-200 dark:bg-darkPrimary rounded-lg w-full max-w-lg  mx-auto shadow-sm h-60 cursor-pointer relative overflow-hidden group`}>
                     <input
                       type="file"
                       disabled={this.state.hasRequest}
@@ -240,9 +262,9 @@ class DesmySmartFormUpload extends Component<Props, State> {
                   </div>
                   {
                     !(DesmyCommons.isEmptyOrNull(this.props.reader.template_url)) ? 
-                      <div className={` w-full max-w-xl mx-auto`}>
+                      <div className={` w-full max-w-lg mx-auto`}>
                         <div className='flex w-full justify-end'>
-                          <a href={`${this.props.reader.template_url}`} target='_blank' className='uppercase text-xs bg-green-700 text-white px-4 py-3 rounded-full cursor-pointer'>
+                          <a href={`${this.props.reader.template_url}`} target='_blank' className='uppercase text-xs bg-green-700 text-white px-4 py-2.5 rounded-full cursor-pointer'>
                             Download Template
                           </a>
                         </div>

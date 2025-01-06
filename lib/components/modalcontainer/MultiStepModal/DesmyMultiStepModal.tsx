@@ -9,13 +9,13 @@ interface MultiStepModalProps {
   onClose?: () => void;
 }
 
-const MultiStepModal: React.FC<MultiStepModalProps> = (props) => {
+const DesmyMultiStepModal: React.FC<MultiStepModalProps> = (props) => {
   const { className = "", isOpen, backdropClass = "", children } = props;
 
   return (
     <div className='flex w-full'>
-      <div className={`${isOpen ? `backdrop h-full bg-black bg-opacity-25 w-full ${backdropClass}` : "close-backdrop"}`}></div>
-      <div className={`multi-step-modal-cover ${className} ${isOpen ? "open_modal" : "close_modal"}`}>
+      <div className={`${isOpen ? `backdrop h-full w-full ${backdropClass}` : "close-backdrop"}`}></div>
+      <div className={`multi-step-modal-cover  p-2 max-w-7xl ${className} ${isOpen ? "open_modal" : "close_modal"}`}>
         <div>
           {children}
         </div>
@@ -24,4 +24,4 @@ const MultiStepModal: React.FC<MultiStepModalProps> = (props) => {
   );
 };
 
-export default MultiStepModal;
+export {DesmyMultiStepModal};

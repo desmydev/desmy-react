@@ -28,6 +28,7 @@ interface ReadTableProps {
     reader: {
         sheet_name: string;
         url?: string;
+        complete_url?: string;
         title?: string;
         token?: string;
         template_url?: string;

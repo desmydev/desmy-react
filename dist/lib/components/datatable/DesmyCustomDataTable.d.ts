@@ -5,6 +5,7 @@ interface DesmyCustomDataTableProps {
     onRef?: (instance: DesmyCustomDataTable) => void;
     className?: string;
     children?: React.ReactNode;
+    content?: React.ReactNode;
     settings: {
         url: string;
         default_sorted_column: string;
@@ -28,6 +29,8 @@ interface DesmyCustomDataTableProps {
     handleOnLoaded: (data: any[], state: CommonState, message?: string) => void;
 }
 interface DesmyCustomState {
+    isFocused?: boolean;
+    searchText?: string;
     selected: number;
     isLoading: boolean;
     input: {
@@ -109,9 +112,11 @@ declare class DesmyCustomDataTable extends Component<DesmyCustomDataTableProps, 
     handleOnSuccess: (index: number) => void;
     loadNextBatch: () => void;
     renderChunk(): void;
+    handleFocus: () => void;
+    handleBlur: () => void;
     onChangeValue: (event: React.ChangeEvent<HTMLInputElement>) => void;
     handleKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-    handleSearching: () => void;
+    handleSearching(): void;
     handleHint: () => string;
     render(): import("react/jsx-runtime").JSX.Element;
 }

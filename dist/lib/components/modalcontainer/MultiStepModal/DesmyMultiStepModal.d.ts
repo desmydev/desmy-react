@@ -7,5 +7,5 @@ interface MultiStepModalProps {
     children: React.ReactNode;
     onClose?: () => void;
 }
-declare const MultiStepModal: React.FC<MultiStepModalProps>;
-export default MultiStepModal;
+declare const DesmyMultiStepModal: React.FC<MultiStepModalProps>;
+export { DesmyMultiStepModal };

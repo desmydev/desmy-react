@@ -34,6 +34,7 @@ interface Settings {
 
 interface Props {
   settings: Partial<Settings>;
+
   onClose: (data: any) => void;
 }
 
@@ -221,6 +222,7 @@ interface DataTableProps {
     url: string;
     handleEdit: (user: any) => void;
   };
+  content?: React.ReactNode; 
   className?:string,
   onRef?: (ref: DesmyDataTable | null) => void;
 }
@@ -633,7 +635,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
       
      this.setState({searchText:event.target.value},()=>{
       if (Commons.isEmptyOrNull(this.search) && !this.state.input.is_searching) {
-        this.handleSearhing();
+        this.handleSearching();
       }
      })
     } catch (e) {
@@ -643,7 +645,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
   handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     try {
       if ((e.key === 'Enter') && !Commons.isEmptyOrNull(this.search)) {
-        this.handleSearhing();
+        this.handleSearching();
       }
     } catch (e) {
     }
@@ -696,7 +698,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     }
   }
   
-  handleSearhing(){
+  handleSearching(){
     let custom_settings = this.state.custom_settings
     let input = this.state.input
     custom_settings['current_page'] = 1
@@ -864,7 +866,8 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
                             </h3>
                             <div className="text-grey font-thin text-xs 2xl:text-sm dark:text-white">
                               {this.handleHint()}
-                            </div>        
+                            </div>  
+                               
                           </div>
                         : null
                       }
@@ -914,7 +917,12 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
                       </div>
                     </div>
                   </header>
-                  
+                  {
+                    (this.props.content != null) ? 
+                      <div>{this.props.content}</div>
+                    :null
+                  }
+                               
               </div>
               <div>
                 

@@ -48,6 +48,7 @@ interface DataTableProps {
         url: string;
         handleEdit: (user: any) => void;
     };
+    content?: React.ReactNode;
     className?: string;
     onRef?: (ref: DesmyDataTable | null) => void;
 }
@@ -189,7 +190,7 @@ declare class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     handleKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
     loadNextBatch: () => void;
     renderChunk(): void;
-    handleSearhing(): void;
+    handleSearching(): void;
     removeFilterByName: (data: string) => void;
     handleFiltered: () => void;
     handleRetry: () => void;

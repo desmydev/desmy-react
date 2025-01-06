@@ -6,10 +6,12 @@ import { default as DesmyPermissions } from './components/apis/DesmyPermissions'
 import { DesmyRouter } from './components/apis/DesmyRouter';
 import { DesmyLazyloading } from './components/apis/DesmyLazyloading';
 import { DesmyState } from './components/apis/DesmyState';
+import { DesmyMultiStepModal } from './components/modalcontainer/MultiStepModal/DesmyMultiStepModal';
 import { DesmyClickOutsideListener } from './components/clickoutsidelistener/DesmyClickOutsideListener';
 import { DesmyDropdown } from './components/dropdown/DesmyDropdown';
 import { DesmyModalContainer } from './components/modalcontainer/DesmyModalContainer';
 import { DesmyTextInput } from './components/input/DesmyTextInput';
+import { DesmySearchInput } from './components/input/DesmySearchInput';
 import { DesmySideBarItem } from './components/navigationbar/DesmySideBarItem';
 import { DesmyDataTable } from './components/datatable/DesmyDataTable';
 import { DesmyDataSetTable } from './components/datatable/DesmyDataSetTable';
@@ -31,5 +33,6 @@ import { DesmyTabLayout } from './components/tablayout/DesmyTabLayout';
 import { DesmyUploadManager } from './components/uploads/DesmyUploadManager';
 import { DesmySmartFormUpload } from './components/forms/DesmySmartFormUpload';
 import { DesmyPassportPicker } from './components/filepicker/DesmyPassportPicker';
+import { DesmyDatePicker } from './components/datepicker/DesmyDatePicker';
 
-export { DesmyState, DesmyHelmetSEO, DesmyPermissions, DesmyLazyloading, DesmyToast, DesmyToastProvider, DesmyRouter, DesmyDropdown, DesmyModalHandler, DesmyModalContainer, DesmyModalWrapper, DesmyClickOutsideListener, DesmyAuth, DesmyCommons, DesmyAccordion, DesmyTextInput, DesmyDataTable, DesmyDataSetTable, DesmyCustomDataTable, DesmyReadMoreOrLess, DesmyTabLayout, DesmyButton, DesmyPopupMenu, DesmyFilePicker, DesmyListCard, DesmyEmpty, DesmyNetworkError, DesmyRxServices, DesmyTableCard, DesmySideBarItem, DesmyUploadManager, DesmySmartFormUpload, DesmyPassportPicker };
+export { DesmyState, DesmyHelmetSEO, DesmyPermissions, DesmyLazyloading, DesmyToast, DesmyToastProvider, DesmyRouter, DesmyDropdown, DesmyModalHandler, DesmyModalContainer, DesmyModalWrapper, DesmyClickOutsideListener, DesmyAuth, DesmyCommons, DesmyAccordion, DesmyTextInput, DesmySearchInput, DesmyDataTable, DesmyDataSetTable, DesmyCustomDataTable, DesmyReadMoreOrLess, DesmyTabLayout, DesmyButton, DesmyPopupMenu, DesmyFilePicker, DesmyListCard, DesmyEmpty, DesmyNetworkError, DesmyRxServices, DesmyTableCard, DesmySideBarItem, DesmyUploadManager, DesmySmartFormUpload, DesmyPassportPicker, DesmyMultiStepModal, DesmyDatePicker };

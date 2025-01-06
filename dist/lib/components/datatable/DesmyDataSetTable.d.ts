@@ -29,9 +29,12 @@ interface DesmyDataSetTableProps {
         columns: any[];
         table_data: any[];
     };
+    content?: React.ReactNode;
     handleOnLoaded: (data: any[], state: CommonState) => void;
 }
 interface DesmyCustomState {
+    isFocused?: boolean;
+    searchText?: string;
     dtablemodal: React.ReactNode | null;
     hasRequest: boolean;
     exceptionalColumns: string[];
@@ -99,6 +102,7 @@ interface DesmyCustomState {
         message?: string;
         type?: string;
         color?: string;
+        retry?: boolean;
     };
     alerterror: {
         state: boolean;
@@ -137,9 +141,11 @@ declare class DesmyDataSetTable extends Component<DesmyDataSetTableProps, DesmyC
     handleOnSuccess: (index: number) => void;
     loadNextBatch: () => void;
     renderChunk(): void;
+    handleFocus: () => void;
+    handleBlur: () => void;
     onChangeValue: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    handleSearching(): void;
     handleKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-    handleSearching: () => void;
     columnHead(value: string): string;
     sortByColumn(column: string): void;
     tableHeads: () => ReactNode[];

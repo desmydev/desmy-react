@@ -5,6 +5,7 @@ interface UploadManagerProps {
     data: {
         datalist: Record<string, any>[];
         url: string;
+        complete_url?: string;
         token: string;
         key_name?: string;
         title?: string;
@@ -23,6 +24,7 @@ declare class UploadManager extends Component<UploadManagerProps, UploadManagerS
     constructor(props: UploadManagerProps);
     componentDidMount(): void;
     startUpload: () => void;
+    completeUpload: () => Promise<void>;
     uploadNext: () => Promise<void>;
     resumeUpload: () => void;
     cancelUpload: () => void;

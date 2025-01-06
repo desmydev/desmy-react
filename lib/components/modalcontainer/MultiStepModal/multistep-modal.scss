@@ -9,6 +9,10 @@
     bottom:0px;
     z-index: 1000;
     transition: all .4s ease;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.modalcontainer{
+    margin-top: 10%;
 }
 .multi-step-modal-cover {
     /* display: none; */
@@ -16,7 +20,10 @@
     border-radius: 10px;
     position: fixed;
     transition: all .4s ease;
-    top: 10%;
+    top:0px;
+    left:0px;
+    right:0px;
+    bottom:0px;
     z-index: 1000;
 
 

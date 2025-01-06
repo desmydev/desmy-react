@@ -7,6 +7,7 @@ interface UploadManagerProps {
   data: {
     datalist: Record<string, any>[];
     url: string;
+    complete_url?:string;
     token: string;
     key_name?: string;
     title?: string;
@@ -45,7 +46,28 @@ class UploadManager extends Component<UploadManagerProps, UploadManagerState> {
       this.uploadNext();
     });
   };
-
+  completeUpload = async () => {
+    const { data } = this.props;
+  
+    try {
+      const response = await axios.post(`${data?.complete_url}`, null, {
+        headers: {
+          'X-CSRFToken': `${DesmyAuth.getCookie('csrftoken')}`,
+          'Authorization': `Token ${this.props.data?.token}`,
+        },
+      });
+  
+      if (response.data.success) {
+        console.log('Upload process completed successfully.');
+        this.props.onClose(); 
+      } else {
+        this.setState({ error: true, errorMessage: response.data.message });
+      }
+    } catch (error) {
+      this.setState({ error: true, errorMessage: 'Completion request failed' });
+    }
+  };
+  
   uploadNext = async () => {
     const { data } = this.props;
     const dataList = data?.datalist;
@@ -53,7 +75,11 @@ class UploadManager extends Component<UploadManagerProps, UploadManagerState> {
 
     if (currentIndex >= dataList.length) {
       this.setState({ uploading: false }, () => {
-        this.props.onClose(); // Close dialog when all uploads are done
+        if(this.props.data?.complete_url !=null ){
+          this.completeUpload();
+        }else{
+          this.props.onClose(); 
+        }
       });
       return;
     }
@@ -148,7 +174,7 @@ class UploadManager extends Component<UploadManagerProps, UploadManagerState> {
     return (
       <CSSTransition in={true} appear={true} timeout={500} classNames="fade">
         <div className="my-5">
-          <div className="bg-white dark:bg-darkDialogBackground dark:text-white relative border shadow-md inset-1 rounded-lg p-6 w-full max-w-md">
+          <div className="bg-white dark:bg-darkDialogBackground dark:text-white relative border dark:border-darkPrimaryBorder shadow-md inset-1 rounded-lg p-6 w-full max-w-md">
             <svg
               onClick={this.cancelUpload}
               viewBox="0 0 512 512"
@@ -159,19 +185,23 @@ class UploadManager extends Component<UploadManagerProps, UploadManagerState> {
             </svg>
 
             <h2 className="w-full line-clamp-1 text-lg font-semibold mb-4">
-              {data?.title ?? 'Upload Progress'}
+              {(currentIndex < totalDatalist) ? data?.title ?? 'Upload Progress' : `Finalizing Uploads`}
             </h2>
             <div className={`w-full ${error ? 'bg-red-100 dark:bg-red-300' : 'bg-gray-200 dark:bg-darkBackground'} rounded-full h-2 mb-4`}>
               <div
-                className={`h-2 rounded-full transition-all ease-in-out duration-150 ${error ? 'bg-red-500 dark:bg-red-600' : 'bg-blue-500 dark:bg-white'}`}
-                style={{ width: `${progress}%` }}
+                className={`h-2 rounded-full transition-all ease-in-out duration-150 ${error ? 'bg-red-500 dark:bg-red-600' : ( currentIndex < totalDatalist) ? 'bg-blue-500 dark:bg-white':  'bg-blue-300 dark:bg-white animate-pulse'}`}
+                style={{ width: currentIndex < totalDatalist ? `${progress}%`:'100%',transition:  currentIndex < totalDatalist ?'width 0.2s ease' :'none'  }}
+
               ></div>
             </div>
             <div className={`${error ? 'text-red-500' : 'text-gray-700 dark:text-white'} space-y-1`}>
-              <div className="flex w-full justify-between items-center text-xs">
-                <div>{currentUploadName}</div>
-                <div className="font-bold">({currentIndex + 1}/{totalDatalist})</div>
-              </div>
+              {currentIndex < totalDatalist && (
+                <div className="flex w-full justify-between items-center text-xs">
+                  <div>{currentUploadName}</div>
+                  <div className="font-bold">({currentIndex + 1}/{totalDatalist})</div>
+                </div>
+              )}
+              
               {error && (
                 <div className="flex w-full justify-between items-center text-xs mb-4">
                   <div>{errorMessage}</div>
@@ -179,12 +209,15 @@ class UploadManager extends Component<UploadManagerProps, UploadManagerState> {
               )}
             </div>
             <div className="flex justify-end mt-2">
+            {currentIndex < totalDatalist &&(
               <button
                 className="text-xs bg-red-300 text-red-600 px-5 py-3 rounded-full cursor-pointer hover:bg-red-600 hover:text-white mr-2"
                 onClick={this.skipUpload}
               >
                 Skip
               </button>
+            )}
+              
               {error ? (
                 <button
                   className="text-xs bg-red-300 text-red-600 px-5 py-3 rounded-full cursor-pointer hover:bg-red-600 hover:text-white mr-2"
@@ -193,7 +226,7 @@ class UploadManager extends Component<UploadManagerProps, UploadManagerState> {
                   Retry
                 </button>
               ) : (
-                !uploading && (
+                !uploading && currentIndex < totalDatalist && (
                   <button
                     className="text-xs bg-blue-300 text-blue-600 dark:bg-white dark:text-black dark:hover:bg-white px-5 py-3 rounded-full cursor-pointer hover:bg-blue-600 hover:text-white mr-2"
                     onClick={this.startUpload}

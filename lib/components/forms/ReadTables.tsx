@@ -35,6 +35,7 @@ interface ReadTableProps {
   reader:{
     sheet_name : string,
     url?:string,
+    complete_url?:string,
     title?:string,
     token?:string,
     template_url?:string,
@@ -111,6 +112,7 @@ class ReadTable extends Component<ReadTableProps, ReadTableState> {
       {
         datalist: this.state.datalist,
         url: this.props.reader?.url,
+        complete_url:this.props.reader?.complete_url,
         title: this.props.reader?.title,
         token: this.props.reader?.token,
         key_name: this.props.reader?.key_name,
@@ -129,42 +131,44 @@ class ReadTable extends Component<ReadTableProps, ReadTableState> {
     const { datalist: stateDatalist, state: loadState, hasRequest } = this.state;
 
     return (
-      <>
-        <DesmyDataSetTable
-          className={`h-full font-poppinsRegular`}
-          settings={settings}
-          data={datalist}
-          handleOnLoaded={this.handleOnLoaded}
-        >
-          {stateDatalist.length > 0 ? (
-           stateDatalist.map((data, i) => {
-            const bg = i % 2 === 0 ? "dark:bg-[#1c1c1c] bg-[#f3f4f6] dark:hover:bg-white" : "bg-inherit";
-            return (
-              <DesmyTableCard
-                data={data}
-                background={bg}
-                headers={headers}
-                key={`camp${data.id}${i}`}
-              />
-            );
-          })
-          ) : loadState !== DesmyState.LOADING ? (
-            <tr>
-              <td colSpan={20}>
-                <div className="flex flex-col space-y-2 w-full h-96 justify-center items-center">
-                  <div className="font-poppinsMedium">No data found</div>
-                </div>
-              </td>
-            </tr>
-          ) : null}
-          {loadState === DesmyState.LOADING
-            ? Array.from({ length: 6 }).map((_, i) => (
-                <DesmyTableCard key={`dtal${i}`} isLoading={true} />
-              ))
-            : loadState === DesmyState.ERROR && <DesmyNetworkError />}
-        </DesmyDataSetTable>
+      <div className='flex flex-col w-full'>
+        <div className='w-full max-h-[55dvh] overflow-y-auto overflow-x-hidden'>
+          <DesmyDataSetTable
+            className={`h-full font-poppinsRegular`}
+            settings={settings}
+            data={datalist}
+            handleOnLoaded={this.handleOnLoaded}
+          >
+            {stateDatalist.length > 0 ? (
+            stateDatalist.map((data, i) => {
+              const bg = i % 2 === 0 ? "dark:bg-[#1c1c1c] bg-[#f3f4f6] dark:hover:bg-white" : "bg-inherit";
+              return (
+                <DesmyTableCard
+                  data={data}
+                  background={bg}
+                  headers={headers}
+                  key={`camp${data.id}${i}`}
+                />
+              );
+            })
+            ) : loadState !== DesmyState.LOADING ? (
+              <tr>
+                <td colSpan={20}>
+                  <div className="flex flex-col space-y-2 w-full h-96 justify-center items-center">
+                    <div className="font-poppinsMedium">No data found</div>
+                  </div>
+                </td>
+              </tr>
+            ) : null}
+            {loadState === DesmyState.LOADING
+              ? Array.from({ length: 6 }).map((_, i) => (
+                  <DesmyTableCard key={`dtal${i}`} isLoading={true} />
+                ))
+              : loadState === DesmyState.ERROR && <DesmyNetworkError />}
+          </DesmyDataSetTable>
+        </div>
         {!hasRequest && (
-          <div className="fixed bottom-14 right-3">
+          <div className="flex w-full justify-end relative my-8 ">
             <DesmyButton
               onClick={this.handleOnSubmit}
               icon={
@@ -185,7 +189,7 @@ class ReadTable extends Component<ReadTableProps, ReadTableState> {
             />
           </div>
         )}
-      </>
+      </div>
     );
   }
 }

@@ -4,6 +4,7 @@ interface ChildItem {
     url: string;
     label: string;
     has_permission?: boolean;
+    items?: ChildItem[];
 }
 interface DesmySideBarItemProps {
     location: {
@@ -20,7 +21,8 @@ interface DesmySideBarItemProps {
     navigate: (url: string) => void;
 }
 interface DesmySideBarItemState {
-    openMenus: Record<string, boolean>;
+    openMenu: string | null;
+    openChildMenu: string | null;
     is_active: boolean | null;
 }
 declare class DesmySideBarItem extends Component<DesmySideBarItemProps, DesmySideBarItemState> {
@@ -30,8 +32,9 @@ declare class DesmySideBarItem extends Component<DesmySideBarItemProps, DesmySid
     toggleMenuRequest: () => void;
     handleOnClick: (e: React.MouseEvent<HTMLAnchorElement>) => void;
     handleOnChildClick: (e: React.MouseEvent<HTMLAnchorElement>, data: ChildItem) => void;
-    toggleMenuExpand: (menu: string, state: boolean) => void;
     toggleMenu: (menu: string | null) => void;
+    toggleChildMenu: (menu: string | null) => void;
+    renderChildItems: (items: ChildItem[], _parentName: string) => (false | import("react/jsx-runtime").JSX.Element | undefined)[];
     render(): import("react/jsx-runtime").JSX.Element;
 }
 export { DesmySideBarItem };

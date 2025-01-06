@@ -52,7 +52,7 @@ class DatatableCard extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      stateList: [ModalState.APPROVED, ModalState.ACTIVE, ModalState.RUNNING,ModalState.ADMITTED,ModalState.QUALIFIED, ModalState.IN_PROGRESS],
+      stateList: [ModalState.APPROVED, ModalState.ACTIVE,ModalState.CREATED,ModalState.ACCREDITED, ModalState.RUNNING,ModalState.ADMITTED,ModalState.QUALIFIED, ModalState.IN_PROGRESS],
       imageExtensions: ['jpg', 'jpeg', 'png', 'svg'],
       imgColumnTypes: ['picture', 'photo'],
       title: '',
@@ -173,7 +173,7 @@ class DatatableCard extends Component<Props, State> {
     let headers = this.props.headers;
     let data = user[headers[key]];
     this.header = Commons.toString(headers[key]).toLowerCase();
-    this.status = user['status'];
+    this.status = user['status'] ?? user['process_state'];
     this.setState({ title: !Array.isArray(data) ? data?.name ?? Commons.toString(data) : "",contentlist:Array.isArray(data) ? data:[] });   
   }
   toggleView = () => {
@@ -226,8 +226,8 @@ class DatatableCard extends Component<Props, State> {
             }
         </div> 
         :
-        (this.header.toLowerCase() === "status") ? 
-            <div className={`w-full text-xs rounded-full border ${(this.state.stateList.includes(this.status)) ? `bg-green-400 text-green-700 border-green-500` : `bg-red-400 text-red-700 border-red-500`} text-xs py-0.5 justify-center text-center items-center`}>
+        (["status", "process_state"].includes(this.header.toLowerCase())) ? 
+            <div className={`w-auto text-[9px] rounded-full border ${(this.state.stateList.includes(this.status)) ? `bg-green-400 text-green-700 border-green-500` : `bg-red-400 text-red-700 border-red-500`} py-1 justify-center text-center items-center`}>
                 {this.status}
             </div> :
        (this.state.imgColumnTypes.includes(this.header?.toLowerCase() || '') || this.state.imageExtensions.includes((this.state.title?.toLowerCase().split('.').pop() || ''))) ?

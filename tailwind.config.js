@@ -12,7 +12,7 @@ export default {
         'darkBackground':'#1a1a1a',
         'secondary':'#1c1c1c',
         'darkDialogBackground':'#282828',
-        'darkPrimary':'#242424',
+        'darkPrimary':'#242424',darkPrimaryBorder:"#3d3d3d",
       }
     },
   },
