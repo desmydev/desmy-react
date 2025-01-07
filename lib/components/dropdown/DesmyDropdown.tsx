@@ -1,5 +1,5 @@
 import React, { Component,createRef, RefObject, ChangeEvent } from 'react';
-import Popper from "popper.js";
+import { createPopper } from '@popperjs/core';
 import axios from 'axios'; 
 import Commons from '../apis/DesmyCommons';
 import Auth from '../apis/DesmyAuth'
@@ -323,18 +323,30 @@ class DesmyDropdown extends Component<Props, State> {
             // Handle any errors
         }
     };
-    
     openDropdownPopover = (): void => {
-        if (this.props.disabled !== undefined && this.props.disabled) {
-            return;
-        }
-        new Popper(this.btnDropdownRef.current!, this.popoverDropdownRef.current!, {
-            placement: "bottom-start"
+        if (this.props.disabled) return;
+    
+        this.handleDropdownPopover();
+        this.handleDropdownPopover();
+    };
+    handleDropdownPopover = (): void => {
+        if (this.props.disabled) return;
+
+        createPopper(this.btnDropdownRef.current!, this.popoverDropdownRef.current!, {
+            placement: 'bottom-start',
+            strategy: 'fixed',
+            modifiers: [
+                {
+                    name: 'flip',
+                    options: {
+                        fallbackPlacements: ['top', 'bottom-start'], // Allow switching between top and bottom
+                    },
+                },
+            ],
         });
+
         this.setState({ dropdownPopoverShow: true }, () => {
-            if (this.searchRef.current) {
-                this.searchRef.current.focus();
-            }
+            this.searchRef.current?.focus();
         });
     };
     

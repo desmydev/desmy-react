@@ -79,6 +79,7 @@ declare class DesmyDropdown extends Component<Props, State> {
     handleError: (message?: string) => void;
     onClear: () => void;
     openDropdownPopover: () => void;
+    handleDropdownPopover: () => void;
     removeItem: (object: any[], key: string, value: any) => any[];
     handleSearch: (collection: any[], data: any) => any | false;
     handleSelectMessage: (data: any[]) => string;

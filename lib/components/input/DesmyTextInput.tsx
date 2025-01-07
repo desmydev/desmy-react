@@ -184,9 +184,9 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
 
                         <label
                             htmlFor="data"
-                            className="before:content[' '] after:content[' '] pointer-events-none absolute cursor-text left-0 -top-3.5 text-[11px] dark:text-white bg-inherit backdrop-blur-xl mx-1 px-2 peer-placeholder-shown:text-sm dark:peer-placeholder-shown:text-white peer-placeholder-shown:top-3 peer-focus:-top-3 peer-focus:text-black dark:peer-focus:text-white peer-focus:text-[11px] transition-all"
+                            className=" before:content[' '] after:content[' '] pointer-events-none absolute cursor-text left-0 -top-3.5 text-[11px] dark:text-white bg-inherit backdrop-blur-xl mx-1 px-2 peer-placeholder-shown:text-sm dark:peer-placeholder-shown:text-white peer-placeholder-shown:top-3 peer-focus:-top-3 peer-focus:text-black dark:peer-focus:text-white peer-focus:text-[11px] transition-all"
                         >
-                            {this.props.label}
+                           <div className='w-full line-clamp-1 '>{this.props.label}</div> 
                         </label>
 
                         {this.props.type === DesmyState.COLOR && (

@@ -170,12 +170,13 @@ class DesmyModalContainer extends Component<ModalContainerProps, ModalContainerS
         >
           <CSSTransition unmountOnExit={true} in={true} timeout={400} classNames="modal-content">
             <div>
-              <div className="modalcontainer modal-inner h-[90dvh] overflow-auto dark:text-white">
-                <div
-                  className={`flex flex-col rounded-none px-5 pb-5 font-poppinsRegular mx-auto ${this.props.containerClassName}`}
-                >
-                  <div className="flex bg-transparent w-full md:container mx-auto my-7 text-start uppercase justify-between font-poppinsBlack text-lg">
+            <div className="flex justify-center dark:text-white items-center h-screen mx-4">
+              <div className={`bg-gray-200 p-4 rounded-lg shadow-md w-full ${this.props.containerClassName}`}>
+                <div className="flex flex-col max-h-[83vh]">
+                <div>
+                  <div className="flex bg-transparent text-start uppercase justify-between mb-4 font-poppinsBlack text-lg">
                     <div className="w-full line-clamp-2">{this.props.data.title}</div>
+                    
                     <div className="flex justify-end space-x-3">
                       {this.props.delete?.show ? (
                         this.state.hasRequest ? (
@@ -229,11 +230,15 @@ class DesmyModalContainer extends Component<ModalContainerProps, ModalContainerS
                       </svg>
                     </div>
                   </div>
-                  <div>
-                    <div className="z-10">{this.props.children}</div>
+                </div>
+                  
+                  
+                  <div className="flex-1 max-h-[calc(100%-2rem)] overflow-auto  p-2 rounded-md">
+                  <div className="z-10">{this.props.children}</div>
                   </div>
                 </div>
               </div>
+            </div>
             </div>
           </CSSTransition>
         </DesmyMultiStepModal>
