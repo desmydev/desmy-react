@@ -7,11 +7,11 @@ import { DesmyClickOutsideListener } from '../clickoutsidelistener/DesmyClickOut
 interface TextInputProps {
     defaultValue?: string;
     type?: string;
-    readOnly?:boolean;
+    readOnly?: boolean;
     hasRequest?: boolean;
     className?: string;
     inputClassName?: string;
-    emailExtension?: string;
+    emailExtensions?: string[];
     onChange: (value: string) => void;
     onSearch: (value: string) => void;
     onRef?: (instance: DesmyTextInput | null) => void;
@@ -21,6 +21,7 @@ interface TextInputProps {
     maxLength?: number;
     rows?: number;
     label: string;
+    theme?: string; // Added theme prop
 }
 
 interface TextInputState {
@@ -54,6 +55,12 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
         this.handleDefaultRequest();
     }
 
+    componentDidUpdate(prevProps: TextInputProps) {
+        if (prevProps.theme !== this.props.theme) {
+            this.forceUpdate(); // Ensure re-render when theme changes
+        }
+    }
+
     handleDefaultRequest = () => {
         const data = Commons.toStringDefault(this.props.defaultValue, "");
         if (!Commons.isEmptyOrNull(data) && Commons.isEmptyOrNull(this.state.input.data)) {
@@ -81,36 +88,70 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
         const type = Commons.toStringDefault(this.props.type, DesmyState.TEXT);
         const isValid = this.validateInput(inputValue, type);
 
-        if (isValid || inputValue === "") {
-            const cursorPosition = event.target.selectionStart;
+        if (type === DesmyState.PHONE_NUMBER || type === DesmyState.NUMBER || type === DesmyState.AMOUNT) {
+            if (isValid) {
+                this.setState((prevState) => ({
+                    input: {
+                        ...prevState.input,
+                        [event.target.name]: inputValue,
+                    },
+                }), () => {
+                    this.props.onChange(inputValue);
+                });
+            }
+        } else {
             this.setState((prevState) => ({
                 input: {
                     ...prevState.input,
                     [event.target.name]: inputValue,
                 },
-                hasPressed: true,
             }), () => {
-                this.props.onChange(inputValue);
-                setTimeout(() => event.target.setSelectionRange(cursorPosition, cursorPosition), 0);
+                if (isValid) {
+                    this.props.onChange(inputValue);
+                }
             });
         }
     };
 
     validateInput = (inputValue: string, type: string): boolean => {
         switch (type) {
-            case DesmyState.PHONE:
+            case DesmyState.PHONE_NUMBER: {
+                // Validate phone numbers (digits and "+" allowed)
                 return /^[0-9+]*$/.test(inputValue);
-            case DesmyState.NUMBER:
+            }
+
+            case DesmyState.NUMBER: {
+                // Validate only numeric input
                 return /^[0-9]*$/.test(inputValue);
-            case DesmyState.AMOUNT:
+            }
+
+            case DesmyState.AMOUNT: {
+                // Validate amounts (digits with optional decimal up to 2 places)
                 return /^\d*(\.\d{0,2})?$/.test(inputValue);
-            case DesmyState.EMAIL:
-                return Commons.validateEmail(inputValue) &&
-                    (!this.props.emailExtension || inputValue.endsWith(this.props.emailExtension));
-            default:
+            }
+
+            case DesmyState.EMAIL: {
+                // Validate email format
+                const isValidEmail = Commons.validateEmail(inputValue);
+
+                // If emailExtensions is defined, ensure it ends with a valid extension
+                if (this.props.emailExtensions && this.props.emailExtensions.length > 0) {
+                    // Check if inputValue ends with any valid extension
+                    const validExtensions = this.props.emailExtensions.map(ext => ext.trim());
+                    return isValidEmail && validExtensions.some(ext => inputValue.endsWith(ext));
+                }
+
+                // If emailExtensions is undefined or empty, return true if valid email
+                return isValidEmail;
+            }
+
+            default: {
+                // Default case always returns true
                 return true;
+            }
         }
     };
+
     handleClick = (event: React.MouseEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         if (this.props.readOnly && this.props.onFocus) {
             const focusEvent = {
@@ -121,6 +162,7 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
             this.props.onFocus(focusEvent);
         }
     };
+
     handleFocus = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         if (this.props.type === DesmyState.COLOR) {
             this.setState({ dropdownPopoverShow: true });
@@ -142,14 +184,16 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
     render() {
         return (
             <DesmyClickOutsideListener onClickOutside={this.closeDropdownPopover}>
-                <div className={`${this.props.className || `bg-white dark:bg-darkBackground`}`}>
-                    <div className={`relative bg-inherit ${this.props.type === DesmyState.SEARCH ? `flex w-full space-x-3` : ``}`}>
+                <div
+                    className={`${this.props.className || 'bg-white dark:bg-darkBackground'} transition-colors duration-300`}
+                >
+                    <div className={`relative bg-inherit ${this.props.type === DesmyState.SEARCH ? 'flex w-full space-x-3' : ''}`}>
                         {this.props.type === DesmyState.TEXTAREA ? (
                             <textarea
                                 rows={this.props.rows}
                                 disabled={!!this.props.disabled}
                                 autoFocus={!!this.props.autoFocus}
-                                onFocus={this.handleFocus} 
+                                onFocus={this.handleFocus}
                                 onClick={this.props.readOnly ? this.handleClick : undefined}
                                 placeholder={this.props.label}
                                 readOnly={this.props.readOnly}
@@ -160,7 +204,7 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
                             />
                         ) : (
                             <input
-                                type="text"
+                                type={`${this.props.type === DesmyState.PASSWORD ? 'password' : 'text'}`}
                                 id="data"
                                 name="data"
                                 readOnly={this.props.readOnly}
@@ -169,24 +213,18 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
                                 onClick={this.props.readOnly ? this.handleClick : undefined}
                                 disabled={!!this.props.disabled}
                                 autoFocus={!!this.props.autoFocus}
-                                value={
-                                    this.props.defaultValue !== this.state.input.data && this.props.type !== DesmyState.EMAIL
-                                        ? this.props.defaultValue
-                                        : Commons.isEmptyOrNull(this.state.input.data)
-                                        ? this.props.defaultValue
-                                        : this.state.input.data
-                                }
+                                value={Commons.isEmptyOrNull(this.state.input.data) ? this.props.defaultValue ?? '' : this.state.input.data}
                                 onChange={this.handleChange}
-                                className={`peer bg-transparent h-12 border border-black ${this.props.disabled ? `cursor-not-allowed` : ``} dark:border-white dark:text-white placeholder-transparent text-xs 2xl:text-sm ring-0 px-2 w-full focus:outline-none focus:ring-0 dark:focus:border-white ${this.props.inputClassName}`}
+                                className={`peer bg-transparent h-12 border border-black ${this.props.disabled ? 'cursor-not-allowed' : ''} dark:border-white dark:text-white placeholder-transparent text-xs 2xl:text-sm ring-0 px-2 w-full focus:outline-none focus:ring-0 dark:focus:border-white ${this.props.inputClassName}`}
                                 placeholder={this.props.label}
                             />
                         )}
 
                         <label
                             htmlFor="data"
-                            className=" before:content[' '] after:content[' '] pointer-events-none absolute cursor-text left-0 -top-3.5 text-[11px] dark:text-white bg-inherit backdrop-blur-xl mx-1 px-2 peer-placeholder-shown:text-sm dark:peer-placeholder-shown:text-white peer-placeholder-shown:top-3 peer-focus:-top-3 peer-focus:text-black dark:peer-focus:text-white peer-focus:text-[11px] transition-all"
+                            className="before:content[' '] after:content[' '] pointer-events-none absolute cursor-text left-0 -top-3.5 text-[11px] dark:text-white bg-inherit backdrop-blur-xl mx-1 px-2 peer-placeholder-shown:text-sm dark:peer-placeholder-shown:text-white peer-placeholder-shown:top-3 peer-focus:-top-3 peer-focus:text-black dark:peer-focus:text-white peer-focus:text-[11px] transition-all"
                         >
-                           <div className='w-full line-clamp-1 '>{this.props.label}</div> 
+                            <div className='w-full line-clamp-1'>{this.props.label}</div>
                         </label>
 
                         {this.props.type === DesmyState.COLOR && (

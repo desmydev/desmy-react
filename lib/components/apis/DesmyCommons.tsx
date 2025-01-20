@@ -194,36 +194,58 @@ class DesmyCommons {
     isDarkTheme(): boolean {
         return localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
     }
-    async  sync_theme(callback?: (isDark: boolean) => void): Promise<void> {
-        let isDark: boolean;
-        const colorTheme = localStorage.getItem('color-theme');
-        
-        if (colorTheme) {
-            if (colorTheme === 'light') {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('color-theme', 'dark');
-                isDark = true;
-            } else {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('color-theme', 'light');
-                isDark = false;
-            }
+    
+    /**
+     * Force the theme to update based on a provided mode.
+     * @param mode - Either "dark" or "light".
+     */
+    forceTheme(mode: 'dark' | 'light'): void {
+        if (mode === 'dark') {
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('color-theme', 'dark');
         } else {
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('color-theme', 'light');
-                isDark = false;
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('color-theme', 'dark');
-                isDark = true;
-            }
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('color-theme', 'light');
         }
+    }
 
-        // Execute the callback if provided, passing the isDark parameter
+    /**
+     * Synchronize the theme with the system or user preference and start listening for changes.
+     * @param callback - Optional callback to run after syncing the theme.
+     */
+    async syncTheme(callback?: (isDark: boolean) => void): Promise<void> {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const storedTheme = localStorage.getItem('color-theme');
+        const isDark = storedTheme
+            ? storedTheme === 'dark'
+            : prefersDark;
+
+        // Apply the theme
+        this.forceTheme(isDark ? 'dark' : 'light');
+
+        // Start listening for system theme changes
+        this.listenForSystemThemeChanges();
+
+        // Execute the callback if provided
         if (callback) {
             callback(isDark);
         }
+    }
+
+    /**
+     * Listen for system theme changes and update the theme dynamically.
+     */
+    listenForSystemThemeChanges(): void {
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+        // Handle theme changes
+        const handleThemeChange = (event: MediaQueryListEvent) => {
+            const isDark = event.matches;
+            this.forceTheme(isDark ? 'dark' : 'light');
+        };
+
+        // Add an event listener for system theme changes
+        mediaQuery.addEventListener('change', handleThemeChange);
     }
     async imageSize(image: Blob): Promise<{ width: number, height: number }> {
         return new Promise((resolve, reject) => {
@@ -282,12 +304,24 @@ class DesmyCommons {
         const day = String(date.getDate()).padStart(2, '0');
     
         return `${year}-${month}-${day}`;
-      };
+      }
     
-    validateEmail(email: string): boolean {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    }
+      validateEmail = (email: string): boolean => {
+        const atIndex = email.indexOf("@");
+        const dotIndex = email.lastIndexOf(".");
+        if (atIndex <= 0 || atIndex === email.length - 1) return false;
+
+        if (dotIndex < atIndex + 2 || dotIndex === email.length - 1) return false;
+    
+        const domain = email.slice(atIndex + 1, dotIndex);
+        if (!domain || domain.includes("@") || domain.includes(" ")) return false;
+    
+        const topLevelDomain = email.slice(dotIndex + 1);
+        if (topLevelDomain.length < 2) return false;
+    
+        return true;
+    };
+    
     
 
     convertNumber(number: number): string {

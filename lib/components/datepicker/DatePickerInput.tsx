@@ -1,5 +1,5 @@
 import React from 'react';
-import { format, isValid } from 'date-fns';
+import { format, isValid, isEqual } from 'date-fns';
 import { DesmyTextInput } from '../input/DesmyTextInput';
 
 interface DatePickerInputProps {
@@ -20,12 +20,15 @@ class DatePickerInput extends React.Component<DatePickerInputProps> {
     const formattedStartDate = startDate && isValid(startDate) ? format(startDate, displayFormat) : '';
     const formattedEndDate = endDate && isValid(endDate) ? format(endDate, displayFormat) : '';
 
-    // Construct the display value
-    const displayValue = formattedStartDate
-      ? formattedEndDate
-        ? `${formattedStartDate}${separator}${formattedEndDate}`
+    // Determine the display value
+    const displayValue =
+      startDate && endDate && isEqual(startDate, endDate) // Check if startDate and endDate are the same
+        ? formattedStartDate // Use only the startDate
         : formattedStartDate
-      : '';
+        ? formattedEndDate
+          ? `${formattedStartDate}${separator}${formattedEndDate}` // Use range format
+          : formattedStartDate // Use only startDate
+        : '';
 
     return (
       <DesmyTextInput

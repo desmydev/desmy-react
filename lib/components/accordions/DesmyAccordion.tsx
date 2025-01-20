@@ -32,7 +32,7 @@ class DesmyAccordion extends Component<AccordionProps, AccordionState> {
       <div className="flex flex-col w-full font-poppinsRegular">
         <div className={`rounded transition-all duration-300 ${isOpen ? 'mb-4' : ''}`}>
           <div
-            className={`relative ${className}`}
+            className={`relative cursor-pointer ${className}`}
             onClick={this.toggleAccordion}
           >
             <div className='w-full'>

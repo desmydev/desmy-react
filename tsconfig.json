@@ -10,6 +10,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "declaration": true,
+    "paths": {
+      "@components/*": ["./src/components/*"] // Adjust based on structure
+    },
     "rootDir": "./",  // Or the path where your source files are located
     "outDir": "./dist", 
     "declarationDir": "./dist/types",

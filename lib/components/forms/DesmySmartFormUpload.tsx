@@ -123,7 +123,6 @@ class DesmySmartFormUpload extends Component<Props, State> {
   
       readXlsxFile(file, { sheet: this.props.reader.sheet_name }).then((rows: Row[]) => {
         if (rows.length === 0) return;
-  
         const headers = rows[0].map((header) =>
           `${header}`.toLowerCase().replace(/\s+/g, '_')
         );
@@ -202,13 +201,12 @@ class DesmySmartFormUpload extends Component<Props, State> {
             total: this.state.data.data.length + chunkData.length,
             to: this.state.data.data.length + chunkData.length,
           };
-  
+
           const dataset = {
             ...this.state.data,
             data: [...this.state.data.data, ...chunkData],
             meta: newMeta,
           };
-  
           this.setState(
             {
               filedata: [...this.state.filedata, ...currentChunk],

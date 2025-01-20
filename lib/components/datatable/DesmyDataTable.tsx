@@ -6,6 +6,7 @@ import { DesmyState as CommonState } from '../apis/DesmyState'; // Assuming Stat
 import ReactDOM from 'react-dom';
 import DatatableCard from './DatatableCard';
 import DesmyAuth from '../apis/DesmyAuth';
+import DesmyCommons from '../apis/DesmyCommons';
 
 interface Filter {
   title: string;
@@ -379,32 +380,36 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
   }
 
   async componentDidMount() {
-    if (this.props.onRef)
-      this.props.onRef(this);
-
-    let custom_settings = this.state.custom_settings;
-    custom_settings['sorted_column'] = this.props.settings.default_sorted_column;
-    this.setState({ custom_settings, settings: this.props.settings }, this.fetchEntities);
-  }
-
-  componentDidUpdate = async (_prevProps: DataTableProps, _prevState: DataTableState) => {
-    try {
-      
-      const { settings } = this.props;
-      if (settings.filter && !this.filterloaded && Array.isArray(settings.filter.data) && settings.filter.data.length > 0) {
-        const newFilters = { ...settings.filter };
-        this.setState({ filters: newFilters });
-        this.filterloaded = true;
-      }
-    } catch (e) {
+    try{
+      if (this.props.onRef)
+          this.props.onRef(this);
+      const custom_settings = this.state.custom_settings;
+      custom_settings['sorted_column'] = this.props.settings.default_sorted_column;
+      this.setState({ custom_settings, settings: this.props.settings }, this.fetchEntities);
+    }catch(e){
+      this.alert()
     }
+    
   }
+
+  // componentDidUpdate = async (_prevProps: DataTableProps, _prevState: DataTableState) => {
+  //   try {
+      
+  //     const { settings } = this.props;
+  //     if (settings.filter && !this.filterloaded && Array.isArray(settings.filter.data) && settings.filter.data.length > 0) {
+  //       const newFilters = { ...settings.filter };
+  //       this.setState({ filters: newFilters });
+  //       this.filterloaded = true;
+  //     }
+  //   } catch (e) {
+  //   }
+  // }
   
 
   handleScroll(event: React.UIEvent<HTMLDivElement>) {
     const div = event.target as HTMLDivElement;
     if (div.scrollTop + div.clientHeight >= (div.scrollHeight - 10)) {
-      this.loadNextPage();
+      this.loadNextBatch();
     }
   }
 
@@ -418,8 +423,8 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
 
   handleError = (message = "",retry=true) => {
     try {
-      var error = this.state.error;
-      var input = this.state.input;
+      const error = this.state.error;
+      const input = this.state.input;
       input['is_searching'] = false;
       error["state"] = true;
       error["message"] = (Commons.isEmptyOrNull(message)) ? CommonState.ERROR_MESSAGE : message;
@@ -428,12 +433,13 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
       error["retry"] = retry
       this.setState({ isLoading: false, error, input });
     } catch (e) {
+      this.alert()
     }
   }
 
   async fetchEntities() {
     try {
-      let formdata: string[] = [];
+      const formdata: string[] = [];
       let filtered_data = "";
       if (this.state.filters.search !== undefined && this.state.filters.search !== null) {
         if (Object.entries(this.state.filters.search).length > 0) {
@@ -444,21 +450,18 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
         }
       }
 
-      let entities = this.state.entities;
-      let fetchUrl = `${this.props.settings.url}/?page=${this.state.custom_settings.current_page}&column=${this.state.custom_settings.sorted_column}&order=${this.state.custom_settings.order}&per_page=${this.state.entities.meta.per_page}&search=${this.search}${filtered_data}`;
+      const entities = this.state.entities;
+      this.setState({isLoading:true})
+      const fetchUrl = `${this.props.settings.url}/?page=${this.state.custom_settings.current_page}&column=${this.state.custom_settings.sorted_column}&order=${this.state.custom_settings.order}&per_page=${this.state.entities.meta.per_page}&search=${this.search}${filtered_data}`;
       axios.get(fetchUrl, {
         headers: {
           "X-CSRFToken": `${DesmyAuth.getCookie('csrftoken')}`,
           "Authorization": `Token ${DesmyAuth.get(CommonState.ACCESS_TOKEN)}`
         }
       }).then(response => {
-        let data = response.data;
+        const data = response.data;
         if (data.success) {
-          entities.data.length = 0;
-          if (this.hasClear) {
-            this.handleClear();
-          }
-          this.dataCollection = this.dataCollection.concat(response.data.data.data);
+          this.dataCollection = response.data.data.data
           this.hasClear = false;
           entities.meta = response.data.data.meta;
           this.setState({ isLoading: false, entities }, this.initialChunck);
@@ -466,8 +469,8 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
           this.hasLoadLastData = true;
           this.handleError(data.message,false);
         }
-      }).catch(_e => {
-        this.handleError();
+      }).catch(e => {
+        this.handleError(e);
       });
     } catch (_e) {
       this.handleError();
@@ -475,7 +478,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
   }
 
   columnHead(value: string): string {
-    let header = value.split('_');
+    const header = value.split('_');
     if (header.length > 1 && this.state.exceptionalColumns.includes(Commons.toString(header.slice(-1)).toString().toLowerCase())) {
       return header.slice(0, -1).join(' ').toUpperCase();
     } else {
@@ -485,8 +488,8 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
 
   sortByColumn(column: string) {
     try {
-      var custom_settings = this.state.custom_settings;
-      var order = (column === this.state.custom_settings.sorted_column) ? (this.state.custom_settings.order === 'asc') ? 'desc' : 'asc' : 'asc';
+      const custom_settings = this.state.custom_settings;
+      const order = (column === this.state.custom_settings.sorted_column) ? (this.state.custom_settings.order === 'asc') ? 'desc' : 'asc' : 'asc';
       this.handleClear();
       custom_settings['current_page'] = 1;
       custom_settings['sorted_column'] = column;
@@ -495,6 +498,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
       
       this.setState({ isLoading: true, error: {}, custom_settings }, this.fetchEntities);
     } catch (e) {
+      this.alert()
     }
   }
 
@@ -518,10 +522,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
   }
 
   handleClear = () => {
-    let input = this.state.input
-    let entities = this.state.entities
-
-    var error = this.state.error
+    const {input,entities,error} = this.state
     error['state']=false
     input['is_searching'] = false
     entities['meta']['total']=0
@@ -534,7 +535,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     this.setState({entities,error})
   }
   initialChunck(){
-    this.loadNextBatch();
+     this.loadNextBatch();
   }
   addHeaderAndColumn = (header: string, column: string): void => {
     this.setState((prevState) => {
@@ -570,14 +571,14 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     });
   };
   clearFetchEntities = () => {
-    let custom_settings = this.state.custom_settings;
+    const {custom_settings} = this.state;
     custom_settings['current_page'] = 1;
     this.handleClear();
     this.setState({ custom_settings }, this.fetchEntities);
   }
 
   handleSearch = (event: KeyboardEvent<HTMLInputElement>) => {
-    let input = this.state.input;
+    const {input} = this.state;
     if (event.key === 'Enter' || event.keyCode === 13) {
       if (!Commons.isEmptyOrNull(input.search) && input.search.length > 2) {
         input['is_searching'] = true;
@@ -588,7 +589,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
   }
 
   searchFilter = async (filters: { search: { [key: string]: { id: string; name: string } }; data: { name: string; data: string; defaults?: { [key: string]: string } }[] }) => {
-    let input = this.state.input;
+    const {input} = this.state;
     if (Object.entries(filters.search).length > 0) {
       input['is_searching'] = true;
       this.setState({ filters, input }, this.clearFetchEntities);
@@ -605,22 +606,6 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     }));
   }
   
-  loadNextPage = () => {
-    try {
-      if (!this.isLoading) {
-          let custom_settings = this.state.custom_settings;
-          let next_page = this.state.entities.meta.next_page;
-          if (!Commons.isEmptyOrNull(next_page) && this.current_page !== next_page) {
-              custom_settings['current_page'] = next_page ?? 1; // Provide a default value if next_page is null
-              this.current_page = next_page ?? 1; // Provide a default value if next_page is null
-              this.setState({ isLoading: true, custom_settings }, () => { this.fetchEntities(); });
-          }
-      }
-    } catch (e) {
-        // Handle any errors here
-    }
-  }
-
   handleFocus = () => {
     this.setState({ isFocused: true });
   };
@@ -639,6 +624,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
       }
      })
     } catch (e) {
+      this.alert()
     }
   }
   
@@ -648,27 +634,31 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
         this.handleSearching();
       }
     } catch (e) {
+      this.alert()
     }
   }
   loadNextBatch = () => {
     try{
-      this.renderChunk();
-      this.forceUpdate();
-      this.currentIndex += this.chunkSize;
+      if(!DesmyCommons.isEmptyOrNull(this.dataCollection)){
+        this.renderChunk();
+        this.forceUpdate();
+        this.currentIndex += this.chunkSize;
+      }
+      
       this.isLoading = false;
     }catch(e){
-
+        this.alert()
     }
       
   };
+  alert=()=>""
   renderChunk(): void {
     try {
       const headers = this.state.settings.headers;
       const currentCondition = (this.currentIndex + this.chunkSize > this.dataCollection.length) ? this.dataCollection.length : this.currentIndex + this.chunkSize;
-  
       for (let i = this.currentIndex; i < currentCondition; i++) {
         const user = this.dataCollection[i];
-        let bg = (this.state.selected === i) ? ' bg-gray-300 dark:bg-darkPrimary' : (i % 2 === 0) ? " dark:bg-[#1c1c1c] bg-[#f3f4f6] " : ' bg-inherit';
+        const bg = (this.state.selected === i) ? ' bg-gray-300 dark:bg-darkPrimary' : (i % 2 === 0) ? " dark:bg-[#1c1c1c] bg-[#f3f4f6] " : ' bg-inherit';
   
         if (user !== undefined) {
           const row = (
@@ -695,12 +685,12 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
         }
       }
     } catch (e) {
+      this.alert()
     }
   }
   
   handleSearching(){
-    let custom_settings = this.state.custom_settings
-    let input = this.state.input
+    const {custom_settings,input} = this.state
     custom_settings['current_page'] = 1
     input['is_searching']=true
     this.hasClear=true
@@ -783,11 +773,9 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
   };
   handleRetry=()=>{
     try{
-      this.handleClear()
-      let custom_settings = this.state.custom_settings
-      custom_settings['current_page'] = 1
-      this.setState({isLoading:true,error:{},custom_settings},this.fetchEntities)
+      this.clearFetchEntities()
     }catch(e){
+      this.alert()
     }
     
   }
@@ -805,7 +793,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
   handleOnSuccess=(index : number)=>{
     this.renderedSettings.splice(index, 1);
     this.dataCollection.splice(index, 1);
-    let entities = this.state.entities
+    const entities = this.state.entities
     entities['meta']['total']= this.renderedSettings.length
     if(this.renderedSettings.length==0){
       this.handleClear()
@@ -831,7 +819,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
           {breadcrumb.map((item, index) => (
             <li key={index} className="inline-flex items-center">
               {index !== breadcrumb.length - 1 ? (
-                <a href={item.url} onClick={(e)=>this.handleBreadCrumbNavigations(e,item.url)} className="text-gray-700 dark:text-white/75 dark:hover:text-blue-500 hover:text-blue-600">
+                <a href={item.url} onClick={(e)=>this.handleBreadCrumbNavigations(e,item.url)} className="text-gray-700 w-full line-clamp-1 dark:text-white/75 dark:hover:text-blue-500 hover:text-blue-600">
                   {item.name}
                 </a>
               ) : (
@@ -848,6 +836,89 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
       </nav>
     );
   }
+  handlePageChange = (pageNumber: number) => {
+    const { custom_settings } = this.state;
+    this.clearFetchEntities()
+    custom_settings.current_page = pageNumber;
+    this.setState({ custom_settings, isLoading: true }, this.fetchEntities);
+  };
+
+  renderPagination = () => {
+    const { meta } = this.state.entities;
+    const totalPages = meta.last_page;
+    const currentPage = meta.current_page;
+  
+    if (totalPages <= 1) return null;
+  
+    const paginationButtons: JSX.Element[] = [];
+    
+    const addButton = (page: number) => {
+      paginationButtons.push(
+        <button
+          key={page}
+          onClick={() => this.handlePageChange(page)}
+          className={`px-3 py-1 mx-1 border rounded ${
+            currentPage === page
+              ? "bg-blue-600 text-white"
+              : "bg-gray-200 hover:bg-gray-300"
+          }`}
+        >
+          {page}
+        </button>
+      );
+    };
+  
+    // Add first page
+    addButton(1);
+  
+    // Add left ellipsis if needed
+    if (currentPage > 3) {
+      paginationButtons.push(
+        <span key="left-ellipsis" className="px-3 py-1 mx-1">...</span>
+      );
+    }
+  
+    // Add buttons around the current page
+    for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+      addButton(i);
+    }
+  
+    // Add right ellipsis if needed
+    if (currentPage < totalPages - 2) {
+      paginationButtons.push(
+        <span key="right-ellipsis" className="px-3 py-1 mx-1">...</span>
+      );
+    }
+  
+    // Add last page
+    if (totalPages > 1) {
+      addButton(totalPages);
+    }
+  
+    return (
+      <div className="flex justify-center mt-4">
+        {currentPage > 1 && (
+          <button
+            onClick={() => this.handlePageChange(currentPage - 1)}
+            className="px-3 py-1 mx-1 border rounded bg-gray-200 hover:bg-gray-300"
+          >
+            Previous
+          </button>
+        )}
+        {paginationButtons}
+        {currentPage < totalPages && (
+          <button
+            onClick={() => this.handlePageChange(currentPage + 1)}
+            className="px-3 py-1 mx-1 border rounded bg-gray-200 hover:bg-gray-300"
+          >
+            Next
+          </button>
+        )}
+      </div>
+    );
+  };
+  
+  
   render() {
     const { isFocused, searchText } = this.state;
     const isExpanded = isFocused && searchText !== '';
@@ -855,7 +926,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
       <>
         {this.state.dtablemodal}
         <div className={`flex flex-col w-full ${this.props.className}`}>
-              <div className='flex flex-col w-full mb-5'>
+              <div className='flex flex-col w-full mb-14'>
                   <header className="flex w-full flex-col lg:flex-row justify-start lg:justify-between items-center space-x-6">
                     <div className="flex flex-col w-full ">
                       {
@@ -948,15 +1019,20 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
                     </div> : null
                   }
                 </div>
-                {this.renderBreadcrumb()}
-                <table>
-                  <thead className='w-full'>
-                    <tr className="text-sm">{ this.tableHeads() }</tr>
-                  </thead>
-                  <tbody>
-                      { (!this.state.error.state) ? this.renderedSettings : null}
-                  </tbody> 
-                </table>
+                <div className='flex flex-col w-full pb-16'>
+                    {this.renderBreadcrumb()}
+                      <table className='pb-14'>
+                        <thead className='w-full'>
+                          <tr className="text-sm">{ this.tableHeads() }</tr>
+                        </thead>
+                        <tbody>
+                            { (!this.state.error.state) ? this.renderedSettings : null}
+                        </tbody> 
+                      </table>
+
+                </div>
+                
+                {(!this.state.isLoading && (this.dataCollection.length > 0 && !this.state.error.state)) && this.renderPagination()}
                 {
                 (!this.state.isLoading && (!this.dataCollection.length || this.state.error.state)) ? 
                   <div className={`flex flex-col w-full h-96 justify-center ${(this.state.error.state) ? `text-red-500`:`dark:text-white`} space-y-5 items-center text-base`}>

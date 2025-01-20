@@ -74,6 +74,7 @@ declare class ReadTable extends Component<ReadTableProps, ReadTableState> {
     constructor(props: ReadTableProps);
     clearList: () => void;
     handleOnLoaded: (data: any, state: string) => void;
+    alert: () => string;
     handleOnSubmit: () => void;
     handleOnClose: () => void;
     render(): import("react/jsx-runtime").JSX.Element;

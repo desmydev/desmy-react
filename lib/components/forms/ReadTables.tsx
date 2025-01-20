@@ -5,6 +5,7 @@ import { DesmyDataSetTable } from '../datatable/DesmyDataSetTable';
 import { DesmyTableCard } from '../datatable/DesmyTableCard';
 import { DesmyNetworkError } from '../errors/DesmyNetworkError';
 import { DesmyButton } from '../button/DesmyButton';
+import DesmyCommons from '../apis/DesmyCommons';
 
 interface DataItem {
   [key: string]: any;
@@ -103,10 +104,10 @@ class ReadTable extends Component<ReadTableProps, ReadTableState> {
         this.setState({ datalist: data, state });
       }
     } catch (e) {
-      console.error(e);
+      this.alert()
     }
   };
-
+  alert=()=>""
   handleOnSubmit = (): void => {
     DesmyRxServices.sendData(
       {
@@ -127,20 +128,46 @@ class ReadTable extends Component<ReadTableProps, ReadTableState> {
   };
 
   render() {
-    const { headers, datalist, settings } = this.props;
+    const { datalist, settings } = this.props;
     const { datalist: stateDatalist, state: loadState, hasRequest } = this.state;
-
     return (
       <div className='flex flex-col w-full'>
-        <div className='w-full max-h-[55dvh] overflow-y-auto overflow-x-hidden'>
+        <div className='w-full min-h-[20dvh] max-h-[55dvh] overflow-y-auto overflow-x-hidden'>
           <DesmyDataSetTable
             className={`h-full font-poppinsRegular`}
             settings={settings}
             data={datalist}
             handleOnLoaded={this.handleOnLoaded}
           >
-            {stateDatalist.length > 0 ? (
+            {
+              (loadState === DesmyState.LOADING) ? 
+                Array.from({ length: 6 }).map((_, i) => (
+                  <DesmyTableCard key={`dtal${i}`} isLoading={true} />
+                ))
+              :loadState === DesmyState.ERROR ? <DesmyNetworkError />
+              :!DesmyCommons.isEmptyOrNull(stateDatalist) ?
+              stateDatalist.map((data, i) => {
+                const bg = i % 2 === 0 ? "dark:bg-[#1c1c1c] bg-[#f3f4f6] dark:hover:bg-white" : "bg-inherit";
+                return (
+                  <DesmyTableCard
+                    data={data}
+                    background={bg}
+                    headers={settings?.headers}
+                    key={`camp${data.id}${i}`}
+                  />
+                );
+              })
+              :<tr>
+              <td colSpan={20}>
+                <div className="flex flex-col space-y-2 w-full h-96 justify-center items-center">
+                  <div className="font-poppinsMedium">No data found</div>
+                </div>
+              </td>
+            </tr>
+            }
+            {/* {stateDatalist.length > 0 ? (
             stateDatalist.map((data, i) => {
+              console.log(data)
               const bg = i % 2 === 0 ? "dark:bg-[#1c1c1c] bg-[#f3f4f6] dark:hover:bg-white" : "bg-inherit";
               return (
                 <DesmyTableCard
@@ -164,7 +191,7 @@ class ReadTable extends Component<ReadTableProps, ReadTableState> {
               ? Array.from({ length: 6 }).map((_, i) => (
                   <DesmyTableCard key={`dtal${i}`} isLoading={true} />
                 ))
-              : loadState === DesmyState.ERROR && <DesmyNetworkError />}
+              : loadState === DesmyState.ERROR && <DesmyNetworkError />} */}
           </DesmyDataSetTable>
         </div>
         {!hasRequest && (

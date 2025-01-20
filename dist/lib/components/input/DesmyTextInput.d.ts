@@ -7,7 +7,7 @@ interface TextInputProps {
     hasRequest?: boolean;
     className?: string;
     inputClassName?: string;
-    emailExtension?: string;
+    emailExtensions?: string[];
     onChange: (value: string) => void;
     onSearch: (value: string) => void;
     onRef?: (instance: DesmyTextInput | null) => void;
@@ -17,6 +17,7 @@ interface TextInputProps {
     maxLength?: number;
     rows?: number;
     label: string;
+    theme?: string;
 }
 interface TextInputState {
     dropdownPopoverShow: boolean;
@@ -30,6 +31,7 @@ declare class DesmyTextInput extends Component<TextInputProps, TextInputState> {
     private popoverDropdownRef;
     constructor(props: TextInputProps);
     componentDidMount(): void;
+    componentDidUpdate(prevProps: TextInputProps): void;
     handleDefaultRequest: () => void;
     handleTextAreaChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
     handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;

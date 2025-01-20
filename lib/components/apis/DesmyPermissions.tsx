@@ -18,9 +18,9 @@ type Permission = {
         _has_access : boolean
       ): boolean => {
         if (!permissions || !granted.length) return false;
-        return permissions.some((permissionGroup) =>
-          permissionGroup.permissions.some(({ name }) =>
-            granted.some((grantedPermission) =>
+        return permissions?.some((permissionGroup) =>
+          permissionGroup?.permissions.some(({ name }) =>
+            granted?.some((grantedPermission) =>
               name.toLowerCase() === grantedPermission.toLowerCase()
             )
           )
@@ -35,12 +35,12 @@ type Permission = {
         if(!checkHasAccess) return false
 
         if (user?.has_access && checkHasAccess) return true;
-        const permissions = user.groups;
+        const permissions = user?.groups;
       
         if (DesmyCommons.isEmptyOrNull(permissions) || DesmyCommons.isEmptyOrNull(granted)) return false;
       
         return permissions.some((permissionGroup: any) =>
-          permissionGroup.permissions.some(({ name }: any) =>
+          permissionGroup.permissions?.some(({ name }: any) =>
             granted.some((grantedPermission) =>
               name.toLowerCase() === grantedPermission.toLowerCase()
             )
@@ -55,7 +55,7 @@ type Permission = {
       
         return permissions.some((permissionGroup) =>
           groups.some((group) =>
-            DesmyCommons.toString(permissionGroup.type).toLowerCase() ===
+            DesmyCommons.toString(permissionGroup?.type).toLowerCase() ===
             DesmyCommons.toString(group).toLowerCase()
           )
         );
@@ -68,13 +68,13 @@ type Permission = {
     ): boolean => {
       
         if (user?.has_access && checkHasAccess) return true;
-        const permissions = user.groups;
+        const permissions = user?.groups;
     
         if (DesmyCommons.isEmptyOrNull(permissions) || DesmyCommons.isEmptyOrNull(groups)) return false;
         
         return permissions.some((permissionGroup: any) =>{
           return groups.some((group) =>
-              DesmyCommons.toString(permissionGroup.type).toLowerCase() ===
+              DesmyCommons.toString(permissionGroup?.type).toLowerCase() ===
               DesmyCommons.toString(group).toLowerCase()
           )
         }

@@ -509,7 +509,7 @@ class DesmyDropdown extends Component<Props, State> {
             <div ref={this.popoverDropdownRef}
                     className={
                         (this.state.dropdownPopoverShow ? "inline-block " : "hidden ") +
-                        "absolute border-[1px] z-[800] border-gray-200 dark:border-gray-700 text-base w-96 float-left py-2 bg-inherit  text-white list-none text-left rounded shadow-lg mt-1 "+
+                        "absolute border-[1px] z-[800] border-gray-200 dark:border-gray-700 text-base w-96 top-0 float-left py-2 bg-inherit  text-white list-none text-left rounded shadow-lg mt-1 "+
                         (this.props.dropdownClass)
                     }
                     style={{ minWidth: "12rem" }}
@@ -520,7 +520,7 @@ class DesmyDropdown extends Component<Props, State> {
                         <label htmlFor="floating_search" className="absolute text-sm text-black dark:text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-black dark:peer-focus:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Search here....</label>
                     </div>
                 </div>
-                <div className="flex w-full flex-col min-h-24 max-h-96 overflow-auto bg-inherit text-black dark:text-white">
+                <div className="flex w-full flex-col min-h-24 max-h-80 overflow-auto bg-inherit text-black dark:text-white">
                     
                     {
                     (this.state.error.state && this.props.request !==undefined) ? 
@@ -561,7 +561,7 @@ class DesmyDropdown extends Component<Props, State> {
                                 {
                                 (this.state.datalist.length != 0) ? 
                                 this.state.datalist.filter(name => Commons.toString(this.handleEncrypt(name.name)).toLowerCase().includes(this.state.input.search.toLowerCase())).map((data,i)=>{
-                                    var searchFound = this.handleSearch(this.state.selectedMultiple,data.id)  
+                                    const searchFound = this.handleSearch(this.state.selectedMultiple,data.id)  
                                     return <div key={`${i}`}
                                         className={`flex text-sm py-2 px-4 font-normal cursor-pointer w-full whitespace-no-wrap hover:bg-gray-200  dark:hover:bg-white dark:hover:text-black transition duration-500 ease-in-out dark:text-white ${this.props.dropdownListClass} ${ (this.props.is_multiple != undefined && this.props.is_multiple) ? (searchFound) ? ' font-poppinsBold' :'font-normal' : (Commons.toString(this.state.selectedList.id) == Commons.toString( data.id)) ? ' font-poppinsBold' : 'font-normal'} `}
                                         onClick={e => this.handleSelectedItem(e,data)}

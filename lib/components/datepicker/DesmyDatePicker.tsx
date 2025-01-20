@@ -155,38 +155,33 @@ class DesmyDatePicker extends Component<DatePickerProps, DatePickerState> {
     type: 'prev' | 'next' | 'specific',
     calendarType: 'start' | 'end',
     date?: Date
-  ): void => {
-    const key = calendarType === 'start' ? 'currentMonth' : 'endMonth';
-  
+  ) => {
     this.setState((prevState) => {
-      const updates: Partial<DatePickerState> = {};
+      let updatedState: Partial<DatePickerState> = {};
   
-      if (type === 'prev') {
-        updates[key] = subMonths(prevState[key], 1);
+      if (calendarType === 'start') {
+        const newStartMonth =
+          type === 'prev'
+            ? subMonths(prevState.currentMonth, 1)
+            : type === 'next'
+            ? addMonths(prevState.currentMonth, 1)
+            : date || prevState.currentMonth;
   
-        if (calendarType === 'end' && subMonths(prevState[key], 1) <= prevState.currentMonth) {
-          updates['currentMonth'] = subMonths(prevState.currentMonth, 1);
-        }
-      } else if (type === 'next') {
-        updates[key] = addMonths(prevState[key], 1);
+        updatedState = { currentMonth: newStartMonth, endMonth: prevState.endMonth };
+      } else if (calendarType === 'end') {
+        const newEndMonth =
+          type === 'prev'
+            ? subMonths(prevState.endMonth, 1)
+            : type === 'next'
+            ? addMonths(prevState.endMonth, 1)
+            : date || prevState.endMonth;
   
-        if (calendarType === 'start' && addMonths(prevState[key], 1) >= prevState.endMonth) {
-          updates['endMonth'] = addMonths(prevState.endMonth, 1);
-        }
-      } else if (type === 'specific' && date) {
-        updates[key] = date;
-  
-        if (calendarType === 'start' && date >= prevState.endMonth) {
-          updates['endMonth'] = addMonths(date, 1);
-        } else if (calendarType === 'end' && date <= prevState.currentMonth) {
-          updates['currentMonth'] = subMonths(date, 1);
-        }
+        updatedState = { currentMonth: prevState.currentMonth, endMonth: newEndMonth };
       }
   
-      return updates as DatePickerState;
+      return updatedState as DatePickerState;
     });
   };
-  
   
 
   render() {
@@ -195,6 +190,7 @@ class DesmyDatePicker extends Component<DatePickerProps, DatePickerState> {
       placeholder = '',
       separator = ' to ',
       displayFormat = 'MMMM dd, yyyy',
+      date,
       minDate,
       maxDate,
       showActionButtons,
@@ -202,14 +198,17 @@ class DesmyDatePicker extends Component<DatePickerProps, DatePickerState> {
 
     const parsedMinDate = minDate ? parseISO(minDate as string) : null;
     const parsedMaxDate = maxDate ? parseISO(maxDate as string) : null;
-  
+    const parsedStartDate = startDate || (date?.startDate ? parseISO(date.startDate) : null);
+    const parsedendDate = endDate || (date?.endDate ? parseISO(date.endDate) : null);
+    
+   
     return (
 
       <div>
         <DatePickerInput
           isRange={isRange}
-          startDate={startDate}
-          endDate={endDate}
+          startDate={parsedStartDate}
+          endDate={parsedendDate}
           separator={separator}
           displayFormat={displayFormat}
           placeholder={placeholder}
@@ -218,8 +217,8 @@ class DesmyDatePicker extends Component<DatePickerProps, DatePickerState> {
         {isOpen && (
           <DatePickerModal
             isRange={isRange}
-            startDate={startDate}
-            endDate={endDate}
+            startDate={parsedStartDate}
+            endDate={parsedendDate}
             hoveredDate={hoveredDate}
             currentMonth={currentMonth}
             endMonth={endMonth}

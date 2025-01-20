@@ -27,7 +27,20 @@ declare class DesmyCommons {
     columnHead(value: string): string;
     convertUnderscoreToSpaceString(str: string): string;
     isDarkTheme(): boolean;
-    sync_theme(callback?: (isDark: boolean) => void): Promise<void>;
+    /**
+     * Force the theme to update based on a provided mode.
+     * @param mode - Either "dark" or "light".
+     */
+    forceTheme(mode: 'dark' | 'light'): void;
+    /**
+     * Synchronize the theme with the system or user preference and start listening for changes.
+     * @param callback - Optional callback to run after syncing the theme.
+     */
+    syncTheme(callback?: (isDark: boolean) => void): Promise<void>;
+    /**
+     * Listen for system theme changes and update the theme dynamically.
+     */
+    listenForSystemThemeChanges(): void;
     imageSize(image: Blob): Promise<{
         width: number;
         height: number;
@@ -35,7 +48,7 @@ declare class DesmyCommons {
     capitalizeEachWord(data: string): string;
     formatDateString(inputDate: string): string;
     formatDate(dateString: string): string;
-    validateEmail(email: string): boolean;
+    validateEmail: (email: string) => boolean;
     convertNumber(number: number): string;
     daysLeft(data: string): number;
     formatDateToCustomFormat(date: Date): string;

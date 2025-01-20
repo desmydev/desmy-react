@@ -1,5 +1,6 @@
 import React from 'react';
 import Calendar from './Calendar';
+import { addDays, subDays } from 'date-fns';
 
 type DatePickerModalProps = {
   isRange: boolean;
@@ -68,7 +69,7 @@ class DatePickerModal extends React.Component<DatePickerModalProps, DatePickerMo
       endDate,
       hoveredDate,
       currentMonth,
-      endMonth,
+      endMonth: originalEndMonth,
       minDate,
       maxDate,
       showActionButtons,
@@ -78,8 +79,23 @@ class DatePickerModal extends React.Component<DatePickerModalProps, DatePickerMo
       toggleModal,
       onNavigate,
     } = this.props;
+  
+    const adjustedMinDate = minDate ? subDays(minDate, 1) : undefined;
+    const adjustedMaxDate = maxDate ? addDays(maxDate, 1) : undefined;
+  
+    // Ensure endMonth is next month if startDate and endDate are in the same month
+    const isSameMonth =
+      startDate &&
+      endDate &&
+      startDate.getFullYear() === endDate.getFullYear() &&
+      startDate.getMonth() === endDate.getMonth();
+  
+    const adjustedEndMonth = isSameMonth
+      ? addDays(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1), 0)
+      : originalEndMonth;
+  
     return (
-      <div className="fixed top-0 left-0 z-[99999999] w-full h-full overflow-hidden bg-black bg-opacity-10 right-0 bottom-0 flex justify-center items-center">
+      <div className="datepickerbackground z-[99999999] flex w-full h-full justify-center items-center">
         <div
           className={`bg-white dark:bg-darkDialogBackground dark:text-white rounded-lg p-6 w-full -mt-10 ${
             isRange ? `max-w-3xl` : `max-w-md`
@@ -103,14 +119,14 @@ class DatePickerModal extends React.Component<DatePickerModalProps, DatePickerMo
                 : ` flex flex-col w-full`
             }`}
           >
-           <Calendar
+            <Calendar
               month={currentMonth}
               isRange={isRange}
               startDate={startDate}
               endDate={endDate}
               hoveredDate={hoveredDate ? { date: hoveredDate.date } : undefined}
-              minDate={minDate ? minDate.toISOString() : undefined}
-              maxDate={maxDate ? maxDate.toISOString() : undefined}
+              minDate={adjustedMinDate ? adjustedMinDate.toISOString() : undefined}
+              maxDate={adjustedMaxDate ? adjustedMaxDate.toISOString() : undefined}
               onDateSelect={(date) => onDateSelect(date, true)}
               onDateHover={(date) => onDateHover(date, 'start')}
               onNavigate={(type, date) =>
@@ -119,19 +135,17 @@ class DatePickerModal extends React.Component<DatePickerModalProps, DatePickerMo
             />
             {isRange && (
               <Calendar
-                month={endMonth}
-                isRange={isRange}
-                startDate={startDate}
-                endDate={endDate}
-                hoveredDate={hoveredDate ? { date: hoveredDate.date } : undefined}
-                minDate={minDate ? minDate.toISOString() : undefined}
-                maxDate={maxDate ? maxDate.toISOString() : undefined}
-                onDateSelect={(date) => onDateSelect(date, false)}
-                onDateHover={(date) => onDateHover(date, 'end')}
-                onNavigate={(type, date) =>
-                  onNavigate(type as "prev" | "next" | "specific", 'end', date)
-                }
-              />
+              month={adjustedEndMonth}
+              isRange={isRange}
+              startDate={startDate}
+              endDate={endDate}
+              hoveredDate={hoveredDate ? { date: hoveredDate.date } : undefined}
+              minDate={adjustedMinDate ? adjustedMinDate.toISOString() : undefined}
+              maxDate={adjustedMaxDate ? adjustedMaxDate.toISOString() : undefined}
+              onDateSelect={(date) => onDateSelect(date, false)}
+              onDateHover={(date) => onDateHover(date, 'end')}
+              onNavigate={(type, date) => onNavigate(type as "prev" | "next" | "specific",'end', date)}
+            />
             )}
           </div>
           {showActionButtons && (
@@ -154,6 +168,7 @@ class DatePickerModal extends React.Component<DatePickerModalProps, DatePickerMo
       </div>
     );
   }
+  
 }
 
 export default DatePickerModal;

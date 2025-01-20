@@ -19,8 +19,8 @@ interface ModalContainerProps {
     title: string;
   };
   delete?: DeleteInfo;
-  onSuccess: (message?: string) => void;
-  onError: (message?: string) => void;
+  onSuccess?: (message?: string) => void;
+  onError?: (message?: string) => void;
   onClose: () => void;
   className?: string;
   backdropClass?: string;
@@ -150,9 +150,11 @@ class DesmyModalContainer extends Component<ModalContainerProps, ModalContainerS
       this.setState({ hasRequest: false }, () => {
         if (isDone) {
           toast.success(mgs);
-          this.props.onSuccess(message);
+          if(this.props.onSuccess !==undefined)
+            this.props.onSuccess(message);
         } else {
-          this.props.onError(message);
+          if(this.props.onError)
+            this.props.onError(message);
         }
       });
     }
@@ -172,7 +174,7 @@ class DesmyModalContainer extends Component<ModalContainerProps, ModalContainerS
             <div>
             <div className="flex justify-center dark:text-white items-center h-screen mx-4">
               <div className={`bg-gray-200 p-4 rounded-lg shadow-md w-full ${this.props.containerClassName}`}>
-                <div className="flex flex-col max-h-[83vh]">
+                <div className="flex flex-col max-h-[90vh]">
                 <div>
                   <div className="flex bg-transparent text-start uppercase justify-between mb-4 font-poppinsBlack text-lg">
                     <div className="w-full line-clamp-2">{this.props.data.title}</div>
@@ -233,7 +235,7 @@ class DesmyModalContainer extends Component<ModalContainerProps, ModalContainerS
                 </div>
                   
                   
-                  <div className="flex-1 max-h-[calc(100%-2rem)] overflow-auto  p-2 rounded-md">
+                  <div className="flex-1 max-h-[calc(90%-2rem)] overflow-auto  p-2 rounded-md">
                   <div className="z-10">{this.props.children}</div>
                   </div>
                 </div>

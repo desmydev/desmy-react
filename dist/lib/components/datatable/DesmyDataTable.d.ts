@@ -147,7 +147,6 @@ declare class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     filterloaded: boolean;
     constructor(props: DataTableProps);
     componentDidMount(): Promise<void>;
-    componentDidUpdate: (_prevProps: DataTableProps, _prevState: DataTableState) => Promise<void>;
     handleScroll(event: React.UIEvent<HTMLDivElement>): void;
     errors: (data: {
         state: boolean;
@@ -183,12 +182,12 @@ declare class DesmyDataTable extends Component<DataTableProps, DataTableState> {
         }[];
     }) => Promise<void>;
     handleInput: (event: ChangeEvent<HTMLInputElement>) => void;
-    loadNextPage: () => void;
     handleFocus: () => void;
     handleBlur: () => void;
     onChangeValue: (event: React.ChangeEvent<HTMLInputElement>) => void;
     handleKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
     loadNextBatch: () => void;
+    alert: () => string;
     renderChunk(): void;
     handleSearching(): void;
     removeFilterByName: (data: string) => void;
@@ -199,6 +198,8 @@ declare class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     handleEdit: (user: any) => void;
     handleBreadCrumbNavigations(e: React.MouseEvent, url: string): void;
     renderBreadcrumb(): import("react/jsx-runtime").JSX.Element | null;
+    handlePageChange: (pageNumber: number) => void;
+    renderPagination: () => import("react/jsx-runtime").JSX.Element | null;
     render(): import("react/jsx-runtime").JSX.Element;
 }
 export { DesmyDataTable };

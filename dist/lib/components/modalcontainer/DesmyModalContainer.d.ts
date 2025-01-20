@@ -10,8 +10,8 @@ interface ModalContainerProps {
         title: string;
     };
     delete?: DeleteInfo;
-    onSuccess: (message?: string) => void;
-    onError: (message?: string) => void;
+    onSuccess?: (message?: string) => void;
+    onError?: (message?: string) => void;
     onClose: () => void;
     className?: string;
     backdropClass?: string;

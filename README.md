@@ -16,6 +16,7 @@ Currently working on other components, contact [desmydev@gmail.com](https://mail
 * DesmyModalContainer
 * DesmyTextInput (Supports email address, phone number, number validations)
 * DesmyFilePicker
+* DesmyDatePicker
 * DesmyAccordion 
 * DesmyDataTable
 * DesmyCustomDataTable (Cards and custom views support)
