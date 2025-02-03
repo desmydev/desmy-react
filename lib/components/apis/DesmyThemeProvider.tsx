@@ -1,16 +1,16 @@
-import React, { ReactNode } from 'react';
-import {DesmyThemeContext} from './DesmyThemeContext';
-import DesmyCommons from './DesmyCommons'; // Import DesmyCommons
+import { Component, ReactNode } from 'react';
+import { DesmyThemeContext } from './DesmyThemeContext';
+import DesmyCommons from './DesmyCommons';
 
 interface ThemeProviderProps {
     children: ReactNode;
 }
 
 interface ThemeProviderState {
-    theme: 'dark' | 'light'; // Restrict the type of theme
+    theme: 'dark' | 'light';
 }
 
-class DesmyThemeProvider extends React.Component<ThemeProviderProps, ThemeProviderState> {
+class DesmyThemeProvider extends Component<ThemeProviderProps, ThemeProviderState> {
     constructor(props: ThemeProviderProps) {
         super(props);
 
@@ -26,7 +26,7 @@ class DesmyThemeProvider extends React.Component<ThemeProviderProps, ThemeProvid
                 theme: prevState.theme === 'light' ? 'dark' : 'light',
             }),
             () => {
-                DesmyCommons.forceTheme(this.state.theme); // Update DOM and localStorage
+                DesmyCommons.forceTheme(this.state.theme);
             }
         );
     };
@@ -55,4 +55,4 @@ class DesmyThemeProvider extends React.Component<ThemeProviderProps, ThemeProvid
     }
 }
 
-export {DesmyThemeProvider};
+export { DesmyThemeProvider };

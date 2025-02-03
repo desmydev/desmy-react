@@ -2,7 +2,6 @@ import React, { Component, RefObject } from 'react';
 import Commons from '../apis/DesmyCommons';
 import { HexColorPicker } from "react-colorful";
 import { DesmyState } from '../apis/DesmyState';
-import { DesmyClickOutsideListener } from '../clickoutsidelistener/DesmyClickOutsideListener';
 
 interface TextInputProps {
     defaultValue?: string;
@@ -13,7 +12,7 @@ interface TextInputProps {
     inputClassName?: string;
     emailExtensions?: string[];
     onChange: (value: string) => void;
-    onSearch: (value: string) => void;
+    onSearch?: (value: string) => void;
     onRef?: (instance: DesmyTextInput | null) => void;
     autoFocus?: boolean;
     onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
@@ -34,11 +33,10 @@ interface TextInputState {
 
 class DesmyTextInput extends Component<TextInputProps, TextInputState> {
     enteredInput: string = "";
-    private popoverDropdownRef: RefObject<HTMLDivElement>;
+    private popoverDropdownRef: RefObject<HTMLDivElement  | null> = React.createRef();
 
     constructor(props: TextInputProps) {
         super(props);
-        this.popoverDropdownRef = React.createRef();
         this.state = {
             dropdownPopoverShow: false,
             hasPressed: false,
@@ -159,19 +157,22 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
                 type: 'focus',
                 target: event.target as HTMLInputElement | HTMLTextAreaElement,
             } as unknown as React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>;
-            this.props.onFocus(focusEvent);
+            return this.props.onFocus(focusEvent);
+        }
+    };
+    
+    handleFocus = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        if (this.props.readOnly) {
+            return; 
+        }
+    
+        if (this.props.type === DesmyState.COLOR) {
+            this.setState({ dropdownPopoverShow: true });
+        } else if (this.props.onFocus) {
+            this.props.onFocus(event);
         }
     };
 
-    handleFocus = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        if (this.props.type === DesmyState.COLOR) {
-            this.setState({ dropdownPopoverShow: true });
-        } else {
-            if (this.props.onFocus) {
-                this.props.onFocus(event);
-            }
-        }
-    };
 
     handleColorPicker = () => {
         this.setState({ dropdownPopoverShow: true });
@@ -183,7 +184,6 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
 
     render() {
         return (
-            <DesmyClickOutsideListener onClickOutside={this.closeDropdownPopover}>
                 <div
                     className={`${this.props.className || 'bg-white dark:bg-darkBackground'} transition-colors duration-300`}
                 >
@@ -254,11 +254,11 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
                                             fill="currentColor"
                                         />
                                     </svg>
-                                ) : (
+                                ) : (this.props?.onSearch != undefined && 
                                     <svg
                                         fill="none"
                                         stroke="currentColor"
-                                        onClick={() => this.props.onSearch(this.state.input.data)}
+                                        onClick={() => this.props.onSearch?.(this.state.input.data)}
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
                                         strokeWidth={2}
@@ -292,7 +292,6 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
                         </div>
                     )}
                 </div>
-            </DesmyClickOutsideListener>
         );
     }
 }

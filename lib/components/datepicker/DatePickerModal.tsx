@@ -15,6 +15,7 @@ type DatePickerModalProps = {
   onDateSelect: (date: Date, isStart: boolean) => void;
   onDateHover: (date: Date, rangeType: "start" | "end") => void;
   resetSelection: () => void;
+  className? :string;
   toggleModal: () => void;
   onNavigate: (type: "prev" | "next" | "specific", calendarType: "start" | "end", date?: Date) => void;
 };
@@ -72,11 +73,11 @@ class DatePickerModal extends React.Component<DatePickerModalProps, DatePickerMo
       endMonth: originalEndMonth,
       minDate,
       maxDate,
-      showActionButtons,
+      // showActionButtons,
       onDateSelect,
       onDateHover,
-      resetSelection,
-      toggleModal,
+      // resetSelection,
+      // toggleModal,
       onNavigate,
     } = this.props;
   
@@ -95,29 +96,13 @@ class DatePickerModal extends React.Component<DatePickerModalProps, DatePickerMo
       : originalEndMonth;
   
     return (
-      <div className="datepickerbackground z-[99999999] flex w-full h-full justify-center items-center">
-        <div
-          className={`bg-white dark:bg-darkDialogBackground dark:text-white rounded-lg p-6 w-full -mt-10 ${
-            isRange ? `max-w-3xl` : `max-w-md`
-          }`}
-        >
-          <div className="flex justify-between items-center border-b dark:border-darkPrimaryBorderLight pb-3">
-            <h2 className="text-base font-poppinsSemiBold font-semibold">
-              {isRange ? 'Select Date Range' : 'Select Date'}
-            </h2>
-            <button
-              onClick={toggleModal}
-              className="text-gray-500 dark:text-white hover:text-gray-700"
-            >
-              &times;
-            </button>
-          </div>
-          <div
-            className={`${
+     <>
+      <div
+            className={`p-4 rounded-lg overflow-hidden bg-white dark:bg-darkDialogBackground font-poppinsRegular ${
               isRange
                 ? `grid grid-col-1 lg:grid-cols-2 gap-8 mt-4`
                 : ` flex flex-col w-full`
-            }`}
+            } ${this.props.className}`}
           >
             <Calendar
               month={currentMonth}
@@ -148,24 +133,7 @@ class DatePickerModal extends React.Component<DatePickerModalProps, DatePickerMo
             />
             )}
           </div>
-          {showActionButtons && (
-            <div className="mt-4 flex justify-between items-center">
-              <button
-                onClick={resetSelection}
-                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-              >
-                Reset
-              </button>
-              <button
-                onClick={toggleModal}
-                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-              >
-                Confirm
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
+     </>
     );
   }
   

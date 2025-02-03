@@ -30,7 +30,7 @@ class DesmyAuth {
         try {
           if (datallist && datallist.length > 0) {
             datallist.forEach((data) => {
-              localStorage.setItem(data.key, data.value.toString());
+              localStorage.setItem(data.key, `${data.value}`);
             });
           }
           callback(true);
@@ -67,6 +67,34 @@ class DesmyAuth {
 
         return cookieValue;
     }
+
+    setCookie(name: string, value: string, options?: { expires?: number | Date; path?: string; secure?: boolean }): void {
+      let cookieString = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`;
+
+      // Handle expiration
+      if (options?.expires) {
+          if (typeof options.expires === 'number') {
+              const date = new Date();
+              date.setTime(date.getTime() + options.expires * 24 * 60 * 60 * 1000); // Days to milliseconds
+              cookieString += `; expires=${date.toUTCString()}`;
+          } else if (options.expires instanceof Date) {
+              cookieString += `; expires=${options.expires.toUTCString()}`;
+          }
+      }
+
+      // Handle path
+      if (options?.path) {
+          cookieString += `; path=${options.path}`;
+      }
+
+      // Handle secure flag
+      if (options?.secure) {
+          cookieString += '; secure';
+      }
+
+      // Set the cookie
+      document.cookie = cookieString;
+  }
 }
 
 export default new DesmyAuth();

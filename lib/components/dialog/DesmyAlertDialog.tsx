@@ -13,7 +13,7 @@ interface DialogProps {
       zIndex?: number;
       btnPosition?: string;
       btnNegative?: string;
-      type: string;
+      type?: string;
       loading?: boolean;
       forceLoading?: boolean;
       loadinghint?: string;

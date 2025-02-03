@@ -2,10 +2,9 @@ import {DesmyThemeProvider} from './components/apis/DesmyThemeProvider'
 import {DesmyThemeContext} from './components/apis/DesmyThemeContext'
 import  {DesmyModalHandler} from "./components/dialog/DesmyAlertDialog";
 import  DesmyAuth from './components/apis/DesmyAuth';
-import  {DesmyHelmetSEO} from './components/apis/DesmyHelmetSEO'
+import  {DesmyAxiosService} from './components/apis/DesmyAxiosService';
 import  DesmyCommons from './components/apis/DesmyCommons';
 import  DesmyPermissions from './components/apis/DesmyPermissions';
-import  {DesmyRouter} from './components/apis/DesmyRouter'
 import  {DesmyLazyloading} from './components/apis/DesmyLazyloading'
 import  {DesmyState} from './components/apis/DesmyState'
 import  {DesmyMultiStepModal} from './components/modalcontainer/MultiStepModal/DesmyMultiStepModal'
@@ -38,16 +37,15 @@ import  {DesmySmartFormUpload} from './components/forms/DesmySmartFormUpload'
 import  {DesmyPassportPicker} from './components/filepicker/DesmyPassportPicker'
 import  {DesmyDatePicker} from './components/datepicker/DesmyDatePicker'
 import  {DesmyVerticalStepper} from './components/stepper/DesmyVerticalStepper'
+import  {DesmyLazyImage} from './components/image/DesmyLazyImage'
 import './index.css';
 export  {
             DesmyThemeProvider,DesmyThemeContext,
             DesmyState,
-            DesmyHelmetSEO,
             DesmyPermissions,
             DesmyLazyloading,
             DesmyToast,
             DesmyToastProvider,
-            DesmyRouter,
             DesmyDropdown,
             DesmyModalHandler,
             DesmyModalContainer,
@@ -78,5 +76,7 @@ export  {
             DesmyPassportPicker,
             DesmyMultiStepModal,
             DesmyDatePicker,
-            DesmyVerticalStepper
+            DesmyVerticalStepper,
+            DesmyLazyImage,
+            DesmyAxiosService
         }

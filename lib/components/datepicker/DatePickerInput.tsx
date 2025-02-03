@@ -29,7 +29,6 @@ class DatePickerInput extends React.Component<DatePickerInputProps> {
           ? `${formattedStartDate}${separator}${formattedEndDate}` // Use range format
           : formattedStartDate // Use only startDate
         : '';
-
     return (
       <DesmyTextInput
         type="text"

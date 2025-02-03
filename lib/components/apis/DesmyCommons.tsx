@@ -444,5 +444,11 @@ class DesmyCommons {
         return roundedNumber.toFixed(2);
     }
     
+    getParamUrl(data: string): string {
+        const pathSegments = window.location.pathname.split("/");
+        const index = pathSegments.indexOf(data);
+        return index !== -1 && index + 1 < pathSegments.length ? pathSegments[index + 1] : "";
+    }
+    
 }
 export default  new DesmyCommons();

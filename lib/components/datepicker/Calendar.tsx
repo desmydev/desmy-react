@@ -104,7 +104,7 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
     ];
 
     return (
-      <div className="grid grid-cols-2 max-h-80 gap-2 p-4 bg-gray-100 dark:bg-darkDialogBackground rounded">
+      <div className="grid grid-cols-2 max-h-80 gap-2 px-8 py-4 bg-gray-100 dark:bg-darkDialogBackground rounded">
         {months.map((month, index) => (
           <button
             key={index}
@@ -147,7 +147,9 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
           return (
             <button
               key={year}
-              ref={(el) => (yearRefs[index] = el)}
+              ref={(el) => {
+                yearRefs[index] = el;
+              }}
               onClick={(event) => this.handleYearSelect(event, year)}
               className={`px-4 py-2 h-10 rounded  bg-inherit hover:bg-blue-100 dark:hover:bg-darkPrimaryBorder focus:outline-none transition-all duration-500 ease-in-out  ${
                 isOutOfRange ? 'line-through text-gray-400 cursor-not-allowed' : ''

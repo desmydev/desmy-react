@@ -38,7 +38,7 @@ interface State {
 }
 
 class DesmyPassportPicker extends Component<Props, State> {
-  private fileUploadFile: RefObject<HTMLInputElement>;
+  private fileUploadFile: RefObject<HTMLInputElement  | null> = React.createRef();
 
   constructor(props: Props) {
     super(props);

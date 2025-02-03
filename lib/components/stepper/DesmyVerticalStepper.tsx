@@ -38,7 +38,8 @@ class DesmyVerticalStepper extends Component<DesmyVerticalStepperProps, DesmyVer
 
     const activeContent = React.Children.toArray(children).find(
       (child): child is ReactElement<{ "data-tab": string }> => 
-        React.isValidElement(child) && child.props["data-tab"] === activeTab
+        React.isValidElement<{ "data-tab": string }>(child) &&
+        child.props["data-tab"] === activeTab
     );
 
     return (

@@ -19,7 +19,7 @@ type HomeProps = {
 };
 
 class DesmyUploadManager extends Component<HomeProps, HomeState> {
-  private modalContainerRef: RefObject<HTMLDivElement>;
+  private modalContainerRef: RefObject<HTMLDivElement | null> = React.createRef();
   private subscription: any;
 
   constructor(props: HomeProps) {

@@ -1,4 +1,4 @@
-import { Component, CSSProperties } from 'react';
+import React,{ Component, CSSProperties } from 'react';
 import { DesmyState as CommonState } from '../apis/DesmyState';
 import { DesmyPopupMenu } from '../popupmenu/DesmyPopupMenu';
 import DesmyCommons from '../apis/DesmyCommons';

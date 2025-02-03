@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react';
+import { Component, ReactNode, JSX } from 'react';
 import axios from 'axios'; 
 import { DesmyMultiStepModal } from './MultiStepModal/DesmyMultiStepModal';
 import { DesmyState as ModalState } from '../apis/DesmyState';

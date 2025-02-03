@@ -77,10 +77,10 @@ interface State {
 }
 
 class DesmySearchInput extends Component<Props, State> {
-    private popoverDropdownRef: RefObject<HTMLDivElement>;
-    private btnDropdownRef: RefObject<HTMLDivElement>;
-    private searchRef: RefObject<HTMLInputElement>;
-    private divRef: RefObject<HTMLDivElement>;
+    private popoverDropdownRef: RefObject<HTMLDivElement  | null> = React.createRef();
+    private btnDropdownRef: RefObject<HTMLDivElement  | null> = React.createRef();
+    private searchRef: RefObject<HTMLDivElement  | null> = React.createRef();
+    private divRef: RefObject<HTMLDivElement  | null> = React.createRef();
 
     constructor(props: Props) {
         super(props);

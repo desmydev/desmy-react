@@ -1,10 +1,10 @@
 import axios from 'axios'; 
-import React, { Component, ChangeEvent,ReactNode, KeyboardEvent } from 'react';
+import React, { Component, ChangeEvent,ReactNode, KeyboardEvent ,JSX} from 'react';
 import Commons from '../apis/DesmyCommons';
 import { DesmyDropdown } from '../dropdown/DesmyDropdown';
 import { DesmyState as CommonState } from '../apis/DesmyState'; // Assuming State is already exported as CommonState
 import ReactDOM from 'react-dom';
-import DatatableCard from './DatatableCard';
+import {DatatableCard} from './DatatableCard';
 import DesmyAuth from '../apis/DesmyAuth';
 import DesmyCommons from '../apis/DesmyCommons';
 
@@ -189,31 +189,34 @@ class DatatableModalHandler extends React.Component<Props, State> {
     return ReactDOM.createPortal(modalComponent, this.modalContainer);
   }
 }
+export type DesmyDataTableRef = {
+  handleRetry: () => void;
+};
 
 interface DataTableProps {
   settings: {
     default_sorted_column: string;
-    onURLClick: (url :any)=>void,
+    onURLClick?: (url :any)=>void,
     header: {
-      title: string;
-      class: string;
-      hint: string;
+      title?: string;
+      class?: string;
+      hint?: string;
     };
-    deleteinfo: {
+    deleteinfo?: {
       name: string;
       id: string;
     };
     breadcrumb?: { name: string; url: string }[];
     request_url: string;
-    handleOnViewClick: (user: any) => void;
-    handleOnClickExtra: (user: any, name: string) => void;
+    handleOnViewClick?: (user: any) => void;
+    handleOnClickExtra?: (user: any, name: string) => void;
     image?: {
         placeholder?: string;
         rounded?: boolean;
     };
     read_more_limit?: number;
     extra_handle?: Array<{ name: string; icon: React.ReactNode }>;
-    headers: any[];
+    headers: string[];
     columns: string[];
     table_data?: { name: string; class: string }[];
     filter?: {
@@ -221,7 +224,7 @@ interface DataTableProps {
       data: { name: string; data: string; defaults?: { [key: string]: string } }[];
     };
     url: string;
-    handleEdit: (user: any) => void;
+    handleEdit?: (user: any,type?:string) => void;
   };
   content?: React.ReactNode; 
   className?:string,
@@ -267,9 +270,9 @@ interface DataTableState {
   settings: {
     default_sorted_column: string;
     header: {
-      title: string;
-      class: string;
-      hint: string;
+      title?: string;
+      class?: string;
+      hint?: string;
     };
 
     breadcrumb?: { name: string; url: string }[];
@@ -509,7 +512,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     } else {
       icon = <svg className="w-3 h-3 2xl:w-4 2xl:h-4 dark:text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
     }
-    return this.state.settings.headers.map((column, index) => {
+    return this.props.settings.headers.map((column, index) => {
       const exceptionalColumns = this.state.exceptionalColumns.includes(column.toLowerCase());
       const columnClass = this.state.settings.table_data?.find((item) => item.name === column.toLowerCase() );
       return <th key={index} onClick={() => this.sortByColumn(this.props.settings.columns[index])}  className={`py-2 sticky ${(exceptionalColumns) ? `w-4`:(columnClass) ? columnClass.class:``}  top-0 border-b border-gray-200 text-xs 2xl:text-sm bg-gray-100 dark:border-gray-700 dark:bg-darkPrimary`}>
@@ -620,7 +623,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
       
      this.setState({searchText:event.target.value},()=>{
       if (Commons.isEmptyOrNull(this.search) && !this.state.input.is_searching) {
-        this.handleSearching();
+        this.clearFetchEntities();
       }
      })
     } catch (e) {
@@ -631,7 +634,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
   handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     try {
       if ((e.key === 'Enter') && !Commons.isEmptyOrNull(this.search)) {
-        this.handleSearching();
+        this.clearFetchEntities();
       }
     } catch (e) {
       this.alert()
@@ -654,7 +657,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
   alert=()=>""
   renderChunk(): void {
     try {
-      const headers = this.state.settings.headers;
+      const headers = this.props.settings.headers;
       const currentCondition = (this.currentIndex + this.chunkSize > this.dataCollection.length) ? this.dataCollection.length : this.currentIndex + this.chunkSize;
       for (let i = this.currentIndex; i < currentCondition; i++) {
         const user = this.dataCollection[i];
@@ -671,7 +674,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
                     handleOnSuccess={this.handleOnSuccess}
                     acces_key={parseInt(key, 10)}
                     error={this.errors}
-                    handleEdit={() => this.props.settings.handleEdit(user)}
+                    handleEdit={() => this.props.settings.handleEdit?.(user,key)}
                     settings={this.props.settings}
                     exceptional_columns={this.state.exceptionalColumns}
                     user={user}
@@ -689,13 +692,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     }
   }
   
-  handleSearching(){
-    const {custom_settings,input} = this.state
-    custom_settings['current_page'] = 1
-    input['is_searching']=true
-    this.hasClear=true
-    this.setState({ custom_settings,input}, () => {this.fetchEntities()});
-  }
+ 
   removeFilterByName = (data: string): void => {
     try {
       const filter = { ...this.state.filters };
@@ -800,12 +797,12 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     }
     this.forceUpdate();
   }
-  handleEdit=(user: any)=>{
-    this.props.settings.handleEdit(user)
+  handleEdit=(user: any,type?:string)=>{
+    this.props.settings.handleEdit?.(user,type)
   }
   handleBreadCrumbNavigations(e: React.MouseEvent, url: string) {
     e.preventDefault();
-    this.props.settings.onURLClick(url)
+    this.props.settings.onURLClick?.(url)
   }
   renderBreadcrumb() {
     const { breadcrumb } = this.state.settings;
@@ -926,8 +923,8 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
       <>
         {this.state.dtablemodal}
         <div className={`flex flex-col w-full ${this.props.className}`}>
-              <div className='flex flex-col w-full mb-14'>
-                  <header className="flex w-full flex-col lg:flex-row justify-start lg:justify-between items-center space-x-6">
+              <div className='flex flex-col w-full mb-5'>
+                  <header className="flex w-full flex-col md:flex-row justify-start md:justify-between items-center space-x-6">
                     <div className="flex flex-col w-full ">
                       {
                         (this.state.settings.header !== undefined) ?
@@ -1021,7 +1018,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
                 </div>
                 <div className='flex flex-col w-full pb-16'>
                     {this.renderBreadcrumb()}
-                      <table className='pb-14'>
+                      <table>
                         <thead className='w-full'>
                           <tr className="text-sm">{ this.tableHeads() }</tr>
                         </thead>
@@ -1076,4 +1073,4 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
   }
 }
 
-export {DesmyDataTable};
+export {DesmyDataTable}

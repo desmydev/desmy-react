@@ -10,7 +10,7 @@ interface ChildItem {
 }
 
 interface DesmySideBarItemProps {
-  location: { pathname: string };
+  location?: { pathname: string };
   exact?: boolean;
   className?: string;
   pattern?: string | string[]; // Accept string or array of strings
@@ -18,8 +18,8 @@ interface DesmySideBarItemProps {
   items?: ChildItem[];
   icon?: ReactNode;
   url: string;
-  onClick: (e: React.MouseEvent<HTMLAnchorElement>) => void;
-  navigate: (url: string) => void;
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+  navigate?: (url: string) => void;
 }
 
 // Define the types for your component state
@@ -71,13 +71,13 @@ class DesmySideBarItem extends Component<DesmySideBarItemProps, DesmySideBarItem
     if (!DesmyCommons.isEmptyOrNull(this.props.items)) {
       this.toggleMenu(this.props.name);
     } else {
-      this.props.onClick(e);
+      this.props.onClick?.(e);
     }
   };
 
   handleOnChildClick = (e: React.MouseEvent<HTMLAnchorElement>, data: ChildItem) => {
     e.preventDefault();
-    this.props.navigate(data.url);
+    this.props.navigate?.(data.url);
   };
 
   toggleMenu = (menu: string | null) => {

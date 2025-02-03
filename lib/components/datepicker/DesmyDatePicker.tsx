@@ -1,5 +1,6 @@
-import { Component } from 'react';
-import { addMonths, subMonths, format, parseISO } from 'date-fns';
+import { Component, createRef } from 'react';
+import { createPopper } from '@popperjs/core';
+import { addMonths, format,subMonths, parseISO } from 'date-fns';
 import DatePickerInput from './DatePickerInput';
 import DatePickerModal from './DatePickerModal';
 
@@ -31,6 +32,10 @@ type DatePickerState = {
 };
 
 class DesmyDatePicker extends Component<DatePickerProps, DatePickerState> {
+  private btnDropdownRef = createRef<HTMLDivElement>();
+  private popoverDropdownRef = createRef<HTMLDivElement>();
+  private popperInstance: ReturnType<typeof createPopper> | null = null;
+
   constructor(props: DatePickerProps) {
     super(props);
     this.state = {
@@ -49,16 +54,70 @@ class DesmyDatePicker extends Component<DatePickerProps, DatePickerState> {
       parsedMaxDate: props.maxDate ? parseISO(props.maxDate) : null,
     };
   }
-  
+
+  componentDidMount(): void {
+    document.addEventListener('mousedown', this.handleClickOutside);
+  }
+
+  componentWillUnmount(): void {
+    this.destroyDropdownPopper();
+    document.removeEventListener('mousedown', this.handleClickOutside);
+  }
+
   toggleModal = (): void => {
     this.setState(
       (prevState) => ({ isOpen: !prevState.isOpen }),
       () => {
         if (this.state.isOpen) {
+          this.createDropdownPopper();
           this.populateDates();
+        } else {
+          this.destroyDropdownPopper();
         }
       }
     );
+  };
+
+  createDropdownPopper = (): void => {
+    if (this.btnDropdownRef.current && this.popoverDropdownRef.current) {
+      this.popperInstance = createPopper(this.btnDropdownRef.current, this.popoverDropdownRef.current, {
+        placement: 'bottom-start',
+        modifiers: [
+          {
+            name: 'flip',
+            options: {
+              fallbackPlacements: ['top', 'bottom-start'],
+            },
+          },
+          {
+            name: 'offset',
+            options: {
+              offset: [0, 8],
+            },
+          },
+        ],
+      });
+    }
+  };
+
+  destroyDropdownPopper = (): void => {
+    if (this.popperInstance) {
+      this.popperInstance.destroy();
+      this.popperInstance = null;
+    }
+  };
+
+  handleClickOutside = (event: MouseEvent): void => {
+    if (
+      this.state.isOpen &&
+      this.popoverDropdownRef.current &&
+      this.btnDropdownRef.current &&
+      !this.popoverDropdownRef.current.contains(event.target as Node) &&
+      !this.btnDropdownRef.current.contains(event.target as Node)
+    ) {
+      this.setState({ isOpen: false });
+      this.destroyDropdownPopper();
+    }
   };
 
   populateDates = (): void => {
@@ -77,12 +136,10 @@ class DesmyDatePicker extends Component<DatePickerProps, DatePickerState> {
   };
 
   handleDateSelect = (date: Date): void => {
-    const { isRange, startDate, endDate, currentMonth } = this.state;
+    const { isRange, startDate, endDate } = this.state;
     const { onSelected } = this.props;
 
     const formattedDate = format(date, 'yyyy-MM-dd');
-    const isNextMonth = date.getMonth() > currentMonth.getMonth() || date.getFullYear() > currentMonth.getFullYear();
-    const isPrevMonth = date.getMonth() < currentMonth.getMonth() || date.getFullYear() < currentMonth.getFullYear();
 
     if (isRange) {
       if (startDate && endDate) {
@@ -109,32 +166,22 @@ class DesmyDatePicker extends Component<DatePickerProps, DatePickerState> {
         });
       }
     } else {
-      this.setState({ startDate: date,endDate:date, hoveredDate: null }, this.toggleModal);
+      this.setState({ startDate: date, endDate: date, hoveredDate: null }, this.toggleModal);
       onSelected?.({
         startDate: format(date, 'yyyy-MM-dd'),
         endDate: format(date, 'yyyy-MM-dd'),
       });
     }
-
-    if (isNextMonth || isPrevMonth) {
-      // this.setState({
-      //   currentMonth: new Date(date.getFullYear(), date.getMonth(), 1),
-      //   endMonth: addMonths(new Date(date.getFullYear(), date.getMonth(), 1), 1),
-      // });
-    }
   };
 
   handleDateHover = (date: Date, type: string): void => {
-    const { isRange, startDate, endDate, currentMonth } = this.state;
-    const isNextMonth = date.getMonth() > currentMonth.getMonth() || date.getFullYear() > currentMonth.getFullYear();
-    const isPrevMonth = date.getMonth() < currentMonth.getMonth() || date.getFullYear() < currentMonth.getFullYear();
-
-    if (isRange && startDate && !endDate) {
+    const { isRange, startDate } = this.state;
+    if (isRange && startDate) {
       this.setState({
         hoveredDate: {
           date,
           type,
-          isOutOfCurrentMonth: isNextMonth || isPrevMonth,
+          isOutOfCurrentMonth: false,
         },
       });
     }
@@ -150,7 +197,6 @@ class DesmyDatePicker extends Component<DatePickerProps, DatePickerState> {
     });
     this.props.onSelected?.(null);
   };
-
   handleNavigate = (
     type: 'prev' | 'next' | 'specific',
     calendarType: 'start' | 'end',
@@ -182,8 +228,6 @@ class DesmyDatePicker extends Component<DatePickerProps, DatePickerState> {
       return updatedState as DatePickerState;
     });
   };
-  
-
   render() {
     const { isOpen, isRange, startDate, endDate, hoveredDate, currentMonth, endMonth } = this.state;
     const {
@@ -202,9 +246,9 @@ class DesmyDatePicker extends Component<DatePickerProps, DatePickerState> {
     const parsedendDate = endDate || (date?.endDate ? parseISO(date.endDate) : null);
     
    
-    return (
 
-      <div>
+    return (
+      <div ref={this.btnDropdownRef}>
         <DatePickerInput
           isRange={isRange}
           startDate={parsedStartDate}
@@ -215,27 +259,28 @@ class DesmyDatePicker extends Component<DatePickerProps, DatePickerState> {
           onFocus={this.toggleModal}
         />
         {isOpen && (
-          <DatePickerModal
-            isRange={isRange}
-            startDate={parsedStartDate}
-            endDate={parsedendDate}
-            hoveredDate={hoveredDate}
-            currentMonth={currentMonth}
-            endMonth={endMonth}
-            minDate={parsedMinDate}
-            maxDate={parsedMaxDate}
-            onDateSelect={this.handleDateSelect}
-            onDateHover={this.handleDateHover}
-            resetSelection={this.resetSelection}
-            toggleModal={this.toggleModal}
-            onNavigate={this.handleNavigate}
-            showActionButtons={showActionButtons}
-          />
+          <div ref={this.popoverDropdownRef} style={{ zIndex: 1000 }}>
+            <DatePickerModal
+              isRange={isRange}
+              startDate={startDate}
+              endDate={endDate}
+              hoveredDate={hoveredDate}
+              currentMonth={currentMonth}
+              endMonth={endMonth}
+              minDate={parsedMinDate}
+              maxDate={parsedMaxDate}
+              onDateSelect={this.handleDateSelect}
+              onDateHover={this.handleDateHover}
+              resetSelection={this.resetSelection}
+              toggleModal={this.toggleModal}
+              onNavigate={this.handleNavigate}
+              showActionButtons={showActionButtons}
+            />
+          </div>
         )}
       </div>
     );
   }
 }
 
-export {DesmyDatePicker};
-
+export { DesmyDatePicker };

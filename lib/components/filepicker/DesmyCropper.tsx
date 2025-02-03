@@ -1,6 +1,6 @@
-import { Component, createRef, RefObject } from 'react';
-import { Cropper, CropperRef } from "react-advanced-cropper";
-import "react-advanced-cropper/dist/style.css";
+import React,{ Component } from 'react';
+// import { Cropper, CropperRef } from "react-advanced-cropper";
+// import "react-advanced-cropper/dist/style.css";
 import "./Cropper.scss";
 
 interface Media {
@@ -18,13 +18,13 @@ interface DesmyCropperState {
 }
 
 class DesmyCropper extends Component<DesmyCropperProps, DesmyCropperState> {
-  private cropperRef: RefObject<CropperRef>;
+  // private cropperRef: RefObject<CropperRef>;
 
   constructor(props: DesmyCropperProps) {
     super(props);
     this.state = {};
 
-    this.cropperRef = createRef<CropperRef>();
+    // this.cropperRef = createRef<CropperRef>();
 
     this.onCrop = this.onCrop.bind(this);
   }
@@ -43,17 +43,17 @@ class DesmyCropper extends Component<DesmyCropperProps, DesmyCropperState> {
 
   onCrop = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const cropper = this.cropperRef.current;
-    if (cropper) {
-      const canvas = cropper.getCanvas();
-      if (canvas) {
-        canvas.toBlob((blob) => {
-          if (blob) {
-            this.props.onSuccess(blob, canvas.toDataURL());
-          }
-        }, "image/png");
-      }
-    }
+    // const cropper = this.cropperRef.current;
+    // if (cropper) {
+    //   const canvas = cropper.getCanvas();
+    //   if (canvas) {
+    //     canvas.toBlob((blob) => {
+    //       if (blob) {
+    //         this.props.onSuccess(blob, canvas.toDataURL());
+    //       }
+    //     }, "image/png");
+    //   }
+    // }
   }
 
   render() {
@@ -67,7 +67,7 @@ class DesmyCropper extends Component<DesmyCropperProps, DesmyCropperState> {
                 <div className='max-w-3xl bg-black min-h-[600px] rounded-xl mx-auto py-10 px-8 my-auto'>
                   <div className="example flex flex-col w-full">
                     <div className="example__cropper-wrapper bg-red-500">
-                      <Cropper
+                      {/* <Cropper
                         ref={this.cropperRef}
                         transitions={true}
                         stencilProps={{
@@ -79,7 +79,7 @@ class DesmyCropper extends Component<DesmyCropperProps, DesmyCropperState> {
                         }}
                         className="example__cropper"
                         src={image}
-                      />
+                      /> */}
                     </div>
                     <div className="example__buttons-wrapper">
                       {image && (
