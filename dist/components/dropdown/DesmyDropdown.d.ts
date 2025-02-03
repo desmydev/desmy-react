@@ -1,4 +1,4 @@
-import { default as React, Component, RefObject, ChangeEvent } from 'react';
+import { default as React, Component, ChangeEvent } from 'react';
 interface DropdownItem {
     id: any | null;
     name: string | null;
@@ -18,7 +18,6 @@ interface Props {
     type?: string;
     handleChange?: (data: DropdownItem | DropdownItem[]) => void;
     handleDropdownChange?: (data: DropdownItem | DropdownItem[], type?: string) => void;
-    onRef?: (ref: DesmyDropdown) => void;
     disabled?: boolean;
     showPlaceHolderHint?: boolean;
     placeholder?: string;
@@ -27,11 +26,9 @@ interface Props {
     dropdownClass?: string;
     dropdownListClass?: string;
     containerClassName?: string;
-    selectedRef?: string;
     enableDecrypt?: boolean;
     onClear?: string;
     className?: string;
-    forwardedRef?: RefObject<HTMLDivElement>;
 }
 interface State {
     dropdownPopoverShow: boolean;
@@ -48,12 +45,7 @@ interface State {
         search: string;
     };
     selectedAll?: Boolean;
-    selectedList: {
-        id: string;
-        name: string | null;
-        icon?: string | null;
-        data?: any;
-    };
+    selectedList: DropdownItem;
     error: {
         state: boolean;
         message: string;
@@ -94,5 +86,4 @@ declare class DesmyDropdown extends Component<Props, State> {
     handleClickOutside: (event: MouseEvent) => void;
     render(): import("react/jsx-runtime").JSX.Element;
 }
-declare const ForwardedDesmyDropdown: React.ForwardRefExoticComponent<Props & React.RefAttributes<HTMLDivElement>>;
-export { ForwardedDesmyDropdown as DesmyDropdown };
+export { DesmyDropdown };

@@ -1,14 +1,14 @@
-import { ReactElement, HTMLAttributes, FunctionComponent } from 'react';
-type FocusEvents = 'focusin' | 'focusout';
-type MouseEvents = 'click' | 'mousedown' | 'mouseup';
-type TouchEvents = 'touchstart' | 'touchend';
-type Events = FocusEvent | MouseEvent | TouchEvent;
-interface Props extends HTMLAttributes<HTMLElement> {
-    onClickOutside: (event: Events) => void;
-    focusEvent?: FocusEvents;
-    mouseEvent?: MouseEvents;
-    touchEvent?: TouchEvents;
-    children: ReactElement<any>;
+import { default as React, Component } from 'react';
+interface Props {
+    onClickOutside: () => void;
+    children: React.ReactNode;
 }
-declare const DesmyClickOutsideListener: FunctionComponent<Props>;
-export { DesmyClickOutsideListener };
+export declare class DesmyClickOutsideListener extends Component<Props> {
+    private containerRef;
+    constructor(props: Props);
+    componentDidMount(): void;
+    componentWillUnmount(): void;
+    handleClickOutside: (event: MouseEvent | TouchEvent) => void;
+    render(): import("react/jsx-runtime").JSX.Element;
+}
+export {};

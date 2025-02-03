@@ -1,4 +1,4 @@
-import React, { Component,createRef, RefObject, ChangeEvent ,forwardRef} from 'react';
+import React, { Component,createRef, RefObject, ChangeEvent } from 'react';
 import { createPopper } from '@popperjs/core';
 import axios from 'axios'; 
 import Commons from '../apis/DesmyCommons';
@@ -26,7 +26,6 @@ interface Props {
     type?: string;
     handleChange?: (data: DropdownItem | DropdownItem[]) => void;
     handleDropdownChange?: (data: DropdownItem | DropdownItem[], type?: string) => void;
-    onRef?: (ref: DesmyDropdown) => void;
     disabled?: boolean;
     showPlaceHolderHint?: boolean;
     placeholder?: string;
@@ -35,11 +34,9 @@ interface Props {
     dropdownClass?: string;
     dropdownListClass?: string;
     containerClassName?:string;
-    selectedRef?: string;
     enableDecrypt?: boolean;
     onClear?: string;
     className?: string;
-    forwardedRef?: RefObject<HTMLDivElement>;
 }
 
 interface State {
@@ -57,12 +54,7 @@ interface State {
         search: string;
     };
     selectedAll?: Boolean,
-    selectedList: {
-        id: string;
-        name: string | null;
-        icon?: string | null;
-        data?: any;
-    };
+    selectedList: DropdownItem;
     error: {
         state: boolean;
         message: string;
@@ -127,8 +119,6 @@ class DesmyDropdown extends Component<Props, State> {
     }
     
     async componentDidMount(): Promise<void> {
-        if (this.props.onRef)
-            this.props.onRef(this);
         
         document.addEventListener('mousedown', this.handleClickOutside);
         const request = this.props.request;
@@ -466,12 +456,12 @@ class DesmyDropdown extends Component<Props, State> {
        
         <DesmyClickOutsideListener onClickOutside={this.handleClickAway}>
            <div className={`flex flex-col w-full relative ${(this.props.containerClassName !=undefined) ? this.props.containerClassName :`bg-white dark:bg-darkBackground dark:text-white`}`}  ref={this.divRef} >
-            <div className={`relative w-full h-12 border font-poppinsRegular bg-inherit border-black  dark:border-white  `}  ref={this.props.forwardedRef}>
+            <div className={`relative w-full h-12 border font-poppinsRegular bg-inherit border-black  dark:border-white  `}>
                     <div className='relative h-full w-full text-sm bg-inherit' ref={this.btnDropdownRef} onClick={() => { this.openDropdownPopover()}}>
                         <div className={`absolute left-1.5  ${ ((this.props.placeholder != undefined && (this.state.selectedList.name != null || this.state.selectedMultiple.length > 0) || ((this.props.all !== undefined && this.state.selectedAll))) ) ? `-top-2.5  text-xs`:` text-sm top-2.5`} px-2 bg-inherit transition-all`}>{this.props.placeholder}</div>
                         <div className={`flex relative h-12 ${(this.props.disabled !==undefined && this.props.disabled) ? ` cursor-not-allowed`:`cursor-pointer`}  px-2 items-center w-full`}>
                             <div className="flex w-full justify-between">
-                                <div className={`mr-2 bg-inherit text-black text-sm dark:text-white w-full justify-start text-start line-clamp-1  ${this.props.selectedRef}`}>
+                                <div className={`mr-2 bg-inherit text-black text-sm dark:text-white w-full justify-start text-start line-clamp-1`}>
                                     {
                                     (this.props.is_multiple !=undefined && this.props.is_multiple && this.state.selectedMultiple.length > 0) ? this.handleSelectMessage(this.state.selectedMultiple) 
                                     : (!Commons.isEmptyOrNull(this.state.selectedList.name)) ? 
@@ -613,9 +603,5 @@ class DesmyDropdown extends Component<Props, State> {
         );
       }
 }
-const ForwardedDesmyDropdown = forwardRef<HTMLDivElement, Props>((props, ref) => (
-    <DesmyDropdown {...props} forwardedRef={ref as any} />
-));
 
-export { ForwardedDesmyDropdown as DesmyDropdown };
-// export {DesmyDropdown };
+export {DesmyDropdown };

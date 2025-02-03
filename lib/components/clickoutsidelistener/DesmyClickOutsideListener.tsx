@@ -1,135 +1,38 @@
-import React, {
-	useRef,
-	useEffect,
-	RefCallback,
-	cloneElement,
-	ReactElement,
-	HTMLAttributes,
-	MutableRefObject,
-	FunctionComponent
-} from 'react';
+import React, { Component, createRef, RefObject } from "react";
 
-type FocusEvents = 'focusin' | 'focusout';
-type MouseEvents = 'click' | 'mousedown' | 'mouseup';
-type TouchEvents = 'touchstart' | 'touchend';
-type Events = FocusEvent | MouseEvent | TouchEvent;
-
-interface Props extends HTMLAttributes<HTMLElement> {
-	onClickOutside: (event: Events) => void;
-	focusEvent?: FocusEvents;
-	mouseEvent?: MouseEvents;
-	touchEvent?: TouchEvents;
-	children: ReactElement<any>;
+interface Props {
+  onClickOutside: () => void;
+  children: React.ReactNode;
 }
 
-const eventTypeMapping = {
-	click: 'onClick',
-	focusin: 'onFocus',
-	focusout: 'onFocus',
-	mousedown: 'onMouseDown',
-	mouseup: 'onMouseUp',
-	touchstart: 'onTouchStart',
-	touchend: 'onTouchEnd'
-};
+export class DesmyClickOutsideListener extends Component<Props> {
+  private containerRef: RefObject<HTMLDivElement | null>; // Allow null explicitly
 
-const DesmyClickOutsideListener: FunctionComponent<Props> = ({
-	children,
-	onClickOutside,
-	focusEvent = 'focusin',
-	mouseEvent = 'click',
-	touchEvent = 'touchend'
-}) => {
-	const node = useRef<HTMLElement | null>(null);
-	const bubbledEventTarget = useRef<EventTarget | null>(null);
-	const mountedRef = useRef(false);
+  constructor(props: Props) {
+    super(props);
+    this.containerRef = createRef<HTMLDivElement>(); // No TypeScript error
+  }
 
-	/**
-	 * Prevents the bubbled event from getting triggered immediately
-	 * https://github.com/facebook/react/issues/20074
-	 */
-	useEffect(() => {
-		setTimeout(() => {
-			mountedRef.current = true;
-		}, 0);
+  componentDidMount() {
+    document.addEventListener("mousedown", this.handleClickOutside);
+    document.addEventListener("touchstart", this.handleClickOutside);
+  }
 
-		return () => {
-			mountedRef.current = false;
-		};
-	}, []);
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
+    document.removeEventListener("touchstart", this.handleClickOutside);
+  }
 
-	const handleBubbledEvents =
-		(type: string) =>
-		(event: Events): void => {
-			bubbledEventTarget.current = event.target;
+  handleClickOutside = (event: MouseEvent | TouchEvent) => {
+    const container = this.containerRef.current;
+    if (!container) return; // Ensure the ref is not null before using
 
-			const handler = children?.props[type];
+    if (!container.contains(event.target as Node)) {
+      this.props.onClickOutside();
+    }
+  };
 
-			if (handler) {
-				handler(event);
-			}
-		};
-
-	const handleChildRef = (childRef: HTMLElement) => {
-		node.current = childRef;
-
-		let { ref } = children as typeof children & {
-			ref: RefCallback<HTMLElement> | MutableRefObject<HTMLElement>;
-		};
-
-		if (typeof ref === 'function') {
-			ref(childRef);
-		} else if (ref) {
-			ref.current = childRef;
-		}
-	};
-
-	useEffect(() => {
-		const nodeDocument = node.current?.ownerDocument ?? document;
-	
-		const handleEvents = (event: Events): void => {
-			if (!mountedRef.current) return;
-	
-			// If the click is inside the dropdown or on any of its children, ignore it
-			if (
-				node.current?.contains(event.target as Node) ||
-				bubbledEventTarget.current === event.target
-			) {
-				return;
-			}
-	
-			// Ensure the event is happening in the current document, and invoke the onClickOutside
-			if (nodeDocument.contains(event.target as Node)) {
-				onClickOutside(event);
-			}
-		};
-	
-		nodeDocument.addEventListener(mouseEvent, handleEvents);
-		nodeDocument.addEventListener(touchEvent, handleEvents);
-		nodeDocument.addEventListener(focusEvent, handleEvents);
-	
-		return () => {
-			nodeDocument.removeEventListener(mouseEvent, handleEvents);
-			nodeDocument.removeEventListener(touchEvent, handleEvents);
-			nodeDocument.removeEventListener(focusEvent, handleEvents);
-		};
-	}, [focusEvent, mouseEvent, onClickOutside, touchEvent]);
-	
-	
-
-	const mappedMouseEvent = eventTypeMapping[mouseEvent];
-	const mappedTouchEvent = eventTypeMapping[touchEvent];
-	const mappedFocusEvent = eventTypeMapping[focusEvent];
-
-	return React.Children.only(
-		cloneElement(children as ReactElement<any>, {
-			ref: handleChildRef,
-			[mappedFocusEvent]: handleBubbledEvents(mappedFocusEvent),
-			[mappedMouseEvent]: handleBubbledEvents(mappedMouseEvent),
-			[mappedTouchEvent]: handleBubbledEvents(mappedTouchEvent)
-		})
-	);
-};
-
-DesmyClickOutsideListener.displayName = 'DesmyClickOutsideListener';
-
-export {DesmyClickOutsideListener};
+  render() {
+    return <div ref={this.containerRef}>{this.props.children}</div>;
+  }
+}
