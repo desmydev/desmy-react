@@ -1,5 +1,7 @@
 import { DesmyThemeProvider } from './components/apis/DesmyThemeProvider';
 import { DesmyThemeContext } from './components/apis/DesmyThemeContext';
+import { DataSetTableSettingsProps, DesmyDataTableSettingsProps, DesmyDropdownItem } from './components/apis/SharedProps';
+import { DesmyWithRouter, DesmyRenderRoutes } from './components/apis/DesmyWithRouter';
 import { DesmyModalHandler } from './components/dialog/DesmyAlertDialog';
 import { default as DesmyAuth } from './components/apis/DesmyAuth';
 import { DesmyAxiosService } from './components/apis/DesmyAxiosService';
@@ -38,4 +40,5 @@ import { DesmyPassportPicker } from './components/filepicker/DesmyPassportPicker
 import { DesmyDatePicker } from './components/datepicker/DesmyDatePicker';
 import { DesmyVerticalStepper } from './components/stepper/DesmyVerticalStepper';
 import { DesmyLazyImage } from './components/image/DesmyLazyImage';
-export { DesmyThemeProvider, DesmyThemeContext, DesmyState, DesmyPermissions, DesmyLazyloading, DesmyToast, DesmyToastProvider, DesmyDropdown, DesmyModalHandler, DesmyModalContainer, DesmyModalWrapper, DesmyClickOutsideListener, DesmyAuth, DesmyCommons, DesmyAccordion, DesmyTextInput, DesmySearchInput, DesmyDataTable, DesmyDataSetTable, DesmyCustomDataTable, DesmyReadMoreOrLess, DesmyTabLayout, DesmyButton, DesmyPopupMenu, DesmyFilePicker, DesmyListCard, DesmyEmpty, DesmyNetworkError, DesmyNoDataFound, DesmyRxServices, DesmyTableCard, DesmySideBarItem, DesmyUploadManager, DesmySmartFormUpload, DesmyPassportPicker, DesmyMultiStepModal, DesmyDatePicker, DesmyVerticalStepper, DesmyLazyImage, DesmyAxiosService };
+export { DesmyThemeProvider, DesmyThemeContext, DesmyState, DesmyPermissions, DesmyLazyloading, DesmyToast, DesmyToastProvider, DesmyDropdown, DesmyModalHandler, DesmyModalContainer, DesmyModalWrapper, DesmyClickOutsideListener, DesmyAuth, DesmyCommons, DesmyAccordion, DesmyTextInput, DesmySearchInput, DesmyDataTable, DesmyDataSetTable, DesmyCustomDataTable, DesmyReadMoreOrLess, DesmyTabLayout, DesmyButton, DesmyPopupMenu, DesmyFilePicker, DesmyListCard, DesmyEmpty, DesmyNetworkError, DesmyNoDataFound, DesmyRxServices, DesmyTableCard, DesmySideBarItem, DesmyUploadManager, DesmySmartFormUpload, DesmyPassportPicker, DesmyMultiStepModal, DesmyDatePicker, DesmyVerticalStepper, DesmyLazyImage, DesmyAxiosService, DesmyWithRouter, DesmyRenderRoutes };
+export type { DataSetTableSettingsProps, DesmyDataTableSettingsProps, DesmyDropdownItem };

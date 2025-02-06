@@ -1,23 +1,18 @@
 import { default as React, Component, ChangeEvent } from 'react';
-interface DropdownItem {
-    id: any | null;
-    name: string | null;
-    icon?: string | null;
-    data?: any;
-}
+import { DesmyDropdownItem } from '../apis/SharedProps';
 interface DropdownRequest {
     url: string;
     token?: string;
 }
 interface Props {
-    defaultValue?: string | any | DropdownItem | DropdownItem[];
-    data?: DropdownItem[];
+    defaultValue?: string | any | DesmyDropdownItem | DesmyDropdownItem[];
+    data?: DesmyDropdownItem[];
     request?: DropdownRequest;
-    selectedData?: DropdownItem | DropdownItem[] | undefined;
+    selectedData?: DesmyDropdownItem | DesmyDropdownItem[] | undefined;
     is_multiple?: boolean;
     type?: string;
-    handleChange?: (data: DropdownItem | DropdownItem[]) => void;
-    handleDropdownChange?: (data: DropdownItem | DropdownItem[], type?: string) => void;
+    handleChange?: (data: DesmyDropdownItem | DesmyDropdownItem[]) => void;
+    handleDropdownChange?: (data: DesmyDropdownItem | DesmyDropdownItem[], type?: string) => void;
     disabled?: boolean;
     showPlaceHolderHint?: boolean;
     placeholder?: string;
@@ -33,7 +28,7 @@ interface Props {
 interface State {
     dropdownPopoverShow: boolean;
     selectedMultiple: any[];
-    datalist: DropdownItem[];
+    datalist: DesmyDropdownItem[];
     defaultValue?: string;
     intervalId: number;
     hasLoaded: boolean;
@@ -45,7 +40,7 @@ interface State {
         search: string;
     };
     selectedAll?: Boolean;
-    selectedList: DropdownItem;
+    selectedList: DesmyDropdownItem;
     error: {
         state: boolean;
         message: string;

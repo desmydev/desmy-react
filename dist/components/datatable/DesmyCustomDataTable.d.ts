@@ -1,5 +1,4 @@
 import { default as React, Component } from 'react';
-import { DesmyState as CommonState } from '../apis/DesmyState';
 interface DesmyCustomDataTableProps {
     onRef?: (instance: DesmyCustomDataTable) => void;
     className?: string;
@@ -8,15 +7,24 @@ interface DesmyCustomDataTableProps {
     settings: {
         url: string;
         default_sorted_column: string;
-        pagination: {
+        pagination?: {
             per_page: number;
         };
         search?: boolean;
-        filter?: boolean;
-        header: {
+        filter?: {
             title: string;
-            class: string;
-            hint: string;
+            data: {
+                name: string;
+                data: string;
+                defaults?: {
+                    [key: string]: string;
+                };
+            }[];
+        };
+        header?: {
+            title?: string;
+            class?: string;
+            hint?: string;
         };
         deleteinfo: {
             id: string;
@@ -25,7 +33,7 @@ interface DesmyCustomDataTableProps {
         columns: any[];
         table_data: any[];
     };
-    handleOnLoaded: (data: any[], state: CommonState, message?: string) => void;
+    handleOnLoaded: (data: any[], state: string, message?: string) => void;
 }
 interface DesmyCustomState {
     isFocused?: boolean;
@@ -57,16 +65,25 @@ interface DesmyCustomState {
     };
     settings: {
         default_sorted_column: string;
-        header: {
-            title: string;
-            class: string;
-            hint: string;
+        header?: {
+            title?: string;
+            class?: string;
+            hint?: string;
         };
         headers: any[];
         columns: any[];
         table_data: any[];
         search?: boolean;
-        filter?: boolean;
+        filter?: {
+            title: string;
+            data: {
+                name: string;
+                data: string;
+                defaults?: {
+                    [key: string]: string;
+                };
+            }[];
+        };
     };
     error: {
         state: boolean;

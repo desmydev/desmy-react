@@ -1,10 +1,14 @@
 import  React,{ Component,JSX } from 'react';
+import axios from 'axios';
 import Commons from '../apis/DesmyCommons';
+import Auth from '../apis/DesmyAuth';
+import { DesmyModalHandler } from '../dialog/DesmyAlertDialog';
 import { DesmyState as ModalState } from '../apis/DesmyState';
+import DesmyAuth from '../apis/DesmyAuth';
 
 interface Settings {
   deleteinfo?: { id: string; name: string };
-  request_url: string;
+  request_url?: string;
   image?: { placeholder?: string; rounded?: boolean };
   handleOnViewClick?: (user: any) => void;
   handleOnClickExtra?: (user: any, name: string) => void;
@@ -58,10 +62,109 @@ class DatatableCard extends Component<Props, State> {
       isLoading: false,
       viewAll: false, 
     };
-
     this.header = '';
     this.status = '';
   }
+  handleDelete = () => {
+    const settings = {
+      title: 'Confirmation!',
+      btnPosition: 'delete',
+      btnNegative: 'cancel',
+      type: ModalState.NOTICE,
+    };
+  
+    const handleClose = (state: { status: boolean }) => {
+      if (this.state.request.delete) {
+        return;
+      }
+  
+      if (state.status) {
+        this.handleDeleteRequest();
+        this.props.error({});
+      }
+  
+      this.setState(prevState => ({
+        request: { ...prevState.request, delete: state.status },
+        modal: undefined,
+      }));
+    };
+  
+    const deleteInfoName = typeof this.props.user[this.props.settings.deleteinfo?.name ?? ""] === 'object'
+      ? this.props.user[this.props.settings.deleteinfo?.name ?? ""]?.name
+      : this.props.user[this.props.settings.deleteinfo?.name ?? ""];
+  
+    const modal = (
+      <DesmyModalHandler settings={settings} onClose={handleClose}>
+        <div className="w-full py-2 text-sm">
+          Are you sure you want to delete
+          <span className="text-red-500 ml-1 font-poppinsBold">
+            {deleteInfoName}?
+          </span>
+        </div>
+      </DesmyModalHandler>
+    );
+  
+    this.setState({ modal });
+  };
+  
+
+  handleError = (message: string="") => {
+    try {
+      let request = { ...this.state.request };
+      let error = { ...this.state.error };
+      let mgs = Commons.isEmptyOrNull(message) ? 'Error Message' : message;
+      request.delete = false;
+      error.state = true;
+      error.message = mgs;
+      error.type = 'Error';
+      error.color = 'red';
+      this.setState({ request });
+      this.props.error(error);
+      
+    } catch (e) {}
+  };
+
+  handleDeleteRequest = () => {
+    try {
+      let error = { ...this.state.error };
+      error.state = false;
+      axios
+        .delete(`${this.props.settings.request_url}/${this.props.user[this.props.settings.deleteinfo?.id ?? ""]}/delete/`, {
+          headers: {
+            'X-CSRFToken': `${Auth.getCookie('csrftoken')}`,
+            Authorization: `Token ${DesmyAuth.get(ModalState.ACCESS_TOKEN)}`,
+          },
+        })
+        .then(
+          (json) => {
+            if (json.data.success) {
+              error.state = false;
+              this.props.handleOnSuccess(this.props.index);
+            } else {
+              this.handleError(json.data.message);
+            }
+          },
+          (_error) => {
+            this.handleError();
+          }
+        )
+        .catch((_error) => {
+          this.handleError();
+        });
+    } catch (e) {
+      this.handleError();
+    }
+  };
+
+  handleEdit = () => {
+    if (!this.state.request.delete) {
+      this.props.handleEdit(this.props.user);
+    }
+  };
+
+  onImageClick = (_data: string) => {
+
+  };
 
   async componentDidMount() {
     let user = this.props.user;
@@ -72,26 +175,18 @@ class DatatableCard extends Component<Props, State> {
     this.status = user['status'] ?? user['process_state'];
     this.setState({ title: !Array.isArray(data) ? data?.name ?? Commons.toString(data) : "",contentlist:Array.isArray(data) ? data:[] });   
   }
+  toggleView = () => {
+    this.setState(prevState => ({
+      viewAll: !prevState.viewAll
+    }));
+  };
   extra_handle = () => {
     if (this.props.settings.extra_handle) {
       return this.props.settings.extra_handle.find((o) => o.name === this.header);
     }
     return false;
   };
-  handleEdit=()=>{
 
-  }
-  handleDelete=()=>{
-
-  }
-  onImageClick = (_data: string) => {
-
-  };
-  toggleView = () => {
-    this.setState(prevState => ({
-      viewAll: !prevState.viewAll
-    }));
-  };
   render() {
     const editBtn = <span className="text-blue-800 dark:text-blue-300 cursor-pointer flex-col" ><svg   className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></span>
     const deleteBtn = <span className="text-red-800 dark:text-red-300 cursor-pointer" ><svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></span>
@@ -138,7 +233,7 @@ class DatatableCard extends Component<Props, State> {
             <div className={`w-8 ml-3`}>
                 <img onClick={() => this.onImageClick(this.state.title)} title="View photo" className={`object-center object-cover w-6 h-6 2xl:w-8 2xl:h-8 ${(!(this.props.settings.image == null || this.props.settings.image.rounded == false)) ? 'rounded-full' : ''} cursor-pointer mx-auto`} alt={`photo`} src={imageurl} />
             </div> :
-            <div className="text-xs 2xl:text-sm px-4 py-2 flex items-center">
+            <span className="text-xs 2xl:text-sm px-4 py-2 flex items-center">
                 {this.state.contentlist.length > 0 ? (
                      <ul className={`flex flex-col w-full ${listClass}`}>
                       {itemsToShow.map((item, index) => (
@@ -168,7 +263,7 @@ class DatatableCard extends Component<Props, State> {
                   this.state.title
                 )}
                 
-            </div>
+            </span>
 }
 
         </>
@@ -176,4 +271,4 @@ class DatatableCard extends Component<Props, State> {
   }
 }
 
-export {DatatableCard}
+export {DatatableCard};

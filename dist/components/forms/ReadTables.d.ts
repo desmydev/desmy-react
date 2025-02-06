@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { DataSetTableSettingsProps } from '../apis/SharedProps';
 interface DataItem {
     [key: string]: any;
 }
@@ -38,29 +39,7 @@ interface ReadTableProps {
         };
     };
     onClose?: () => void;
-    settings: {
-        url: string;
-        default_sorted_column: string;
-        pagination: {
-            per_page: number;
-        };
-        search?: boolean;
-        filter?: boolean;
-        header?: {
-            title: string;
-            class: string;
-            hint: string;
-        };
-        server_request: {
-            enable?: boolean;
-        };
-        deleteinfo: {
-            id: string;
-        };
-        headers: any[];
-        columns: any[];
-        table_data: any[];
-    };
+    settings: DataSetTableSettingsProps;
 }
 interface ReadTableState {
     datalist: DataItem[];

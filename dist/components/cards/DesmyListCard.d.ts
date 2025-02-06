@@ -1,22 +1,22 @@
 import { default as React, Component, CSSProperties } from 'react';
 interface HomeProps {
     children?: React.ReactNode;
-    isLoading: boolean;
+    isLoading?: boolean;
     name?: string;
     image?: string;
     caption?: string;
     key?: any;
-    data: {
+    data?: {
         name: string;
         level: number;
     };
     is_open?: boolean;
     optionList?: MenuItem[];
-    onAction: (action: any) => void;
+    onAction?: (action: any) => void;
     className?: string;
     style?: CSSProperties;
-    edit_permission: boolean;
-    delete_permission: boolean;
+    edit_permission?: boolean;
+    delete_permission?: boolean;
 }
 interface HomeState {
     content: any;

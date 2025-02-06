@@ -15,8 +15,8 @@ interface RequestProps {
   url?: string;
   isEnable?: boolean;
   showarrow?: boolean;
-  serverRequest: boolean;
-  options: DropdownOption[];
+  serverRequest?: boolean;
+  options?: DropdownOption[];
   onSelect: (data: any) => void;
 }
 
@@ -121,8 +121,8 @@ class DesmyPopupMenu extends Component<DesmyPopupMenuProps, DesmyPopupMenuState>
         <div
           id="dropdownMenu"
           ref={this.dropdownRef}
-          style={this.props.style}  // Apply the passed style prop
-          className={`absolute top-1/2 z-50 right-0 transform translate-x-1/2 mt-2 w-max rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition-all duration-200 ease-in-out ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'} ${this.props.className}`}
+          style={this.props.style}  
+          className={`absolute top-1/2 z-50 right-0 transform translate-x-1/2 mt-2 w-max rounded-md shadow-lg bg-white border-[1px] border-gray-100 transition-all duration-200 ease-in-out ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'} ${this.props.className}`}
         >
           <div role="menu">
             {

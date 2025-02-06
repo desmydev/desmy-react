@@ -4,37 +4,14 @@ import Commons from '../apis/DesmyCommons';
 import DesmyAuth from '../apis/DesmyAuth';
 import { DesmyState as CommonState } from '../apis/DesmyState';
 import {DesmyAlert as Alert} from '../apis/DesmyAlert';
+import { DataSetTableSettingsProps } from '../apis/SharedProps';
 
-
-// Define the TypeScript interfaces for the component props and state
 interface DesmyDataSetTableProps {
     onRef?: (instance: DesmyDataSetTable) => void;
     className?: string; 
     children?: React.ReactNode; 
     data?: any;
-    settings: {
-      url: string;
-      default_sorted_column: string;
-      pagination: {
-        per_page: number;
-      };
-      search?: boolean;
-      filter?: boolean;
-      header?: {
-        title: string;
-        class: string;
-        hint: string;
-      };
-      server_request:{
-        enable?: boolean
-      },
-      deleteinfo: {
-        id: string;
-      };
-      headers: any[]; // Adjust these types as needed
-      columns: any[];
-      table_data: any[];
-    };
+    settings:DataSetTableSettingsProps,
     content?: React.ReactNode; 
     handleOnLoaded: (data: any[], state: CommonState) => void;
   }
@@ -69,22 +46,22 @@ interface DesmyCustomState {
     };
   };
   custom_settings: {
-    sorted_column: string;
+    sorted_column?: string;
     order: "asc" | "desc"; // Specify that order can only be "asc" or "desc"
     first_page: number;
     current_page: number;
     offset: number;
   };
   settings: {
-    default_sorted_column: string;
+    default_sorted_column?: string;
     header?: {
-      title: string;
-      class: string;
-      hint: string;
+      title?: string;
+      class?: string;
+      hint?: string;
       search?:boolean
     };
-    headers:any[];
-    columns: string[];
+    headers?:string[];
+    columns?: string[];
     table_data?: { name: string; class: string }[];
   };
   error: {
@@ -183,7 +160,7 @@ class DesmyDataSetTable extends Component<DesmyDataSetTableProps, DesmyCustomSta
     }
     const { default_sorted_column } = this.props.settings;
     const custom_settings = { ...this.state.custom_settings, sorted_column: default_sorted_column };
-    this.chunkSize = this.props.settings.pagination.per_page;
+    this.chunkSize = this.props.settings.pagination?.per_page ?? 0;
     this.setState({ custom_settings, settings: this.props.settings }, () => { this.handleFetchEntities(); });
   }
 
@@ -355,6 +332,7 @@ handleOnSuccess=(index : number)=>{
   };
   onChangeValue = (event: React.ChangeEvent<HTMLInputElement>): void => {
     try {
+      event.preventDefault()
       this.search = event.target.value;
       
      this.setState({searchText:event.target.value},()=>{
@@ -415,13 +393,14 @@ handleOnSuccess=(index : number)=>{
     } else {
       icon = <svg className="w-3 h-3 2xl:w-4 2xl:h-4 dark:text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
     }
-    return this.props.settings.headers.map((column, index) => {
+    if (!this.props.settings.headers) return [];
+    return this.props.settings.headers?.map((column, index) => {
       const exceptionalColumns = this.state.exceptionalColumns.includes(column.toLowerCase());
       const columnClass = this.state.settings.table_data?.find((item) => item.name === column.toLowerCase() );
-      return <th key={index} onClick={() => this.sortByColumn(this.props.settings.columns[index])}  className={`py-2 sticky ${(exceptionalColumns) ? `w-4`:(columnClass) ? columnClass.class:``}  top-0 border-b border-gray-200 text-xs 2xl:text-sm bg-gray-100 dark:border-gray-700 dark:bg-darkPrimary`}>
+      return <th key={index} onClick={() => this.sortByColumn(this.props.settings?.columns?.[index] ?? "")}  className={`py-2 sticky ${(exceptionalColumns) ? `w-4`:(columnClass) ? columnClass.class:``}  top-0 border-b border-gray-200 text-xs 2xl:text-sm bg-gray-100 dark:border-gray-700 dark:bg-darkPrimary`}>
         <div className="flex dark:text-white sticky top-0 px-6 py-2 2xl:py-3 text-gray-600 font-poppinsSemiBold tracking-wider uppercase text-xs">
           <span>{this.columnHead(column)}</span>
-          <span>{this.state.custom_settings.sorted_column === this.props.settings.columns[index] && icon}</span>
+          <span>{this.state.custom_settings.sorted_column === this.props.settings?.columns?.[index] && icon}</span>
         </div>
       </th>
     });
@@ -492,7 +471,7 @@ handleOnSuccess=(index : number)=>{
                                 }
                               </div>
                             </div>
-                            <div className='flex w-10 h-10 2xl:w-12 2xl:h-12 ml-2 flex-shrink-0 justify-center items-center rounded-full dark:hover:text-black bg-gray-200 border border-gray-200 hover:bg-gray-100 dark:border-gray-800 bg-inherit  cursor-pointer' onClick={()=>this.handleRetry()}>
+                            <div className='flex w-10 h-10 2xl:w-12 2xl:h-12 ml-2 flex-shrink-0 justify-center items-center rounded-full dark:hover:text-black bg-gray-200 border border-gray-200 hover:bg-gray-100 dark:border-gray-800   cursor-pointer' onClick={()=>this.handleRetry()}>
                                 <svg viewBox="0 0 512 512" fill="currentColor" className='w-4 h-4 2xl:w-5 2xl:h-5'>
                                   <path fill="none" stroke="currentColor" strokeLinecap="round" strokeMiterlimit={10} strokeWidth={32} d="M320 146s24.36-12-64-12a160 160 0 10160 160"/>
                                   <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={32} d="M256 58l80 80-80 80" />

@@ -23,7 +23,7 @@ class DesmyButton extends React.Component<DesmyButtonProps> {
                 type="button"
                 onClick={this.props.onClick}
                 disabled={this.props.hasRequest}
-                className={`${(this.props.type ===DesmyState.SMALL) ? ` px-4 py-3 `:` px-5 py-3 `} w-auto justifiy-center items-center  bg-primary hover:bg-primary/75  text-white dark:bg-[#282828]  text-xs  dark:hover:bg-white dark:hover:text-black ${this.props.className}  font-poppinsRegular items-center   rounded-full cursor-pointer  transition duration-500 ease-in-out`}
+                className={`${(this.props.type ===DesmyState.SMALL) ? ` px-4 py-3 `:` px-5 py-3 `} w-auto justifiy-center items-center  bg-[var(--color-primary)] hover:bg-primary/75  text-white dark:bg-[var(--color-darkDialogBackground)]  text-xs  dark:hover:bg-[var(--color-white)] dark:hover:text-black ${this.props.className}  font-poppinsRegular items-center   rounded-full cursor-pointer  transition duration-500 ease-in-out`}
             >
                 {this.props.hasRequest ? (
                     <div className="flex items-center">

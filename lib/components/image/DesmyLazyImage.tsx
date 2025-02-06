@@ -52,38 +52,22 @@ class DesmyLazyImage extends Component<DesmyLazyImageProps, DesmyLazyImageState>
   };
 
   render() {
-    const { src, placeholder, alt,coverClassName, className, ...rest } = this.props;
+    const { src, placeholder, alt, coverClassName, className, ...rest } = this.props;
     const { isLoaded } = this.state;
-
+  
     if (!src) {
       // Do not render anything if src is not provided
       return null;
     }
-
+  
     return (
-      <div className={`${coverClassName ?? `w-full`}`} style={{ position: "relative", display: "inline-block" }}>
-        {!isLoaded && placeholder && (
-          <div
-            className="desmy-placeholder"
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            {placeholder}
-          </div>
-        )}
+      <>
+        {!isLoaded && placeholder}
         <img
           ref={this.imgRef}
           src={isLoaded ? src : undefined}
           alt={alt}
-          className={`desmy-lazy-image ${className ?? ""} ${isLoaded ? "loaded" : "loading"}`}
+          className={`${className ?? "h-12"} ${isLoaded ? "loaded" : "loading"}`}
           style={{
             opacity: isLoaded ? 1 : 0,
             transition: "opacity 0.5s ease-in-out",
@@ -91,9 +75,10 @@ class DesmyLazyImage extends Component<DesmyLazyImageProps, DesmyLazyImageState>
           onLoad={this.loadImage}
           {...rest}
         />
-      </div>
+      </>
     );
   }
+  
 }
 
 // Explicitly define default export

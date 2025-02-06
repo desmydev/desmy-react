@@ -6,7 +6,6 @@ import { DesmyState as CommonState } from '../apis/DesmyState';
 import {DesmyAlert as Alert} from '../apis/DesmyAlert';
 
 
-// Define the TypeScript interfaces for the component props and state
 interface DesmyCustomDataTableProps {
     onRef?: (instance: DesmyCustomDataTable) => void;
     className?: string; // Optional, as it might not always be provided
@@ -15,15 +14,24 @@ interface DesmyCustomDataTableProps {
     settings: {
       url: string;
       default_sorted_column: string;
-      pagination: {
+      pagination?: {
         per_page: number;
       };
       search?: boolean;
-      filter?: boolean;
-      header: {
+      filter?: {
         title: string;
-        class: string;
-        hint: string;
+        data: {
+            name: string;
+            data: string;
+            defaults?: {
+                [key: string]: string;
+            };
+        }[];
+      };
+      header?: {
+        title?: string;
+        class?: string;
+        hint?: string;
       };
       deleteinfo: {
         id: string;
@@ -32,7 +40,7 @@ interface DesmyCustomDataTableProps {
       columns: any[];
       table_data: any[];
     };
-    handleOnLoaded: (data: any[], state: CommonState, message? :string) => void;
+    handleOnLoaded: (data: any[], state: string, message? :string) => void;
   }
   
 interface DesmyCustomState {
@@ -65,16 +73,25 @@ interface DesmyCustomState {
   };
   settings: {
     default_sorted_column: string;
-    header: {
-      title: string;
-      class: string;
-      hint: string;
+    header?: {
+      title?: string;
+      class?: string;
+      hint?: string;
     };
     headers: any[];
     columns: any[];
     table_data: any[];
     search?:boolean; 
-    filter?: boolean;
+    filter?: {
+      title: string;
+      data: {
+          name: string;
+          data: string;
+          defaults?: {
+              [key: string]: string;
+          };
+      }[];
+  };
   };
   error: {
     state: boolean;
@@ -162,7 +179,7 @@ class DesmyCustomDataTable extends Component<DesmyCustomDataTableProps, DesmyCus
     }
     const { default_sorted_column } = this.props.settings;
     const custom_settings = { ...this.state.custom_settings, sorted_column: default_sorted_column };
-    this.chunkSize = this.props.settings.pagination.per_page;
+    this.chunkSize = this.props.settings.pagination?.per_page ?? 0;
     this.setState({ custom_settings, settings: this.props.settings }, () => { this.handleFetchEntities(); });
   }
 
@@ -349,7 +366,7 @@ handleOnSuccess=(index : number)=>{
   }
   handleHint = () => {
     try {
-      if (this.state.settings.header.hint) {
+      if (this.state.settings.header?.hint) {
         return this.state.settings.header.hint;
       } else {
         return (!this.state.error.state) ? `Loaded ${this.state.entities.meta.total} data` : "";
@@ -409,7 +426,7 @@ handleOnSuccess=(index : number)=>{
                                       }
                                     </div>
                                   </div>
-                                  <div className='flex w-10 h-10 2xl:w-12 2xl:h-12 ml-2 flex-shrink-0 justify-center items-center rounded-full dark:hover:text-black bg-gray-200 border border-gray-200 hover:bg-gray-100 dark:border-gray-800 bg-inherit  cursor-pointer' onClick={()=>this.handleRetry()}>
+                                  <div className='flex w-10 h-10 2xl:w-12 2xl:h-12 ml-2 flex-shrink-0 justify-center items-center rounded-full dark:hover:text-black bg-gray-200 border border-gray-200 hover:bg-gray-100 dark:border-gray-800  cursor-pointer' onClick={()=>this.handleRetry()}>
                                       <svg viewBox="0 0 512 512" fill="currentColor" className='w-4 h-4 2xl:w-5 2xl:h-5'>
                                         <path fill="none" stroke="currentColor" strokeLinecap="round" strokeMiterlimit={10} strokeWidth={32} d="M320 146s24.36-12-64-12a160 160 0 10160 160"/>
                                         <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={32} d="M256 58l80 80-80 80" />

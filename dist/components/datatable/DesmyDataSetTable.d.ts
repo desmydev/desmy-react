@@ -1,33 +1,12 @@
 import { default as React, Component, ReactNode } from 'react';
 import { DesmyState as CommonState } from '../apis/DesmyState';
+import { DataSetTableSettingsProps } from '../apis/SharedProps';
 interface DesmyDataSetTableProps {
     onRef?: (instance: DesmyDataSetTable) => void;
     className?: string;
     children?: React.ReactNode;
     data?: any;
-    settings: {
-        url: string;
-        default_sorted_column: string;
-        pagination: {
-            per_page: number;
-        };
-        search?: boolean;
-        filter?: boolean;
-        header?: {
-            title: string;
-            class: string;
-            hint: string;
-        };
-        server_request: {
-            enable?: boolean;
-        };
-        deleteinfo: {
-            id: string;
-        };
-        headers: any[];
-        columns: any[];
-        table_data: any[];
-    };
+    settings: DataSetTableSettingsProps;
     content?: React.ReactNode;
     handleOnLoaded: (data: any[], state: CommonState) => void;
 }
@@ -75,22 +54,22 @@ interface DesmyCustomState {
         };
     };
     custom_settings: {
-        sorted_column: string;
+        sorted_column?: string;
         order: "asc" | "desc";
         first_page: number;
         current_page: number;
         offset: number;
     };
     settings: {
-        default_sorted_column: string;
+        default_sorted_column?: string;
         header?: {
-            title: string;
-            class: string;
-            hint: string;
+            title?: string;
+            class?: string;
+            hint?: string;
             search?: boolean;
         };
-        headers: any[];
-        columns: string[];
+        headers?: string[];
+        columns?: string[];
         table_data?: {
             name: string;
             class: string;

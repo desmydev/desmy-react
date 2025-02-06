@@ -1,5 +1,7 @@
 import {DesmyThemeProvider} from './components/apis/DesmyThemeProvider'
 import {DesmyThemeContext} from './components/apis/DesmyThemeContext'
+import {DataSetTableSettingsProps,DesmyDataTableSettingsProps,DesmyDropdownItem} from './components/apis/SharedProps'
+import {DesmyWithRouter,DesmyRenderRoutes} from './components/apis/DesmyWithRouter'
 import  {DesmyModalHandler} from "./components/dialog/DesmyAlertDialog";
 import  DesmyAuth from './components/apis/DesmyAuth';
 import  {DesmyAxiosService} from './components/apis/DesmyAxiosService';
@@ -78,5 +80,8 @@ export  {
             DesmyDatePicker,
             DesmyVerticalStepper,
             DesmyLazyImage,
-            DesmyAxiosService
+            DesmyAxiosService,
+            DesmyWithRouter,DesmyRenderRoutes
         }
+
+        export type { DataSetTableSettingsProps,DesmyDataTableSettingsProps,DesmyDropdownItem };

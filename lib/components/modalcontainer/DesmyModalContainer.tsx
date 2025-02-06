@@ -7,6 +7,7 @@ import DesmyAuth from '../apis/DesmyAuth';
 import DesmyCommons from '../apis/DesmyCommons';
 import { toast } from 'react-toastify';
 import { DesmyModalHandler } from '../dialog/DesmyAlertDialog';
+import { DesmyClickOutsideListener } from '../clickoutsidelistener/DesmyClickOutsideListener';
 
 interface DeleteInfo {
   name?: string;
@@ -164,6 +165,7 @@ class DesmyModalContainer extends Component<ModalContainerProps, ModalContainerS
     return (
       <>
         {this.state.modal}
+        <DesmyClickOutsideListener onClickOutside={this.handleClose}>
         <DesmyMultiStepModal
           isOpen={this.state.isOpen}
           onClose={this.handleClose}
@@ -173,7 +175,7 @@ class DesmyModalContainer extends Component<ModalContainerProps, ModalContainerS
           <CSSTransition unmountOnExit={true} in={true} timeout={400} classNames="modal-content">
             <div>
             <div className="flex justify-center dark:text-white items-center h-screen mx-4">
-              <div className={`bg-gray-200 p-4 rounded-lg shadow-md w-full ${this.props.containerClassName}`}>
+              <div className={`bg-gray-200 p-4 rounded-lg w-full ${this.props.containerClassName}`}>
                 <div className="flex flex-col max-h-[90vh]">
                 <div>
                   <div className="flex bg-transparent text-start uppercase justify-between mb-4 font-poppinsBlack text-lg">
@@ -244,6 +246,8 @@ class DesmyModalContainer extends Component<ModalContainerProps, ModalContainerS
             </div>
           </CSSTransition>
         </DesmyMultiStepModal>
+        </DesmyClickOutsideListener>
+        
       </>
     );
   }

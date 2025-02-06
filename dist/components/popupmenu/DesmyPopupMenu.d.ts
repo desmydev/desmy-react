@@ -9,8 +9,8 @@ interface RequestProps {
     url?: string;
     isEnable?: boolean;
     showarrow?: boolean;
-    serverRequest: boolean;
-    options: DropdownOption[];
+    serverRequest?: boolean;
+    options?: DropdownOption[];
     onSelect: (data: any) => void;
 }
 interface DesmyPopupMenuProps {

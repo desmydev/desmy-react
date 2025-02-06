@@ -4,13 +4,7 @@ import axios from 'axios';
 import Commons from '../apis/DesmyCommons';
 import Auth from '../apis/DesmyAuth'
 import { DesmyClickOutsideListener } from '../clickoutsidelistener/DesmyClickOutsideListener';
-
-interface DropdownItem {
-    id: any | null;
-    name: string | null;
-    icon?: string | null;
-    data?: any;
-}
+import { DesmyDropdownItem } from '../apis/SharedProps';
 
 interface DropdownRequest {
     url: string;
@@ -18,14 +12,14 @@ interface DropdownRequest {
 }
 
 interface Props {
-    defaultValue?: string | any | DropdownItem | DropdownItem[];
-    data?: DropdownItem[];
+    defaultValue?: string | any | DesmyDropdownItem | DesmyDropdownItem[];
+    data?: DesmyDropdownItem[];
     request?: DropdownRequest;
-    selectedData?: DropdownItem | DropdownItem[] | undefined;
+    selectedData?: DesmyDropdownItem | DesmyDropdownItem[] | undefined;
     is_multiple?: boolean;
     type?: string;
-    handleChange?: (data: DropdownItem | DropdownItem[]) => void;
-    handleDropdownChange?: (data: DropdownItem | DropdownItem[], type?: string) => void;
+    handleChange?: (data: DesmyDropdownItem | DesmyDropdownItem[]) => void;
+    handleDropdownChange?: (data: DesmyDropdownItem | DesmyDropdownItem[], type?: string) => void;
     disabled?: boolean;
     showPlaceHolderHint?: boolean;
     placeholder?: string;
@@ -42,7 +36,7 @@ interface Props {
 interface State {
     dropdownPopoverShow: boolean;
     selectedMultiple: any[];
-    datalist: DropdownItem[];
+    datalist: DesmyDropdownItem[];
     defaultValue?:string,
     intervalId: number;
     hasLoaded: boolean;
@@ -54,7 +48,7 @@ interface State {
         search: string;
     };
     selectedAll?: Boolean,
-    selectedList: DropdownItem;
+    selectedList: DesmyDropdownItem;
     error: {
         state: boolean;
         message: string;
@@ -134,7 +128,7 @@ class DesmyDropdown extends Component<Props, State> {
         }else{
             this.handleDefault()
         }
-        const datalist: DropdownItem[] = this.props.data || [];
+        const datalist: DesmyDropdownItem[] = this.props.data || [];
     
         this.setState({ datalist }, () => {
             this.handleDelayedProcess();
@@ -275,7 +269,7 @@ class DesmyDropdown extends Component<Props, State> {
             if (data.success) {
                 const responseData = data.data;
                 this.onClear()
-                this.props.handleChange && this.props.handleChange(this.props.is_multiple  ? [] as DropdownItem[] : {} as DropdownItem)
+                this.props.handleChange && this.props.handleChange(this.props.is_multiple  ? [] as DesmyDropdownItem[] : {} as DesmyDropdownItem)
                 this.setState({ datalist: responseData, isLoading: false }, this.handleDelayedProcess);
             } else {
                 this.handleError(data.message);

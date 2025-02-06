@@ -4,7 +4,7 @@ interface Settings {
         id: string;
         name: string;
     };
-    request_url: string;
+    request_url?: string;
     image?: {
         placeholder?: string;
         rounded?: boolean;
@@ -54,15 +54,17 @@ declare class DatatableCard extends Component<Props, State> {
     private header;
     private status;
     constructor(props: Props);
+    handleDelete: () => void;
+    handleError: (message?: string) => void;
+    handleDeleteRequest: () => void;
+    handleEdit: () => void;
+    onImageClick: (_data: string) => void;
     componentDidMount(): Promise<void>;
+    toggleView: () => void;
     extra_handle: () => false | {
         name: string;
         icon: React.ReactNode;
     } | undefined;
-    handleEdit: () => void;
-    handleDelete: () => void;
-    onImageClick: (_data: string) => void;
-    toggleView: () => void;
     render(): import("react/jsx-runtime").JSX.Element;
 }
 export { DatatableCard };

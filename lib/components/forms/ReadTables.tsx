@@ -6,6 +6,7 @@ import { DesmyTableCard } from '../datatable/DesmyTableCard';
 import { DesmyNetworkError } from '../errors/DesmyNetworkError';
 import { DesmyButton } from '../button/DesmyButton';
 import DesmyCommons from '../apis/DesmyCommons';
+import { DataSetTableSettingsProps } from '../apis/SharedProps';
 
 interface DataItem {
   [key: string]: any;
@@ -47,29 +48,7 @@ interface ReadTableProps {
     }
   }
   onClose?: () => void;
-  settings: {
-    url: string;
-    default_sorted_column: string;
-    pagination: {
-      per_page: number;
-    };
-    search?: boolean;
-    filter?: boolean;
-    header?: {
-      title: string;
-      class: string;
-      hint: string;
-    };
-    server_request:{
-      enable?: boolean
-    },
-    deleteinfo: {
-      id: string;
-    };
-    headers: any[]; // Adjust these types as needed
-    columns: any[];
-    table_data: any[];
-  };
+  settings: DataSetTableSettingsProps
 }
 
 interface ReadTableState {

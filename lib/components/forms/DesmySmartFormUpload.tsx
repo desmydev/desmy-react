@@ -2,6 +2,7 @@ import React, { Component, createRef } from 'react';
 import readXlsxFile from 'read-excel-file';
 import ReadTables from './ReadTables';
 import DesmyCommons from '../apis/DesmyCommons';
+import { DataSetTableSettingsProps } from '../apis/SharedProps';
 // import DesmyCommons from '../apis/DesmyCommons';
 
 interface DataItem {
@@ -16,29 +17,7 @@ interface Props {
     unique_fields: string[];
   };
   [key: string]: any;
-  settings: {
-    url: string;
-    default_sorted_column: string;
-    pagination: {
-      per_page: number;
-    };
-    search?: boolean;
-    filter?: boolean;
-    header: {
-      title: string;
-      class: string;
-      hint: string;
-    };
-    server_request:{
-      enable?: boolean
-    },
-    deleteinfo: {
-      id: string;
-    };
-    headers: any[]; 
-    columns: any[];
-    table_data: any[];
-  };
+  settings: DataSetTableSettingsProps;
   reader:{
     sheet_name : string,
     url?:string,

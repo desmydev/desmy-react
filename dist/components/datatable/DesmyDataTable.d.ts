@@ -1,55 +1,10 @@
 import { default as React, Component, ChangeEvent, ReactNode, KeyboardEvent } from 'react';
+import { DesmyDataTableSettingsProps } from '../apis/SharedProps';
 export type DesmyDataTableRef = {
     handleRetry: () => void;
 };
 interface DataTableProps {
-    settings: {
-        default_sorted_column: string;
-        onURLClick?: (url: any) => void;
-        header: {
-            title?: string;
-            class?: string;
-            hint?: string;
-        };
-        deleteinfo?: {
-            name: string;
-            id: string;
-        };
-        breadcrumb?: {
-            name: string;
-            url: string;
-        }[];
-        request_url: string;
-        handleOnViewClick?: (user: any) => void;
-        handleOnClickExtra?: (user: any, name: string) => void;
-        image?: {
-            placeholder?: string;
-            rounded?: boolean;
-        };
-        read_more_limit?: number;
-        extra_handle?: Array<{
-            name: string;
-            icon: React.ReactNode;
-        }>;
-        headers: string[];
-        columns: string[];
-        table_data?: {
-            name: string;
-            class: string;
-        }[];
-        filter?: {
-            title: string;
-            data: {
-                name: string;
-                data: string;
-                defaults?: {
-                    [key: string]: string;
-                };
-            }[];
-        };
-        url: string;
-        handleEdit?: (user: any, type?: string) => void;
-    };
+    settings: DesmyDataTableSettingsProps;
     content?: React.ReactNode;
     className?: string;
     onRef?: (ref: DesmyDataTable | null) => void;

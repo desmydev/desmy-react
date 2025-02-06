@@ -5,22 +5,22 @@ import DesmyCommons from '../apis/DesmyCommons';
 
 interface HomeProps {
   children?: React.ReactNode;
-  isLoading: boolean;
+  isLoading?: boolean;
   name?: string;
   image?: string;
   caption?: string;
   key?:any,
-  data: {
+  data?: {
     name: string;
     level: number;
   };
   is_open?: boolean;
   optionList?: MenuItem[];
-  onAction: (action: any) => void;
+  onAction?: (action: any) => void;
   className?: string;
   style?: CSSProperties; 
-  edit_permission: boolean; 
-  delete_permission: boolean;
+  edit_permission?: boolean; 
+  delete_permission?: boolean;
 }
 
 interface HomeState {
@@ -107,7 +107,7 @@ class DesmyListCard extends Component<HomeProps, HomeState> {
               serverRequest: false,
               isEnable: true,
               onSelect: (data: any) => {
-                this.props.onAction(data);
+                this.props.onAction?.(data);
               },
             }}
           >
