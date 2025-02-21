@@ -196,3 +196,37 @@ body {
   justify-content: center;
   flex-shrink: 0;
 }
+
+/* Slide-in animation */
+@keyframes toastSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(100%); /* Slide from right */
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Slide-out animation */
+@keyframes toastSlideOut {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100%); /* Slide to the right */
+  }
+}
+
+/* Apply the slide-in animation */
+.animate-toast-slide-in {
+  animation: toastSlideIn 0.5s ease-out forwards;
+}
+
+/* Apply the slide-out animation */
+.animate-toast-slide-out {
+  animation: toastSlideOut 0.5s ease-in forwards;
+}

@@ -46,10 +46,10 @@ class Toast extends Component<ToastProps> {
 
   startProgressBar(timeout: number) {
     if (this.progressBar) {
-      const progressInterval = 50; // Progress updates every 50ms
+      const progressInterval = 50; 
       const interval = setInterval(() => {
         if (!this.progressPaused) {
-          const elapsedTime = Date.now() - this.startTime; // Time elapsed since start
+          const elapsedTime = Date.now() - this.startTime; 
           this.progress = (elapsedTime / timeout) * 100;
 
           if (this.progressBar) {
@@ -58,7 +58,6 @@ class Toast extends Component<ToastProps> {
 
           if (this.progress >= 100) {
             clearInterval(interval);
-            this.props.onClose(); // Remove the toast when progress reaches 100%
           }
         }
       }, progressInterval);
@@ -68,26 +67,26 @@ class Toast extends Component<ToastProps> {
   }
 
   setProgressBarRef = (ref: HTMLDivElement | null) => {
-    this.progressBar = ref; // Assign the ref here
+    this.progressBar = ref;
   };
 
   handleMouseEnter = () => {
     if (this.timerId) {
-      clearTimeout(this.timerId); // Pause the timeout when hovering
+      clearTimeout(this.timerId);
     }
     if (this.progressBarInterval) {
-      clearInterval(this.progressBarInterval); // Pause the progress bar when hovering
+      clearInterval(this.progressBarInterval);
     }
-    this.progressPaused = true; // Mark that progress is paused
+    this.progressPaused = true;
   };
 
   handleMouseLeave = () => {
     const { onClose, timeout = 8000 } = this.props;
 
-    this.progressPaused = false; // Mark that progress is resumed
-    this.startTime = Date.now() - (this.progress / 100) * timeout; // Adjust start time based on current progress
-    this.startTimeout(onClose, this.remainingTime); // Resume the timeout
-    this.startProgressBar(this.remainingTime); // Resume the progress bar
+    this.progressPaused = false;
+    this.startTime = Date.now() - (this.progress / 100) * timeout;
+    this.startTimeout(onClose, this.remainingTime);
+    this.startProgressBar(this.remainingTime);
   };
 
   render() {
@@ -102,19 +101,26 @@ class Toast extends Component<ToastProps> {
 
     return (
       <div
-        id={id} // Assigning id for toast identification
-        className={`py-4 px-4 text-sm rounded-md shadow-md ${toastClass} relative`}
-        onMouseEnter={this.handleMouseEnter} // Pause on mouse enter
-        onMouseLeave={this.handleMouseLeave} // Resume on mouse leave
+        id={id}
+        className={`py-5 px-4 text-sm rounded-md shadow-md ${toastClass} relative animate-toast-slide-in transition-all duration-500 ease-out  w-full lg:w-72`}
+        onMouseEnter={this.handleMouseEnter} 
+        onMouseLeave={this.handleMouseLeave}
       >
-        {/* Toast message */}
         {message}
-
-        {/* Progress Bar */}
         <div
-          ref={this.setProgressBarRef} // Use the callback ref here
+          ref={this.setProgressBarRef} 
           className="absolute bottom-0 left-0 h-1 bg-white"
         />
+        <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      className='absolute top-0 size-4 m-1 right-1 text-white cursor-pointer' onClick={this.props.onClose}
+    >
+      <path
+        fill="currentColor"
+        d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12z"
+      ></path>
+    </svg>
       </div>
     );
   }

@@ -25359,7 +25359,7 @@ class i2 extends Tl {
       const n = setInterval(() => {
         if (!this.progressPaused) {
           const e = Date.now() - this.startTime;
-          this.progress = e / l * 100, this.progressBar && (this.progressBar.style.width = `${this.progress}%`), this.progress >= 100 && (clearInterval(n), this.props.onClose());
+          this.progress = e / l * 100, this.progressBar && (this.progressBar.style.width = `${this.progress}%`), this.progress >= 100 && clearInterval(n);
         }
       }, 50);
       this.progressBarInterval = n;
@@ -25371,7 +25371,7 @@ class i2 extends Tl {
       "div",
       {
         id: n,
-        className: `py-4 px-4 text-sm rounded-md shadow-md ${e} relative`,
+        className: `py-5 px-4 text-sm rounded-md shadow-md ${e} relative animate-toast-slide-in transition-all duration-500 ease-out  w-full lg:w-72`,
         onMouseEnter: this.handleMouseEnter,
         onMouseLeave: this.handleMouseLeave,
         children: [
@@ -25381,6 +25381,22 @@ class i2 extends Tl {
             {
               ref: this.setProgressBarRef,
               className: "absolute bottom-0 left-0 h-1 bg-white"
+            }
+          ),
+          /* @__PURE__ */ V.jsx(
+            "svg",
+            {
+              xmlns: "http://www.w3.org/2000/svg",
+              viewBox: "0 0 24 24",
+              className: "absolute top-0 size-4 m-1 right-1 text-white cursor-pointer",
+              onClick: this.props.onClose,
+              children: /* @__PURE__ */ V.jsx(
+                "path",
+                {
+                  fill: "currentColor",
+                  d: "M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12z"
+                }
+              )
             }
           )
         ]
@@ -25416,7 +25432,6 @@ class ZL extends Tl {
     });
     T(this, "toastId", 0);
     T(this, "addToast", (l, d) => {
-      console.log("addToastaddToastaddToast");
       const n = this.toastId++;
       this.setState((e) => ({
         toasts: [...e.toasts, { id: n, message: l, type: d }]
@@ -25424,7 +25439,7 @@ class ZL extends Tl {
     });
     T(this, "removeToast", (l) => {
       const d = document.getElementById(`toast-${l}`);
-      d && (d.classList.add("animate-toast-fade-out"), setTimeout(() => {
+      d && (d.classList.remove("animate-toast-slide-in"), d.classList.add("animate-toast-slide-out"), setTimeout(() => {
         this.setState((n) => ({
           toasts: n.toasts.filter((e) => e.id !== l)
         }));

@@ -31,7 +31,6 @@ export class DesmyToastProvider extends Component<DesmyToastProviderProps, Desmy
   private toastId = 0;
 
   addToast = (message: string, type: 'success' | 'error' | 'info') => {
-    console.log("addToastaddToastaddToast")
     const id = this.toastId++;
     this.setState(prevState => ({
       toasts: [...prevState.toasts, { id, message, type }],
@@ -41,17 +40,18 @@ export class DesmyToastProvider extends Component<DesmyToastProviderProps, Desmy
   removeToast = (id: number) => {
     const toast = document.getElementById(`toast-${id}`);
     if (toast) {
-      toast.classList.add('animate-toast-fade-out'); // Add fade-out animation
+        toast.classList.remove('animate-toast-slide-in');
+        toast.classList.add('animate-toast-slide-out');
       setTimeout(() => {
         this.setState(prevState => ({
           toasts: prevState.toasts.filter(toast => toast.id !== id),
         }));
-      }, 500); // Match the duration of the fade-out animation
+      }, 500); 
     }
   };
 
   componentDidMount() {
-    // Initialize DesmyToast here, making sure it's ready to use globally
+   
     DesmyToast.initialize(this);
   }
 
