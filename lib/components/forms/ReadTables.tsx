@@ -6,7 +6,7 @@ import { DesmyTableCard } from '../datatable/DesmyTableCard';
 import { DesmyNetworkError } from '../errors/DesmyNetworkError';
 import { DesmyButton } from '../button/DesmyButton';
 import DesmyCommons from '../apis/DesmyCommons';
-import { DataSetTableSettingsProps } from '../apis/SharedProps';
+import { DataSetTableSettingsProps, DesmySmartFormUploadReadTable } from '../apis/SharedProps';
 
 interface DataItem {
   [key: string]: any;
@@ -34,19 +34,7 @@ interface ReadTableProps {
     count: number;
     data: any[];
   };
-  reader:{
-    sheet_name : string,
-    url?:string,
-    complete_url?:string,
-    title?:string,
-    token?:string,
-    template_url?:string,
-    key_name?: string,
-    ui:{
-      label?:string,
-      icon?:string
-    }
-  }
+  reader:DesmySmartFormUploadReadTable,
   onClose?: () => void;
   settings: DataSetTableSettingsProps
 }

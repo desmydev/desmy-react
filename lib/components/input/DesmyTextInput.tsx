@@ -1,4 +1,4 @@
-import React, { Component, RefObject } from 'react';
+import React, { Component, RefObject,forwardRef  } from 'react';
 import Commons from '../apis/DesmyCommons';
 import { HexColorPicker } from "react-colorful";
 import { DesmyState } from '../apis/DesmyState';
@@ -13,14 +13,14 @@ interface TextInputProps {
     emailExtensions?: string[];
     onChange: (value: string) => void;
     onSearch?: (value: string) => void;
-    onRef?: (instance: DesmyTextInput | null) => void;
+    onRef?: (instance: HTMLInputElement | null) => void;
     autoFocus?: boolean;
     onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     disabled?: boolean;
     maxLength?: number;
     rows?: number;
     label: string;
-    theme?: string; // Added theme prop
+    theme?: string;
 }
 
 interface TextInputState {
@@ -34,6 +34,7 @@ interface TextInputState {
 class DesmyTextInput extends Component<TextInputProps, TextInputState> {
     enteredInput: string = "";
     private popoverDropdownRef: RefObject<HTMLDivElement  | null> = React.createRef();
+    private inputRef: RefObject<HTMLInputElement | null> = React.createRef();
 
     constructor(props: TextInputProps) {
         super(props);
@@ -48,17 +49,20 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
 
     componentDidMount() {
         if (this.props.onRef) {
-            this.props.onRef(this);
+            this.props.onRef(this.inputRef.current);
         }
         this.handleDefaultRequest();
     }
-
     componentDidUpdate(prevProps: TextInputProps) {
-        if (prevProps.theme !== this.props.theme) {
-            this.forceUpdate(); // Ensure re-render when theme changes
+        if (prevProps.defaultValue !== this.props.defaultValue) {
+            // Reset input.data before calling handleDefaultRequest
+            this.setState(
+                { input: { data: "" } },  // Clear input first
+                () => this.handleDefaultRequest() // Call after state update
+            );
         }
     }
-
+    
     handleDefaultRequest = () => {
         const data = Commons.toStringDefault(this.props.defaultValue, "");
         if (!Commons.isEmptyOrNull(data) && Commons.isEmptyOrNull(this.state.input.data)) {
@@ -86,7 +90,7 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
         const type = Commons.toStringDefault(this.props.type, DesmyState.TEXT);
         const isValid = this.validateInput(inputValue, type);
 
-        if (type === DesmyState.PHONE_NUMBER || type === DesmyState.NUMBER || type === DesmyState.AMOUNT) {
+        if (type === DesmyState.PHONE_NUMBER || type === DesmyState.NUMBER || type === DesmyState.AMOUNT || type=== DesmyState.DECIMAL) {
             if (isValid) {
                 this.setState((prevState) => ({
                     input: {
@@ -123,7 +127,7 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
                 return /^[0-9]*$/.test(inputValue);
             }
 
-            case DesmyState.AMOUNT: {
+            case DesmyState.AMOUNT || DesmyState.DECIMAL: {
                 // Validate amounts (digits with optional decimal up to 2 places)
                 return /^\d*(\.\d{0,2})?$/.test(inputValue);
             }
@@ -183,6 +187,7 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
     };
 
     render() {
+        const {defaultValue} = this.props
         return (
                 <div
                     className={`${this.props.className || 'bg-white dark:bg-darkBackground'} transition-colors duration-300`}
@@ -207,13 +212,14 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
                                 type={`${this.props.type === DesmyState.PASSWORD ? 'password' : 'text'}`}
                                 id="data"
                                 name="data"
+                                ref={this.inputRef}
                                 readOnly={this.props.readOnly}
                                 maxLength={this.props.maxLength}
                                 onFocus={this.handleFocus}
                                 onClick={this.props.readOnly ? this.handleClick : undefined}
                                 disabled={!!this.props.disabled}
                                 autoFocus={!!this.props.autoFocus}
-                                value={Commons.isEmptyOrNull(this.state.input.data) ? this.props.defaultValue ?? '' : this.state.input.data}
+                                value={this.state.input.data ?? defaultValue}//{Commons.isEmptyOrNull(this.state.input.data) ? this.props.defaultValue ?? '' : this.state.input.data}
                                 onChange={this.handleChange}
                                 className={`peer bg-transparent h-12 border border-black ${this.props.disabled ? 'cursor-not-allowed' : ''} dark:border-white dark:text-white placeholder-transparent text-xs 2xl:text-sm ring-0 px-2 w-full focus:outline-none focus:ring-0 dark:focus:border-white ${this.props.inputClassName}`}
                                 placeholder={this.props.label}
@@ -297,3 +303,4 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
 }
 
 export { DesmyTextInput };
+// export { DesmyTextInput };

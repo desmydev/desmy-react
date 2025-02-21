@@ -93,8 +93,8 @@ class DesmyDropdown extends Component<Props, State> {
     }
 
     componentDidUpdate(_prevProps: Props, _prevState: State): void {
-        
-        if (!Commons.isEmptyOrNull(this.props.defaultValue) && !(Commons.isEmptyOrNull(this.props.data))) {
+        if (!Commons.isEmptyOrNull(this.props.defaultValue) && !((Commons.isEmptyOrNull(this.props.data)) || Commons.isEmptyOrNull(this.state.datalist))) {
+            
             if(!this.state.hasLoaded)
                 this.handleDefault()
             
@@ -179,8 +179,8 @@ class DesmyDropdown extends Component<Props, State> {
     
     handleDefault = async (): Promise<void> => {
         try {
-            const datalist = (this.props.data !== undefined && this.props.data !== null) ? this.props.data : this.state.datalist;
             
+            const datalist = (this.props.data !== undefined && this.props.data !== null) ? this.props.data : this.state.datalist;
             if (!Commons.isEmptyOrNull(datalist) || !Commons.isEmptyOrNull(this.props.defaultValue)) {
     
                 const is_multiple = !(this.props.is_multiple === undefined || this.props.is_multiple === false);
@@ -321,6 +321,12 @@ class DesmyDropdown extends Component<Props, State> {
             placement: 'bottom-start',
             strategy: 'fixed',
             modifiers: [
+                {
+                    name: "offset",
+                    options: {
+                      offset: [0, 10],
+                    },
+                },
                 {
                     name: 'flip',
                     options: {

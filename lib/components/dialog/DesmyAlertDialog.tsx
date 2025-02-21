@@ -3,48 +3,12 @@ import ReactDOM from 'react-dom';
 import { DesmyState } from '../apis/DesmyState';
 import Commons from '../apis/DesmyCommons'; 
 import { DesmyDropdown } from '../dropdown/DesmyDropdown';
+import { DesmyModalHandlerSettingsProps } from '../apis/SharedProps';
 
 interface DialogProps {
     children?: React.ReactNode;
     containerDropDownClassName? : string,
-    settings: {
-      title?: string;
-      hint?: string;
-      zIndex?: number;
-      btnPosition?: string;
-      btnNegative?: string;
-      type?: string;
-      loading?: boolean;
-      forceLoading?: boolean;
-      loadinghint?: string;
-      showDateRange?: boolean;
-      date?: {
-        show: boolean;
-        minDate: Date | null;
-        title: string;
-        value: {
-          startDate?: Date | null; // Adjust type to accept null
-          endDate?: Date | null; // Adjust type to accept null
-        };
-      };
-      time?: {
-        show: boolean;
-        value: string;
-        title: string;
-      };
-      showDateRangeTitle?: string;
-      datalist?: {
-        title: string;
-        url : String;
-        data: any[]; // Define a more specific type based on the actual data structure
-        default_value: string;
-        onchange?: string;
-        is_multiple?: boolean;
-        encrypted?: boolean;
-      };
-      inputFieldLabel?: string;
-      handleOnClose?: boolean;
-    };
+    settings: DesmyModalHandlerSettingsProps
     data?: any; // Define a more specific type based on the actual data structure
     onClose: (data: any) => void; // Define the parameter type more specifically if possible
 }
@@ -78,20 +42,20 @@ interface DialogState {
     input: {
       user_input: string;
     };
-    data_value: any; // Define more specifically
+    data_value: any; 
     datalist: {
-      title: string;
-      default_value: string; // Make sure defaultvalue is required here
+      title?: string;
+      default_value?: string;
       onchange?: string;
       is_multiple?: boolean;
-      data: any[]; // Define more specifically
+      data?: any[];
     };
 }
 
 interface ModalHandlerProps {
     settings: DialogProps['settings'];
-    data?: any; // Define more specifically
-    onClose: (data: any) => void; // Define the parameter type more specifically if possible
+    data?: any; 
+    onClose: (data: any) => void;
     children: React.ReactNode;
   }
   

@@ -32,6 +32,7 @@ declare class DesmyModalContainer extends Component<ModalContainerProps, ModalCo
     handleDelete: () => void;
     handleDeleteRequest: () => void;
     handleAlert: (message?: string, isDone?: boolean) => void;
+    handleOnClose: () => void;
     render(): import("react/jsx-runtime").JSX.Element;
 }
 export { DesmyModalContainer };

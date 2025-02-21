@@ -4,42 +4,15 @@ import Commons from '../apis/DesmyCommons';
 import DesmyAuth from '../apis/DesmyAuth';
 import { DesmyState as CommonState } from '../apis/DesmyState';
 import {DesmyAlert as Alert} from '../apis/DesmyAlert';
+import {  DesmyCustomDataTableProps } from '../apis/SharedProps';
 
 
-interface DesmyCustomDataTableProps {
+interface DataTableProps {
     onRef?: (instance: DesmyCustomDataTable) => void;
     className?: string; // Optional, as it might not always be provided
     children?: React.ReactNode; 
     content?: React.ReactNode; 
-    settings: {
-      url: string;
-      default_sorted_column: string;
-      pagination?: {
-        per_page: number;
-      };
-      search?: boolean;
-      filter?: {
-        title: string;
-        data: {
-            name: string;
-            data: string;
-            defaults?: {
-                [key: string]: string;
-            };
-        }[];
-      };
-      header?: {
-        title?: string;
-        class?: string;
-        hint?: string;
-      };
-      deleteinfo: {
-        id: string;
-      };
-      headers: any[]; // Adjust these types as needed
-      columns: any[];
-      table_data: any[];
-    };
+    settings: DesmyCustomDataTableProps;
     handleOnLoaded: (data: any[], state: string, message? :string) => void;
   }
   
@@ -71,28 +44,7 @@ interface DesmyCustomState {
     current_page: number;
     offset: number;
   };
-  settings: {
-    default_sorted_column: string;
-    header?: {
-      title?: string;
-      class?: string;
-      hint?: string;
-    };
-    headers: any[];
-    columns: any[];
-    table_data: any[];
-    search?:boolean; 
-    filter?: {
-      title: string;
-      data: {
-          name: string;
-          data: string;
-          defaults?: {
-              [key: string]: string;
-          };
-      }[];
-  };
-  };
+  settings: DesmyCustomDataTableProps;
   error: {
     state: boolean;
     message: string;
@@ -107,7 +59,7 @@ interface DesmyCustomState {
   };
 }
 
-class DesmyCustomDataTable extends Component<DesmyCustomDataTableProps, DesmyCustomState> {
+class DesmyCustomDataTable extends Component<DataTableProps, DesmyCustomState> {
   private renderedSettings: any[] = [];
   private dataCollection: any[] = [];
   private chunkSize: number = 6;
@@ -117,7 +69,7 @@ class DesmyCustomDataTable extends Component<DesmyCustomDataTableProps, DesmyCus
   private current_page: number = 0;
   private search: string = '';
 
-  constructor(props: DesmyCustomDataTableProps) {
+  constructor(props: DataTableProps) {
     super(props);
     this.state = {
       selected: -1,
@@ -151,6 +103,10 @@ class DesmyCustomDataTable extends Component<DesmyCustomDataTableProps, DesmyCus
           title: "",
           class: "",
           hint: ""
+        },
+        url:"",
+        deleteinfo: {
+          id: "",
         },
         headers: [],
         columns: [],

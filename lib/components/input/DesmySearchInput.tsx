@@ -37,7 +37,7 @@ interface Props {
     onSelect: (data: DropdownItem | DropdownItem[]) => void;
     autoFocus?: boolean;
     maxLength?: number;
-    url: string;
+    url?: string;
     label: string;
     token?: string;
 }
@@ -190,33 +190,42 @@ class DesmySearchInput extends Component<Props, State> {
         const response = await fetch(`${url}?query=${searchText}&page=${page}`, { headers });
         const responsedata = await response.json();
     
+        console.log("API Response:", responsedata); // Debugging step
+    
         if (responsedata.success) {
+          // Check if responsedata.data and responsedata.data.meta exist
+          if (!responsedata.data || !responsedata.data.meta) {
+            throw new Error("Invalid response format: 'data' or 'meta' is missing.");
+          }
+    
           const { data, meta } = responsedata.data;
+          if (!DesmyCommons.isEmptyOrNull(data)) {
+            const formattedData: DropdownItem[] = data.map((item: any) => ({
+              id: item.id,
+              name: item.name,
+              icon: null,
+              hint: item.hint || null,
+              data: item,
+            }));
     
-          const formattedData: DropdownItem[] = data.map((item: any) => ({
-            id: item.id,
-            name: item.name,
-            icon: null, // Assuming no icon provided in the response
-            hint: item.hint || null,
-            data: item,
-          }));
-    
-          this.setState(
-            (prevState) => ({
+            this.setState((prevState) => ({
               filteredOptions: page === 1 ? formattedData : [...prevState.filteredOptions, ...formattedData],
-              hasMore: meta.current_page < meta.last_page, 
+              hasMore: meta.current_page < meta.last_page,
               total: meta.total,
               error: { state: false, message: '' },
-            }),
-            this.handleDefault
-          );
+            }), this.handleDefault);
+          } else {
+            this.handleError('No data found.');
+          }
         } else {
           this.handleError(responsedata.message || 'Failed to fetch data.');
         }
       } catch (error) {
+        console.error("Fetch error:", error);
         this.handleError('An error occurred while fetching data. Please check your connection.');
       }
     };
+    
 
   handleDefault = (): void => {
     const { defaultValue } = this.props;
@@ -275,6 +284,12 @@ class DesmySearchInput extends Component<Props, State> {
         placement: 'bottom-start',
         strategy: 'fixed',
         modifiers: [
+            {
+              name: "offset",
+              options: {
+                offset: [0, 10],
+              },
+            },
             {
                 name: 'flip',
                 options: {

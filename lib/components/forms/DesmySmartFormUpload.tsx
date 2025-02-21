@@ -2,7 +2,7 @@ import React, { Component, createRef } from 'react';
 import readXlsxFile from 'read-excel-file';
 import ReadTables from './ReadTables';
 import DesmyCommons from '../apis/DesmyCommons';
-import { DataSetTableSettingsProps } from '../apis/SharedProps';
+import { DataSetTableSettingsProps, DesmySmartFormUploadReadTable, DesmySmartFormUploadReadTableFilterColums } from '../apis/SharedProps';
 // import DesmyCommons from '../apis/DesmyCommons';
 
 interface DataItem {
@@ -11,26 +11,10 @@ interface DataItem {
 
 interface Props {
   database: Array<{ id: string, readOnly: boolean }>;
-  filter_column: {
-    parent: string;
-    custom: string;
-    unique_fields: string[];
-  };
+  filter_column?: DesmySmartFormUploadReadTableFilterColums,
   [key: string]: any;
   settings: DataSetTableSettingsProps;
-  reader:{
-    sheet_name : string,
-    url?:string,
-    title?:string,
-    token?:string,
-    template_url?:string,
-    key_name?: string,
-    ui:{
-      label?:string,
-      icon?:string
-    }
-    
-  }
+  reader:DesmySmartFormUploadReadTable
 }
 
 interface State {
@@ -107,8 +91,8 @@ class DesmySmartFormUpload extends Component<Props, State> {
         );
         rows = rows.slice(1);
   
-        const parentUnitIndex = headers.indexOf(this.props.filter_column.parent);
-        const uniqueFieldIndices = this.props.filter_column.unique_fields
+        const parentUnitIndex = headers.indexOf(this.props.filter_column?.parent ?? "");
+        const uniqueFieldIndices = this.props.filter_column?.unique_fields
           ? this.props.filter_column.unique_fields.map((field) =>
               headers.indexOf(field)
             )
@@ -155,11 +139,11 @@ class DesmySmartFormUpload extends Component<Props, State> {
               if (foundParent) {
                 const parentObject: { [key: string]: any } = {};
                 headers.forEach((header, index) => {
-                  if (header !== this.props.filter_column.parent) {
+                  if (header !== this.props.filter_column?.parent) {
                     parentObject[header] = foundParent[index];
                   }
                 });
-                rowData[this.props.filter_column.custom] = JSON.stringify(
+                rowData[this.props.filter_column?.custom ?? ""] = JSON.stringify(
                   parentObject
                 );
               }

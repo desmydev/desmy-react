@@ -1,5 +1,5 @@
 import { default as React, Component } from 'react';
-import { DataSetTableSettingsProps } from '../apis/SharedProps';
+import { DataSetTableSettingsProps, DesmySmartFormUploadReadTable, DesmySmartFormUploadReadTableFilterColums } from '../apis/SharedProps';
 interface DataItem {
     [key: string]: any;
 }
@@ -8,25 +8,10 @@ interface Props {
         id: string;
         readOnly: boolean;
     }>;
-    filter_column: {
-        parent: string;
-        custom: string;
-        unique_fields: string[];
-    };
+    filter_column?: DesmySmartFormUploadReadTableFilterColums;
     [key: string]: any;
     settings: DataSetTableSettingsProps;
-    reader: {
-        sheet_name: string;
-        url?: string;
-        title?: string;
-        token?: string;
-        template_url?: string;
-        key_name?: string;
-        ui: {
-            label?: string;
-            icon?: string;
-        };
-    };
+    reader: DesmySmartFormUploadReadTable;
 }
 interface State {
     hasRequest: boolean;

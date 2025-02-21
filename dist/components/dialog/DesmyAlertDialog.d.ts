@@ -1,45 +1,9 @@
 import { default as React } from 'react';
+import { DesmyModalHandlerSettingsProps } from '../apis/SharedProps';
 interface DialogProps {
     children?: React.ReactNode;
     containerDropDownClassName?: string;
-    settings: {
-        title?: string;
-        hint?: string;
-        zIndex?: number;
-        btnPosition?: string;
-        btnNegative?: string;
-        type?: string;
-        loading?: boolean;
-        forceLoading?: boolean;
-        loadinghint?: string;
-        showDateRange?: boolean;
-        date?: {
-            show: boolean;
-            minDate: Date | null;
-            title: string;
-            value: {
-                startDate?: Date | null;
-                endDate?: Date | null;
-            };
-        };
-        time?: {
-            show: boolean;
-            value: string;
-            title: string;
-        };
-        showDateRangeTitle?: string;
-        datalist?: {
-            title: string;
-            url: String;
-            data: any[];
-            default_value: string;
-            onchange?: string;
-            is_multiple?: boolean;
-            encrypted?: boolean;
-        };
-        inputFieldLabel?: string;
-        handleOnClose?: boolean;
-    };
+    settings: DesmyModalHandlerSettingsProps;
     data?: any;
     onClose: (data: any) => void;
 }
@@ -73,11 +37,11 @@ interface DialogState {
     };
     data_value: any;
     datalist: {
-        title: string;
-        default_value: string;
+        title?: string;
+        default_value?: string;
         onchange?: string;
         is_multiple?: boolean;
-        data: any[];
+        data?: any[];
     };
 }
 interface ModalHandlerProps {

@@ -14,21 +14,26 @@ const RoutesContext = createContext<ReactElement | null>(null);
 const extractRouteParams = (
   routePath?: string,
   url: string = window?.location?.pathname || ""
-): { [key: string]: string | undefined } | undefined => {
-  if (!routePath) return undefined; // Return undefined if routePath is not provided
+): { [key: string]: string | undefined } => {
+  if (!routePath) return {};
 
-  const patternParts = routePath.split("/").filter(Boolean);
-  const urlParts = url.split("/").filter(Boolean);
+  const pathParts = routePath.split('/').filter(part => part);
+  const urlParts = url.split('/').filter(part => part);
+  let params: { [key: string]: string | undefined } = {};
 
-  const params: { [key: string]: string | undefined } = {};
-  patternParts.forEach((part, index) => {
-    if (part.startsWith(":")) {
-      const key = part.slice(1);
-      params[key] = urlParts[index];
+  for (let i = 0; i < pathParts.length; i++) {
+    if (pathParts[i].startsWith(':')) {
+      let paramName = pathParts[i].replace(':', '').replace('?', ''); // Remove ':' and '?'
+      let isOptional = pathParts[i].endsWith('?');
+
+      if (urlParts[i] !== undefined) {
+        params[paramName] = urlParts[i]; // Assign URL value to param
+      } else if (!isOptional) {
+        throw new Error(`Missing required route parameter: ${paramName}`);
+      }
     }
-  });
-
-  return Object.keys(params).length > 0 ? params : undefined; 
+  }
+  return params;
 };
 
 const DesmyWithRouter = <P extends object>(
@@ -37,13 +42,13 @@ const DesmyWithRouter = <P extends object>(
   return class extends Component<P & { path?: string }> {
     render() {
       const { path, ...restProps } = this.props as P & { path?: string };
-      const params = extractRouteParams(path);
+      const params = path ? extractRouteParams(path) : {};
 
       return (
         <WrappedComponent
           {...(restProps as P)}
-          {...(path ? { routePath: path } : {})}
-          {...(params ? { params } : {})}
+          routePath={path}
+          params={Object.keys(params).length ? params : undefined} // Avoid spreading empty object
         />
       );
     }
@@ -52,16 +57,32 @@ const DesmyWithRouter = <P extends object>(
 
 // Function to render nested routes
 const DesmyRenderRoutes = (routes: DesmyRoute[]) => {
-  return routes.map(({ path, element, children }, index) => (
+  return routes.map(({ path, element, children }, index) => {
+    const params = extractRouteParams(path);
+    console.log("params=",params)
+    return (
     <Route
       key={index}
       path={path}
       element={isValidElement<{ path?: string }>(element) ? React.cloneElement(element, { path }) : element}
     >
-      {children && DesmyRenderRoutes(children)}
+      {/* {children && DesmyRenderRoutes(children)} */}
     </Route>
-  ));
+  )});
 };
-
+// const DesmyRenderRoutes = (routes: DesmyRoute[]) => {
+//   return routes.map(({ path, element, children }, index) => {
+//     const params = extractRouteParams(path);
+//     return (
+//       <Route
+//         key={index}
+//         path={path}
+//         element={isValidElement(element) ? React.cloneElement(element, { path, params }) : element}
+//       >
+//         {children && DesmyRenderRoutes(children)}
+//       </Route>
+//     );
+//   });
+// };
 
 export { DesmyWithRouter, RoutesContext, DesmyRenderRoutes };

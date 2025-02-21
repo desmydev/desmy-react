@@ -9,7 +9,7 @@ interface TextInputProps {
     emailExtensions?: string[];
     onChange: (value: string) => void;
     onSearch?: (value: string) => void;
-    onRef?: (instance: DesmyTextInput | null) => void;
+    onRef?: (instance: HTMLInputElement | null) => void;
     autoFocus?: boolean;
     onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     disabled?: boolean;
@@ -28,6 +28,7 @@ interface TextInputState {
 declare class DesmyTextInput extends Component<TextInputProps, TextInputState> {
     enteredInput: string;
     private popoverDropdownRef;
+    private inputRef;
     constructor(props: TextInputProps);
     componentDidMount(): void;
     componentDidUpdate(prevProps: TextInputProps): void;

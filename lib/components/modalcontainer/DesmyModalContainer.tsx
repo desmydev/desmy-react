@@ -160,12 +160,14 @@ class DesmyModalContainer extends Component<ModalContainerProps, ModalContainerS
       });
     }
   };
-
+  handleOnClose=()=>{
+    
+  }
   render() {
     return (
       <>
         {this.state.modal}
-        <DesmyClickOutsideListener onClickOutside={this.handleClose}>
+        <DesmyClickOutsideListener onClickOutside={this.handleOnClose}>
         <DesmyMultiStepModal
           isOpen={this.state.isOpen}
           onClose={this.handleClose}

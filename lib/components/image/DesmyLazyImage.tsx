@@ -2,7 +2,7 @@ import React, { Component, createRef, ReactNode } from "react";
 
 interface DesmyLazyImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   placeholder?: ReactNode;
-  coverClassName?:string
+  coverClassName?: string;
 }
 
 interface DesmyLazyImageState {
@@ -47,38 +47,41 @@ class DesmyLazyImage extends Component<DesmyLazyImageProps, DesmyLazyImageState>
   loadImage = () => {
     if (!this.state.isLoaded) {
       this.setState({ isLoaded: true });
-      this.observer?.disconnect();
     }
+  };
+
+  handleImageLoad = () => {
+    this.setState({ isLoaded: true });
+    this.observer?.disconnect();
   };
 
   render() {
     const { src, placeholder, alt, coverClassName, className, ...rest } = this.props;
     const { isLoaded } = this.state;
-  
+
+    const placeholderImage =
+      "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="; // 1x1 transparent image
+
     if (!src) {
-      // Do not render anything if src is not provided
-      return null;
+      return null; // Ensure src is always defined
     }
-  
+
     return (
-      <>
+      <div className={`relative ${coverClassName ?? ""}`}>
         {!isLoaded && placeholder}
         <img
           ref={this.imgRef}
-          src={isLoaded ? src : undefined}
+          src={isLoaded ? src : placeholderImage}
           alt={alt}
-          className={`${className ?? "h-12"} ${isLoaded ? "loaded" : "loading"}`}
-          style={{
-            opacity: isLoaded ? 1 : 0,
-            transition: "opacity 0.5s ease-in-out",
-          }}
-          onLoad={this.loadImage}
+          className={`${className ?? "h-12"} transition-opacity duration-500 ${
+            isLoaded ? "opacity-100" : "opacity-0"
+          }`}
+          onLoad={this.handleImageLoad}
           {...rest}
         />
-      </>
+      </div>
     );
   }
-  
 }
 
 // Explicitly define default export

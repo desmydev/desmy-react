@@ -13,6 +13,7 @@ declare class DesmyLazyImage extends Component<DesmyLazyImageProps, DesmyLazyIma
     componentDidMount(): void;
     componentWillUnmount(): void;
     loadImage: () => void;
+    handleImageLoad: () => void;
     render(): import("react/jsx-runtime").JSX.Element | null;
 }
 export default DesmyLazyImage;

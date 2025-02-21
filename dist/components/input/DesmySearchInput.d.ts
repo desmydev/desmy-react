@@ -29,7 +29,7 @@ interface Props {
     onSelect: (data: DropdownItem | DropdownItem[]) => void;
     autoFocus?: boolean;
     maxLength?: number;
-    url: string;
+    url?: string;
     label: string;
     token?: string;
 }

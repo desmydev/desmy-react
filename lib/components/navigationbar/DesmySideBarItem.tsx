@@ -1,26 +1,9 @@
-import React, { Component, ReactNode } from 'react';
+import React, { Component } from 'react';
 import DesmyCommons from '../apis/DesmyCommons';
+import { DesmySideBarItemProps,DesmySideBarItemData } from '../apis/SharedProps';
 
 // Define the types for your component props
-interface ChildItem {
-  url: string;
-  label: string;
-  has_permission?: boolean;
-  items?: ChildItem[]; // Nested items
-}
 
-interface DesmySideBarItemProps {
-  location?: { pathname: string };
-  exact?: boolean;
-  className?: string;
-  pattern?: string | string[]; // Accept string or array of strings
-  name: string;
-  items?: ChildItem[];
-  icon?: ReactNode;
-  url: string;
-  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
-  navigate?: (url: string) => void;
-}
 
 // Define the types for your component state
 interface DesmySideBarItemState {
@@ -75,7 +58,7 @@ class DesmySideBarItem extends Component<DesmySideBarItemProps, DesmySideBarItem
     }
   };
 
-  handleOnChildClick = (e: React.MouseEvent<HTMLAnchorElement>, data: ChildItem) => {
+  handleOnChildClick = (e: React.MouseEvent<HTMLAnchorElement>, data: DesmySideBarItemData) => {
     e.preventDefault();
     this.props.navigate?.(data.url);
   };
@@ -90,7 +73,7 @@ class DesmySideBarItem extends Component<DesmySideBarItemProps, DesmySideBarItem
       openChildMenu: prevState.openChildMenu === menu ? null : menu,
     }));
   };
-  renderChildItems = (items: ChildItem[], _parentName: string) => {
+  renderChildItems = (items: DesmySideBarItemData[], _parentName: string) => {
     const { openChildMenu } = this.state;
 
     return items.map((item, index) => {

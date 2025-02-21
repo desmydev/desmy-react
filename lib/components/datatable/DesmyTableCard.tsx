@@ -85,7 +85,6 @@ class DesmyTableCard extends Component<Props, State> {
 
     return headers.map((field, index) => {
       const value = DesmyCommons.toStringDefault(data[field], "");
-      console.log(headers,value)
       return (
         <td key={index} className={`px-6 py-3 `}>
           {DesmyCommons.toString(field).toLowerCase() !== "action" ? (

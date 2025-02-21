@@ -1,38 +1,11 @@
 import { default as React, Component } from 'react';
-interface DesmyCustomDataTableProps {
+import { DesmyCustomDataTableProps } from '../apis/SharedProps';
+interface DataTableProps {
     onRef?: (instance: DesmyCustomDataTable) => void;
     className?: string;
     children?: React.ReactNode;
     content?: React.ReactNode;
-    settings: {
-        url: string;
-        default_sorted_column: string;
-        pagination?: {
-            per_page: number;
-        };
-        search?: boolean;
-        filter?: {
-            title: string;
-            data: {
-                name: string;
-                data: string;
-                defaults?: {
-                    [key: string]: string;
-                };
-            }[];
-        };
-        header?: {
-            title?: string;
-            class?: string;
-            hint?: string;
-        };
-        deleteinfo: {
-            id: string;
-        };
-        headers: any[];
-        columns: any[];
-        table_data: any[];
-    };
+    settings: DesmyCustomDataTableProps;
     handleOnLoaded: (data: any[], state: string, message?: string) => void;
 }
 interface DesmyCustomState {
@@ -63,28 +36,7 @@ interface DesmyCustomState {
         current_page: number;
         offset: number;
     };
-    settings: {
-        default_sorted_column: string;
-        header?: {
-            title?: string;
-            class?: string;
-            hint?: string;
-        };
-        headers: any[];
-        columns: any[];
-        table_data: any[];
-        search?: boolean;
-        filter?: {
-            title: string;
-            data: {
-                name: string;
-                data: string;
-                defaults?: {
-                    [key: string]: string;
-                };
-            }[];
-        };
-    };
+    settings: DesmyCustomDataTableProps;
     error: {
         state: boolean;
         message: string;
@@ -98,7 +50,7 @@ interface DesmyCustomState {
         color: string;
     };
 }
-declare class DesmyCustomDataTable extends Component<DesmyCustomDataTableProps, DesmyCustomState> {
+declare class DesmyCustomDataTable extends Component<DataTableProps, DesmyCustomState> {
     private renderedSettings;
     private dataCollection;
     private chunkSize;
@@ -107,7 +59,7 @@ declare class DesmyCustomDataTable extends Component<DesmyCustomDataTableProps, 
     private isLoading;
     private current_page;
     private search;
-    constructor(props: DesmyCustomDataTableProps);
+    constructor(props: DataTableProps);
     componentDidMount(): Promise<void>;
     handleScroll(event: React.UIEvent<HTMLDivElement>): void;
     errors: (data: {
