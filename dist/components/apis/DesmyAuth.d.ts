@@ -12,6 +12,7 @@ declare class DesmyAuth {
         value: any;
     }[], callback: (arg0: boolean) => void): void;
     clear(): void;
+    clientClear: () => void;
     remove(name: string): void;
     save(key: string, data: string): void;
     getCookie(name: string): string | null;

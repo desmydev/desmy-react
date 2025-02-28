@@ -120,6 +120,7 @@ export interface DesmySideBarItemData {
     label: string;
     has_permission?: boolean;
     items?: DesmySideBarItemData[];
+    onClick?: (data?: any) => void;
 }
 export interface DesmySideBarItemProps {
     location?: {
@@ -157,6 +158,7 @@ export interface DatePickerProps {
     displayFormat?: string;
     label: string;
     useRange?: boolean;
+    className?: string;
     onSelected?: (dates: {
         startDate?: string;
         endDate?: string;

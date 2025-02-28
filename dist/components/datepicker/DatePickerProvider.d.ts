@@ -12,6 +12,7 @@ declare class DatePickerProvider extends Component<DatePickerProps, DatePickerSt
     parentContainerRef: React.RefObject<HTMLDivElement | null>;
     inputRef: React.RefObject<HTMLInputElement | null>;
     popoverDropdownRef: React.RefObject<HTMLDivElement | null>;
+    arrowRef: React.RefObject<HTMLDivElement | null>;
     popperInstance: ReturnType<typeof createPopper> | null;
     private saveDateValue;
     constructor(props: DatePickerProps);

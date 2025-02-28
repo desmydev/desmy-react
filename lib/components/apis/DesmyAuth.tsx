@@ -1,3 +1,5 @@
+import { DesmyState } from "./DesmyState";
+
 class DesmyAuth {
     constructor() {
        
@@ -40,6 +42,9 @@ class DesmyAuth {
     }
     clear():void{
         localStorage.clear();   
+    }
+    clientClear=()=>{
+      this.remove(DesmyState.CLIENT_ACCESS_TOKEN)
     }
     remove(name: string): void {
         localStorage.removeItem(name);

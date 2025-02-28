@@ -195,6 +195,7 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
                     <div className={`relative bg-inherit ${this.props.type === DesmyState.SEARCH ? 'flex w-full space-x-3' : ''}`}>
                         {this.props.type === DesmyState.TEXTAREA ? (
                             <textarea
+                                id={`data-${Commons.generateKey()}`} 
                                 rows={this.props.rows}
                                 disabled={!!this.props.disabled}
                                 autoFocus={!!this.props.autoFocus}
@@ -210,8 +211,9 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
                         ) : (
                             <input
                                 type={`${this.props.type === DesmyState.PASSWORD ? 'password' : 'text'}`}
-                                id="data"
+                                id={`data-${Commons.generateKey()}`} 
                                 name="data"
+                                autoComplete="data"
                                 ref={this.inputRef}
                                 readOnly={this.props.readOnly}
                                 maxLength={this.props.maxLength}

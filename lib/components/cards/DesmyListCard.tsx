@@ -112,10 +112,10 @@ class DesmyListCard extends Component<HomeProps, HomeState> {
             }}
           >
             <div
-              className={`flex flex-col w-full rounded-lg cursor-pointer uppercase group min-h-24 ${this.props.className ?? `border border-l-4 hover:bg-primary dark:hover:bg-white dark:text-black hover:text-white dark:hover:text-black uppercase hover:border-l-white dark:hover:border-l-white border-l-primary dark:border-l-darkDialogBackground bg-white dark:bg-darkPrimary dark:border-darkDialogBackground border-gray-200 `}`}
+              className={`flex flex-col w-full rounded-lg cursor-pointer  group min-h-24 ${this.props.className ?? `border border-l-4 px-4 uppercase py-4 hover:bg-primary dark:hover:bg-white dark:text-black hover:text-white dark:hover:text-black uppercase hover:border-l-white dark:hover:border-l-white border-l-primary dark:border-l-darkDialogBackground bg-white dark:bg-darkPrimary dark:border-darkDialogBackground border-gray-200 `}`}
               style={this.props.style} // Use the passed style prop here
             >
-              <div className="px-4 py-4">
+              <div className="w-full">
                 <div className="flex flex-col w-full">
                   {this.props.name ? (
                     <>

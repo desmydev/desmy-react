@@ -4,6 +4,7 @@ export default {
     "./lib/**/*.{js,ts,jsx,tsx}",
     "./dist/**/*.{js,ts,jsx,tsx}",
   ],
+  safelist: ['animate-toast-slide-in', 'bg-green-500', 'bg-red-400', 'bg-blue-500'],
   darkMode: 'class', // or 'media' or 'class'
   theme: {
     extend: {

@@ -1,6 +1,7 @@
 import React, { createContext, ReactNode, Component } from 'react';
-import Toast from './Toast';  // Your Toast component
-import { DesmyToast } from './ DesmyToast';
+import Toast from './Toast'; 
+import { createPortal } from 'react-dom';
+import { DesmyToast } from './DesmyToast';
 
 interface ToastMessage {
   id: number;
@@ -57,19 +58,23 @@ export class DesmyToastProvider extends Component<DesmyToastProviderProps, Desmy
 
   render() {
     return (
-      <ToastContext.Provider value={{ addToast: this.addToast, removeToast: this.removeToast }}>
+        <ToastContext.Provider value={{ addToast: this.addToast, removeToast: this.removeToast }}>
         {this.props.children}
-        <div className="fixed top-4 right-4 z-50 space-y-4">
-          {this.state.toasts.map(toast => (
-            <Toast
-              key={toast.id}
-              message={toast.message}
-              type={toast.type}
-              onClose={() => this.removeToast(toast.id)}
-              id={`toast-${toast.id}`}
-            />
-          ))}
-        </div>
+        
+        {createPortal(
+          <div className="fixed top-4 right-4 z-[9999999] space-y-4">
+            {this.state.toasts.map(toast => (
+              <Toast
+                key={toast.id}
+                message={toast.message}
+                type={toast.type}
+                onClose={() => this.removeToast(toast.id)}
+                id={`toast-${toast.id}`}
+              />
+            ))}
+          </div>,
+          document.getElementById('toast-root')!
+        )}
       </ToastContext.Provider>
     );
   }

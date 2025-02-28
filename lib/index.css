@@ -223,10 +223,15 @@ body {
 
 /* Apply the slide-in animation */
 .animate-toast-slide-in {
-  animation: toastSlideIn 0.5s ease-out forwards;
+  animation: toastSlideIn 0.2s ease-out forwards;
 }
 
 /* Apply the slide-out animation */
 .animate-toast-slide-out {
-  animation: toastSlideOut 0.5s ease-in forwards;
+  animation: toastSlideOut 0.2s ease-in forwards;
+}
+.floating-label {
+  top: -3.5rem;
+  font-size: 12px;
+  transition: all 0.3s ease-in-out;
 }

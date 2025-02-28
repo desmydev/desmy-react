@@ -60,7 +60,7 @@ class DesmySideBarItem extends Component<DesmySideBarItemProps, DesmySideBarItem
 
   handleOnChildClick = (e: React.MouseEvent<HTMLAnchorElement>, data: DesmySideBarItemData) => {
     e.preventDefault();
-    this.props.navigate?.(data.url);
+    this.props.onClick?.(e);
   };
 
   toggleMenu = (menu: string | null) => {
@@ -88,7 +88,8 @@ class DesmySideBarItem extends Component<DesmySideBarItemProps, DesmySideBarItem
                   e.preventDefault();
                   this.toggleChildMenu(`${item.label}`);
                 } else {
-                  this.handleOnChildClick(e, item);
+                  e.preventDefault()
+                  item.onClick?.(item.url)
                 }
               }}
               href={item.url}

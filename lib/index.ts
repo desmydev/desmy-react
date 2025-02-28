@@ -35,8 +35,8 @@ import  {DesmyModalWrapper} from './components/modalcontainer/DesmyModalWrapper'
 import  {DesmyRxServices} from './components/apis/DesmyRxServices'
 import  {DesmyTableCard} from './components/datatable/DesmyTableCard'
 import  {DesmyAccordion} from './components/accordions/DesmyAccordion'
-import  {DesmyToastProvider} from './components/toasify/DesmyToastContext'
-import  {DesmyToast} from './components/toasify/ DesmyToast'
+import  {DesmyToastProvider,useToast} from './components/toasify/DesmyToastContext'
+import  {DesmyToast} from './components/toasify/DesmyToast'
 import  {DesmyTabLayout} from './components/tablayout/DesmyTabLayout'
 import  {DesmyUploadManager} from './components/uploads/DesmyUploadManager'
 import  {DesmySmartFormUpload} from './components/forms/DesmySmartFormUpload'
@@ -52,6 +52,7 @@ export  {
             DesmyPermissions,
             DesmyLazyloading,
             DesmyToastProvider,
+            useToast,
             DesmyToast,
             DesmyDropdown,
             DesmyModalHandler,

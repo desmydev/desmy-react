@@ -47,149 +47,6 @@ interface State {
   isLoading: boolean; // Added isLoading to the state
 }
 
-class DatatableModalHandler extends React.Component<Props, State> {
-  modalContainer: HTMLDivElement;
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      data: {},
-      filter: {},
-      settings: {
-        title: "",
-        hint: "",
-        btnPosition: "",
-        btnNegative: "",
-        type: "ERROR",
-        loading: false,
-        filter: {
-          title: "",
-          is_multiple: false,
-          encrypted: false,
-          data: []
-        },
-        dtablemodal: null
-      },
-      isLoading: false // Initialized isLoading in the state
-    };
-    this.modalContainer = document.createElement('div');
-    this.modalContainer.className = 'modal-container';
-  }
-
-  handleClose = (data: boolean) => {
-    try {
-      if (this.props.settings.loading && data) {
-        this.setState({ isLoading: true });
-      }
-      const ddata = { ...this.state.data, status: data, filters: this.state.filter };
-      this.props.onClose(ddata);
-    } catch (e) {
-      // Handle error
-    }
-  }
-
-  componentDidMount() {
-    const settings = { ...this.state.settings, ...this.props.settings };
-    this.setState({ settings });
-    document.body.appendChild(this.modalContainer);
-  }
-
-  componentWillUnmount() {
-    document.body.removeChild(this.modalContainer);
-  }
-
-  handleDataChange = (name: string, data: any) => {
-    try {
-      const data_value = this.state.filter.is_multiple ? (data.length > 0 ? data.map((object: any) => object.id) : []) : data;
-      this.setState((prevState) => ({
-        filter: {
-          ...prevState.filter,
-          [name]: data_value
-        }
-      }));
-    } catch (e) {
-      // Handle error
-    }
-  }
-
-  render() {
-    const { settings } = this.state;
-    const modalComponent = (
-      <div className={`fixed z-[3000] inset-0 overflow-y-auto`}>
-        <div className="fixed justify-items-center px-2 backdrop-blur-sm top-0 right-0 left-0 z-40 w-full inset-0 h-modal h-full justify-center items-center overflow-y-auto">
-          <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-            <div className="fixed inset-0 transition-opacity">
-              <div className="absolute inset-0 bg-black/25 opacity-75"></div>
-            </div>
-            <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
-            <div className="inline-block align-bottom font-poppinsRegular bg-white dark:bg-darkBackground dark:text-white px-4 pt-5 pb-0 text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full sm:p-6">
-              <div className='flex flex-col lg:-ml-2 w-full'>
-                <div className="relative sm:flex sm:items-start items-center">
-                  <div className="flex w-full flex-col mt-5 text-center sm:mt-0 sm:ml-4 sm:text-left items-center">
-                    {settings.title && !Commons.isEmptyOrNull(settings.title) &&
-                      <div className={`flex w-full justify-center items-center text-start lg:justify-start text-md uppercase xl:text-base mt-1.5 ${settings.type === "ERROR" ? `text-red-600` : `text-gray-900 dark:text-white`} font-poppinsBold`}>
-                        {settings.title}
-                      </div>
-                    }
-                    {settings.hint && !Commons.isEmptyOrNull(settings.hint) &&
-                      <div className={`flex w-full justify-center items-center text-start lg:justify-start text-sm mt-1.5 ${settings.type === "ERROR" ? `text-red-600` : `text-gray-900 dark:text-white`}`}>
-                        {settings.hint}
-                      </div>
-                    }
-                    <div className="flex flex-col w-full my-5">
-                      {settings.filter && settings.filter.data.map((data, i) => (
-                        <div key={`drpdke=${i}`} className='flex w-full relative'>
-                          <DesmyDropdown data={data.data}
-                            selectedData={this.state.settings.data_value}
-                            defaultValue={data.defaults}
-                            onClear={`None`}
-                            handleChange={(response) => this.handleDataChange(data.name, response)}
-                            is_multiple={settings.filter.is_multiple}
-                            dropdownClass={`bg-white text-black`}
-                            enableDecrypt={settings.filter.encrypted}
-                            placeholder={`By ${Commons.convertUnderscoreToSpaceString(data.name)}`}
-                            dropdownListClass={`flex w-full text-black hover:bg-gray-200`}
-                            className={`flex w-full dark:text-white text-sm text-gray-900 border-b-0 border-gray-300 py-2.5 bg-transparent outline-none focus:outline-none`} />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  {this.props.settings.handleOnClose &&
-                    <div className="absolute right-0 -top-2 cursor-pointer" onClick={this.props.settings.handleOnClose}>
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                  }
-                </div>
-                <div className="mt-4 sm:flex sm:flex-row-reverse">
-                  {settings.btnPosition &&
-                    <span className="flex w-full rounded-md sm:ml-3 sm:w-auto">
-                      <button type="button" onClick={() => this.handleClose(true)}
-                        className="uppercase inline-flex justify-center w-full rounded-md border border-transparent px-2 py-2 font-poppinsBold text-primary dark:text-white focus:outline-none focus:shadow-outline-green transition ease-in-out duration-150 text-sm">
-                        {settings.btnPosition}
-                      </button>
-                    </span>
-                  }
-                  {settings.btnNegative &&
-                    <span className="mt-3 flex w-full rounded-md sm:mt-0 sm:w-auto">
-                      <button type="button" onClick={() => this.handleClose(false)}
-                        className="uppercase inline-flex justify-center w-full rounded-md border border-transparent px-2 py-2 font-poppinsBold text-black dark:text-white focus:outline-none focus:shadow-outline-green transition ease-in-out duration-150 text-sm">
-                        {settings.btnNegative}
-                      </button>
-                    </span>
-                  }
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-
-    return ReactDOM.createPortal(modalComponent, this.modalContainer);
-  }
-}
 export type DesmyDataTableRef = {
   handleRetry: () => void;
 };
@@ -689,54 +546,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
   
 
   handleFiltered = (): void => {
-    const { settings: datatableSettings } = this.props;
-    const { filters } = this.state;
-
-    const handleClose = (state: { status: boolean; filters: any }): void => {
-      if (state.status) {
-        const updatedFilters = { ...filters };
-        const filterheaddata: { name: string; data: string }[] = [];
-  
-        updatedFilters.search = state.filters;
-  
-        Object.entries(state.filters).map(([key, value]: [string, any]) => {
-          filterheaddata.push({ name: key, data: value.name });
-        });
-  
-        updatedFilters.data = filters.data.map(entry => {
-          const data_value = state.filters[entry.name];
-          return {
-            name: entry.name,
-            data: entry.data,
-            defaults: data_value !== undefined ? data_value : {}
-          };
-        });
-  
-        this.handleClear();
-        this.setState({ filterhead: filterheaddata, filters: updatedFilters }, this.fetchEntities);
-      }
-      
-      this.setState({ dtablemodal: null, hasRequest: false });
-    };
-  
-    const datatableSettingsCopy = {
-      ...datatableSettings,
-      filter: {
-        ...datatableSettings.filter,
-        data: this.state.filters.data
-      }
-    };
-  
-    const modalSettings: any = {
-      title: datatableSettingsCopy.filter?.title,
-      type: CommonState.NOTICE,
-      datalist: this.state.filters,
-      btnPosition: 'Continue',
-      btnNegative: 'Cancel'
-    };
-  
-    const dtablemodal: React.ReactNode = <DatatableModalHandler settings={modalSettings} onClose={handleClose} />;
-    this.setState({ dtablemodal });
+    
   };
   handleRetry=()=>{
     try{
@@ -895,7 +705,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
         <div className={`flex flex-col w-full ${this.props.className}`}>
               <div className='flex flex-col w-full mb-5'>
                   <header className="flex w-full flex-col md:flex-row justify-start md:justify-between items-center space-x-6">
-                    <div className="flex flex-col w-full ">
+                    <div className="flex flex-col w-full  mx-10 md:mx-0 ">
                       {
                         (this.state.settings.header !== undefined) ?
                           <div className="flex w-full flex-col">

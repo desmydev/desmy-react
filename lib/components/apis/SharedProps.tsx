@@ -116,6 +116,7 @@ export interface DesmySideBarItemData {
   label: string;
   has_permission?: boolean;
   items?: DesmySideBarItemData[]; // Nested items
+  onClick?:(data?:any)=>void
 }
 
 export interface DesmySideBarItemProps {
@@ -150,6 +151,7 @@ export interface DatePickerProps {
   displayFormat?: string;
   label:string;
   useRange?: boolean;
+  className?:string,
   onSelected?: (dates: { startDate?: string; endDate?: string }) => void;
 }
 
