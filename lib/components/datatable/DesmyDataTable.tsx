@@ -319,18 +319,28 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
   sortByColumn(column: string) {
     try {
       const custom_settings = this.state.custom_settings;
-      const order = (column === this.state.custom_settings.sorted_column) ? (this.state.custom_settings.order === 'asc') ? 'desc' : 'asc' : 'asc';
-      this.handleClear();
-      custom_settings['current_page'] = 1;
-      custom_settings['sorted_column'] = column;
-      custom_settings['order'] =  order as 'asc' | 'desc';
+      const { extra_handle } = this.props.settings;
+  
+      const columnExistsInExtraHandle = extra_handle && extra_handle?.some((item: any) => item.name === column);
 
-      
-      this.setState({ isLoading: true, error: {}, custom_settings }, this.fetchEntities);
+
+      const exceptionalColumns = this.state.exceptionalColumns.includes(column.toLowerCase());
+
+      if (!columnExistsInExtraHandle && !exceptionalColumns) {
+        const order = (column === this.state.custom_settings.sorted_column) ? (this.state.custom_settings.order === 'asc') ? 'desc' : 'asc' : 'asc';
+    
+        this.handleClear();
+        custom_settings['current_page'] = 1;
+        custom_settings['sorted_column'] = column;
+        custom_settings['order'] = order as 'asc' | 'desc';
+  
+        this.setState({ isLoading: true, error: {}, custom_settings }, this.fetchEntities);
+      }
     } catch (e) {
-      this.alert()
+      this.alert();
     }
   }
+  
 
   tableHeads = (): ReactNode[]  => {
     let icon;
@@ -342,10 +352,10 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     return this.props.settings.headers.map((column, index) => {
       const exceptionalColumns = this.state.exceptionalColumns.includes(column.toLowerCase());
       const columnClass = this.state.settings.table_data?.find((item) => item.name === column.toLowerCase() );
-      return <th key={index} onClick={() => this.sortByColumn(this.props.settings.columns[index])}  className={`py-2 sticky ${(exceptionalColumns) ? `w-4`:(columnClass) ? columnClass.class:``}  top-0 border-b border-gray-200 text-xs 2xl:text-sm bg-gray-100 dark:border-gray-700 dark:bg-darkPrimary`}>
+      return <th key={index} onClick={() => this.sortByColumn(column)}  className={`py-2 sticky ${(exceptionalColumns) ? `w-4`:(columnClass) ? columnClass.class:``}  top-0 border-b border-gray-200 text-xs 2xl:text-sm bg-gray-100 dark:border-gray-700 dark:bg-darkPrimary`}>
         <div className="flex dark:text-white sticky top-0 px-6 py-2 2xl:py-3 text-gray-600 font-poppinsSemiBold tracking-wider uppercase text-xs">
           <span>{this.columnHead(column)}</span>
-          <span>{this.state.custom_settings.sorted_column === this.props.settings.columns[index] && icon}</span>
+          <span>{this.state.custom_settings.sorted_column === column && icon}</span>
         </div>
       </th>
     });
@@ -556,17 +566,18 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     }
     
   }
-  handleHint=()=>{
-    try{
-      if(this.state.settings.header.hint){
-          return this.state.settings.header.hint +" | Loaded "+this.state.entities.meta.total
-      }else{
-        return (!this.state.error.state) ? "Loaded "+this.state.entities.meta.total+" data":"";
-      }
-    }catch(e){
-      return (!this.state.error.state) ? "Loaded 0 data":"";
+  handleHint = () => {
+    const { settings, error, entities } = this.state;
+    const hint = settings.header.hint;
+    const total = entities.meta.total;
+  
+    if (error.state) {
+      return "";
     }
+  
+    return hint ? `${hint} | Loaded ${total}` : `Loaded ${total} data`;
   }
+  
   handleOnSuccess=(index : number)=>{
     this.renderedSettings.splice(index, 1);
     this.dataCollection.splice(index, 1);
@@ -644,30 +655,24 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
         </button>
       );
     };
-  
-    // Add first page
+
     addButton(1);
-  
-    // Add left ellipsis if needed
     if (currentPage > 3) {
       paginationButtons.push(
         <span key="left-ellipsis" className="px-3 py-1 mx-1">...</span>
       );
     }
-  
-    // Add buttons around the current page
+
     for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
       addButton(i);
     }
-  
-    // Add right ellipsis if needed
+
     if (currentPage < totalPages - 2) {
       paginationButtons.push(
         <span key="right-ellipsis" className="px-3 py-1 mx-1">...</span>
       );
     }
   
-    // Add last page
     if (totalPages > 1) {
       addButton(totalPages);
     }

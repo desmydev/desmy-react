@@ -51,7 +51,7 @@ class DesmyVerticalStepper extends Component<DesmyVerticalStepperProps, DesmyVer
                 key={tab.id}
                 className={`text-xs rounded flex items-center p-3 cursor-pointer ${
                   activeTab === tab.id
-                    ? "bg-primary dark:bg-darkDialogBackground text-white"
+                    ? "bg-primary/100 dark:bg-darkDialogBackground text-white"
                     : "hover:bg-gray-200 dark:hover:bg-white dark:hover:text-black"
                 }`}
                 onClick={() => this.handleTabChange(tab.id)}

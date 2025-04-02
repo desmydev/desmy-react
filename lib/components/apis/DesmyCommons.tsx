@@ -50,7 +50,13 @@ class DesmyCommons {
         }
         return color;
     }
-
+    toSentenceCase = (str: string): string => {
+        return str
+          .toLowerCase()                       // Convert to lowercase
+          .replace(/_/g, ' ')                   // Replace underscores with spaces
+          .replace(/(?:^|\s)\S/g, (match) => match.toUpperCase()); // Capitalize first letter of each word
+      };
+      
     generateKey = (): number => {
         return Math.floor(Math.random() * 100) + 1;
     }

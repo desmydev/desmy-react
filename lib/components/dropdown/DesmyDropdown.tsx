@@ -466,9 +466,9 @@ class DesmyDropdown extends Component<Props, State> {
                                     (this.props.is_multiple !=undefined && this.props.is_multiple && this.state.selectedMultiple.length > 0) ? this.handleSelectMessage(this.state.selectedMultiple) 
                                     : (!Commons.isEmptyOrNull(this.state.selectedList.name)) ? 
                                     
-                                        <span className={`${(!Commons.isEmptyOrNull(this.state.selectedList.icon)) ? `flex`:``} w-full line-clamp-1 text-start justify-start`} title={`${this.handleEncrypt(this.state.selectedList.name)}`}>
+                                        <div className={`${(!Commons.isEmptyOrNull(this.state.selectedList.icon)) ? `flex`:``} w-full line-clamp-1 text-start justify-start`} title={`${this.handleEncrypt(this.state.selectedList.name)}`}>
                                             { (!Commons.isEmptyOrNull(this.state.selectedList.icon)) ? <img className="object-fill w-4 h-4 mr-2 items-center text-start justify-start" alt={`image`} src={`${this.handleEncrypt(this.state.selectedList.icon)}`} />:""}
-                                            <div className='w-full line-clamp-1 justify-start text-start text-s,'>{this.handleEncrypt(this.state.selectedList.name)}</div></span>
+                                            <div className='w-full line-clamp-1 justify-start text-start text-sm'>{this.handleEncrypt(this.state.selectedList.name)}</div></div>
                                     : <div className='w-full line-clamp-1'>{(this.props.all !== undefined && this.state.selectedAll) ? `${this.props.all}`: ""}</div>
                                 }
                                 </div>
@@ -554,16 +554,14 @@ class DesmyDropdown extends Component<Props, State> {
                                 this.state.datalist.filter(name => Commons.toString(this.handleEncrypt(name.name)).toLowerCase().includes(this.state.input.search.toLowerCase())).map((data,i)=>{
                                     const searchFound = this.handleSearch(this.state.selectedMultiple,data.id)  
                                     return <div key={`${i}`}
-                                        className={`flex text-sm py-2 px-4 font-normal cursor-pointer w-full whitespace-no-wrap hover:bg-gray-200  dark:hover:bg-white dark:hover:text-black transition duration-500 ease-in-out dark:text-white ${this.props.dropdownListClass} ${ (this.props.is_multiple != undefined && this.props.is_multiple) ? (searchFound) ? ' font-poppinsBold' :'font-normal' : (Commons.toString(this.state.selectedList.id) == Commons.toString( data.id)) ? ' font-poppinsBold' : 'font-normal'} `}
+                                        className={`flex text-sm py-2 px-4 font-normal text-black cursor-pointer w-full whitespace-no-wrap hover:bg-gray-200  dark:hover:bg-white dark:hover:text-black transition duration-500 ease-in-out dark:text-white ${this.props.dropdownListClass} ${ (this.props.is_multiple != undefined && this.props.is_multiple) ? (searchFound) ? ' font-poppinsBold' :'font-normal' : (Commons.toString(this.state.selectedList.id) == Commons.toString( data.id)) ? ' font-poppinsBold' : 'font-normal'} `}
                                         onClick={e => this.handleSelectedItem(e,data)}
                                         title={this.handleEncrypt(data.name)}
                                     >
-                                        <div className="mr-2">
-                                            {
-                                            (!Commons.isEmptyOrNull(data.icon)) ? <img className="object-fill w-4 h-4" alt={`image`} src={`${this.handleEncrypt(data.icon)}`} />:""
-                                            }
-                                        </div>
-                                        <div className={`flex w-full text-maxlines whitespace-no-wrap overflow-hidden h-6`}>  {this.handleEncrypt(data.name)}</div>
+                                        {
+                                            (!Commons.isEmptyOrNull(data.icon) && (<img className="object-fill w-4 h-4 flex-shrink-0 mr-2" alt={`image`} src={`${this.handleEncrypt(data.icon)}`} />))
+                                        }
+                                        <div className={`w-full line-clamp-1`}>  {this.handleEncrypt(data.name)}</div>
                                         
                                         {
                                         (searchFound) ?<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">

@@ -195,7 +195,7 @@ class UploadManager extends Component<UploadManagerProps, UploadManagerState> {
         <div className={`${error ? 'text-red-500' : 'text-gray-700 dark:text-white'} space-y-1`}>
           {currentIndex < totalDatalist && (
             <div className="flex w-full justify-between items-center text-xs">
-              <div>{currentUploadName}</div>
+              <div className='w-full  line-clamp-1'>{currentUploadName}</div>
               <div className="font-bold">({currentIndex + 1}/{totalDatalist})</div>
             </div>
           )}

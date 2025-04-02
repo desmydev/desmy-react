@@ -10,6 +10,7 @@ interface HomeProps {
         name: string;
         level: number;
     };
+    onOpen?: () => void;
     is_open?: boolean;
     optionList?: MenuItem[];
     onAction?: (action: any) => void;

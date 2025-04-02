@@ -9,11 +9,11 @@ interface YearsProps {
 }
 
 const Years: React.FC<YearsProps> = ({ currentYear, onSelectYear, minDate, maxDate }) => {
-  const startYear = currentYear - 10; // Show 10 years before
-  const endYear = currentYear + 10; // Show 10 years after
+  const startYear = currentYear - 60; // Show 10 years before
+  const endYear = currentYear + 60; // Show 10 years after
 
   return (
-    <div className="grid grid-cols-4 gap-2">
+    <div className="grid grid-cols-4 gap-2 h-80 pb-5 overflow-auto">
       {Array.from({ length: endYear - startYear + 1 }).map((_, index) => {
         const year = startYear + index;
         const yearDate = setYear(new Date(), year);
@@ -22,8 +22,8 @@ const Years: React.FC<YearsProps> = ({ currentYear, onSelectYear, minDate, maxDa
         return (
           <button
             key={year}
-            className={`p-2 rounded border ${
-              isDisabled ? "text-gray-400 line-through cursor-not-allowed" : "hover:bg-gray-200"
+            className={`p-2 rounded border dark:text-white dark:hover:text-white dark:border-darkPrimaryBorder dark:hover:bg-darkPrimaryBorder cursor-pointer ${
+              isDisabled ? "text-gray-400  line-through cursor-not-allowed" : "hover:bg-gray-200"
             }`}
             onClick={() => !isDisabled && onSelectYear(year)}
             disabled={isDisabled}

@@ -18,6 +18,7 @@ interface DesmyPopupMenuProps {
     className?: string;
     dropdownId?: string;
     children: React.ReactNode;
+    onOpen?: () => void;
     style?: React.CSSProperties;
 }
 interface DesmyPopupMenuState {
@@ -36,7 +37,7 @@ declare class DesmyPopupMenu extends Component<DesmyPopupMenuProps, DesmyPopupMe
     constructor(props: DesmyPopupMenuProps);
     fetch: () => Promise<void>;
     handleAlert: (_message?: string) => void;
-    toggleDropdown: () => void;
+    toggleDropdown: (event: React.MouseEvent) => void;
     handleClickOutside: (event: MouseEvent) => void;
     componentDidMount(): void;
     componentWillUnmount(): void;

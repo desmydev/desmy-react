@@ -4,7 +4,7 @@ import { DesmyClickOutsideListener } from '../clickoutsidelistener/DesmyClickOut
 import DesmyCommons from '../apis/DesmyCommons';
 
 interface DropdownItem {
-  id: number | null;
+  id: string | null;
   name: string | null;
   icon: string | null;
   hint: string | null;
@@ -131,7 +131,7 @@ class DesmySearchInput extends Component<Props, State> {
   alert=()=>""
   componentDidUpdate(prevProps: Props) {
     try{
-      if (prevProps.defaultValue !== this.props.defaultValue) {
+      if (prevProps.defaultValue !== this.props.defaultValue && !DesmyCommons.isEmptyOrNull(this.props.defaultValue) && DesmyCommons.isEmptyOrNull(this.state.selectedOptions)) {
         this.handleDefault();
       }
       if(this.props.request?.url != undefined){
@@ -154,8 +154,7 @@ class DesmySearchInput extends Component<Props, State> {
                 message: message
             };
             this.setState({ isLoading: false, error: updatedError });
-        } catch (e) {
-            console.error("Error occurred while handling error:", e);
+        } catch (_) {
         }
     };
     
@@ -186,14 +185,12 @@ class DesmySearchInput extends Component<Props, State> {
       const token = request?.token;
     
       try {
+        this.setState({isLoading:true})
         const headers: HeadersInit = token ? { Authorization: `${token}` } : {};
         const response = await fetch(`${url}?query=${searchText}&page=${page}`, { headers });
         const responsedata = await response.json();
     
-        console.log("API Response:", responsedata); // Debugging step
-    
         if (responsedata.success) {
-          // Check if responsedata.data and responsedata.data.meta exist
           if (!responsedata.data || !responsedata.data.meta) {
             throw new Error("Invalid response format: 'data' or 'meta' is missing.");
           }
@@ -207,11 +204,11 @@ class DesmySearchInput extends Component<Props, State> {
               hint: item.hint || null,
               data: item,
             }));
-    
             this.setState((prevState) => ({
               filteredOptions: page === 1 ? formattedData : [...prevState.filteredOptions, ...formattedData],
               hasMore: meta.current_page < meta.last_page,
               total: meta.total,
+              isLoading:false,
               error: { state: false, message: '' },
             }), this.handleDefault);
           } else {
@@ -220,63 +217,86 @@ class DesmySearchInput extends Component<Props, State> {
         } else {
           this.handleError(responsedata.message || 'Failed to fetch data.');
         }
-      } catch (error) {
-        console.error("Fetch error:", error);
+      } catch (_) {
         this.handleError('An error occurred while fetching data. Please check your connection.');
       }
     };
     
 
-  handleDefault = (): void => {
-    const { defaultValue } = this.props;
-    const { filteredOptions } = this.state;
-    let defaultSelected: DropdownItem[] = [];
-    let defaultSearchText = '';
-
-    if (!DesmyCommons.isEmptyOrNull(defaultValue) && !DesmyCommons.isEmptyOrNull(filteredOptions)) {
-      if (Array.isArray(defaultValue)) {
-        defaultSelected = defaultValue
-          .map((val) => {
-            if (typeof val === 'string') {
-              const matchedItem = filteredOptions.find((d) => d.name === val);
-              return (
-                matchedItem || {
-                  id: null,
-                  name: val,
-                  icon: null,
-                  hint: null,
-                  data: val,
-                }
-              );
-            }
-            return val;
-          })
-          .filter((item): item is DropdownItem => !!item);
-      } else if (typeof defaultValue === 'string') {
-        const matchedItem = filteredOptions.find((d) => d.name === defaultValue);
-        defaultSelected = [matchedItem || {id: null,name: defaultValue, icon: null, hint: null,data: defaultValue}]
-        defaultSearchText = defaultValue;
-      } else if (defaultValue) {
-        defaultSelected = [defaultValue];
-        defaultSearchText = defaultValue.name || '';
-      }
-      
-      if(!DesmyCommons.isEmptyOrNull(defaultSearchText)){
-        this.setState(
-        {
-          selectedOptions: defaultSelected,
-          searchText: defaultSearchText,
-        },
-        () => {
-          if (this.props.onSelect) {
-            this.props.onSelect(defaultSelected);
-          }
+    handleDefault = (): void => {
+      const { defaultValue } = this.props;
+      const { filteredOptions } = this.state;
+      let defaultSelected: DropdownItem[] = [];
+      let defaultSearchText = '';
+    
+      if (!DesmyCommons.isEmptyOrNull(defaultValue) && !DesmyCommons.isEmptyOrNull(filteredOptions)) {
+        if (Array.isArray(defaultValue)) {
+          console.log("defaultValue=",defaultValue," and filteredOptions=",filteredOptions)
+          defaultSelected = defaultValue.map((val) => {
+            
+              if (typeof val === 'string') {
+                const matchedItem = filteredOptions.find((d) => d.name === val || d.id === val);
+                return (
+                  Array.isArray(matchedItem) ? matchedItem[0] : matchedItem  || {
+                    id: null,
+                    name: val,
+                    icon: null,
+                    hint: null,
+                    data: val,
+                  }
+                );
+              }
+              return val;
+            })
+            .filter((item): item is DropdownItem => !!item);
+        } else if (typeof defaultValue === 'string') {
+          const matchedItem: any = filteredOptions.find((d) => d.name === defaultValue || d.id === defaultValue);
+          defaultSelected = [Array.isArray(matchedItem) ? matchedItem[0] : matchedItem || { id: null, name: defaultValue, icon: null, hint: null, data: defaultValue }];
+          defaultSearchText = defaultSelected?.[0]?.name ?? '';
+          
+        } else if (defaultValue) {
+          const matchedItem: any = filteredOptions.find((d) => d.name === defaultValue?.name || d.id === defaultValue?.id);
+          defaultSelected = [Array.isArray(matchedItem) ? matchedItem[0] :matchedItem || { id: defaultValue?.id, name: defaultValue?.name, icon: null, hint: null, data: defaultValue }];
+          defaultSearchText = defaultSelected?.[0]?.name ?? '';
         }
-      );
+        
+        if (!DesmyCommons.isEmptyOrNull(defaultSearchText)) {
+          if (
+            JSON.stringify(this.state.selectedOptions) !== JSON.stringify(defaultSelected) ||
+            this.state.searchText !== defaultSearchText
+          ) {
+            this.setState(
+              {
+                selectedOptions: defaultSelected,
+                searchText: defaultSearchText,
+              },
+              () => {
+                this.handleOnSelect(defaultSelected)
+                
+              }
+            );
+          }
+        }else if(!DesmyCommons.isEmptyOrNull(defaultSelected) && !DesmyCommons.isEmptyOrNull(defaultValue)){
+            this.setState({selectedOptions: defaultSelected},()=>{
+              this.handleOnSelect(defaultSelected)
+            })
+        }
       }
-      
+    };
+    handleOnSelect = (data: any | any[]) => {
+      if (Array.isArray(data)) {
+        const filteredData = data.filter((item: any) => item.id != null && item.name != null && item.id !== '' && item.name !== '');
+        
+        if (this.props.onSelect) {
+          this.props.onSelect(filteredData); 
+        }
+      } else {
+        if (this.props.onSelect) {
+          this.props.onSelect(data); 
+        }
+      }
     }
-  }
+    
   handleOpendropdown=()=>{
     if (this.props.disabled) return;
 
@@ -304,6 +324,9 @@ class DesmySearchInput extends Component<Props, State> {
     });
   }
     handleDropdownPopover = (): void => {
+      if(this.props.disabled){
+        return 
+      }
        this.handleOpendropdown()
        this.handleOpendropdown()
     };
@@ -334,13 +357,18 @@ class DesmySearchInput extends Component<Props, State> {
       const { is_multiple, onSelect } = this.props;
   
       if (is_multiple) {
-        this.setState((prevState) => {
-          const selectedOptions = [...prevState.selectedOptions, option];
-          const filteredOptions = prevState.filteredOptions.filter((item) => item.id !== option.id);
-  
-          onSelect(selectedOptions);
-          return { selectedOptions, filteredOptions,dropdownPopoverShow: filteredOptions.length > 0 };
-        });
+        this.setState(
+          (prevState) => {
+            const selectedOptions = [...prevState.selectedOptions, option];
+            const filteredOptions = prevState.filteredOptions.filter((item) => item.id !== option.id);
+        
+            return { selectedOptions, filteredOptions, dropdownPopoverShow: filteredOptions.length > 0 };
+          },
+          () => {
+            onSelect(this.state.selectedOptions); // Ensure onSelect is called after the state is updated
+          }
+        );
+        
       } else {
         this.setState({
           searchText: option.name || '',
@@ -369,8 +397,8 @@ class DesmySearchInput extends Component<Props, State> {
 
     render(){
       const { placeholder,is_multiple, label, disabled, autoFocus, maxLength, inputClassName } = this.props;
-      const { searchText, filteredOptions, selectedOptions, error, total } = this.state;
-    
+      const { searchText, filteredOptions, selectedOptions, error, total ,isLoading} = this.state;
+        
         return (
           <>
        
@@ -403,15 +431,15 @@ class DesmySearchInput extends Component<Props, State> {
                 <div className='w-full'>
                   <ul onScroll={this.handleScroll} className="max-h-96 overflow-y-auto z-10">
                     
-                    {error.state ? (
+                    {isLoading ? <div className='flex text-xs dark:text-white h-32 w-full justify-center items-center'>Loading...</div> :error.state ? (
                       <li className="p-2 text-red-500">
-                        <div className='flex w-full h-32 p-5 justify-center items-center text-center'>
+                        <div className='flex w-full text-xs h-32 p-5 justify-center items-center text-center'>
                           {error.message}
                         </div>
                       </li>
                     ) : filteredOptions.length > 0 ? (
                     filteredOptions.map((option) => (
-                      <li key={option.id || Math.random()}>
+                      <li key={Math.random()}>
                         <div onClick={() => this.handleOptionClick(option)} className="flex items-center text-sm py-4 px-4 font-normal cursor-pointer w-full whitespace-no-wrap hover:bg-gray-200 dark:hover:bg-white dark:hover:text-black transition duration-500 ease-in-out dark:text-white group">
                            {option.icon && <img src={option.icon} alt="icon" className="w-4 h-4 mr-2" />}
                            <div>
@@ -433,20 +461,22 @@ class DesmySearchInput extends Component<Props, State> {
           </div>
           {is_multiple && !this.state.dropdownPopoverShow && !DesmyCommons.isEmptyOrNull(selectedOptions) && (
             <div className="flex flex-wrap max-h-32 overflow-y-scroll mt-4 items-center gap-2">
-              {selectedOptions.map((option) => (
-                <div
-                  key={option.id || Math.random()}
-                  className="flex items-center bg-gray-200 dark:bg-darkPrimaryBorder dark:text-white dark:hover:bg-white dark:hover:text-black rounded-full px-3 py-2 text-xs transition duration-500 ease-in-out"
-                >
-                  {option.icon && <img src={option.icon} alt="icon" className="w-4 h-4 mr-2" />}
-                  {option.name}
-                  <button onClick={() => this.handleChipRemove(option)} className="ml-2">
-                    <svg viewBox="0 0 512 512" fill="currentColor" className="w-4 h-4 text-red-500">
-                      <path d="M289.94 256l95-95A24 24 0 00351 127l-95 95-95-95a24 24 0 00-34 34l95 95-95 95a24 24 0 1034 34l95-95 95 95a24 24 0 0034-34z" />
-                    </svg>
-                  </button>
-                </div>
-              ))}
+              {selectedOptions.map((option) => {
+                return option.id && (
+                  <div
+                key={Math.random()}
+                className="flex items-center bg-gray-200 dark:bg-darkPrimaryBorder dark:text-white dark:hover:bg-white dark:hover:text-black rounded-full px-3 py-2 text-xs transition duration-500 ease-in-out"
+              >
+                {option.icon && <img src={option.icon} alt="icon" className="w-4 h-4 mr-2" />}
+                {option.name}
+                <button onClick={() => this.handleChipRemove(option)} className="ml-2">
+                  <svg viewBox="0 0 512 512" fill="currentColor" className="w-4 h-4 text-red-500">
+                    <path d="M289.94 256l95-95A24 24 0 00351 127l-95 95-95-95a24 24 0 00-34 34l95 95-95 95a24 24 0 1034 34l95-95 95 95a24 24 0 0034-34z" />
+                  </svg>
+                </button>
+              </div>
+                )
+              })}
             </div>
           )}
         </div>

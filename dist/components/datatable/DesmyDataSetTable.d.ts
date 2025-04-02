@@ -95,11 +95,14 @@ declare class DesmyDataSetTable extends Component<DesmyDataSetTableProps, DesmyC
     private chunkSize;
     private currentIndex;
     private hasClear;
+    private hasFinished;
     private isLoading;
     private current_page;
     private search;
     constructor(props: DesmyDataSetTableProps);
     componentDidMount(): Promise<void>;
+    componentDidUpdate(prevProps: Readonly<DesmyDataSetTableProps>, prevState: Readonly<DesmyCustomState>, snapshot?: any): void;
+    handleUpdateDatalist: () => void;
     handleScroll(event: React.UIEvent<HTMLDivElement>): void;
     errors: (data: {
         state: boolean;

@@ -1,6 +1,6 @@
 import { default as React, Component } from 'react';
 interface DropdownItem {
-    id: number | null;
+    id: string | null;
     name: string | null;
     icon: string | null;
     hint: string | null;
@@ -80,6 +80,7 @@ declare class DesmySearchInput extends Component<Props, State> {
     handleScroll: (event: React.UIEvent<HTMLUListElement>) => void;
     fetchData: (searchText: string, page: number) => Promise<void>;
     handleDefault: () => void;
+    handleOnSelect: (data: any | any[]) => void;
     handleOpendropdown: () => void;
     handleDropdownPopover: () => void;
     handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;

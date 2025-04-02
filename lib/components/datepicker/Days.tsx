@@ -85,22 +85,19 @@ class Days extends Component<DaysProps, DaysState> {
     if (maxDate && isAfter(day, addDays(maxDate, 1))) return;
 
     if (!useRange) {
-        // If range is not used, just select the startDate
+      console.log("onSelect=",day)
         setStartDate(day);
         setEndDate(null);
     } else {
         const { startDate, endDate } = this.props.dateContext;
         if (!startDate || (startDate && endDate)) {
-            // If no start date is set or both start and end dates are selected, set new start date
             setStartDate(day);
             setEndDate(null);
         } else {
-            // If start date is set and no end date, set end date
             setEndDate(day);
         }
     }
 
-    // Call the onSelect callback if provided
     if (onSelect) {
         onSelect(day);
     }

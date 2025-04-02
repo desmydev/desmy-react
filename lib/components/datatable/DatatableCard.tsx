@@ -5,6 +5,7 @@ import Auth from '../apis/DesmyAuth';
 import { DesmyModalHandler } from '../dialog/DesmyAlertDialog';
 import { DesmyState as ModalState } from '../apis/DesmyState';
 import DesmyAuth from '../apis/DesmyAuth';
+import { DesmyToast } from '../toasify/DesmyToast';
 
 interface Settings {
   deleteinfo?: { id: string; name: string };
@@ -51,7 +52,7 @@ class DatatableCard extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      stateList: [ModalState.APPROVED, ModalState.ACTIVE,ModalState.CREATED,ModalState.ACCREDITED, ModalState.RUNNING,ModalState.ADMITTED,ModalState.QUALIFIED, ModalState.IN_PROGRESS],
+      stateList: [ModalState.APPROVED, ModalState.ACTIVE,ModalState.SUBMITTED,ModalState.CONFIRMED,ModalState.PUBLISHED,ModalState.CREATED,ModalState.ACCREDITED, ModalState.RUNNING,ModalState.ADMITTED,ModalState.QUALIFIED, ModalState.IN_PROGRESS,ModalState.ACCEPTED],
       imageExtensions: ['jpg', 'jpeg', 'png', 'svg'],
       imgColumnTypes: ['picture', 'photo'],
       title: '',
@@ -108,53 +109,49 @@ class DatatableCard extends Component<Props, State> {
   };
   
 
-  handleError = (message: string="") => {
+  handleError = (message: string = "") => {
     try {
-      let request = { ...this.state.request };
-      let error = { ...this.state.error };
-      let mgs = Commons.isEmptyOrNull(message) ? 'Error Message' : message;
-      request.delete = false;
-      error.state = true;
-      error.message = mgs;
-      error.type = 'Error';
-      error.color = 'red';
-      this.setState({ request });
-      this.props.error(error);
-      
+      this.setState({
+        request: { ...this.state.request, delete: false },
+        error: {
+          state: true,
+          message: Commons.isEmptyOrNull(message) ? 'Error Message' : message,
+          type: 'Error',
+          color: 'red'
+        }
+      });
+      this.props.error(this.state.error);
+      DesmyToast.error(message)
     } catch (e) {}
   };
-
+  
   handleDeleteRequest = () => {
     try {
-      let error = { ...this.state.error };
-      error.state = false;
+      const { settings, user, index, handleOnSuccess } = this.props;
+      const { deleteinfo } = settings;
+      const userId = user[deleteinfo?.id ?? ""];
       axios
-        .delete(`${this.props.settings.request_url}/${this.props.user[this.props.settings.deleteinfo?.id ?? ""]}/delete/`, {
+        .delete(`${settings.request_url}/${userId}/delete/`, {
           headers: {
-            'X-CSRFToken': `${Auth.getCookie('csrftoken')}`,
+            'X-CSRFToken': Auth.getCookie('csrftoken'),
             Authorization: `Token ${DesmyAuth.get(ModalState.ACCESS_TOKEN)}`,
           },
         })
-        .then(
-          (json) => {
-            if (json.data.success) {
-              error.state = false;
-              this.props.handleOnSuccess(this.props.index);
-            } else {
-              this.handleError(json.data.message);
-            }
-          },
-          (_error) => {
-            this.handleError();
+        .then((json) => {
+          if (json.data.success) {
+            this.props.handleOnSuccess(index);
+          } else {
+            this.handleError(json.data.message);
           }
-        )
-        .catch((_error) => {
+        })
+        .catch(() => {
           this.handleError();
         });
-    } catch (e) {
+    } catch {
       this.handleError();
     }
   };
+  
 
   handleEdit = () => {
     if (!this.state.request.delete) {
@@ -226,8 +223,8 @@ class DatatableCard extends Component<Props, State> {
         </div> 
         :
         (["status", "process_state"].includes(this.header.toLowerCase())) ? 
-            <div className={`w-auto text-[9px] rounded-full border ${(this.state.stateList.includes(this.status)) ? `bg-green-400 text-green-700 border-green-500` : `bg-red-400 text-red-700 border-red-500`} py-1 justify-center text-center items-center`}>
-                {this.status}
+            <div className={`w-16 text-[8px] px-1 line-clamp-1 rounded-full border ${(this.state.stateList.includes(this.state.title)) ? `bg-green-200 text-green-700 border-green-500 hover:bg-green-500 hover:text-white` : `bg-red-200 text-red-700 border-red-500 hover:bg-red-500 hover:text-white`} py-1 justify-center text-center items-center`}>
+                {String(this.state.title).toLowerCase()}
             </div> :
        (this.state.imgColumnTypes.includes(this.header?.toLowerCase() || '') || this.state.imageExtensions.includes((this.state.title?.toLowerCase().split('.').pop() || ''))) ?
             <div className={`w-8 ml-3`}>

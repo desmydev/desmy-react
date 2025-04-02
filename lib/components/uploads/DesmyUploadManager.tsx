@@ -1,4 +1,5 @@
 import React, { Component, RefObject } from 'react';
+import { createPortal } from 'react-dom';
 import UploadModal from './UploadProgress';
 import { DesmyRxServices } from '../apis/DesmyRxServices';
 import { DesmyState } from '../apis/DesmyState';
@@ -72,17 +73,23 @@ class DesmyUploadManager extends Component<HomeProps, HomeState> {
     const { className } = this.props;
 
     return (
-      <div
-        ref={this.modalContainerRef}
-        className={`fixed right-2 bottom-6 z-[10000] w-full md:w-[500px] lg:w-[500px] max-h-[90vh]  overflow-y-auto ${className}`}
-        style={{ scrollbarWidth: 'thin', scrollbarColor: '#888 #f5f5f5' }}
-      >
-        {modals.map((modal) => (
-          <div key={modal.id} className="w-full mb-4">
-            <UploadModal data={modal.data} onClose={() => this.closeModal(modal.id)} />
-          </div>
-        ))}
-      </div>
+      <>
+       {createPortal(
+          <div
+            ref={this.modalContainerRef}
+            className={`fixed right-2 bottom-6 z-[10000] w-full md:w-[500px]  lg:w-[500px] max-h-[90vh]  overflow-y-auto ${className}`}
+            style={{ scrollbarWidth: 'thin', scrollbarColor: '#888 #f5f5f5' }}
+          >
+            {modals.map((modal) => (
+              <div key={modal.id} className="w-full mb-4">
+                <UploadModal data={modal.data} onClose={() => this.closeModal(modal.id)} />
+              </div>
+            ))}
+          </div>,
+          document.getElementById('uploadmanager-root')!
+        )}
+      </>
+      
     );
   }
 }

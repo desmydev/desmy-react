@@ -54,6 +54,11 @@ class DatePickerProvider extends Component<DatePickerProps,DatePickerState> {
     if (parsedEndDate && parsedEndDate.getTime() !== endDate?.getTime()) {
       setEndDate(parsedEndDate);
     }
+    const newDateValue = {
+      startDate: startDate ? format(startDate, "yyyy-MM-dd") : "",
+      endDate: endDate ? format(endDate, "yyyy-MM-dd") : ""
+    };
+    this.saveDateValue = newDateValue;
   }
   handleClickOutside = (event: MouseEvent) => {
     if (this.parentContainerRef.current && !this.parentContainerRef.current.contains(event.target as Node)) {
@@ -102,8 +107,9 @@ handleDateSelection = () => {
   const { onSelected, useRange, defaultValue } = this.props;
   const { startDate, endDate } = this.context;
 
-  if (!DesmyCommons.isEmptyOrNull(defaultValue) && DesmyCommons.isEmptyOrNull(this.saveDateValue)){
+  if (!DesmyCommons.isEmptyOrNull(defaultValue) && DesmyCommons.isEmptyOrNull(this.saveDateValue?.startDate)){
     this.handleDefault()
+
   } else {
     const newDateValue = {
       startDate: startDate ? format(startDate, "yyyy-MM-dd") : "",
@@ -163,9 +169,8 @@ handleDatePickerPopover = () => {
 
 
   render() {
-    const { minDate, maxDate, label, useRange = true, onSelected } = this.props;
+    const { minDate, maxDate, label,disabled, useRange = true, onSelected } = this.props;
     const { isOpen, startDate, endDate, setIsOpen } = this.context;
-
     return (
         
       <div className="relative w-full" ref={this.parentContainerRef}>
@@ -173,6 +178,7 @@ handleDatePickerPopover = () => {
           <DesmyTextInput
             onFocus={this.handleInputFocus}
             label={label}
+            disabled={disabled}
             readOnly={true}
             defaultValue={
               useRange

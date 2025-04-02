@@ -197,7 +197,7 @@ class DesmySmartFormUpload extends Component<Props, State> {
 
     return (
       <>
-        <form className='flex flex-col w-full overflow-auto'>
+        <div className='flex flex-col w-full overflow-auto'>
           <div className='w-full font-poppinsRegular '>
             <div className='flex flex-col h-full w-full'>
               {this.state.data.data.length === 0 ? (
@@ -241,7 +241,7 @@ class DesmySmartFormUpload extends Component<Props, State> {
               )}
             </div>
           </div>
-        </form>
+        </div>
       </>
     );
   }

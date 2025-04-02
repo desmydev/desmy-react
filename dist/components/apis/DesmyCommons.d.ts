@@ -6,6 +6,7 @@ declare class DesmyCommons {
     makeUniqueid(length?: number): string;
     nameToText(value: string): string;
     getRandomColor(): string;
+    toSentenceCase: (str: string) => string;
     generateKey: () => number;
     concat(a: string, b: string): string;
     isObject(data: any): boolean;

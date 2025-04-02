@@ -85,6 +85,7 @@ class DesmyDataSetTable extends Component<DesmyDataSetTableProps, DesmyCustomSta
   private chunkSize: number = 6;
   private currentIndex: number = 0;
   private hasClear: boolean = false;
+  private hasFinished: boolean = false;
   private isLoading: boolean = false;
   private current_page: number = 0;
   private search: string = '';
@@ -163,7 +164,18 @@ class DesmyDataSetTable extends Component<DesmyDataSetTableProps, DesmyCustomSta
     this.chunkSize = this.props.settings.pagination?.per_page ?? 0;
     this.setState({ custom_settings, settings: this.props.settings }, () => { this.handleFetchEntities(); });
   }
-
+  componentDidUpdate(prevProps: Readonly<DesmyDataSetTableProps>, prevState: Readonly<DesmyCustomState>, snapshot?: any): void {
+    if(this.hasFinished){
+        setTimeout(this.handleUpdateDatalist,1000)
+    }
+  }
+  handleUpdateDatalist=()=>{
+    if (!this.props.settings.server_request?.enable) {
+        if(this.props.data.data?.length > this.dataCollection?.length)
+          this.hasClear=true
+          this.fetchEntities(); 
+    }
+  }
   handleScroll(event: React.UIEvent<HTMLDivElement>) {
     const div = event.currentTarget;
 
@@ -203,6 +215,7 @@ class DesmyDataSetTable extends Component<DesmyDataSetTableProps, DesmyCustomSta
         }
         this.dataCollection = this.dataCollection.concat(dataset.data)
         this.hasClear = false
+        this.hasFinished=true
         entities['meta'] = dataset.meta
         this.setState({ isLoading: false, entities }, this.initialChunck)
         return

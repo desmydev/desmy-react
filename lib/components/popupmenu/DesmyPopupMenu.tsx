@@ -25,6 +25,7 @@ interface DesmyPopupMenuProps {
   className?: string;
   dropdownId?: string;
   children: React.ReactNode;
+  onOpen?:()=>void
   style?: React.CSSProperties;  // New prop for inline styles
 }
 
@@ -75,7 +76,9 @@ class DesmyPopupMenu extends Component<DesmyPopupMenuProps, DesmyPopupMenuState>
     this.setState({ isLoading: false });
   }
 
-  toggleDropdown = () => {
+  toggleDropdown = (event: React.MouseEvent) => {
+    // Prevent the default context menu from appearing
+    event.preventDefault();
     this.setState((prevState) => ({ isOpen: !prevState.isOpen }));
   };
 
@@ -113,7 +116,8 @@ class DesmyPopupMenu extends Component<DesmyPopupMenuProps, DesmyPopupMenuState>
     return (
       <div className="relative inline-block text-left">
         <div>
-          <div onClick={this.toggleDropdown} ref={this.buttonRef} id="dropdownButton" className="cursor-pointer">
+          {/* Change to onContextMenu for right-click */}
+          <div onContextMenu={this.toggleDropdown} onClick={this.props.onOpen} ref={this.buttonRef} id="dropdownButton" className="cursor-pointer">
             {children}
           </div>
         </div>

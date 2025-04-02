@@ -126,8 +126,8 @@ class Toast extends Component<ToastProps> {
     const iconClass = type === "success" ? "text-green-500" : type === "error" ? "text-red-400 " : "text-blue-500";
 
     return (
-      <div id={id} onMouseLeave={this.handleMouseLeave} onMouseEnter={this.handleMouseEnter} className={`relative z-[99999999] w-full m-2 my-8 md:min-w-sm md:max-w-sm rounded-lg overflow-hidden ${toastClass} px-12 py-6 shadow-md animate-toast-slide-in transition-all duration-100 ease-out w-full`} style={{ pointerEvents: "auto" }}>
-        <button className="absolute top-0 right-0 p-4 text-white cursor-pointer" onClick={this.handleOnClose}>
+      <div id={id} onMouseLeave={this.handleMouseLeave} onMouseEnter={this.handleMouseEnter} className={`relative cursor-pointer z-[99999999] w-full m-2 my-8 min-w-sm md:max-w-sm rounded-lg overflow-hidden ${toastClass} px-12 py-6 shadow-md animate-toast-slide-in transition-all duration-100 ease-out`} style={{ pointerEvents: "auto" }}>
+        <button className="absolute top-0  right-0 p-4 text-white cursor-pointer" onClick={this.handleOnClose}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="h-5 w-4">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>

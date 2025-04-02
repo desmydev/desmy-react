@@ -157,6 +157,7 @@ export interface DatePickerProps {
     maxDate?: Date;
     displayFormat?: string;
     label: string;
+    disabled?: boolean;
     useRange?: boolean;
     className?: string;
     onSelected?: (dates: {
