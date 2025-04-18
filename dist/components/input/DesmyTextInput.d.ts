@@ -17,6 +17,8 @@ interface TextInputProps {
     rows?: number;
     label: string;
     theme?: string;
+    prefix?: string;
+    postfix?: string;
 }
 interface TextInputState {
     dropdownPopoverShow: boolean;

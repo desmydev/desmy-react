@@ -5,6 +5,7 @@ import Commons from '../apis/DesmyCommons';
 import Auth from '../apis/DesmyAuth'
 import { DesmyClickOutsideListener } from '../clickoutsidelistener/DesmyClickOutsideListener';
 import { DesmyDropdownItem } from '../apis/SharedProps';
+import DesmyCommons from '../apis/DesmyCommons';
 
 interface DropdownRequest {
     url: string;
@@ -31,6 +32,7 @@ interface Props {
     enableDecrypt?: boolean;
     onClear?: string;
     className?: string;
+    onRef?: (ref: DesmyDropdown | null) => void;
 }
 
 interface State {
@@ -92,7 +94,7 @@ class DesmyDropdown extends Component<Props, State> {
         };
     }
 
-    componentDidUpdate(_prevProps: Props, _prevState: State): void {
+    componentDidUpdate(prevProps: Props, _prevState: State): void {
         if (!Commons.isEmptyOrNull(this.props.defaultValue) && !((Commons.isEmptyOrNull(this.props.data)) || Commons.isEmptyOrNull(this.state.datalist))) {
             
             if(!this.state.hasLoaded)
@@ -107,13 +109,27 @@ class DesmyDropdown extends Component<Props, State> {
             }
                 
         }
+    
+        if (!Commons.isEmptyOrNull(prevProps.defaultValue) && Commons.isEmptyOrNull(this.props.defaultValue)) {
+            this.handleDefaultClear(); 
+        }
+    
         if (this.props.request !== undefined) {
           this.handleRequestData();
         }
     }
-    
+    handleDefaultClear=()=>{
+       const {defaultValue} =  this.props
+       const {datalist} = this.state
+       if(DesmyCommons.isEmptyOrNull(defaultValue) && !(DesmyCommons.isEmptyOrNull(datalist))){
+            this.handleSelectAll()
+       }
+       
+    }
     async componentDidMount(): Promise<void> {
-        
+        if(this.props.onRef){
+            this.props.onRef(this)
+        }
         document.addEventListener('mousedown', this.handleClickOutside);
         const request = this.props.request;
         if (request !== undefined) {
@@ -227,7 +243,11 @@ class DesmyDropdown extends Component<Props, State> {
                     })
                     
                 }
-            } 
+            }else{
+                
+                if(Commons.isEmptyOrNull(this.props.defaultValue))
+                    this.onClear()
+            }
         } catch (_e) {
             // Handle errors here
         }
@@ -500,7 +520,7 @@ class DesmyDropdown extends Component<Props, State> {
             <div ref={this.popoverDropdownRef}
                     className={
                         (this.state.dropdownPopoverShow ? "inline-block " : "hidden ") +
-                        "absolute border-[1px] z-[800] border-gray-200 dark:border-gray-700 text-base w-96 top-0 float-left py-2 bg-inherit  text-white list-none text-left rounded shadow-lg mt-1 "+
+                        "absolute border-[1px] z-[800] border-gray-200 dark:border-gray-700 text-base min-w-[400px] max-w-[600px] top-0 float-left py-2 bg-inherit  text-white list-none text-left rounded shadow-lg mt-1 "+
                         (this.props.dropdownClass)
                     }
                     style={{ minWidth: "12rem" }}
@@ -511,7 +531,7 @@ class DesmyDropdown extends Component<Props, State> {
                         <label htmlFor="floating_search" className="absolute text-sm text-black dark:text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-black dark:peer-focus:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Search here....</label>
                     </div>
                 </div>
-                <div className="flex w-full flex-col min-h-24 max-h-80 overflow-auto bg-inherit text-black dark:text-white">
+                <div className="flex w-full min-w-[400px] max-w-[600px] flex-col min-h-24 max-h-80 overflow-auto bg-inherit text-black dark:text-white">
                     
                     {
                     (this.state.error.state && this.props.request !==undefined) ? 

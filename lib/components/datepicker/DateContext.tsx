@@ -13,14 +13,30 @@ export interface DateContextProps {
   setCurrentMonthRight: (date: Date) => void;
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
-  useRange: boolean; // this is correctly part of the context
+  useRange: boolean;
+  startTime: string | null;
+  endTime: string | null;
+  setStartTime: (time: string | null) => void;
+  setEndTime: (time: string | null) => void;
 }
 
 // Create the context
 export const DateContext = createContext<DateContextProps | undefined>(undefined);
 
 // Define the DateProvider class component
-export class DateProvider extends Component<{ children: ReactNode; useRange?: boolean }, { startDate: Date | null; endDate: Date | null; isOpen: boolean; currentMonthLeft: Date; currentMonthRight: Date; useRange: boolean }> {
+export class DateProvider extends Component<
+  { children: ReactNode; useRange?: boolean },
+  {
+    startDate: Date | null;
+    endDate: Date | null;
+    isOpen: boolean;
+    currentMonthLeft: Date;
+    currentMonthRight: Date;
+    useRange: boolean;
+    startTime: string | null;
+    endTime: string | null;
+  }
+> {
   static defaultProps = {
     useRange: true,
   };
@@ -35,11 +51,13 @@ export class DateProvider extends Component<{ children: ReactNode; useRange?: bo
       isOpen: false,
       currentMonthLeft: startOfMonth(today),
       currentMonthRight: startOfMonth(addMonths(today, 1)),
-      useRange: props.useRange || true,
+      useRange: props.useRange ?? true,
+      startTime: null,
+      endTime: null,
     };
   }
 
-  // Setters for state
+  // Setters
   setStartDate = (startDate: Date | null) => {
     this.setState({ startDate });
   };
@@ -60,6 +78,14 @@ export class DateProvider extends Component<{ children: ReactNode; useRange?: bo
     this.setState({ isOpen: open });
   };
 
+  setStartTime = (time: string | null) => {
+    this.setState({ startTime: time });
+  };
+
+  setEndTime = (time: string | null) => {
+    this.setState({ endTime: time });
+  };
+
   render() {
     return (
       <DateContext.Provider
@@ -75,6 +101,10 @@ export class DateProvider extends Component<{ children: ReactNode; useRange?: bo
           isOpen: this.state.isOpen,
           setIsOpen: this.setIsOpen,
           useRange: this.state.useRange,
+          startTime: this.state.startTime,
+          endTime: this.state.endTime,
+          setStartTime: this.setStartTime,
+          setEndTime: this.setEndTime,
         }}
       >
         {this.props.children}
@@ -83,7 +113,7 @@ export class DateProvider extends Component<{ children: ReactNode; useRange?: bo
   }
 }
 
-// ✅ Export the custom hook for consuming the DateContext
+// ✅ Custom hook for consuming the DateContext
 export const useDateContext = (): DateContextProps => {
   const context = React.useContext(DateContext);
   if (!context) {

@@ -252,12 +252,12 @@ class DesmySearchInput extends Component<Props, State> {
         } else if (typeof defaultValue === 'string') {
           const matchedItem: any = filteredOptions.find((d) => d.name === defaultValue || d.id === defaultValue);
           defaultSelected = [Array.isArray(matchedItem) ? matchedItem[0] : matchedItem || { id: null, name: defaultValue, icon: null, hint: null, data: defaultValue }];
-          defaultSearchText = defaultSelected?.[0]?.name ?? '';
+          // defaultSearchText = defaultSelected?.[0]?.name ?? '';
           
         } else if (defaultValue) {
           const matchedItem: any = filteredOptions.find((d) => d.name === defaultValue?.name || d.id === defaultValue?.id);
           defaultSelected = [Array.isArray(matchedItem) ? matchedItem[0] :matchedItem || { id: defaultValue?.id, name: defaultValue?.name, icon: null, hint: null, data: defaultValue }];
-          defaultSearchText = defaultSelected?.[0]?.name ?? '';
+          // defaultSearchText = defaultSelected?.[0]?.name ?? '';
         }
         
         if (!DesmyCommons.isEmptyOrNull(defaultSearchText)) {
@@ -268,7 +268,7 @@ class DesmySearchInput extends Component<Props, State> {
             this.setState(
               {
                 selectedOptions: defaultSelected,
-                searchText: defaultSearchText,
+                // searchText: defaultSearchText,
               },
               () => {
                 this.handleOnSelect(defaultSelected)
@@ -423,12 +423,12 @@ class DesmySearchInput extends Component<Props, State> {
             </label>
             
             <div className='bg-inherit'>
-              <div ref={this.popoverDropdownRef} className={(this.state.dropdownPopoverShow ? "inline-block " : "hidden ") + "absolute  z-[800] border border-gray-300 dark:border-darkPrimaryBorder top-0 text-base w-96 float-left py-4 bg-inherit  list-none mt-1 "+(this.props.dropdownClass)} style={{ minWidth: "12rem" }}>
+              <div ref={this.popoverDropdownRef} className={(this.state.dropdownPopoverShow ? "inline-block " : "hidden ") + "absolute  z-[800] border border-gray-300 dark:border-darkPrimaryBorder top-0 text-base min-w-[400px] max-w-[600px] float-left py-4 bg-inherit  list-none mt-1 "+(this.props.dropdownClass)} style={{ minWidth: "12rem" }}>
                 <div className="flex w-full justify-between px-3 py-2.5 items-center border-b-[1px] border-gray-200 dark:border-darkPrimaryBorder">
-                  <div className='flex w-full text-sm justify-start uppercase font-bold items-center'>{(DesmyCommons.isEmptyOrNull(searchText))? `Recent Data`:`Search Found (${total})`}</div>
+                  <div className='flex w-full text-sm justify-start uppercase font-bold items-center'>{((!DesmyCommons.isEmptyOrNull(selectedOptions)) ?`Selected Data: ${selectedOptions.length}` : (DesmyCommons.isEmptyOrNull(searchText))? `Recent Data`:`Search Found (${total})`)}</div>
                   <div className='flex justify-end ml-3'><div className='border border-gray-300 dark:border-darkPrimaryBorder text-gray-500 hover:bg-gray-600 hover:text-white cursor-pointer text-xs px-2 py-1 uppercase rounded-full' onClick={this.closeDropdownPopover}>Done</div></div>
                 </div>
-                <div className='w-full'>
+                <div className='w-full min-w-[400px] max-w-[600px]'>
                   <ul onScroll={this.handleScroll} className="max-h-96 overflow-y-auto z-10">
                     
                     {isLoading ? <div className='flex text-xs dark:text-white h-32 w-full justify-center items-center'>Loading...</div> :error.state ? (

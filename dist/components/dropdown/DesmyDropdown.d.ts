@@ -24,6 +24,7 @@ interface Props {
     enableDecrypt?: boolean;
     onClear?: string;
     className?: string;
+    onRef?: (ref: DesmyDropdown | null) => void;
 }
 interface State {
     dropdownPopoverShow: boolean;
@@ -52,7 +53,8 @@ declare class DesmyDropdown extends Component<Props, State> {
     private searchRef;
     private divRef;
     constructor(props: Props);
-    componentDidUpdate(_prevProps: Props, _prevState: State): void;
+    componentDidUpdate(prevProps: Props, _prevState: State): void;
+    handleDefaultClear: () => void;
     componentDidMount(): Promise<void>;
     componentWillUnmount(): void;
     handleChange: (event: ChangeEvent<HTMLInputElement>) => void;

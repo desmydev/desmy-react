@@ -3,9 +3,10 @@ import { DateContextProps } from './DateContext';
 interface DaysProps {
     calendarIndex?: number;
     minDate?: Date;
-    useRange?: boolean;
     maxDate?: Date;
     defaultDate?: Date;
+    useRange?: boolean;
+    withTime?: boolean;
     onSelect?: (date: Date) => void;
     dateContext: DateContextProps;
 }

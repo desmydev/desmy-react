@@ -5,6 +5,7 @@ import { DateContextProps } from './DateContext';
 interface DatePickerState {
     wasOpenBeforeBlur: boolean;
     isFocusTriggered: boolean;
+    isMobile: boolean;
 }
 declare class DatePickerProvider extends Component<DatePickerProps, DatePickerState> {
     static contextType: React.Context<DateContextProps | undefined>;
@@ -16,18 +17,23 @@ declare class DatePickerProvider extends Component<DatePickerProps, DatePickerSt
     popperInstance: ReturnType<typeof createPopper> | null;
     private saveDateValue;
     constructor(props: DatePickerProps);
-    componentDidMount(): Promise<void>;
+    componentDidMount(): void;
+    componentWillUnmount(): void;
+    componentDidUpdate(): void;
+    handleResize: () => void;
     handleDefault: () => void;
+    parseDate(date?: string | Date | null): Date | null;
+    extractTime(date?: string | Date | null): string | null;
+    toISOStringString(value: string | Date | undefined | null): string;
     handleClickOutside: (event: MouseEvent) => void;
     closeDatePickerPopover: () => void;
-    componentWillUnmount(): void;
-    componentDidUpdate(prevProps: DatePickerProps): void;
-    parseDate(date?: Date | string | null): Date | null;
-    formatDate(date?: Date | null, formatType?: string): string;
     handleInputFocus: () => void;
     openDatePickerPopover: () => void;
-    handleDateSelection: () => void;
     handleDatePickerPopover: () => void;
+    private convertTo24Hour;
+    formatWithTime: (date: Date | null, time: string | null) => string;
+    handleDateSelection: () => void;
+    handleClose: () => void;
     handleVisibilityChange: () => void;
     render(): import("react/jsx-runtime").JSX.Element;
 }

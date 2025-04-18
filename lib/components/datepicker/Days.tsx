@@ -26,11 +26,12 @@ import Years from "./Years";
 interface DaysProps {
   calendarIndex?: number;
   minDate?: Date;
-  useRange?:boolean
   maxDate?: Date;
   defaultDate?: Date;
+  useRange?: boolean;
+  withTime?: boolean; // ✅ Add this
   onSelect?: (date: Date) => void;
-  dateContext: DateContextProps; // Access the context directly via props
+  dateContext: DateContextProps;
 }
 
 interface DaysState {
@@ -59,21 +60,40 @@ class Days extends Component<DaysProps, DaysState> {
   }
 
   componentDidUpdate(prevProps: DaysProps) {
-    const { startDate, endDate, setStartDate, setEndDate, setIsOpen } = this.props.dateContext;
-    const {useRange} = this.props
+    const {
+      startDate,
+      endDate,
+      setStartDate,
+      setEndDate,
+      setIsOpen,
+    } = this.props.dateContext;
+  
+    const { useRange, withTime } = this.props;
+  
     if (!useRange && startDate !== prevProps.dateContext.startDate) {
-      setIsOpen(false);
+      if (!withTime) {
+        setIsOpen(false);
+      }
     }
-
-    if (useRange && startDate && endDate && (startDate !== prevProps.dateContext.startDate || endDate !== prevProps.dateContext.endDate)) {
-      setIsOpen(false);
+  
+    if (
+      useRange &&
+      startDate &&
+      endDate &&
+      (startDate !== prevProps.dateContext.startDate || endDate !== prevProps.dateContext.endDate)
+    ) {
+      if (!withTime) {
+        setIsOpen(false);
+      }
     }
-
+  
+    // Auto fix inverted dates
     if (useRange && startDate && endDate && isAfter(startDate, endDate)) {
       setStartDate(endDate);
       setEndDate(startDate);
     }
   }
+  
 
   handleSelectDay = (event: React.MouseEvent<HTMLButtonElement>, day: Date) => {
     event.preventDefault();
@@ -85,7 +105,6 @@ class Days extends Component<DaysProps, DaysState> {
     if (maxDate && isAfter(day, addDays(maxDate, 1))) return;
 
     if (!useRange) {
-      console.log("onSelect=",day)
         setStartDate(day);
         setEndDate(null);
     } else {

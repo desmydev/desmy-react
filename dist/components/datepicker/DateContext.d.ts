@@ -11,6 +11,10 @@ export interface DateContextProps {
     isOpen: boolean;
     setIsOpen: (open: boolean) => void;
     useRange: boolean;
+    startTime: string | null;
+    endTime: string | null;
+    setStartTime: (time: string | null) => void;
+    setEndTime: (time: string | null) => void;
 }
 export declare const DateContext: React.Context<DateContextProps | undefined>;
 export declare class DateProvider extends Component<{
@@ -23,6 +27,8 @@ export declare class DateProvider extends Component<{
     currentMonthLeft: Date;
     currentMonthRight: Date;
     useRange: boolean;
+    startTime: string | null;
+    endTime: string | null;
 }> {
     static defaultProps: {
         useRange: boolean;
@@ -36,6 +42,8 @@ export declare class DateProvider extends Component<{
     setCurrentMonthLeft: (date: Date) => void;
     setCurrentMonthRight: (date: Date) => void;
     setIsOpen: (open: boolean) => void;
+    setStartTime: (time: string | null) => void;
+    setEndTime: (time: string | null) => void;
     render(): import("react/jsx-runtime").JSX.Element;
 }
 export declare const useDateContext: () => DateContextProps;

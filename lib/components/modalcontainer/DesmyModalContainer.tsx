@@ -23,6 +23,7 @@ interface ModalContainerProps {
   onSuccess?: (message?: string) => void;
   onError?: (message?: string) => void;
   onClose: () => void;
+  close?:boolean
   className?: string;
   backdropClass?: string;
   containerClassName?: string;
@@ -36,12 +37,14 @@ interface ModalContainerState {
 }
 
 class DesmyModalContainer extends Component<ModalContainerProps, ModalContainerState> {
-  private isMounted: boolean; // Added mounted flag
+  private isMounted: boolean;
+  private isClose: boolean; // Added mounted flag
   private abortController?: AbortController; // AbortController for axios requests
 
   constructor(props: ModalContainerProps) {
     super(props);
-    this.isMounted = false; // Initialize mounted flag
+    this.isMounted = false; 
+    this.isClose = this.props.close ?? true;
     this.state = {
       isOpen: false,
       hasRequest: false,
@@ -56,6 +59,7 @@ class DesmyModalContainer extends Component<ModalContainerProps, ModalContainerS
 
   componentDidMount() {
     this.isMounted = true;
+    this.isClose = this.props.close ?? true
   }
 
   componentWillUnmount() {
@@ -64,14 +68,19 @@ class DesmyModalContainer extends Component<ModalContainerProps, ModalContainerS
   }
 
   handleClose = () => {
-    if (this.isMounted) {
-      this.setState({ isOpen: false });
-    }
-    setTimeout(() => {
+    if(this.isClose){
       if (this.isMounted) {
-        this.props.onClose();
+        this.setState({ isOpen: false });
       }
-    }, 300);
+      setTimeout(() => {
+        if (this.isMounted) {
+          this.props.onClose();
+        }
+      }, 300);
+    }else{
+      this.props.onClose();
+    }
+      
   };
 
   handleDelete = () => {

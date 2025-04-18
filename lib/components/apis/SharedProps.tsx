@@ -154,6 +154,7 @@ export interface DatePickerProps {
   useRange?: boolean;
   className?:string,
   onSelected?: (dates: { startDate?: string; endDate?: string }) => void;
+  withTime?: boolean;
 }
 
 export interface DesmySmartFormUploadReadTable{

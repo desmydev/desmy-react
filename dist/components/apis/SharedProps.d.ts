@@ -164,6 +164,7 @@ export interface DatePickerProps {
         startDate?: string;
         endDate?: string;
     }) => void;
+    withTime?: boolean;
 }
 export interface DesmySmartFormUploadReadTable {
     sheet_name: string;

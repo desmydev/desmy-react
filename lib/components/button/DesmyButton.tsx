@@ -30,7 +30,7 @@ class DesmyButton extends React.Component<DesmyButtonProps> {
                     <div className="flex items-center">
                         <svg
                             role="status"
-                            className="inline mr-3 w-4 h-4 text-white animate-spin"
+                            className="inline mr-3 w-5 h-5 text-white animate-spin"
                             viewBox="0 0 100 101"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"

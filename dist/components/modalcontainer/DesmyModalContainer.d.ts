@@ -12,6 +12,7 @@ interface ModalContainerProps {
     onSuccess?: (message?: string) => void;
     onError?: (message?: string) => void;
     onClose: () => void;
+    close?: boolean;
     className?: string;
     backdropClass?: string;
     containerClassName?: string;
@@ -24,6 +25,7 @@ interface ModalContainerState {
 }
 declare class DesmyModalContainer extends Component<ModalContainerProps, ModalContainerState> {
     private isMounted;
+    private isClose;
     private abortController?;
     constructor(props: ModalContainerProps);
     componentDidMount(): void;

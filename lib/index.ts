@@ -44,6 +44,7 @@ import  {DesmyPassportPicker} from './components/filepicker/DesmyPassportPicker'
 import  { DesmyDatePicker } from "./components/datepicker/DesmyDatePicker";
 import  {DesmyVerticalStepper} from './components/stepper/DesmyVerticalStepper'
 import  {DesmyLazyImage} from './components/image/DesmyLazyImage'
+import  {DesmyTimeAgo} from './components/apis/DesmyTimeAgo'
 import './index.css';
 export  {
             DesmyThemeProvider,DesmyThemeContext,
@@ -88,7 +89,9 @@ export  {
             DesmyLazyImage,
             DesmyAxiosService,
             DesmySuspenseWrapper,
-            DesmyWithRouter,DesmyRenderRoutes,DesmyDocumentPicker
+            DesmyWithRouter,DesmyRenderRoutes,DesmyDocumentPicker,
+            DesmyTimeAgo
+            
         }
 
         export type { DataSetTableSettingsProps,DesmyDataTableSettingsProps,DesmyDropdownItem,DesmyCustomDataTableProps,DesmySideBarItemData ,
