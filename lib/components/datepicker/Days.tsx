@@ -29,7 +29,7 @@ interface DaysProps {
   maxDate?: Date;
   defaultDate?: Date;
   useRange?: boolean;
-  withTime?: boolean; // ✅ Add this
+  withTime?: boolean;
   onSelect?: (date: Date) => void;
   dateContext: DateContextProps;
 }

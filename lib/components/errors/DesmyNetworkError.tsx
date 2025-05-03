@@ -32,7 +32,8 @@ class DesmyNetworkError extends Component<NetworkErrorProps, NetworkErrorState> 
             :null
           }
           
-          <div className="text-sm text-red-600 dark:text-white font-poppinsRegular">
+          <div className="text-sm text-red-600 
+          font-poppinsRegular">
             {!DesmyCommons.isEmptyOrNull(this.props.errormessage) ? this.props.errormessage : DesmyState.ERROR_MESSAGE}
           </div>
           <div className='flex w-full justify-center items-center space-x-4'>

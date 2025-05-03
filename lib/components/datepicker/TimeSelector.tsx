@@ -7,16 +7,27 @@ interface TimeSelectorProps {
 }
 
 export default class TimeSelector extends React.Component<TimeSelectorProps> {
-  parseTime(value: string) {
-    const [time, meridian = "AM"] = value.split(" ");
-    const [h, m] = time.split(":").map(Number);
-    return { h, m, meridian };
-  }
+ parseTime(value: string) {
+        if (!value || !value.includes(":")) {
+          return { h: 12, m: 0, meridian: "AM" };
+        }
+      
+        const [timePart, meridian = "AM"] = value.trim().split(" ");
+        const [hStr, mStr] = timePart.split(":");
+        const h = parseInt(hStr, 10);
+        const m = parseInt(mStr, 10);
+      
+        return {
+          h: isNaN(h) ? 12 : h,
+          m: isNaN(m) ? 0 : m,
+          meridian: meridian.toUpperCase() === "PM" ? "PM" : "AM"
+        };
+ }
 
-  formatTime(h: number, m: number, meridian: string) {
-    const hh = String(h).padStart(2, "0");
-    const mm = String(m).padStart(2, "0");
-    return `${hh}:${mm} ${meridian}`;
+ formatTime(h: number, m: number, meridian: string) {
+    const hh = String(h || 12).padStart(2, "0");
+    const mm = String(m || 0).padStart(2, "0");
+    return `${hh}:${mm} ${meridian || "AM"}`;
   }
 
   updateTime(part: "h" | "m" | "meridian", direction: "up" | "down") {

@@ -66,9 +66,17 @@ class DatePickerProvider extends Component<DatePickerProps, DatePickerState> {
     const { defaultValue, withTime, useRange } = this.props;
     const { setStartDate, setEndDate, setStartTime, setEndTime } = this.context;
   
-    const rawStart = defaultValue?.startDate?.toString() || String(defaultValue) || "";
-    const rawEnd = defaultValue?.endDate?.toString() || String(defaultValue) ||"";
-    console.log("rawStart=",rawStart," and rawEnd=",rawEnd)
+    const normalizeDateInput = (input: any): string => {
+      if (!input) return "";
+      if (typeof input === "string") return input;
+      if (input instanceof Date) return input.toISOString();
+      if (typeof input === "object" && "toISOString" in input) return input.toISOString();
+      return "";
+    };
+  
+    const rawStart = normalizeDateInput(defaultValue?.startDate || defaultValue);
+    const rawEnd = normalizeDateInput(defaultValue?.endDate || defaultValue);
+  
     const splitRange = useRange && rawStart.includes(" - ")
       ? rawStart.split(" - ")
       : [rawStart, rawEnd];
@@ -76,11 +84,24 @@ class DatePickerProvider extends Component<DatePickerProps, DatePickerState> {
     const parseDateTime = (input: string): { date: Date | null; time: string | null } => {
       if (!input) return { date: null, time: null };
   
-      const [datePart, timePart] = input.trim().split(" ");
+      if (input.includes("T")) {
+        const dateObj = parseISO(input);
+        const timeMatch = input.match(/T(\d{2}:\d{2})/);
+        return {
+          date: isValid(dateObj) ? dateObj : null,
+          time: timeMatch ? timeMatch[1] : null,
+        };
+      }
+  
+      const parts = input.trim().split(" ");
+      const datePart = parts[0];
+      const timePart = parts.length > 1 ? parts[1] : null;
+  
       const parsedDate = isValid(parseISO(datePart)) ? parseISO(datePart) : null;
+  
       return {
         date: parsedDate,
-        time: timePart || null,
+        time: typeof timePart === "string" ? timePart : null,
       };
     };
   
@@ -96,7 +117,13 @@ class DatePickerProvider extends Component<DatePickerProps, DatePickerState> {
     const formatWithTime = (date: Date | null, time: string | null): string => {
       if (!date) return "";
       const dateStr = format(date, "yyyy-MM-dd");
-      return withTime && time ? `${dateStr} ${this.convertTo24Hour(time)}` : dateStr;
+      if (withTime && time) {
+        const cleanTime = time.includes("AM") || time.includes("PM")
+          ? this.convertTo24Hour(time)
+          : time;
+        return `${dateStr} ${cleanTime}`;
+      }
+      return dateStr;
     };
   
     this.saveDateValue = {
@@ -104,6 +131,7 @@ class DatePickerProvider extends Component<DatePickerProps, DatePickerState> {
       endDate: formatWithTime(endDate, endTime),
     };
   };
+  
   
 
   parseDate(date?: string | Date | null): Date | null {
@@ -117,7 +145,15 @@ class DatePickerProvider extends Component<DatePickerProps, DatePickerState> {
 
   extractTime(date?: string | Date | null): string | null {
     if (!date) return null;
-    const iso = typeof date === "string" ? date : date.toISOString();
+  
+    let iso = "";
+  
+    if (typeof date === "string") {
+      iso = date;
+    } else if (date instanceof Date) {
+      iso = date.toISOString();
+    }
+  
     const timeMatch = iso.match(/T(\d{2}:\d{2})/);
     return timeMatch ? timeMatch[1] : null;
   }
@@ -175,69 +211,71 @@ class DatePickerProvider extends Component<DatePickerProps, DatePickerState> {
       });
     }
   };
-  private convertTo24Hour(time12h: string): string {
-    if (!time12h) return "00:00";
-    const [time, modifier] = time12h.split(" ");
-    let [hours, minutes] = time.split(":").map(Number);
+  convertTo24Hour(time: string): string {
+    if (!time) return "";
   
-    if (modifier === "PM" && hours < 12) hours += 12;
-    if (modifier === "AM" && hours === 12) hours = 0;
+    const [timePart, modifier] = time.split(" ");
+    if (!timePart || !modifier) return time;
   
-    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+    let [hours, minutes] = timePart.split(":").map(Number);
+  
+    if (modifier.toLowerCase() === "pm" && hours < 12) hours += 12;
+    if (modifier.toLowerCase() === "am" && hours === 12) hours = 0;
+  
+    return `${String(hours).padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
   }
   formatWithTime = (date: Date | null, time: string | null) => {
     const {withTime} = this.props
     if (!date) return "";
     const time24 = withTime && time ? this.convertTo24Hour(time) : "";
-    console.log("this.convertTo24Hour=",this.convertTo24Hour(time || "")," withTime=",withTime," time=",time)
     return time24 ? `${format(date, "yyyy-MM-dd")} ${time24}` : format(date, "yyyy-MM-dd");
   };
 
   handleDateSelection = () => {
     const { onSelected, useRange, defaultValue, withTime } = this.props;
-    const { startDate, endDate, startTime, endTime } = this.context;
+    const { startDate, endDate, startTime, endTime, setIsOpen } = this.context;
+  
+    const appendTime = (dateStr: string, timeStr: string | null): string => {
+      if (!withTime || !timeStr) return dateStr;
+      return `${dateStr} ${this.convertTo24Hour(timeStr)}`;
+    };
+  
+    const hasInitialDefault = !DesmyCommons.isEmptyOrNull(defaultValue);
+    const saveValueEmpty = DesmyCommons.isEmptyOrNull(this.saveDateValue?.startDate);
+  
+    if (hasInitialDefault && saveValueEmpty) {
+      this.handleDefault();
+      return;
+    }
+  
+    const newStartDate = startDate ? appendTime(format(startDate, "yyyy-MM-dd"), startTime) : "";
+    const newEndDate = endDate ? appendTime(format(endDate, "yyyy-MM-dd"), endTime) : "";
   
     if (
-      !DesmyCommons.isEmptyOrNull(defaultValue) &&
-      DesmyCommons.isEmptyOrNull(this.saveDateValue?.startDate)
+      newStartDate === this.saveDateValue?.startDate &&
+      newEndDate === this.saveDateValue?.endDate
     ) {
-
-      this.handleDefault();
-    } else {
-      const appendTime = (dateStr: string, timeStr: string | null) => {
-        if (!withTime || !timeStr) return dateStr;
-        return `${dateStr} ${this.convertTo24Hour(timeStr)}`;
-      };
+      return;
+    }
+    // Save and notify
+    this.saveDateValue = {
+      startDate: newStartDate,
+      endDate: newEndDate,
+    };
   
-      const newDateValue = {
-        startDate: startDate ? appendTime(format(startDate, "yyyy-MM-dd"), startTime) : "",
-        endDate: endDate ? appendTime(format(endDate, "yyyy-MM-dd"), endTime) : "",
-      };
+    if (typeof onSelected === "function") {
+      onSelected({
+        startDate: newStartDate,
+        endDate: newEndDate,
+      });
   
-      if (
-        newDateValue.startDate === this.saveDateValue.startDate &&
-        newDateValue.endDate === this.saveDateValue.endDate
-      ) {
-        return;
-      }
-  
-      this.saveDateValue = newDateValue;
-  
-      if (onSelected) {
-        onSelected({
-          startDate: newDateValue.startDate,
-          endDate: newDateValue.endDate,
-        });
-  
-        if (!useRange && !withTime) {
-          this.context.setIsOpen(false);
-        }
+      // Auto-close picker if range not used and no time picker
+      if (!useRange && !withTime) {
+        setIsOpen(false);
       }
     }
   };
   
-  
-
   handleClose = () => {
     this.context.setIsOpen(false);
     this.props.onSelected?.({});
@@ -264,11 +302,16 @@ class DatePickerProvider extends Component<DatePickerProps, DatePickerState> {
       const { startTime, endTime } = this.context;
       const formatDateTime = (date: Date | null, time: string | null) => {
         if (!date) return "";
+      
         const dateStr = format(date, dateFormat);
-        return withTime && time ? `${dateStr} ${time}` : dateStr;
+        const timeStr = typeof time === "string" ? time : "";
+      
+        return withTime && timeStr ? `${dateStr} ${timeStr}` : dateStr;
       };
       const start = formatDateTime(startDate, startTime);
       const end = formatDateTime(endDate, endTime);
+
+    
       return useRange ? (start && end ? `${start} - ${end}` : "") : start;
     };
 
@@ -288,7 +331,7 @@ class DatePickerProvider extends Component<DatePickerProps, DatePickerState> {
         {isOpen && (
           <div
             ref={this.popoverDropdownRef}
-            className={`${isMobile ? "fixed top-0 left-0 right-0 bottom-0 flex flex-col bg-white dark:bg-darkDialogBackground z-50 p-4 overflow-auto" : "absolute"} ${
+            className={`${isMobile ? "fixed top-0 left-0 right-0 bottom-0 flex flex-col bg-white dark:bg-darkDialogBackground z-[9999999] p-4 overflow-auto" : "absolute"} ${
               isOpen ? "flex opacity-100" : "hidden opacity-0"
             } bg-white dark:bg-darkDialogBackground dark:border-darkPrimaryBorder dark:text-white border-[2px] shadow-lg border-gray-100 rounded p-4 z-50 transition-opacity duration-[2000ms] ${
               useRange ? "flex gap-4" : ""

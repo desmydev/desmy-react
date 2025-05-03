@@ -30,7 +30,7 @@ declare class DatePickerProvider extends Component<DatePickerProps, DatePickerSt
     handleInputFocus: () => void;
     openDatePickerPopover: () => void;
     handleDatePickerPopover: () => void;
-    private convertTo24Hour;
+    convertTo24Hour(time: string): string;
     formatWithTime: (date: Date | null, time: string | null) => string;
     handleDateSelection: () => void;
     handleClose: () => void;

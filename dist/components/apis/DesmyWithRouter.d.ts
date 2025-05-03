@@ -27,7 +27,7 @@ declare const DesmyWithRouter: <P extends object>(WrappedComponent: React.Compon
         componentDidMount?(): void;
         shouldComponentUpdate?(nextProps: Readonly<P & {
             path?: string;
-        }>, nextState: Readonly<{}>): boolean;
+        }>, nextState: Readonly<{}>, nextContext: any): boolean;
         componentWillUnmount?(): void;
         componentDidCatch?(error: Error, errorInfo: React.ErrorInfo): void;
         getSnapshotBeforeUpdate?(prevProps: Readonly<P & {
@@ -40,16 +40,16 @@ declare const DesmyWithRouter: <P extends object>(WrappedComponent: React.Compon
         UNSAFE_componentWillMount?(): void;
         componentWillReceiveProps?(nextProps: Readonly<P & {
             path?: string;
-        }>): void;
+        }>, nextContext: any): void;
         UNSAFE_componentWillReceiveProps?(nextProps: Readonly<P & {
             path?: string;
-        }>): void;
+        }>, nextContext: any): void;
         componentWillUpdate?(nextProps: Readonly<P & {
             path?: string;
-        }>, nextState: Readonly<{}>): void;
+        }>, nextState: Readonly<{}>, nextContext: any): void;
         UNSAFE_componentWillUpdate?(nextProps: Readonly<P & {
             path?: string;
-        }>, nextState: Readonly<{}>): void;
+        }>, nextState: Readonly<{}>, nextContext: any): void;
     };
     contextType?: React.Context<any> | undefined;
     propTypes?: any;

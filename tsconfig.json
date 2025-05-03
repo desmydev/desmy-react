@@ -23,6 +23,7 @@
     "baseUrl": "./",
     "paths": {
       "types": ["lib/components/datepicker/types"],
+      "react-pdf/dist/esm/entry.vite": ["./lib/react-pdf-entry-vite"]
     },
     /* The "typeRoots" configuration specifies the locations where 
        TypeScript looks for type definitions (.d.ts files) to 
