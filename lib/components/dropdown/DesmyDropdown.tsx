@@ -55,6 +55,9 @@ interface State {
         state: boolean;
         message: string;
     };
+    isMobileView: boolean;
+    isModal:boolean;
+    showMobileModal: boolean;
 }
 
 class DesmyDropdown extends Component<Props, State> {
@@ -90,7 +93,10 @@ class DesmyDropdown extends Component<Props, State> {
             error: {
                 state: false,
                 message: ""
-            }
+            },
+            isMobileView: window.innerWidth <= 768 ||  window.innerHeight < 1000,
+            showMobileModal: window.innerWidth <= 768 ||  window.innerHeight < 1000,
+            isModal: window.innerHeight < 1000
         };
     }
 
@@ -126,11 +132,23 @@ class DesmyDropdown extends Component<Props, State> {
        }
        
     }
+    updateViewMode = () => {
+        this.closeDropdownPopover()
+        this.setState({ isMobileView: window.innerWidth <= 768 ||  window.innerHeight < 1000,isModal: window.innerHeight < 1000  },()=>{
+            if (!this.state.isMobileView && this.state.dropdownPopoverShow) {
+                this.handleDropdownOpen()
+            }
+        });
+      };
+    
+    
     async componentDidMount(): Promise<void> {
         if(this.props.onRef){
             this.props.onRef(this)
         }
         document.addEventListener('mousedown', this.handleClickOutside);
+        window.addEventListener('resize', this.updateViewMode);
+        this.updateViewMode();
         const request = this.props.request;
         if (request !== undefined) {
             if (!Commons.isEmptyOrNull(request.url)) {
@@ -153,6 +171,7 @@ class DesmyDropdown extends Component<Props, State> {
     
     componentWillUnmount() {
         document.removeEventListener('mousedown', this.handleClickOutside);
+        window.removeEventListener('resize', this.updateViewMode);
     }
     
 
@@ -330,10 +349,18 @@ class DesmyDropdown extends Component<Props, State> {
     };
     openDropdownPopover = (): void => {
         if (this.props.disabled) return;
-    
-        this.handleDropdownPopover();
-        this.handleDropdownPopover();
+        this.updateViewMode()
+        if (!this.state.isMobileView) {
+            this.handleDropdownOpen()
+        }else{
+            this.setState({dropdownPopoverShow:true})
+        }
+        
     };
+    handleDropdownOpen=()=>{
+        this.handleDropdownPopover();
+        this.handleDropdownPopover();
+    }
     handleDropdownPopover = (): void => {
         if (this.props.disabled) return;
 
@@ -471,6 +498,7 @@ class DesmyDropdown extends Component<Props, State> {
     };
 
     render(){
+        const {isMobileView,isModal} = this.state
         return (
           <>
        
@@ -515,23 +543,36 @@ class DesmyDropdown extends Component<Props, State> {
                     </div>
             </div>
             {
-        (this.props.data != undefined || this.props.request !=undefined) ? 
-            <div className='bg-inherit'>
-            <div ref={this.popoverDropdownRef}
+                (this.props.data != undefined || this.props.request !=undefined && this.state.dropdownPopoverShow) ? 
+                <div className={`${isModal ? `bg-black/40`:`bg-inherit`}`}>
+                <div ref={this.popoverDropdownRef}
                     className={
                         (this.state.dropdownPopoverShow ? "inline-block " : "hidden ") +
-                        "absolute border-[1px] z-[800] border-gray-200 dark:border-gray-700 text-base min-w-[400px] max-w-[600px] top-0 float-left py-2 bg-inherit  text-white list-none text-left rounded shadow-lg mt-1 "+
+                        `${this.state.isMobileView ? `fixed top-0 left-0 right-0 bottom-0 flex flex-col z-[9999999] p-4 overflow-auto w-full h-full ${isModal ? `bg-black/40`:``}` : "absolute border-[1px] border-gray-200 dark:border-gray-700 shadow-lg mt-1 min-w-[400px] max-w-[600px]"} z-[800] text-base top-0 float-left py-2 bg-inherit  `+
                         (this.props.dropdownClass)
                     }
                     style={{ minWidth: "12rem" }}
                 >
-                <div className='flex w-full justify-between items-center text-black'>
-                    <div className="flex w-full relative z-0 mx-3 my-2 group border-b border-black dark:border-white">
-                        <input type="text" name="search" autoFocus autoComplete="off" ref={this.searchRef} value={this.state.input.search} onChange={this.handleChange} className="block py-2.5 text-xs 2xl:text-sm px-0 bg-inherit w-full text-black bg- border-0 border-b-2 border-black appearance-none dark:text-white dark:border-white dark:focus:border-white focus:outline-none focus:ring-0 focus:border-black peer" placeholder=" " />
-                        <label htmlFor="floating_search" className="absolute text-sm text-black dark:text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-black dark:peer-focus:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Search here....</label>
+                <div className='flex justify-center items-center h-full '>
+                <div className={`mx-auto dark:bg-darkDialogBackground p-3 max-w-lg bg-white rounded `}>
+                {isMobileView && <div className="flex text-black dark:text-white w-full justify-between mb-5">
+                        <div className="text-base px-3  font-poppinsBold">{this.props.placeholder}</div>
+                        <div onClick={this.closeDropdownPopover} className={`${isModal ? `absolute right-10 top-10 `:``}`}>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" className={`${isModal ? `text-white size-5 `:`size-3 `}`}>
+                                <path fill="currentColor" fillRule="evenodd" d="M1.707.293A1 1 0 0 0 .293 1.707L5.586 7L.293 12.293a1 1 0 1 0 1.414 1.414L7 8.414l5.293 5.293a1 1 0 0 0 1.414-1.414L8.414 7l5.293-5.293A1 1 0 0 0 12.293.293L7 5.586z" clipRule="evenodd"></path>
+                            </svg>
+                        </div>
                     </div>
-                </div>
-                <div className="flex w-full min-w-[400px] max-w-[600px] flex-col min-h-24 max-h-80 overflow-auto bg-inherit text-black dark:text-white">
+                }
+                
+                <div className=" text-white list-none text-left">
+                    <div className='flex w-full mt- justify-between items-center text-black'>
+                        <div className="flex w-full relative z-0 mx-3 my-2 group border-b border-black dark:border-white">
+                            <input type="text" name="search" autoFocus autoComplete="off" ref={this.searchRef} value={this.state.input.search} onChange={this.handleChange} className="block py-2.5 text-xs 2xl:text-sm px-0 bg-inherit w-full text-black bg- border-0 border-b-2 border-black appearance-none dark:text-white dark:border-white dark:focus:border-white focus:outline-none focus:ring-0 focus:border-black peer" placeholder=" " />
+                            <label htmlFor="floating_search" className="absolute text-sm text-black dark:text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-black dark:peer-focus:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Search here....</label>
+                        </div>
+                    </div>
+                     <div className="flex w-full min-w-[400px] max-w-[600px] flex-col min-h-24 max-h-80 overflow-auto bg-inherit text-black dark:text-white">
                     
                     {
                     (this.state.error.state && this.props.request !==undefined) ? 
@@ -549,9 +590,10 @@ class DesmyDropdown extends Component<Props, State> {
                                 <span className='text-sm'>Loading...</span>
                             </div>
                         </div>
-                    :<>
-                    <div className={`flex flex-col w-full`}>
-                                {
+                    :
+                    <>
+                        <div className={`flex flex-col w-full`}>
+                        {
                                 (this.props.all !==undefined &&  this.props.is_multiple && (this.state.datalist.length != 0)) ? 
                                     <div className={`flex text-sm py-2 px-4 font-normal cursor-pointer w-full whitespace-no-wrap dark:hover:bg-white dark:hover:text-black ${this.props.dropdownListClass} ${ ((this.state.selectedAll)) ? ' font-poppinsBold' : 'font-normal'}  transition duration-500 ease-in-out`}
                                     onClick={this.handleSelectAll}>
@@ -589,7 +631,7 @@ class DesmyDropdown extends Component<Props, State> {
                                         </svg>: (this.props.is_multiple) ?  <svg fill="currentColor" viewBox="0 0 16 16" className="w-5 h-5"><path d="M8 15A7 7 0 118 1a7 7 0 010 14zm0 1A8 8 0 108 0a8 8 0 000 16z" /></svg>: null
                                         }
                                         
-
+        
                                     </div>
                                 })
                                 
@@ -612,8 +654,9 @@ class DesmyDropdown extends Component<Props, State> {
                         
                     </div>
                     </div>
-                    :null
-                    }
+                </div>
+                </div></div>:null
+            }
             </div>
         </DesmyClickOutsideListener>
             

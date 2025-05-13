@@ -151,7 +151,10 @@ class DesmyCommons {
     validatePasswords(passwordOne: string, passwordTwo: string): boolean {
         return (passwordOne !== "" && passwordOne === passwordTwo);
     }
-
+    isValidDate(input: string | Date): boolean {
+        const date = typeof input === "string" ? new Date(input) : input;
+        return !isNaN(date.getTime());
+    }
     validatePassword(passwordOne: string): {
         hasUppercase: boolean,
         hasLowercase: boolean,
@@ -392,8 +395,7 @@ class DesmyCommons {
     
         return `${day}, ${dayOfMonth}${daySuffix} ${month}, ${year}`;
     }
-    
-
+     
     getTimeAgoAndCustomDate(timestamp: string | number | Date): string {
         const currentDate = new Date();
         const targetDate = new Date(timestamp);

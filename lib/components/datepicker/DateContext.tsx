@@ -75,7 +75,9 @@ export class DateProvider extends Component<
   };
 
   setIsOpen = (open: boolean) => {
-    this.setState({ isOpen: open });
+    if (this.state.isOpen !== open) {
+      this.setState({ isOpen: open });
+    }
   };
 
   setStartTime = (time: string | null) => {

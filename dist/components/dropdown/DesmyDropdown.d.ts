@@ -46,6 +46,9 @@ interface State {
         state: boolean;
         message: string;
     };
+    isMobileView: boolean;
+    isModal: boolean;
+    showMobileModal: boolean;
 }
 declare class DesmyDropdown extends Component<Props, State> {
     private popoverDropdownRef;
@@ -55,6 +58,7 @@ declare class DesmyDropdown extends Component<Props, State> {
     constructor(props: Props);
     componentDidUpdate(prevProps: Props, _prevState: State): void;
     handleDefaultClear: () => void;
+    updateViewMode: () => void;
     componentDidMount(): Promise<void>;
     componentWillUnmount(): void;
     handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -68,6 +72,7 @@ declare class DesmyDropdown extends Component<Props, State> {
     handleError: (message?: string) => void;
     onClear: () => void;
     openDropdownPopover: () => void;
+    handleDropdownOpen: () => void;
     handleDropdownPopover: () => void;
     removeItem: (object: any[], key: string, value: any) => any[];
     handleSearch: (collection: any[], data: any) => any | false;

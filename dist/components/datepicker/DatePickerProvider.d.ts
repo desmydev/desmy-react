@@ -6,6 +6,7 @@ interface DatePickerState {
     wasOpenBeforeBlur: boolean;
     isFocusTriggered: boolean;
     isMobile: boolean;
+    isModal: boolean;
 }
 declare class DatePickerProvider extends Component<DatePickerProps, DatePickerState> {
     static contextType: React.Context<DateContextProps | undefined>;

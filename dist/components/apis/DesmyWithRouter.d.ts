@@ -54,5 +54,5 @@ declare const DesmyWithRouter: <P extends object>(WrappedComponent: React.Compon
     contextType?: React.Context<any> | undefined;
     propTypes?: any;
 };
-declare const DesmyRenderRoutes: (routes: DesmyRoute[]) => import("react/jsx-runtime").JSX.Element[];
+declare const DesmyRenderRoutes: (routes: DesmyRoute[]) => ReactElement[];
 export { DesmyWithRouter, RoutesContext, DesmyRenderRoutes };

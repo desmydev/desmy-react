@@ -56,33 +56,23 @@ const DesmyWithRouter = <P extends object>(
 };
 
 // Function to render nested routes
-const DesmyRenderRoutes = (routes: DesmyRoute[]) => {
+const DesmyRenderRoutes = (routes: DesmyRoute[]): ReactElement[] => {
   return routes.map(({ path, element, children }, index) => {
-    const params = extractRouteParams(path);
-    console.log("params=",params)
+    let routeElement = element;
+
+    if (isValidElement(element)) {
+      routeElement = React.cloneElement(
+        element as ReactElement<{ path?: string }>,
+        { path }
+      );
+    }
+
     return (
-    <Route
-      key={index}
-      path={path}
-      element={isValidElement<{ path?: string }>(element) ? React.cloneElement(element, { path }) : element}
-    >
-      {/* {children && DesmyRenderRoutes(children)} */}
-    </Route>
-  )});
+      <Route key={index} path={path} element={routeElement}>
+        {children && DesmyRenderRoutes(children)}
+      </Route>
+    );
+  });
 };
-// const DesmyRenderRoutes = (routes: DesmyRoute[]) => {
-//   return routes.map(({ path, element, children }, index) => {
-//     const params = extractRouteParams(path);
-//     return (
-//       <Route
-//         key={index}
-//         path={path}
-//         element={isValidElement(element) ? React.cloneElement(element, { path, params }) : element}
-//       >
-//         {children && DesmyRenderRoutes(children)}
-//       </Route>
-//     );
-//   });
-// };
 
 export { DesmyWithRouter, RoutesContext, DesmyRenderRoutes };

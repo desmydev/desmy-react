@@ -12,6 +12,7 @@ interface DatePickerState {
   wasOpenBeforeBlur: boolean;
   isFocusTriggered: boolean;
   isMobile: boolean;
+  isModal: boolean;
 }
 
 class DatePickerProvider extends Component<DatePickerProps, DatePickerState> {
@@ -31,7 +32,8 @@ class DatePickerProvider extends Component<DatePickerProps, DatePickerState> {
     this.state = {
       wasOpenBeforeBlur: false,
       isFocusTriggered: false,
-      isMobile: window.innerWidth <= 768,
+      isMobile: window.innerWidth <= 768 ||  window.innerHeight < 1000,
+      isModal: window.innerHeight < 1000
     };
     this.saveDateValue = { startDate: "", endDate: "" };
   }
@@ -59,7 +61,7 @@ class DatePickerProvider extends Component<DatePickerProps, DatePickerState> {
   }
 
   handleResize = () => {
-    this.setState({ isMobile: window.innerWidth <= 768 }, this.handleClose);
+    this.setState({ isMobile: window.innerWidth <= 768 ||  window.innerHeight < 1000,isModal: window.innerHeight < 1000 }, this.handleClose);
   };
 
   handleDefault = () => {
@@ -295,7 +297,8 @@ class DatePickerProvider extends Component<DatePickerProps, DatePickerState> {
   render() {
     const { minDate, maxDate, label, disabled, useRange = true, withTime } = this.props;
     const { isOpen, startDate, endDate } = this.context;
-    const { isMobile } = this.state;
+    const { isMobile,isModal } = this.state;
+    console.log("isModal=",isModal)
 
     const formatValue = () => {
       const dateFormat = this.props.displayFormat || "MM/dd/yyyy";
@@ -331,9 +334,9 @@ class DatePickerProvider extends Component<DatePickerProps, DatePickerState> {
         {isOpen && (
           <div
             ref={this.popoverDropdownRef}
-            className={`${isMobile ? "fixed top-0 left-0 right-0 bottom-0 flex flex-col bg-white dark:bg-darkDialogBackground z-[9999999] p-4 overflow-auto" : "absolute"} ${
+            className={`${isMobile ? `fixed top-0 left-0 right-0 bottom-0 flex flex-col ${(isModal) ? `bg-black/40`:`bg-white dark:bg-darkDialogBackground`} z-[9999999] p-4 overflow-auto` : "absolute"} ${
               isOpen ? "flex opacity-100" : "hidden opacity-0"
-            } bg-white dark:bg-darkDialogBackground dark:border-darkPrimaryBorder dark:text-white border-[2px] shadow-lg border-gray-100 rounded p-4 z-50 transition-opacity duration-[2000ms] ${
+            } ${(isModal) ? `bg-black/40`:`bg-white dark:bg-darkDialogBackground dark:border-darkPrimaryBorder dark:text-white border-[2px]`} shadow-lg border-gray-100 rounded p-4 z-50 transition-opacity duration-[2000ms] ${
               useRange ? "flex gap-4" : ""
             }`}
           >
@@ -349,7 +352,7 @@ class DatePickerProvider extends Component<DatePickerProps, DatePickerState> {
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 12 12"
-                  className="size-8 text-red-600 cursor-pointer"
+                  className={`size-8 ${(isModal) ? `text-white`:`text-red-600`} cursor-pointer`}
                   onClick={this.handleClose}
                 >
                   <path
@@ -359,11 +362,28 @@ class DatePickerProvider extends Component<DatePickerProps, DatePickerState> {
                 </svg>
               </div>
             )}
-            <Days calendarIndex={0} useRange={useRange} withTime={withTime} minDate={minDate} maxDate={maxDate} />
-            {useRange && (
-              <Days calendarIndex={1} useRange={useRange} withTime={withTime} minDate={minDate} maxDate={maxDate} />
-            )}
-            {withTime && <TimePicker useRange={useRange} onConfirm={() => this.context.setIsOpen(false)} />}
+
+            {
+              (isModal) ? <div className="flex max-w-lg h-full w-full justify-center items-center  mx-auto">
+            <div className="bg-white dark:bg-darkDialogBackground mx-auto rounded-2xl">
+              <Days calendarIndex={0} useRange={useRange} withTime={withTime} minDate={minDate} maxDate={maxDate} />
+              {useRange && (
+                <Days calendarIndex={1} useRange={useRange} withTime={withTime} minDate={minDate} maxDate={maxDate} />
+              )}
+              {withTime && <TimePicker useRange={useRange} onConfirm={() => this.context.setIsOpen(false)} />}
+            </div>
+            </div>
+            :(
+             <>
+             <Days calendarIndex={0} useRange={useRange} withTime={withTime} minDate={minDate} maxDate={maxDate} />
+              {useRange && (
+                <Days calendarIndex={1} useRange={useRange} withTime={withTime} minDate={minDate} maxDate={maxDate} />
+              )}
+              {withTime && <TimePicker useRange={useRange} onConfirm={() => this.context.setIsOpen(false)} />}
+             </> 
+            )
+            }
+            
           </div>
         )}
       </div>

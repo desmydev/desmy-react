@@ -16,6 +16,7 @@ declare class DesmyCommons {
     toString(data: any): string;
     isEmpty(text: string | null | undefined): boolean;
     validatePasswords(passwordOne: string, passwordTwo: string): boolean;
+    isValidDate(input: string | Date): boolean;
     validatePassword(passwordOne: string): {
         hasUppercase: boolean;
         hasLowercase: boolean;
