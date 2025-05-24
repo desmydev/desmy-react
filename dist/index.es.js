@@ -69,12 +69,12 @@ var reactJsxRuntime_development = {};
 var hasRequiredReactJsxRuntime_development;
 function requireReactJsxRuntime_development() {
   return hasRequiredReactJsxRuntime_development || (hasRequiredReactJsxRuntime_development = 1, process.env.NODE_ENV !== "production" && function() {
-    function e(WI) {
-      if (WI == null) return null;
-      if (typeof WI == "function")
-        return WI.$$typeof === wI ? null : WI.displayName || WI.name || null;
-      if (typeof WI == "string") return WI;
-      switch (WI) {
+    function e(wI) {
+      if (wI == null) return null;
+      if (typeof wI == "function")
+        return wI.$$typeof === WI ? null : wI.displayName || wI.name || null;
+      if (typeof wI == "string") return wI;
+      switch (wI) {
         case AI:
           return "Fragment";
         case oI:
@@ -88,126 +88,126 @@ function requireReactJsxRuntime_development() {
         case aI:
           return "Activity";
       }
-      if (typeof WI == "object")
-        switch (typeof WI.tag == "number" && console.error(
+      if (typeof wI == "object")
+        switch (typeof wI.tag == "number" && console.error(
           "Received an unexpected object in getComponentNameFromType(). This is likely a bug in React. Please file an issue."
-        ), WI.$$typeof) {
+        ), wI.$$typeof) {
           case sI:
             return "Portal";
           case _:
-            return (WI.displayName || "Context") + ".Provider";
+            return (wI.displayName || "Context") + ".Provider";
           case E:
-            return (WI._context.displayName || "Context") + ".Consumer";
+            return (wI._context.displayName || "Context") + ".Consumer";
           case II:
-            var pI = WI.render;
-            return WI = WI.displayName, WI || (WI = pI.displayName || pI.name || "", WI = WI !== "" ? "ForwardRef(" + WI + ")" : "ForwardRef"), WI;
+            var pI = wI.render;
+            return wI = wI.displayName, wI || (wI = pI.displayName || pI.name || "", wI = wI !== "" ? "ForwardRef(" + wI + ")" : "ForwardRef"), wI;
           case eI:
-            return pI = WI.displayName || null, pI !== null ? pI : e(WI.type) || "Memo";
+            return pI = wI.displayName || null, pI !== null ? pI : e(wI.type) || "Memo";
           case dI:
-            pI = WI._payload, WI = WI._init;
+            pI = wI._payload, wI = wI._init;
             try {
-              return e(WI(pI));
+              return e(wI(pI));
             } catch {
             }
         }
       return null;
     }
-    function A(WI) {
-      return "" + WI;
+    function A(wI) {
+      return "" + wI;
     }
-    function l(WI) {
+    function l(wI) {
       try {
-        A(WI);
+        A(wI);
         var pI = !1;
       } catch {
         pI = !0;
       }
       if (pI) {
         pI = console;
-        var xI = pI.error, PI = typeof Symbol == "function" && Symbol.toStringTag && WI[Symbol.toStringTag] || WI.constructor.name || "Object";
+        var xI = pI.error, PI = typeof Symbol == "function" && Symbol.toStringTag && wI[Symbol.toStringTag] || wI.constructor.name || "Object";
         return xI.call(
           pI,
           "The provided key is an unsupported type %s. This value must be coerced to a string before using it here.",
           PI
-        ), A(WI);
+        ), A(wI);
       }
     }
-    function o(WI) {
-      if (WI === AI) return "<>";
-      if (typeof WI == "object" && WI !== null && WI.$$typeof === dI)
+    function o(wI) {
+      if (wI === AI) return "<>";
+      if (typeof wI == "object" && wI !== null && wI.$$typeof === dI)
         return "<...>";
       try {
-        var pI = e(WI);
+        var pI = e(wI);
         return pI ? "<" + pI + ">" : "<...>";
       } catch {
         return "<...>";
       }
     }
     function t() {
-      var WI = GI.A;
-      return WI === null ? null : WI.getOwner();
+      var wI = GI.A;
+      return wI === null ? null : wI.getOwner();
     }
     function a() {
       return Error("react-stack-top-frame");
     }
-    function n(WI) {
-      if (HI.call(WI, "key")) {
-        var pI = Object.getOwnPropertyDescriptor(WI, "key").get;
+    function n(wI) {
+      if (HI.call(wI, "key")) {
+        var pI = Object.getOwnPropertyDescriptor(wI, "key").get;
         if (pI && pI.isReactWarning) return !1;
       }
-      return WI.key !== void 0;
+      return wI.key !== void 0;
     }
-    function B(WI, pI) {
+    function B(wI, pI) {
       function xI() {
         DI || (DI = !0, console.error(
           "%s: `key` is not a prop. Trying to access it will result in `undefined` being returned. If you need to access the same value within the child component, you should pass it as a different prop. (https://react.dev/link/special-props)",
           pI
         ));
       }
-      xI.isReactWarning = !0, Object.defineProperty(WI, "key", {
+      xI.isReactWarning = !0, Object.defineProperty(wI, "key", {
         get: xI,
         configurable: !0
       });
     }
     function R() {
-      var WI = e(this.type);
-      return NI[WI] || (NI[WI] = !0, console.error(
+      var wI = e(this.type);
+      return NI[wI] || (NI[wI] = !0, console.error(
         "Accessing element.ref was removed in React 19. ref is now a regular prop. It will be removed from the JSX Element type in a future release."
-      )), WI = this.props.ref, WI !== void 0 ? WI : null;
+      )), wI = this.props.ref, wI !== void 0 ? wI : null;
     }
-    function r(WI, pI, xI, PI, XI, tI, mI, uI) {
-      return xI = tI.ref, WI = {
+    function r(wI, pI, xI, PI, XI, tI, mI, uI) {
+      return xI = tI.ref, wI = {
         $$typeof: iI,
-        type: WI,
+        type: wI,
         key: pI,
         props: tI,
         _owner: XI
-      }, (xI !== void 0 ? xI : null) !== null ? Object.defineProperty(WI, "ref", {
+      }, (xI !== void 0 ? xI : null) !== null ? Object.defineProperty(wI, "ref", {
         enumerable: !1,
         get: R
-      }) : Object.defineProperty(WI, "ref", { enumerable: !1, value: null }), WI._store = {}, Object.defineProperty(WI._store, "validated", {
+      }) : Object.defineProperty(wI, "ref", { enumerable: !1, value: null }), wI._store = {}, Object.defineProperty(wI._store, "validated", {
         configurable: !1,
         enumerable: !1,
         writable: !0,
         value: 0
-      }), Object.defineProperty(WI, "_debugInfo", {
+      }), Object.defineProperty(wI, "_debugInfo", {
         configurable: !1,
         enumerable: !1,
         writable: !0,
         value: null
-      }), Object.defineProperty(WI, "_debugStack", {
+      }), Object.defineProperty(wI, "_debugStack", {
         configurable: !1,
         enumerable: !1,
         writable: !0,
         value: mI
-      }), Object.defineProperty(WI, "_debugTask", {
+      }), Object.defineProperty(wI, "_debugTask", {
         configurable: !1,
         enumerable: !1,
         writable: !0,
         value: uI
-      }), Object.freeze && (Object.freeze(WI.props), Object.freeze(WI)), WI;
+      }), Object.freeze && (Object.freeze(wI.props), Object.freeze(wI)), wI;
     }
-    function H(WI, pI, xI, PI, XI, tI, mI, uI) {
+    function H(wI, pI, xI, PI, XI, tI, mI, uI) {
       var BI = pI.children;
       if (BI !== void 0)
         if (PI)
@@ -221,7 +221,7 @@ function requireReactJsxRuntime_development() {
             );
         else CI(BI);
       if (HI.call(pI, "key")) {
-        BI = e(WI);
+        BI = e(wI);
         var gI = Object.keys(pI).filter(function(bI) {
           return bI !== "key";
         });
@@ -245,9 +245,9 @@ React keys must be passed directly to JSX without using spread:
       } else xI = pI;
       return BI && B(
         xI,
-        typeof WI == "function" ? WI.displayName || WI.name || "Unknown" : WI
+        typeof wI == "function" ? wI.displayName || wI.name || "Unknown" : wI
       ), r(
-        WI,
+        wI,
         BI,
         tI,
         XI,
@@ -257,44 +257,44 @@ React keys must be passed directly to JSX without using spread:
         uI
       );
     }
-    function CI(WI) {
-      typeof WI == "object" && WI !== null && WI.$$typeof === iI && WI._store && (WI._store.validated = 1);
+    function CI(wI) {
+      typeof wI == "object" && wI !== null && wI.$$typeof === iI && wI._store && (wI._store.validated = 1);
     }
-    var j = React2__default, iI = Symbol.for("react.transitional.element"), sI = Symbol.for("react.portal"), AI = Symbol.for("react.fragment"), lI = Symbol.for("react.strict_mode"), oI = Symbol.for("react.profiler"), E = Symbol.for("react.consumer"), _ = Symbol.for("react.context"), II = Symbol.for("react.forward_ref"), M = Symbol.for("react.suspense"), O = Symbol.for("react.suspense_list"), eI = Symbol.for("react.memo"), dI = Symbol.for("react.lazy"), aI = Symbol.for("react.activity"), wI = Symbol.for("react.client.reference"), GI = j.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, HI = Object.prototype.hasOwnProperty, MI = Array.isArray, KI = console.createTask ? console.createTask : function() {
+    var j = React2__default, iI = Symbol.for("react.transitional.element"), sI = Symbol.for("react.portal"), AI = Symbol.for("react.fragment"), lI = Symbol.for("react.strict_mode"), oI = Symbol.for("react.profiler"), E = Symbol.for("react.consumer"), _ = Symbol.for("react.context"), II = Symbol.for("react.forward_ref"), M = Symbol.for("react.suspense"), O = Symbol.for("react.suspense_list"), eI = Symbol.for("react.memo"), dI = Symbol.for("react.lazy"), aI = Symbol.for("react.activity"), WI = Symbol.for("react.client.reference"), GI = j.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, HI = Object.prototype.hasOwnProperty, MI = Array.isArray, KI = console.createTask ? console.createTask : function() {
       return null;
     };
     j = {
-      "react-stack-bottom-frame": function(WI) {
-        return WI();
+      "react-stack-bottom-frame": function(wI) {
+        return wI();
       }
     };
     var DI, NI = {}, yI = j["react-stack-bottom-frame"].bind(
       j,
       a
     )(), VI = KI(o(a)), hI = {};
-    reactJsxRuntime_development.Fragment = AI, reactJsxRuntime_development.jsx = function(WI, pI, xI, PI, XI) {
+    reactJsxRuntime_development.Fragment = AI, reactJsxRuntime_development.jsx = function(wI, pI, xI, PI, XI) {
       var tI = 1e4 > GI.recentlyCreatedOwnerStacks++;
       return H(
-        WI,
+        wI,
         pI,
         xI,
         !1,
         PI,
         XI,
         tI ? Error("react-stack-top-frame") : yI,
-        tI ? KI(o(WI)) : VI
+        tI ? KI(o(wI)) : VI
       );
-    }, reactJsxRuntime_development.jsxs = function(WI, pI, xI, PI, XI) {
+    }, reactJsxRuntime_development.jsxs = function(wI, pI, xI, PI, XI) {
       var tI = 1e4 > GI.recentlyCreatedOwnerStacks++;
       return H(
-        WI,
+        wI,
         pI,
         xI,
         !0,
         PI,
         XI,
         tI ? Error("react-stack-top-frame") : yI,
-        tI ? KI(o(WI)) : VI
+        tI ? KI(o(wI)) : VI
       );
     };
   }()), reactJsxRuntime_development;
@@ -326,8 +326,8 @@ function requireDommatrix() {
         }))
           throw TypeError('CSSMatrix: "' + E + '" must only have numbers.');
         if (II.length === 16) {
-          var M = II[0], O = II[1], eI = II[2], dI = II[3], aI = II[4], wI = II[5], GI = II[6], HI = II[7], MI = II[8], KI = II[9], DI = II[10], NI = II[11], yI = II[12], VI = II[13], hI = II[14], WI = II[15];
-          _.m11 = M, _.a = M, _.m21 = aI, _.c = aI, _.m31 = MI, _.m41 = yI, _.e = yI, _.m12 = O, _.b = O, _.m22 = wI, _.d = wI, _.m32 = KI, _.m42 = VI, _.f = VI, _.m13 = eI, _.m23 = GI, _.m33 = DI, _.m43 = hI, _.m14 = dI, _.m24 = HI, _.m34 = NI, _.m44 = WI;
+          var M = II[0], O = II[1], eI = II[2], dI = II[3], aI = II[4], WI = II[5], GI = II[6], HI = II[7], MI = II[8], KI = II[9], DI = II[10], NI = II[11], yI = II[12], VI = II[13], hI = II[14], wI = II[15];
+          _.m11 = M, _.a = M, _.m21 = aI, _.c = aI, _.m31 = MI, _.m41 = yI, _.e = yI, _.m12 = O, _.b = O, _.m22 = WI, _.d = WI, _.m32 = KI, _.m42 = VI, _.f = VI, _.m13 = eI, _.m23 = GI, _.m33 = DI, _.m43 = hI, _.m14 = dI, _.m24 = HI, _.m34 = NI, _.m44 = wI;
         } else if (II.length === 6) {
           var pI = II[0], xI = II[1], PI = II[2], XI = II[3], tI = II[4], mI = II[5];
           _.m11 = pI, _.a = pI, _.m12 = xI, _.b = xI, _.m21 = PI, _.c = PI, _.m22 = XI, _.d = XI, _.m41 = tI, _.e = tI, _.m42 = mI, _.f = mI;
@@ -372,17 +372,17 @@ function requireDommatrix() {
           var eI = O.split("("), dI = eI[0], aI = eI[1];
           if (!aI)
             throw TypeError(M);
-          var wI = aI.split(",").map(function(tI) {
+          var WI = aI.split(",").map(function(tI) {
             return tI.includes("rad") ? parseFloat(tI) * (180 / Math.PI) : parseFloat(tI);
-          }), GI = wI[0], HI = wI[1], MI = wI[2], KI = wI[3], DI = [GI, HI, MI], NI = [GI, HI, MI, KI];
+          }), GI = WI[0], HI = WI[1], MI = WI[2], KI = WI[3], DI = [GI, HI, MI], NI = [GI, HI, MI, KI];
           if (dI === "perspective" && GI && [HI, MI].every(function(tI) {
             return tI === void 0;
           }))
             II.m34 = -1 / GI;
-          else if (dI.includes("matrix") && [6, 16].includes(wI.length) && wI.every(function(tI) {
+          else if (dI.includes("matrix") && [6, 16].includes(WI.length) && WI.every(function(tI) {
             return !Number.isNaN(+tI);
           })) {
-            var yI = wI.map(function(tI) {
+            var yI = WI.map(function(tI) {
               return Math.abs(tI) < 1e-6 ? 0 : tI;
             });
             II = II.multiply(l(yI));
@@ -419,12 +419,12 @@ function requireDommatrix() {
             if (["skewX", "skewY"].includes(dI))
               II = II[dI](GI);
             else {
-              var WI = dI.replace(/[XYZ]/, ""), pI = dI.replace(WI, ""), xI = ["X", "Y", "Z"].indexOf(pI), PI = WI === "scale" ? 1 : 0, XI = [
+              var wI = dI.replace(/[XYZ]/, ""), pI = dI.replace(wI, ""), xI = ["X", "Y", "Z"].indexOf(pI), PI = wI === "scale" ? 1 : 0, XI = [
                 xI === 0 ? GI : PI,
                 xI === 1 ? GI : PI,
                 xI === 2 ? GI : PI
               ];
-              II = II[WI].apply(II, XI);
+              II = II[wI].apply(II, XI);
             }
           else
             throw TypeError(M);
@@ -455,25 +455,25 @@ function requireDommatrix() {
         return M.m41 = E, M.e = E, M.m42 = _, M.f = _, M.m43 = II, M;
       }
       function B(E, _, II) {
-        var M = new sI(), O = Math.PI / 180, eI = E * O, dI = _ * O, aI = II * O, wI = Math.cos(eI), GI = -Math.sin(eI), HI = Math.cos(dI), MI = -Math.sin(dI), KI = Math.cos(aI), DI = -Math.sin(aI), NI = HI * KI, yI = -HI * DI;
+        var M = new sI(), O = Math.PI / 180, eI = E * O, dI = _ * O, aI = II * O, WI = Math.cos(eI), GI = -Math.sin(eI), HI = Math.cos(dI), MI = -Math.sin(dI), KI = Math.cos(aI), DI = -Math.sin(aI), NI = HI * KI, yI = -HI * DI;
         M.m11 = NI, M.a = NI, M.m12 = yI, M.b = yI, M.m13 = MI;
-        var VI = GI * MI * KI + wI * DI;
+        var VI = GI * MI * KI + WI * DI;
         M.m21 = VI, M.c = VI;
-        var hI = wI * KI - GI * MI * DI;
-        return M.m22 = hI, M.d = hI, M.m23 = -GI * HI, M.m31 = GI * DI - wI * MI * KI, M.m32 = GI * KI + wI * MI * DI, M.m33 = wI * HI, M;
+        var hI = WI * KI - GI * MI * DI;
+        return M.m22 = hI, M.d = hI, M.m23 = -GI * HI, M.m31 = GI * DI - WI * MI * KI, M.m32 = GI * KI + WI * MI * DI, M.m33 = WI * HI, M;
       }
       function R(E, _, II, M) {
         var O = new sI(), eI = Math.sqrt(E * E + _ * _ + II * II);
         if (eI === 0)
           return O;
-        var dI = E / eI, aI = _ / eI, wI = II / eI, GI = M * (Math.PI / 360), HI = Math.sin(GI), MI = Math.cos(GI), KI = HI * HI, DI = dI * dI, NI = aI * aI, yI = wI * wI, VI = 1 - 2 * (NI + yI) * KI;
+        var dI = E / eI, aI = _ / eI, WI = II / eI, GI = M * (Math.PI / 360), HI = Math.sin(GI), MI = Math.cos(GI), KI = HI * HI, DI = dI * dI, NI = aI * aI, yI = WI * WI, VI = 1 - 2 * (NI + yI) * KI;
         O.m11 = VI, O.a = VI;
-        var hI = 2 * (dI * aI * KI + wI * HI * MI);
-        O.m12 = hI, O.b = hI, O.m13 = 2 * (dI * wI * KI - aI * HI * MI);
-        var WI = 2 * (aI * dI * KI - wI * HI * MI);
-        O.m21 = WI, O.c = WI;
+        var hI = 2 * (dI * aI * KI + WI * HI * MI);
+        O.m12 = hI, O.b = hI, O.m13 = 2 * (dI * WI * KI - aI * HI * MI);
+        var wI = 2 * (aI * dI * KI - WI * HI * MI);
+        O.m21 = wI, O.c = wI;
         var pI = 1 - 2 * (yI + DI) * KI;
-        return O.m22 = pI, O.d = pI, O.m23 = 2 * (aI * wI * KI + dI * HI * MI), O.m31 = 2 * (wI * dI * KI + aI * HI * MI), O.m32 = 2 * (wI * aI * KI - dI * HI * MI), O.m33 = 1 - 2 * (DI + NI) * KI, O;
+        return O.m22 = pI, O.d = pI, O.m23 = 2 * (aI * WI * KI + dI * HI * MI), O.m31 = 2 * (WI * dI * KI + aI * HI * MI), O.m32 = 2 * (WI * aI * KI - dI * HI * MI), O.m33 = 1 - 2 * (DI + NI) * KI, O;
       }
       function r(E, _, II) {
         var M = new sI();
@@ -498,7 +498,7 @@ function requireDommatrix() {
         return H(0, E);
       }
       function iI(E, _) {
-        var II = _.m11 * E.m11 + _.m12 * E.m21 + _.m13 * E.m31 + _.m14 * E.m41, M = _.m11 * E.m12 + _.m12 * E.m22 + _.m13 * E.m32 + _.m14 * E.m42, O = _.m11 * E.m13 + _.m12 * E.m23 + _.m13 * E.m33 + _.m14 * E.m43, eI = _.m11 * E.m14 + _.m12 * E.m24 + _.m13 * E.m34 + _.m14 * E.m44, dI = _.m21 * E.m11 + _.m22 * E.m21 + _.m23 * E.m31 + _.m24 * E.m41, aI = _.m21 * E.m12 + _.m22 * E.m22 + _.m23 * E.m32 + _.m24 * E.m42, wI = _.m21 * E.m13 + _.m22 * E.m23 + _.m23 * E.m33 + _.m24 * E.m43, GI = _.m21 * E.m14 + _.m22 * E.m24 + _.m23 * E.m34 + _.m24 * E.m44, HI = _.m31 * E.m11 + _.m32 * E.m21 + _.m33 * E.m31 + _.m34 * E.m41, MI = _.m31 * E.m12 + _.m32 * E.m22 + _.m33 * E.m32 + _.m34 * E.m42, KI = _.m31 * E.m13 + _.m32 * E.m23 + _.m33 * E.m33 + _.m34 * E.m43, DI = _.m31 * E.m14 + _.m32 * E.m24 + _.m33 * E.m34 + _.m34 * E.m44, NI = _.m41 * E.m11 + _.m42 * E.m21 + _.m43 * E.m31 + _.m44 * E.m41, yI = _.m41 * E.m12 + _.m42 * E.m22 + _.m43 * E.m32 + _.m44 * E.m42, VI = _.m41 * E.m13 + _.m42 * E.m23 + _.m43 * E.m33 + _.m44 * E.m43, hI = _.m41 * E.m14 + _.m42 * E.m24 + _.m43 * E.m34 + _.m44 * E.m44;
+        var II = _.m11 * E.m11 + _.m12 * E.m21 + _.m13 * E.m31 + _.m14 * E.m41, M = _.m11 * E.m12 + _.m12 * E.m22 + _.m13 * E.m32 + _.m14 * E.m42, O = _.m11 * E.m13 + _.m12 * E.m23 + _.m13 * E.m33 + _.m14 * E.m43, eI = _.m11 * E.m14 + _.m12 * E.m24 + _.m13 * E.m34 + _.m14 * E.m44, dI = _.m21 * E.m11 + _.m22 * E.m21 + _.m23 * E.m31 + _.m24 * E.m41, aI = _.m21 * E.m12 + _.m22 * E.m22 + _.m23 * E.m32 + _.m24 * E.m42, WI = _.m21 * E.m13 + _.m22 * E.m23 + _.m23 * E.m33 + _.m24 * E.m43, GI = _.m21 * E.m14 + _.m22 * E.m24 + _.m23 * E.m34 + _.m24 * E.m44, HI = _.m31 * E.m11 + _.m32 * E.m21 + _.m33 * E.m31 + _.m34 * E.m41, MI = _.m31 * E.m12 + _.m32 * E.m22 + _.m33 * E.m32 + _.m34 * E.m42, KI = _.m31 * E.m13 + _.m32 * E.m23 + _.m33 * E.m33 + _.m34 * E.m43, DI = _.m31 * E.m14 + _.m32 * E.m24 + _.m33 * E.m34 + _.m34 * E.m44, NI = _.m41 * E.m11 + _.m42 * E.m21 + _.m43 * E.m31 + _.m44 * E.m41, yI = _.m41 * E.m12 + _.m42 * E.m22 + _.m43 * E.m32 + _.m44 * E.m42, VI = _.m41 * E.m13 + _.m42 * E.m23 + _.m43 * E.m33 + _.m44 * E.m43, hI = _.m41 * E.m14 + _.m42 * E.m24 + _.m43 * E.m34 + _.m44 * E.m44;
         return l(
           [
             II,
@@ -507,7 +507,7 @@ function requireDommatrix() {
             eI,
             dI,
             aI,
-            wI,
+            WI,
             GI,
             HI,
             MI,
@@ -805,16 +805,16 @@ function requirePonyfill() {
       function aI(G) {
         II(G, void 0, j);
       }
-      var wI = function(G) {
+      var WI = function(G) {
         if (typeof queueMicrotask == "function")
-          wI = queueMicrotask;
+          WI = queueMicrotask;
         else {
           var k = E(void 0);
-          wI = function(ZI) {
+          WI = function(ZI) {
             return II(k, ZI);
           };
         }
-        return wI(G);
+        return WI(G);
       };
       function GI(G, k, ZI) {
         if (typeof G != "function")
@@ -861,7 +861,7 @@ function requirePonyfill() {
           }, G;
         }()
       ), DI = o("[[AbortSteps]]"), NI = o("[[ErrorSteps]]"), yI = o("[[CancelSteps]]"), VI = o("[[PullSteps]]"), hI = o("[[ReleaseSteps]]");
-      function WI(G, k) {
+      function wI(G, k) {
         G._ownerReadableStream = k, k._reader = G, k._state === "readable" ? XI(G) : k._state === "closed" ? mI(G) : tI(G, k._storedError);
       }
       function pI(G, k) {
@@ -970,7 +970,7 @@ function requirePonyfill() {
           function G(k) {
             if (TI(k, 1, "ReadableStreamDefaultReader"), lg(k, "First parameter"), tC(k))
               throw new TypeError("This stream has already been locked for exclusive reading by another reader");
-            WI(this, k), this._readRequests = new KI();
+            wI(this, k), this._readRequests = new KI();
           }
           return Object.defineProperty(G.prototype, "closed", {
             /**
@@ -1040,7 +1040,7 @@ function requirePonyfill() {
       function Kg(G) {
         return new TypeError("ReadableStreamDefaultReader.prototype.".concat(G, " can only be used on a ReadableStreamDefaultReader"));
       }
-      var Ig, og, Wg;
+      var Ig, og, wg;
       function UI(G) {
         return G.slice();
       }
@@ -1068,7 +1068,7 @@ function requirePonyfill() {
         var RI = ZI - k, SI = new ArrayBuffer(RI);
         return JI(SI, 0, G, k, RI), SI;
       }
-      function wg(G, k) {
+      function Wg(G, k) {
         var ZI = G[k];
         if (ZI != null) {
           if (typeof ZI != "function")
@@ -1097,16 +1097,16 @@ function requirePonyfill() {
         }(), SI = RI.next;
         return { iterator: RI, nextMethod: SI, done: !1 };
       }
-      var jI = (Wg = (Ig = o.asyncIterator) !== null && Ig !== void 0 ? Ig : (og = o.for) === null || og === void 0 ? void 0 : og.call(o, "Symbol.asyncIterator")) !== null && Wg !== void 0 ? Wg : "@@asyncIterator";
+      var jI = (wg = (Ig = o.asyncIterator) !== null && Ig !== void 0 ? Ig : (og = o.for) === null || og === void 0 ? void 0 : og.call(o, "Symbol.asyncIterator")) !== null && wg !== void 0 ? wg : "@@asyncIterator";
       function Ag(G, k, ZI) {
         if (k === void 0 && (k = "sync"), ZI === void 0)
           if (k === "async") {
-            if (ZI = wg(G, jI), ZI === void 0) {
-              var RI = wg(G, o.iterator), SI = Ag(G, "sync", RI);
+            if (ZI = Wg(G, jI), ZI === void 0) {
+              var RI = Wg(G, o.iterator), SI = Ag(G, "sync", RI);
               return EI(SI);
             }
           } else
-            ZI = wg(G, o.iterator);
+            ZI = Wg(G, o.iterator);
         if (ZI === void 0)
           throw new TypeError("The object is not iterable");
         var zI = GI(ZI, G, []);
@@ -1157,7 +1157,7 @@ function requirePonyfill() {
               RI = cg, SI = ag;
             }), _I = {
               _chunkSteps: function(cg) {
-                k._ongoingPromise = void 0, wI(function() {
+                k._ongoingPromise = void 0, WI(function() {
                   return RI({ value: cg, done: !1 });
                 });
               },
@@ -1255,14 +1255,14 @@ function requirePonyfill() {
              */
             get: function() {
               if (!aA(this))
-                throw WA("view");
+                throw wA("view");
               return this._view;
             },
             enumerable: !1,
             configurable: !0
           }), G.prototype.respond = function(k) {
             if (!aA(this))
-              throw WA("respond");
+              throw wA("respond");
             if (TI(k, 1, "respond"), k = gg(k, "First parameter"), this._associatedReadableByteStreamController === void 0)
               throw new TypeError("This BYOB request has been invalidated");
             if ($I(this._view.buffer))
@@ -1270,7 +1270,7 @@ function requirePonyfill() {
             fC(this._associatedReadableByteStreamController, k);
           }, G.prototype.respondWithNewView = function(k) {
             if (!aA(this))
-              throw WA("respondWithNewView");
+              throw wA("respondWithNewView");
             if (TI(k, 1, "respondWithNewView"), !ArrayBuffer.isView(k))
               throw new TypeError("You can only respond with array buffer views");
             if (this._associatedReadableByteStreamController === void 0)
@@ -1378,7 +1378,7 @@ function requirePonyfill() {
               };
               this._pendingPullIntos.push(zI);
             }
-            tg(ZI, k), WC(this);
+            tg(ZI, k), wC(this);
           }, G.prototype[hI] = function() {
             if (this._pendingPullIntos.length > 0) {
               var k = this._pendingPullIntos.peek();
@@ -1403,7 +1403,7 @@ function requirePonyfill() {
       function aA(G) {
         return !CI(G) || !Object.prototype.hasOwnProperty.call(G, "_associatedReadableByteStreamController") ? !1 : G instanceof Qg;
       }
-      function WC(G) {
+      function wC(G) {
         var k = zi(G);
         if (k) {
           if (G._pulling) {
@@ -1413,7 +1413,7 @@ function requirePonyfill() {
           G._pulling = !0;
           var ZI = G._pullAlgorithm();
           M(ZI, function() {
-            return G._pulling = !1, G._pullAgain && (G._pullAgain = !1, WC(G)), null;
+            return G._pulling = !1, G._pullAgain && (G._pullAgain = !1, wC(G)), null;
           }, function(RI) {
             return Eg(G, RI), null;
           });
@@ -1460,7 +1460,7 @@ function requirePonyfill() {
         ZI.bytesFilled += k;
       }
       function vA(G) {
-        G._queueTotalSize === 0 && G._closeRequested ? (vC(G), LC(G._controlledReadableByteStream)) : WC(G);
+        G._queueTotalSize === 0 && G._closeRequested ? (vC(G), LC(G._controlledReadableByteStream)) : wC(G);
       }
       function bA(G) {
         G._byobRequest !== null && (G._byobRequest._associatedReadableByteStreamController = void 0, G._byobRequest._view = null, G._byobRequest = null);
@@ -1521,12 +1521,12 @@ function requirePonyfill() {
             return;
           }
         }
-        G._pendingPullIntos.push(Ng), EA(SI, RI), WC(G);
+        G._pendingPullIntos.push(Ng), EA(SI, RI), wC(G);
       }
       function Ji(G, k) {
         k.readerType === "none" && yC(G);
         var ZI = G._controlledReadableByteStream;
-        if (wA(ZI))
+        if (WA(ZI))
           for (; PA(ZI) > 0; ) {
             var RI = yC(G);
             mA(ZI, RI);
@@ -1551,7 +1551,7 @@ function requirePonyfill() {
         var ZI = G._pendingPullIntos.peek();
         bA(G);
         var RI = G._controlledReadableByteStream._state;
-        RI === "closed" ? Ji(G, ZI) : ki(G, k, ZI), WC(G);
+        RI === "closed" ? Ji(G, ZI) : ki(G, k, ZI), wC(G);
       }
       function yC(G) {
         var k = G._pendingPullIntos.shift();
@@ -1561,7 +1561,7 @@ function requirePonyfill() {
         var k = G._controlledReadableByteStream;
         if (k._state !== "readable" || G._closeRequested || !G._started)
           return !1;
-        if (rg(k) && Xg(k) > 0 || wA(k) && PA(k) > 0)
+        if (rg(k) && Xg(k) > 0 || WA(k) && PA(k) > 0)
           return !0;
         var ZI = QA(G);
         return ZI > 0;
@@ -1607,8 +1607,8 @@ function requirePonyfill() {
               var ag = new Uint8Array(_I, SI, zI);
               ig(ZI, ag, !1);
             }
-          else wA(ZI) ? (TC(G, _I, SI, zI), nA(G)) : TC(G, _I, SI, zI);
-          WC(G);
+          else WA(ZI) ? (TC(G, _I, SI, zI), nA(G)) : TC(G, _I, SI, zI);
+          wC(G);
         }
       }
       function Eg(G, k) {
@@ -1665,7 +1665,7 @@ function requirePonyfill() {
         k._controlledReadableByteStream = G, k._pullAgain = !1, k._pulling = !1, k._byobRequest = null, k._queue = k._queueTotalSize = void 0, fg(k), k._closeRequested = !1, k._started = !1, k._strategyHWM = zI, k._pullAlgorithm = RI, k._cancelAlgorithm = SI, k._autoAllocateChunkSize = _I, k._pendingPullIntos = new KI(), G._readableStreamController = k;
         var cg = ZI();
         M(E(cg), function() {
-          return k._started = !0, WC(k), null;
+          return k._started = !0, wC(k), null;
         }, function(ag) {
           return Eg(k, ag), null;
         });
@@ -1692,7 +1692,7 @@ function requirePonyfill() {
       function xi(G, k, ZI) {
         G._associatedReadableByteStreamController = k, G._view = ZI;
       }
-      function WA(G) {
+      function wA(G) {
         return new TypeError("ReadableStreamBYOBRequest.prototype.".concat(G, " can only be used on a ReadableStreamBYOBRequest"));
       }
       function HC(G) {
@@ -1731,9 +1731,9 @@ function requirePonyfill() {
       function PA(G) {
         return G._reader._readIntoRequests.length;
       }
-      function wA(G) {
+      function WA(G) {
         var k = G._reader;
-        return !(k === void 0 || !wC(k));
+        return !(k === void 0 || !WC(k));
       }
       var cC = (
         /** @class */
@@ -1743,7 +1743,7 @@ function requirePonyfill() {
               throw new TypeError("This stream has already been locked for exclusive reading by another reader");
             if (!GC(k._readableStreamController))
               throw new TypeError("Cannot construct a ReadableStreamBYOBReader for a stream not constructed with a byte source");
-            WI(this, k), this._readIntoRequests = new KI();
+            wI(this, k), this._readIntoRequests = new KI();
           }
           return Object.defineProperty(G.prototype, "closed", {
             /**
@@ -1751,14 +1751,14 @@ function requirePonyfill() {
              * the reader's lock is released before the stream finishes closing.
              */
             get: function() {
-              return wC(this) ? this._closedPromise : _(OC("closed"));
+              return WC(this) ? this._closedPromise : _(OC("closed"));
             },
             enumerable: !1,
             configurable: !0
           }), G.prototype.cancel = function(k) {
-            return k === void 0 && (k = void 0), wC(this) ? this._ownerReadableStream === void 0 ? _(PI("cancel")) : pI(this, k) : _(OC("cancel"));
+            return k === void 0 && (k = void 0), WC(this) ? this._ownerReadableStream === void 0 ? _(PI("cancel")) : pI(this, k) : _(OC("cancel"));
           }, G.prototype.read = function(k, ZI) {
-            if (ZI === void 0 && (ZI = {}), !wC(this))
+            if (ZI === void 0 && (ZI = {}), !WC(this))
               return _(OC("read"));
             if (!ArrayBuffer.isView(k))
               return _(new TypeError("view must be an array buffer view"));
@@ -1799,7 +1799,7 @@ function requirePonyfill() {
             };
             return _A(this, k, SI, ag), cg;
           }, G.prototype.releaseLock = function() {
-            if (!wC(this))
+            if (!WC(this))
               throw OC("releaseLock");
             this._ownerReadableStream !== void 0 && Qi(this);
           }, G;
@@ -1814,7 +1814,7 @@ function requirePonyfill() {
         value: "ReadableStreamBYOBReader",
         configurable: !0
       });
-      function wC(G) {
+      function WC(G) {
         return !CI(G) || !Object.prototype.hasOwnProperty.call(G, "_readIntoRequests") ? !1 : G instanceof cC;
       }
       function _A(G, k, ZI, RI) {
@@ -2225,7 +2225,7 @@ function requirePonyfill() {
         if (zI === "erroring")
           return _(ZI._storedError);
         var _I = Al(ZI);
-        return Wl(RI, k, SI), _I;
+        return wl(RI, k, SI), _I;
       }
       var di = {}, RC = (
         /** @class */
@@ -2331,7 +2331,7 @@ function requirePonyfill() {
       function ci(G) {
         return G._strategyHWM - G._queueTotalSize;
       }
-      function Wl(G, k, ZI) {
+      function wl(G, k, ZI) {
         try {
           _g(G, k, ZI);
         } catch (zI) {
@@ -2355,14 +2355,14 @@ function requirePonyfill() {
           }
           if (G._queue.length !== 0) {
             var RI = eC(G);
-            RI === di ? wl(G) : hl(G, RI);
+            RI === di ? Wl(G) : hl(G, RI);
           }
         }
       }
       function FC(G, k) {
         G._controlledWritableStream._state === "writable" && oi(G, k);
       }
-      function wl(G) {
+      function Wl(G) {
         var k = G._controlledWritableStream;
         cl(k), Fg(G);
         var ZI = G._closeAlgorithm();
@@ -2751,7 +2751,7 @@ function requirePonyfill() {
           RI = !0;
           var vg = {
             _chunkSteps: function(CC) {
-              wI(function() {
+              WI(function() {
                 SI = !1;
                 var Ug = CC, dC = CC;
                 zI || rC(eg._readableStreamController, Ug), _I || rC(Bg._readableStreamController, dC), RI = !1, SI && xg();
@@ -2796,10 +2796,10 @@ function requirePonyfill() {
           });
         }
         function Og() {
-          wC(k) && (xI(k), k = sg(G), xg(k));
+          WC(k) && (xI(k), k = sg(G), xg(k));
           var Jg = {
             _chunkSteps: function(ug) {
-              wI(function() {
+              WI(function() {
                 RI = !1, SI = !1;
                 var Dg = ug, kg = ug;
                 if (!zI && !_I)
@@ -2825,7 +2825,7 @@ function requirePonyfill() {
           dg(k) && (xI(k), k = UA(G), xg(k));
           var Dg = ug ? Bg : eg, kg = ug ? eg : Bg, AC = {
             _chunkSteps: function(mC) {
-              wI(function() {
+              WI(function() {
                 RI = !1, SI = !1;
                 var KC = ug ? _I : zI, xC = ug ? zI : _I;
                 if (xC)
@@ -2884,7 +2884,7 @@ function requirePonyfill() {
         }
         function dC() {
         }
-        return eg = wi(dC, gC, CC), Bg = wi(dC, vg, Ug), xg(k), [eg, Bg];
+        return eg = Wi(dC, gC, CC), Bg = Wi(dC, vg, Ug), xg(k), [eg, Bg];
       }
       function Sl(G) {
         return CI(G) && typeof G.getReader < "u";
@@ -2917,7 +2917,7 @@ function requirePonyfill() {
         function zI(_I) {
           var cg = ZI.iterator, ag;
           try {
-            ag = wg(cg, "return");
+            ag = Wg(cg, "return");
           } catch (Ng) {
             return _(Ng);
           }
@@ -3002,7 +3002,7 @@ function requirePonyfill() {
         var ZI = G?.preventCancel;
         return { preventCancel: !!ZI };
       }
-      function Wi(G, k) {
+      function wi(G, k) {
         YI(G, k);
         var ZI = G?.preventAbort, RI = G?.preventCancel, SI = G?.preventClose, zI = G?.signal;
         return zI !== void 0 && Ql(zI, "".concat(k, " has member 'signal' that")), {
@@ -3061,7 +3061,7 @@ function requirePonyfill() {
             if (ZI === void 0 && (ZI = {}), !ZC(this))
               throw uC("pipeThrough");
             TI(k, 1, "pipeThrough");
-            var RI = Ol(k, "First parameter"), SI = Wi(ZI, "Second parameter");
+            var RI = Ol(k, "First parameter"), SI = wi(ZI, "Second parameter");
             if (tC(this))
               throw new TypeError("ReadableStream.prototype.pipeThrough cannot be used on a locked ReadableStream");
             if (XC(RI.writable))
@@ -3077,7 +3077,7 @@ function requirePonyfill() {
               return _(new TypeError("ReadableStream.prototype.pipeTo's first argument must be a WritableStream"));
             var RI;
             try {
-              RI = Wi(ZI, "Second parameter");
+              RI = wi(ZI, "Second parameter");
             } catch (SI) {
               return _(SI);
             }
@@ -3126,7 +3126,7 @@ function requirePonyfill() {
         var _I = Object.create(sC.prototype);
         return Gi(zI, _I, G, k, ZI, RI, SI), zI;
       }
-      function wi(G, k, ZI) {
+      function Wi(G, k, ZI) {
         var RI = Object.create(jg.prototype);
         KA(RI);
         var SI = Object.create(iC.prototype);
@@ -3148,7 +3148,7 @@ function requirePonyfill() {
           return _(G._storedError);
         LC(G);
         var ZI = G._reader;
-        if (ZI !== void 0 && wC(ZI)) {
+        if (ZI !== void 0 && WC(ZI)) {
           var RI = ZI._readIntoRequests;
           ZI._readIntoRequests = new KI(), RI.forEach(function(zI) {
             zI._closeSteps(void 0);
@@ -3591,7 +3591,7 @@ function requirePdf() {
           (e, A, l) => {
             Object.defineProperty(A, "__esModule", {
               value: !0
-            }), A.VerbosityLevel = A.Util = A.UnknownErrorException = A.UnexpectedResponseException = A.UNSUPPORTED_FEATURES = A.TextRenderingMode = A.StreamType = A.RenderingIntentFlag = A.PermissionFlag = A.PasswordResponses = A.PasswordException = A.PageActionEventType = A.OPS = A.MissingPDFException = A.LINE_FACTOR = A.LINE_DESCENT_FACTOR = A.InvalidPDFException = A.ImageKind = A.IDENTITY_MATRIX = A.FormatError = A.FontType = A.FeatureTest = A.FONT_IDENTITY_MATRIX = A.DocumentActionEventType = A.CMapCompressionType = A.BaseException = A.AnnotationType = A.AnnotationStateModelType = A.AnnotationReviewState = A.AnnotationReplyType = A.AnnotationMode = A.AnnotationMarkedState = A.AnnotationFlag = A.AnnotationFieldFlag = A.AnnotationEditorType = A.AnnotationEditorPrefix = A.AnnotationEditorParamsType = A.AnnotationBorderStyleType = A.AnnotationActionEventType = A.AbortException = void 0, A.arrayByteLength = TI, A.arraysToBytes = QI, A.assert = PI, A.bytesToString = FI, A.createPromiseCapability = Wg, A.createValidAbsoluteUrl = tI, A.escapeString = mg, A.getModificationDate = og, A.getVerbosityLevel = hI, A.info = WI, A.isArrayBuffer = Kg, A.isArrayEqual = Ig, A.isAscii = dg, A.objectFromMap = qI, A.objectSize = OI, A.setVerbosityLevel = VI, A.shadow = mI, A.string32 = fI, A.stringToBytes = kI, A.stringToPDFString = rg, A.stringToUTF16BEString = vI, A.stringToUTF8String = Cg, A.unreachable = xI, A.utf8StringToString = Gg, A.warn = pI, l(2);
+            }), A.VerbosityLevel = A.Util = A.UnknownErrorException = A.UnexpectedResponseException = A.UNSUPPORTED_FEATURES = A.TextRenderingMode = A.StreamType = A.RenderingIntentFlag = A.PermissionFlag = A.PasswordResponses = A.PasswordException = A.PageActionEventType = A.OPS = A.MissingPDFException = A.LINE_FACTOR = A.LINE_DESCENT_FACTOR = A.InvalidPDFException = A.ImageKind = A.IDENTITY_MATRIX = A.FormatError = A.FontType = A.FeatureTest = A.FONT_IDENTITY_MATRIX = A.DocumentActionEventType = A.CMapCompressionType = A.BaseException = A.AnnotationType = A.AnnotationStateModelType = A.AnnotationReviewState = A.AnnotationReplyType = A.AnnotationMode = A.AnnotationMarkedState = A.AnnotationFlag = A.AnnotationFieldFlag = A.AnnotationEditorType = A.AnnotationEditorPrefix = A.AnnotationEditorParamsType = A.AnnotationBorderStyleType = A.AnnotationActionEventType = A.AbortException = void 0, A.arrayByteLength = TI, A.arraysToBytes = QI, A.assert = PI, A.bytesToString = FI, A.createPromiseCapability = wg, A.createValidAbsoluteUrl = tI, A.escapeString = mg, A.getModificationDate = og, A.getVerbosityLevel = hI, A.info = wI, A.isArrayBuffer = Kg, A.isArrayEqual = Ig, A.isAscii = dg, A.objectFromMap = qI, A.objectSize = OI, A.setVerbosityLevel = VI, A.shadow = mI, A.string32 = fI, A.stringToBytes = kI, A.stringToPDFString = rg, A.stringToUTF16BEString = vI, A.stringToUTF8String = Cg, A.unreachable = xI, A.utf8StringToString = Gg, A.warn = pI, l(2);
             const o = [1, 0, 0, 1, 0, 0];
             A.IDENTITY_MATRIX = o;
             const t = [1e-3, 0, 0, 1e-3, 0, 0];
@@ -3790,7 +3790,7 @@ function requirePdf() {
               C: "PageClose"
             };
             A.PageActionEventType = aI;
-            const wI = {
+            const WI = {
               UNKNOWN: "UNKNOWN",
               FLATE: "FLATE",
               LZW: "LZW",
@@ -3802,7 +3802,7 @@ function requirePdf() {
               CCF: "CCF",
               RLX: "RLX"
             };
-            A.StreamType = wI;
+            A.StreamType = WI;
             const GI = {
               UNKNOWN: "UNKNOWN",
               TYPE1: "TYPE1",
@@ -3961,7 +3961,7 @@ function requirePdf() {
             function hI() {
               return yI;
             }
-            function WI(UI) {
+            function wI(UI) {
               yI >= HI.INFOS && console.log(`Info: ${UI}`);
             }
             function pI(UI) {
@@ -4074,7 +4074,7 @@ function requirePdf() {
                 return String.fromCharCode.apply(null, UI);
               const $I = [];
               for (let bg = 0; bg < JI; bg += LI) {
-                const wg = Math.min(bg + LI, JI), EI = UI.subarray(bg, wg);
+                const Wg = Math.min(bg + LI, JI), EI = UI.subarray(bg, Wg);
                 $I.push(String.fromCharCode.apply(null, EI));
               }
               return $I.join("");
@@ -4098,12 +4098,12 @@ function requirePdf() {
               if (JI === 1 && UI[0] instanceof Uint8Array)
                 return UI[0];
               let LI = 0;
-              for (let wg = 0; wg < JI; wg++)
-                LI += TI(UI[wg]);
+              for (let Wg = 0; Wg < JI; Wg++)
+                LI += TI(UI[Wg]);
               let $I = 0;
               const bg = new Uint8Array(LI);
-              for (let wg = 0; wg < JI; wg++) {
-                let EI = UI[wg];
+              for (let Wg = 0; Wg < JI; Wg++) {
+                let EI = UI[Wg];
                 EI instanceof Uint8Array || (typeof EI == "string" ? EI = kI(EI) : EI = new Uint8Array(EI));
                 const jI = EI.byteLength;
                 bg.set(EI, $I), $I += jI;
@@ -4162,12 +4162,12 @@ function requirePdf() {
                 return [$I, bg];
               }
               static applyInverseTransform(JI, LI) {
-                const $I = LI[0] * LI[3] - LI[1] * LI[2], bg = (JI[0] * LI[3] - JI[1] * LI[2] + LI[2] * LI[5] - LI[4] * LI[3]) / $I, wg = (-JI[0] * LI[1] + JI[1] * LI[0] + LI[4] * LI[1] - LI[5] * LI[0]) / $I;
-                return [bg, wg];
+                const $I = LI[0] * LI[3] - LI[1] * LI[2], bg = (JI[0] * LI[3] - JI[1] * LI[2] + LI[2] * LI[5] - LI[4] * LI[3]) / $I, Wg = (-JI[0] * LI[1] + JI[1] * LI[0] + LI[4] * LI[1] - LI[5] * LI[0]) / $I;
+                return [bg, Wg];
               }
               static getAxialAlignedBoundingBox(JI, LI) {
-                const $I = ig.applyTransform(JI, LI), bg = ig.applyTransform(JI.slice(2, 4), LI), wg = ig.applyTransform([JI[0], JI[3]], LI), EI = ig.applyTransform([JI[2], JI[1]], LI);
-                return [Math.min($I[0], bg[0], wg[0], EI[0]), Math.min($I[1], bg[1], wg[1], EI[1]), Math.max($I[0], bg[0], wg[0], EI[0]), Math.max($I[1], bg[1], wg[1], EI[1])];
+                const $I = ig.applyTransform(JI, LI), bg = ig.applyTransform(JI.slice(2, 4), LI), Wg = ig.applyTransform([JI[0], JI[3]], LI), EI = ig.applyTransform([JI[2], JI[1]], LI);
+                return [Math.min($I[0], bg[0], Wg[0], EI[0]), Math.min($I[1], bg[1], Wg[1], EI[1]), Math.max($I[0], bg[0], Wg[0], EI[0]), Math.max($I[1], bg[1], Wg[1], EI[1])];
               }
               static inverseTransform(JI) {
                 const LI = JI[0] * JI[3] - JI[1] * JI[2];
@@ -4177,7 +4177,7 @@ function requirePdf() {
                 return [JI[0] * LI[0] + JI[1] * LI[1] + JI[2] * LI[2], JI[3] * LI[0] + JI[4] * LI[1] + JI[5] * LI[2], JI[6] * LI[0] + JI[7] * LI[1] + JI[8] * LI[2]];
               }
               static singularValueDecompose2dScale(JI) {
-                const LI = [JI[0], JI[2], JI[1], JI[3]], $I = JI[0] * LI[0] + JI[1] * LI[2], bg = JI[0] * LI[1] + JI[1] * LI[3], wg = JI[2] * LI[0] + JI[3] * LI[2], EI = JI[2] * LI[1] + JI[3] * LI[3], jI = ($I + EI) / 2, Ag = Math.sqrt(($I + EI) ** 2 - 4 * ($I * EI - wg * bg)) / 2, Zg = jI + Ag || 1, hg = jI - Ag || 1;
+                const LI = [JI[0], JI[2], JI[1], JI[3]], $I = JI[0] * LI[0] + JI[1] * LI[2], bg = JI[0] * LI[1] + JI[1] * LI[3], Wg = JI[2] * LI[0] + JI[3] * LI[2], EI = JI[2] * LI[1] + JI[3] * LI[3], jI = ($I + EI) / 2, Ag = Math.sqrt(($I + EI) ** 2 - 4 * ($I * EI - Wg * bg)) / 2, Zg = jI + Ag || 1, hg = jI - Ag || 1;
                 return [Math.sqrt(Zg), Math.sqrt(hg)];
               }
               static normalizeRect(JI) {
@@ -4188,14 +4188,14 @@ function requirePdf() {
                 const $I = Math.max(Math.min(JI[0], JI[2]), Math.min(LI[0], LI[2])), bg = Math.min(Math.max(JI[0], JI[2]), Math.max(LI[0], LI[2]));
                 if ($I > bg)
                   return null;
-                const wg = Math.max(Math.min(JI[1], JI[3]), Math.min(LI[1], LI[3])), EI = Math.min(Math.max(JI[1], JI[3]), Math.max(LI[1], LI[3]));
-                return wg > EI ? null : [$I, wg, bg, EI];
+                const Wg = Math.max(Math.min(JI[1], JI[3]), Math.min(LI[1], LI[3])), EI = Math.min(Math.max(JI[1], JI[3]), Math.max(LI[1], LI[3]));
+                return Wg > EI ? null : [$I, Wg, bg, EI];
               }
-              static bezierBoundingBox(JI, LI, $I, bg, wg, EI, jI, Ag) {
+              static bezierBoundingBox(JI, LI, $I, bg, Wg, EI, jI, Ag) {
                 const Zg = [], hg = [[], []];
                 let Vg, Yg, yg, ng, Mg, zg, pg, Hg;
                 for (let Fg = 0; Fg < 2; ++Fg) {
-                  if (Fg === 0 ? (Yg = 6 * JI - 12 * $I + 6 * wg, Vg = -3 * JI + 9 * $I - 9 * wg + 3 * jI, yg = 3 * $I - 3 * JI) : (Yg = 6 * LI - 12 * bg + 6 * EI, Vg = -3 * LI + 9 * bg - 9 * EI + 3 * Ag, yg = 3 * bg - 3 * LI), Math.abs(Vg) < 1e-12) {
+                  if (Fg === 0 ? (Yg = 6 * JI - 12 * $I + 6 * Wg, Vg = -3 * JI + 9 * $I - 9 * Wg + 3 * jI, yg = 3 * $I - 3 * JI) : (Yg = 6 * LI - 12 * bg + 6 * EI, Vg = -3 * LI + 9 * bg - 9 * EI + 3 * Ag, yg = 3 * bg - 3 * LI), Math.abs(Vg) < 1e-12) {
                     if (Math.abs(Yg) < 1e-12)
                       continue;
                     ng = -yg / Yg, 0 < ng && ng < 1 && Zg.push(ng);
@@ -4206,7 +4206,7 @@ function requirePdf() {
                 let Lg = Zg.length, Sg;
                 const Tg = Lg;
                 for (; Lg--; )
-                  ng = Zg[Lg], Sg = 1 - ng, hg[0][Lg] = Sg * Sg * Sg * JI + 3 * Sg * Sg * ng * $I + 3 * Sg * ng * ng * wg + ng * ng * ng * jI, hg[1][Lg] = Sg * Sg * Sg * LI + 3 * Sg * Sg * ng * bg + 3 * Sg * ng * ng * EI + ng * ng * ng * Ag;
+                  ng = Zg[Lg], Sg = 1 - ng, hg[0][Lg] = Sg * Sg * Sg * JI + 3 * Sg * Sg * ng * $I + 3 * Sg * ng * ng * Wg + ng * ng * ng * jI, hg[1][Lg] = Sg * Sg * Sg * LI + 3 * Sg * Sg * ng * bg + 3 * Sg * ng * ng * EI + ng * ng * ng * Ag;
                 return hg[0][Tg] = JI, hg[1][Tg] = LI, hg[0][Tg + 1] = jI, hg[1][Tg + 1] = Ag, hg[0].length = hg[1].length = Tg + 2, [Math.min(...hg[0]), Math.min(...hg[1]), Math.max(...hg[0]), Math.max(...hg[1])];
               }
             }
@@ -4268,7 +4268,7 @@ function requirePdf() {
               let UI = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : /* @__PURE__ */ new Date();
               return [UI.getUTCFullYear().toString(), (UI.getUTCMonth() + 1).toString().padStart(2, "0"), UI.getUTCDate().toString().padStart(2, "0"), UI.getUTCHours().toString().padStart(2, "0"), UI.getUTCMinutes().toString().padStart(2, "0"), UI.getUTCSeconds().toString().padStart(2, "0")].join("");
             }
-            function Wg() {
+            function wg() {
               const UI = /* @__PURE__ */ Object.create(null);
               let JI = !1;
               return Object.defineProperty(UI, "settled", {
@@ -4851,19 +4851,19 @@ function requirePdf() {
             var o = l(54), t = l(7), a = l(17), n = l(22), B = l(45), R = l(40), r = l(38), H = l(55), CI = l(56), j = "Object already initialized", iI = t.TypeError, sI = t.WeakMap, AI, lI, oI, E = function(aI) {
               return oI(aI) ? lI(aI) : AI(aI, {});
             }, _ = function(aI) {
-              return function(wI) {
+              return function(WI) {
                 var GI;
-                if (!n(wI) || (GI = lI(wI)).type !== aI)
+                if (!n(WI) || (GI = lI(WI)).type !== aI)
                   throw iI("Incompatible receiver, " + aI + " required");
                 return GI;
               };
             };
             if (o || r.state) {
               var II = r.state || (r.state = new sI()), M = a(II.get), O = a(II.has), eI = a(II.set);
-              AI = function(aI, wI) {
+              AI = function(aI, WI) {
                 if (O(II, aI))
                   throw new iI(j);
-                return wI.facade = aI, eI(II, aI, wI), wI;
+                return WI.facade = aI, eI(II, aI, WI), WI;
               }, lI = function(aI) {
                 return M(II, aI) || {};
               }, oI = function(aI) {
@@ -4871,10 +4871,10 @@ function requirePdf() {
               };
             } else {
               var dI = H("state");
-              CI[dI] = !0, AI = function(aI, wI) {
+              CI[dI] = !0, AI = function(aI, WI) {
                 if (R(aI, dI))
                   throw new iI(j);
-                return wI.facade = aI, B(aI, dI, wI), wI;
+                return WI.facade = aI, B(aI, dI, WI), WI;
               }, lI = function(aI) {
                 return R(aI, dI) ? aI[dI] : {};
               }, oI = function(aI) {
@@ -5132,7 +5132,7 @@ function requirePdf() {
           /* 78 */
           /***/
           (e, A, l) => {
-            var o = l(79), t = l(9), a = l(7), n = l(23), B = l(22), R = l(40), r = l(80), H = l(33), CI = l(45), j = l(49), iI = l(46).f, sI = l(26), AI = l(82), lI = l(84), oI = l(35), E = l(42), _ = l(53), II = _.enforce, M = _.get, O = a.Int8Array, eI = O && O.prototype, dI = a.Uint8ClampedArray, aI = dI && dI.prototype, wI = O && AI(O), GI = eI && AI(eI), HI = Object.prototype, MI = a.TypeError, KI = oI("toStringTag"), DI = E("TYPED_ARRAY_TAG"), NI = "TypedArrayConstructor", yI = o && !!lI && r(a.opera) !== "Opera", VI = !1, hI, WI, pI, xI = {
+            var o = l(79), t = l(9), a = l(7), n = l(23), B = l(22), R = l(40), r = l(80), H = l(33), CI = l(45), j = l(49), iI = l(46).f, sI = l(26), AI = l(82), lI = l(84), oI = l(35), E = l(42), _ = l(53), II = _.enforce, M = _.get, O = a.Int8Array, eI = O && O.prototype, dI = a.Uint8ClampedArray, aI = dI && dI.prototype, WI = O && AI(O), GI = eI && AI(eI), HI = Object.prototype, MI = a.TypeError, KI = oI("toStringTag"), DI = E("TYPED_ARRAY_TAG"), NI = "TypedArrayConstructor", yI = o && !!lI && r(a.opera) !== "Opera", VI = !1, hI, wI, pI, xI = {
               Int8Array: 1,
               Uint8Array: 1,
               Uint8ClampedArray: 1,
@@ -5166,7 +5166,7 @@ function requirePdf() {
                 return bI;
               throw MI("Target is not a typed array");
             }, BI = function(bI) {
-              if (n(bI) && (!lI || sI(wI, bI)))
+              if (n(bI) && (!lI || sI(WI, bI)))
                 return bI;
               throw MI(H(bI) + " is not a typed array constructor");
             }, gI = function(bI, nI, YI, rI) {
@@ -5198,9 +5198,9 @@ function requirePdf() {
                         } catch {
                         }
                   }
-                  if (!wI[bI] || YI)
+                  if (!WI[bI] || YI)
                     try {
-                      return j(wI, bI, YI ? nI : yI && wI[bI] || nI);
+                      return j(WI, bI, YI ? nI : yI && WI[bI] || nI);
                     } catch {
                     }
                   else
@@ -5211,15 +5211,15 @@ function requirePdf() {
               }
             };
             for (hI in xI)
-              WI = a[hI], pI = WI && WI.prototype, pI ? II(pI)[NI] = WI : yI = !1;
+              wI = a[hI], pI = wI && wI.prototype, pI ? II(pI)[NI] = wI : yI = !1;
             for (hI in PI)
-              WI = a[hI], pI = WI && WI.prototype, pI && (II(pI)[NI] = WI);
-            if ((!yI || !n(wI) || wI === Function.prototype) && (wI = function() {
+              wI = a[hI], pI = wI && wI.prototype, pI && (II(pI)[NI] = wI);
+            if ((!yI || !n(WI) || WI === Function.prototype) && (WI = function() {
               throw MI("Incorrect invocation");
             }, yI))
               for (hI in xI)
-                a[hI] && lI(a[hI], wI);
-            if ((!yI || !GI || GI === HI) && (GI = wI.prototype, yI))
+                a[hI] && lI(a[hI], WI);
+            if ((!yI || !GI || GI === HI) && (GI = WI.prototype, yI))
               for (hI in xI)
                 a[hI] && lI(a[hI].prototype, GI);
             if (yI && AI(aI) !== GI && lI(aI, GI), t && !R(GI, KI)) {
@@ -5241,7 +5241,7 @@ function requirePdf() {
               getTypedArrayConstructor: tI,
               isView: XI,
               isTypedArray: mI,
-              TypedArray: wI,
+              TypedArray: WI,
               TypedArrayPrototype: GI
             };
           },
@@ -5374,13 +5374,13 @@ function requirePdf() {
             var o = l(6), t = l(11), a = l(37), n = l(51), B = l(23), R = l(90), r = l(82), H = l(84), CI = l(92), j = l(45), iI = l(49), sI = l(35), AI = l(88), lI = l(91), oI = n.PROPER, E = n.CONFIGURABLE, _ = lI.IteratorPrototype, II = lI.BUGGY_SAFARI_ITERATORS, M = sI("iterator"), O = "keys", eI = "values", dI = "entries", aI = function() {
               return this;
             };
-            e.exports = function(wI, GI, HI, MI, KI, DI, NI) {
+            e.exports = function(WI, GI, HI, MI, KI, DI, NI) {
               R(HI, GI, MI);
               var yI = function(uI) {
                 if (uI === KI && xI)
                   return xI;
-                if (!II && uI in WI)
-                  return WI[uI];
+                if (!II && uI in wI)
+                  return wI[uI];
                 switch (uI) {
                   case O:
                     return function() {
@@ -5398,8 +5398,8 @@ function requirePdf() {
                 return function() {
                   return new HI(this);
                 };
-              }, VI = GI + " Iterator", hI = !1, WI = wI.prototype, pI = WI[M] || WI["@@iterator"] || KI && WI[KI], xI = !II && pI || yI(KI), PI = GI == "Array" && WI.entries || pI, XI, tI, mI;
-              if (PI && (XI = r(PI.call(new wI())), XI !== Object.prototype && XI.next && (!a && r(XI) !== _ && (H ? H(XI, _) : B(XI[M]) || iI(XI, M, aI)), CI(XI, VI, !0, !0), a && (AI[VI] = aI))), oI && KI == eI && pI && pI.name !== eI && (!a && E ? j(WI, "name", eI) : (hI = !0, xI = function() {
+              }, VI = GI + " Iterator", hI = !1, wI = WI.prototype, pI = wI[M] || wI["@@iterator"] || KI && wI[KI], xI = !II && pI || yI(KI), PI = GI == "Array" && wI.entries || pI, XI, tI, mI;
+              if (PI && (XI = r(PI.call(new WI())), XI !== Object.prototype && XI.next && (!a && r(XI) !== _ && (H ? H(XI, _) : B(XI[M]) || iI(XI, M, aI)), CI(XI, VI, !0, !0), a && (AI[VI] = aI))), oI && KI == eI && pI && pI.name !== eI && (!a && E ? j(wI, "name", eI) : (hI = !0, xI = function() {
                 return t(pI, this);
               })), KI)
                 if (tI = {
@@ -5408,14 +5408,14 @@ function requirePdf() {
                   entries: yI(dI)
                 }, NI)
                   for (mI in tI)
-                    (II || hI || !(mI in WI)) && iI(WI, mI, tI[mI]);
+                    (II || hI || !(mI in wI)) && iI(wI, mI, tI[mI]);
                 else
                   o({
                     target: GI,
                     proto: !0,
                     forced: II || hI
                   }, tI);
-              return (!a || NI) && WI[M] !== xI && iI(WI, M, xI, { name: KI }), AI[GI] = xI, tI;
+              return (!a || NI) && wI[M] !== xI && iI(wI, M, xI, { name: KI }), AI[GI] = xI, tI;
             };
           },
           /* 90 */
@@ -5490,12 +5490,12 @@ function requirePdf() {
           (e, A, l) => {
             var o = l(6), t = l(7), a = l(17), n = l(69), B = l(49), R = l(98), r = l(105), H = l(111), CI = l(23), j = l(22), iI = l(10), sI = l(112), AI = l(92), lI = l(113);
             e.exports = function(oI, E, _) {
-              var II = oI.indexOf("Map") !== -1, M = oI.indexOf("Weak") !== -1, O = II ? "set" : "add", eI = t[oI], dI = eI && eI.prototype, aI = eI, wI = {}, GI = function(VI) {
+              var II = oI.indexOf("Map") !== -1, M = oI.indexOf("Weak") !== -1, O = II ? "set" : "add", eI = t[oI], dI = eI && eI.prototype, aI = eI, WI = {}, GI = function(VI) {
                 var hI = a(dI[VI]);
                 B(dI, VI, VI == "add" ? function(pI) {
                   return hI(this, pI === 0 ? 0 : pI), this;
-                } : VI == "delete" ? function(WI) {
-                  return M && !j(WI) ? !1 : hI(this, WI === 0 ? 0 : WI);
+                } : VI == "delete" ? function(wI) {
+                  return M && !j(wI) ? !1 : hI(this, wI === 0 ? 0 : wI);
                 } : VI == "get" ? function(pI) {
                   return M && !j(pI) ? void 0 : hI(this, pI === 0 ? 0 : pI);
                 } : VI == "has" ? function(pI) {
@@ -5520,18 +5520,18 @@ function requirePdf() {
                 });
                 NI || (aI = E(function(VI, hI) {
                   H(VI, dI);
-                  var WI = lI(new eI(), VI, aI);
-                  return hI != null && r(hI, WI[O], {
-                    that: WI,
+                  var wI = lI(new eI(), VI, aI);
+                  return hI != null && r(hI, wI[O], {
+                    that: wI,
                     AS_ENTRIES: II
-                  }), WI;
+                  }), wI;
                 }), aI.prototype = dI, dI.constructor = aI), (DI || yI) && (GI("delete"), GI("has"), II && GI("get")), (yI || KI) && GI(O), M && dI.clear && delete dI.clear;
               }
-              return wI[oI] = aI, o({
+              return WI[oI] = aI, o({
                 global: !0,
                 constructor: !0,
                 forced: aI != eI
-              }, wI), AI(aI, oI), M || _.setStrong(aI, oI, II), aI;
+              }, WI), AI(aI, oI), M || _.setStrong(aI, oI, II), aI;
             };
           },
           /* 98 */
@@ -5570,8 +5570,8 @@ function requirePdf() {
               O.enable = function() {
               }, sI = !0;
               var eI = r.f, dI = t([].splice), aI = {};
-              aI[AI] = 1, eI(aI).length && (r.f = function(wI) {
-                for (var GI = eI(wI), HI = 0, MI = GI.length; HI < MI; HI++)
+              aI[AI] = 1, eI(aI).length && (r.f = function(WI) {
+                for (var GI = eI(WI), HI = 0, MI = GI.length; HI < MI; HI++)
                   if (GI[HI] === AI) {
                     dI(GI, HI, 1);
                     break;
@@ -5658,7 +5658,7 @@ function requirePdf() {
               this.stopped = lI, this.result = oI;
             }, AI = sI.prototype;
             e.exports = function(lI, oI, E) {
-              var _ = E && E.that, II = !!(E && E.AS_ENTRIES), M = !!(E && E.IS_RECORD), O = !!(E && E.IS_ITERATOR), eI = !!(E && E.INTERRUPTED), dI = o(oI, _), aI, wI, GI, HI, MI, KI, DI, NI = function(VI) {
+              var _ = E && E.that, II = !!(E && E.AS_ENTRIES), M = !!(E && E.IS_RECORD), O = !!(E && E.IS_ITERATOR), eI = !!(E && E.INTERRUPTED), dI = o(oI, _), aI, WI, GI, HI, MI, KI, DI, NI = function(VI) {
                 return aI && j(aI, "normal", VI), new sI(!0, VI);
               }, yI = function(VI) {
                 return II ? (a(VI), eI ? dI(VI[0], VI[1], NI) : dI(VI[0], VI[1])) : eI ? dI(VI, NI) : dI(VI);
@@ -5668,15 +5668,15 @@ function requirePdf() {
               else if (O)
                 aI = lI;
               else {
-                if (wI = CI(lI), !wI)
+                if (WI = CI(lI), !WI)
                   throw iI(n(lI) + " is not iterable");
-                if (B(wI)) {
+                if (B(WI)) {
                   for (GI = 0, HI = R(lI); HI > GI; GI++)
                     if (MI = yI(lI[GI]), MI && r(AI, MI))
                       return MI;
                   return new sI(!1);
                 }
-                aI = H(lI, wI);
+                aI = H(lI, WI);
               }
               for (KI = M ? lI.next : aI.next; !(DI = t(KI, aI)).done; ) {
                 try {
@@ -5815,68 +5815,68 @@ function requirePdf() {
             var o = l(46).f, t = l(71), a = l(115), n = l(106), B = l(111), R = l(105), r = l(89), H = l(116), CI = l(9), j = l(98).fastKey, iI = l(53), sI = iI.set, AI = iI.getterFor;
             e.exports = {
               getConstructor: function(lI, oI, E, _) {
-                var II = lI(function(aI, wI) {
+                var II = lI(function(aI, WI) {
                   B(aI, M), sI(aI, {
                     type: oI,
                     index: t(null),
                     first: void 0,
                     last: void 0,
                     size: 0
-                  }), CI || (aI.size = 0), wI != null && R(wI, aI[_], {
+                  }), CI || (aI.size = 0), WI != null && R(WI, aI[_], {
                     that: aI,
                     AS_ENTRIES: E
                   });
-                }), M = II.prototype, O = AI(oI), eI = function(aI, wI, GI) {
-                  var HI = O(aI), MI = dI(aI, wI), KI, DI;
+                }), M = II.prototype, O = AI(oI), eI = function(aI, WI, GI) {
+                  var HI = O(aI), MI = dI(aI, WI), KI, DI;
                   return MI ? MI.value = GI : (HI.last = MI = {
-                    index: DI = j(wI, !0),
-                    key: wI,
+                    index: DI = j(WI, !0),
+                    key: WI,
                     value: GI,
                     previous: KI = HI.last,
                     next: void 0,
                     removed: !1
                   }, HI.first || (HI.first = MI), KI && (KI.next = MI), CI ? HI.size++ : aI.size++, DI !== "F" && (HI.index[DI] = MI)), aI;
-                }, dI = function(aI, wI) {
-                  var GI = O(aI), HI = j(wI), MI;
+                }, dI = function(aI, WI) {
+                  var GI = O(aI), HI = j(WI), MI;
                   if (HI !== "F")
                     return GI.index[HI];
                   for (MI = GI.first; MI; MI = MI.next)
-                    if (MI.key == wI)
+                    if (MI.key == WI)
                       return MI;
                 };
                 return a(M, {
                   clear: function() {
-                    for (var wI = this, GI = O(wI), HI = GI.index, MI = GI.first; MI; )
+                    for (var WI = this, GI = O(WI), HI = GI.index, MI = GI.first; MI; )
                       MI.removed = !0, MI.previous && (MI.previous = MI.previous.next = void 0), delete HI[MI.index], MI = MI.next;
-                    GI.first = GI.last = void 0, CI ? GI.size = 0 : wI.size = 0;
+                    GI.first = GI.last = void 0, CI ? GI.size = 0 : WI.size = 0;
                   },
                   delete: function(aI) {
-                    var wI = this, GI = O(wI), HI = dI(wI, aI);
+                    var WI = this, GI = O(WI), HI = dI(WI, aI);
                     if (HI) {
                       var MI = HI.next, KI = HI.previous;
-                      delete GI.index[HI.index], HI.removed = !0, KI && (KI.next = MI), MI && (MI.previous = KI), GI.first == HI && (GI.first = MI), GI.last == HI && (GI.last = KI), CI ? GI.size-- : wI.size--;
+                      delete GI.index[HI.index], HI.removed = !0, KI && (KI.next = MI), MI && (MI.previous = KI), GI.first == HI && (GI.first = MI), GI.last == HI && (GI.last = KI), CI ? GI.size-- : WI.size--;
                     }
                     return !!HI;
                   },
-                  forEach: function(wI) {
-                    for (var GI = O(this), HI = n(wI, arguments.length > 1 ? arguments[1] : void 0), MI; MI = MI ? MI.next : GI.first; )
+                  forEach: function(WI) {
+                    for (var GI = O(this), HI = n(WI, arguments.length > 1 ? arguments[1] : void 0), MI; MI = MI ? MI.next : GI.first; )
                       for (HI(MI.value, MI.key, this); MI && MI.removed; )
                         MI = MI.previous;
                   },
-                  has: function(wI) {
-                    return !!dI(this, wI);
+                  has: function(WI) {
+                    return !!dI(this, WI);
                   }
                 }), a(M, E ? {
-                  get: function(wI) {
-                    var GI = dI(this, wI);
+                  get: function(WI) {
+                    var GI = dI(this, WI);
                     return GI && GI.value;
                   },
-                  set: function(wI, GI) {
-                    return eI(this, wI === 0 ? 0 : wI, GI);
+                  set: function(WI, GI) {
+                    return eI(this, WI === 0 ? 0 : WI, GI);
                   }
                 } : {
-                  add: function(wI) {
-                    return eI(this, wI = wI === 0 ? 0 : wI, wI);
+                  add: function(WI) {
+                    return eI(this, WI = WI === 0 ? 0 : WI, WI);
                   }
                 }), CI && o(M, "size", {
                   get: function() {
@@ -5959,18 +5959,18 @@ function requirePdf() {
           /* 119 */
           /***/
           (e, A, l) => {
-            var o = l(37), t = l(6), a = l(7), n = l(25), B = l(17), R = l(10), r = l(42), H = l(23), CI = l(120), j = l(22), iI = l(24), sI = l(105), AI = l(48), lI = l(80), oI = l(40), E = l(101), _ = l(45), II = l(65), M = l(121), O = l(122), eI = l(124), dI = l(29), aI = l(125), wI = l(126), GI = l(127), HI = a.Object, MI = a.Date, KI = a.Error, DI = a.EvalError, NI = a.RangeError, yI = a.ReferenceError, VI = a.SyntaxError, hI = a.TypeError, WI = a.URIError, pI = a.PerformanceMark, xI = a.WebAssembly, PI = xI && xI.CompileError || KI, XI = xI && xI.LinkError || KI, tI = xI && xI.RuntimeError || KI, mI = n("DOMException"), uI = n("Set"), BI = n("Map"), gI = BI.prototype, cI = B(gI.has), bI = B(gI.get), nI = B(gI.set), YI = B(uI.prototype.add), rI = n("Object", "keys"), FI = B([].push), kI = B((!0).valueOf), TI = B(1 .valueOf), QI = B("".valueOf), fI = B(MI.prototype.getTime), OI = r("structuredClone"), qI = "DataCloneError", gg = "Transferring", lg = function(Ig) {
+            var o = l(37), t = l(6), a = l(7), n = l(25), B = l(17), R = l(10), r = l(42), H = l(23), CI = l(120), j = l(22), iI = l(24), sI = l(105), AI = l(48), lI = l(80), oI = l(40), E = l(101), _ = l(45), II = l(65), M = l(121), O = l(122), eI = l(124), dI = l(29), aI = l(125), WI = l(126), GI = l(127), HI = a.Object, MI = a.Date, KI = a.Error, DI = a.EvalError, NI = a.RangeError, yI = a.ReferenceError, VI = a.SyntaxError, hI = a.TypeError, wI = a.URIError, pI = a.PerformanceMark, xI = a.WebAssembly, PI = xI && xI.CompileError || KI, XI = xI && xI.LinkError || KI, tI = xI && xI.RuntimeError || KI, mI = n("DOMException"), uI = n("Set"), BI = n("Map"), gI = BI.prototype, cI = B(gI.has), bI = B(gI.get), nI = B(gI.set), YI = B(uI.prototype.add), rI = n("Object", "keys"), FI = B([].push), kI = B((!0).valueOf), TI = B(1 .valueOf), QI = B("".valueOf), fI = B(MI.prototype.getTime), OI = r("structuredClone"), qI = "DataCloneError", gg = "Transferring", lg = function(Ig) {
               return !R(function() {
-                var og = new a.Set([7]), Wg = Ig(og), UI = Ig(HI(7));
-                return Wg == og || !Wg.has(7) || typeof UI != "object" || UI != 7;
+                var og = new a.Set([7]), wg = Ig(og), UI = Ig(HI(7));
+                return wg == og || !wg.has(7) || typeof UI != "object" || UI != 7;
               }) && Ig;
             }, sg = function(Ig, og) {
               return !R(function() {
-                var Wg = new og(), UI = Ig({
-                  a: Wg,
-                  b: Wg
+                var wg = new og(), UI = Ig({
+                  a: wg,
+                  b: wg
                 });
-                return !(UI && UI.a === UI.b && UI.a instanceof og && UI.a.stack === Wg.stack);
+                return !(UI && UI.a === UI.b && UI.a instanceof og && UI.a.stack === wg.stack);
               });
             }, tg = function(Ig) {
               return !R(function() {
@@ -5991,8 +5991,8 @@ function requirePdf() {
                   return bI(og, Ig);
               } else
                 og = new BI();
-              var Wg = lI(Ig), UI = !1, JI, LI, $I, bg, wg, EI, jI, Ag, Zg, hg;
-              switch (Wg) {
+              var wg = lI(Ig), UI = !1, JI, LI, $I, bg, Wg, EI, jI, Ag, Zg, hg;
+              switch (wg) {
                 case "Array":
                   $I = [], UI = !0;
                   break;
@@ -6029,7 +6029,7 @@ function requirePdf() {
                       $I = hI();
                       break;
                     case "URIError":
-                      $I = WI();
+                      $I = wI();
                       break;
                     case "CompileError":
                       $I = PI();
@@ -6060,34 +6060,34 @@ function requirePdf() {
                 case "Float64Array":
                 case "BigInt64Array":
                 case "BigUint64Array":
-                  JI = a[Wg], j(JI) || vI(Wg), $I = new JI(Cg(Ig.buffer, og), Ig.byteOffset, Wg === "DataView" ? Ig.byteLength : Ig.length);
+                  JI = a[wg], j(JI) || vI(wg), $I = new JI(Cg(Ig.buffer, og), Ig.byteOffset, wg === "DataView" ? Ig.byteLength : Ig.length);
                   break;
                 case "DOMQuad":
                   try {
                     $I = new DOMQuad(Cg(Ig.p1, og), Cg(Ig.p2, og), Cg(Ig.p3, og), Cg(Ig.p4, og));
                   } catch {
-                    mg ? $I = mg(Ig) : vI(Wg);
+                    mg ? $I = mg(Ig) : vI(wg);
                   }
                   break;
                 case "FileList":
                   if (JI = a.DataTransfer, CI(JI)) {
-                    for (bg = new JI(), wg = 0, EI = II(Ig); wg < EI; wg++)
-                      bg.items.add(Cg(Ig[wg], og));
+                    for (bg = new JI(), Wg = 0, EI = II(Ig); Wg < EI; Wg++)
+                      bg.items.add(Cg(Ig[Wg], og));
                     $I = bg.files;
-                  } else mg ? $I = mg(Ig) : vI(Wg);
+                  } else mg ? $I = mg(Ig) : vI(wg);
                   break;
                 case "ImageData":
                   try {
                     $I = new ImageData(Cg(Ig.data, og), Ig.width, Ig.height, { colorSpace: Ig.colorSpace });
                   } catch {
-                    mg ? $I = mg(Ig) : vI(Wg);
+                    mg ? $I = mg(Ig) : vI(wg);
                   }
                   break;
                 default:
                   if (mg)
                     $I = mg(Ig);
                   else
-                    switch (Wg) {
+                    switch (wg) {
                       case "BigInt":
                         $I = HI(Ig.valueOf());
                         break;
@@ -6104,13 +6104,13 @@ function requirePdf() {
                         $I = new MI(fI(Ig));
                         break;
                       case "ArrayBuffer":
-                        JI = a.DataView, !JI && typeof Ig.slice != "function" && vI(Wg);
+                        JI = a.DataView, !JI && typeof Ig.slice != "function" && vI(wg);
                         try {
                           if (typeof Ig.slice == "function")
                             $I = Ig.slice(0);
                           else
-                            for (EI = Ig.byteLength, $I = new ArrayBuffer(EI), Zg = new JI(Ig), hg = new JI($I), wg = 0; wg < EI; wg++)
-                              hg.setUint8(wg, Zg.getUint8(wg));
+                            for (EI = Ig.byteLength, $I = new ArrayBuffer(EI), Zg = new JI(Ig), hg = new JI($I), Wg = 0; Wg < EI; Wg++)
+                              hg.setUint8(Wg, Zg.getUint8(Wg));
                         } catch {
                           throw new mI("ArrayBuffer is detached", qI);
                         }
@@ -6122,50 +6122,50 @@ function requirePdf() {
                         try {
                           $I = Ig.slice(0, Ig.size, Ig.type);
                         } catch {
-                          vI(Wg);
+                          vI(wg);
                         }
                         break;
                       case "DOMPoint":
                       case "DOMPointReadOnly":
-                        JI = a[Wg];
+                        JI = a[wg];
                         try {
                           $I = JI.fromPoint ? JI.fromPoint(Ig) : new JI(Ig.x, Ig.y, Ig.z, Ig.w);
                         } catch {
-                          vI(Wg);
+                          vI(wg);
                         }
                         break;
                       case "DOMRect":
                       case "DOMRectReadOnly":
-                        JI = a[Wg];
+                        JI = a[wg];
                         try {
                           $I = JI.fromRect ? JI.fromRect(Ig) : new JI(Ig.x, Ig.y, Ig.width, Ig.height);
                         } catch {
-                          vI(Wg);
+                          vI(wg);
                         }
                         break;
                       case "DOMMatrix":
                       case "DOMMatrixReadOnly":
-                        JI = a[Wg];
+                        JI = a[wg];
                         try {
                           $I = JI.fromMatrix ? JI.fromMatrix(Ig) : new JI(Ig);
                         } catch {
-                          vI(Wg);
+                          vI(wg);
                         }
                         break;
                       case "AudioData":
                       case "VideoFrame":
-                        H(Ig.clone) || vI(Wg);
+                        H(Ig.clone) || vI(wg);
                         try {
                           $I = Ig.clone();
                         } catch {
-                          dg(Wg);
+                          dg(wg);
                         }
                         break;
                       case "File":
                         try {
                           $I = new File([Ig], Ig.name, Ig);
                         } catch {
-                          vI(Wg);
+                          vI(wg);
                         }
                         break;
                       case "CryptoKey":
@@ -6174,17 +6174,17 @@ function requirePdf() {
                       case "ImageBitmap":
                       case "RTCCertificate":
                       case "WebAssembly.Module":
-                        vI(Wg);
+                        vI(wg);
                       default:
-                        dg(Wg);
+                        dg(wg);
                     }
               }
               if (nI(og, Ig, $I), UI)
-                switch (Wg) {
+                switch (wg) {
                   case "Array":
                   case "Object":
-                    for (jI = rI(Ig), wg = 0, EI = II(jI); wg < EI; wg++)
-                      Ag = jI[wg], E($I, Ag, Cg(Ig[Ag], og));
+                    for (jI = rI(Ig), Wg = 0, EI = II(jI); Wg < EI; Wg++)
+                      Ag = jI[Wg], E($I, Ag, Cg(Ig[Ag], og));
                     break;
                   case "Map":
                     Ig.forEach(function(Vg, Yg) {
@@ -6203,24 +6203,24 @@ function requirePdf() {
                 }
               return $I;
             }, Gg = ig && !R(function() {
-              if (wI && dI > 92 || GI && dI > 94 || aI && dI > 97)
+              if (WI && dI > 92 || GI && dI > 94 || aI && dI > 97)
                 return !1;
               var Ig = new ArrayBuffer(8), og = ig(Ig, { transfer: [Ig] });
               return Ig.byteLength != 0 || og.byteLength != 8;
             }), Kg = function(Ig, og) {
               if (!j(Ig))
                 throw hI("Transfer option cannot be converted to a sequence");
-              var Wg = [];
+              var wg = [];
               sI(Ig, function(Zg) {
-                FI(Wg, AI(Zg));
+                FI(wg, AI(Zg));
               });
-              var UI = 0, JI = II(Wg), LI, $I, bg, wg, EI, jI, Ag;
+              var UI = 0, JI = II(wg), LI, $I, bg, Wg, EI, jI, Ag;
               if (Gg)
-                for (wg = ig(Wg, { transfer: Wg }); UI < JI; )
-                  nI(og, Wg[UI], wg[UI++]);
+                for (Wg = ig(wg, { transfer: wg }); UI < JI; )
+                  nI(og, wg[UI], Wg[UI++]);
               else
                 for (; UI < JI; ) {
-                  if (LI = Wg[UI++], cI(og, LI))
+                  if (LI = wg[UI++], cI(og, LI))
                     throw new mI("Duplicate transferable", qI);
                   switch ($I = lI(LI), $I) {
                     case "ImageBitmap":
@@ -6258,7 +6258,7 @@ function requirePdf() {
               forced: Xg
             }, {
               structuredClone: function(og) {
-                var Wg = M(arguments.length, 1) > 1 && arguments[1] != null ? AI(arguments[1]) : void 0, UI = Wg ? Wg.transfer : void 0, JI;
+                var wg = M(arguments.length, 1) > 1 && arguments[1] != null ? AI(arguments[1]) : void 0, UI = wg ? wg.transfer : void 0, JI;
                 return UI !== void 0 && (JI = new BI(), Kg(UI, JI)), Cg(og, JI);
               }
             });
@@ -6873,14 +6873,14 @@ function requirePdf() {
                 ((t = E).renderTasks || (t.renderTasks = /* @__PURE__ */ new Set())).add(O);
                 const eI = O.task;
                 return Promise.all([E.displayReadyCapability.promise, iI]).then((dI) => {
-                  let [aI, wI] = dI;
+                  let [aI, WI] = dI;
                   if (this.pendingCleanup) {
                     M();
                     return;
                   }
                   this._stats && this._stats.time("Rendering"), O.initializeGraphics({
                     transparency: aI,
-                    optionalContentConfig: wI
+                    optionalContentConfig: WI
                   }), O.operatorListChanged();
                 }).catch(M), eI;
               }
@@ -7920,8 +7920,8 @@ function requirePdf() {
                 const eI = this._storage.get(M);
                 let dI = !1;
                 if (eI !== void 0)
-                  for (const [aI, wI] of Object.entries(O))
-                    eI[aI] !== wI && (dI = !0, eI[aI] = wI);
+                  for (const [aI, WI] of Object.entries(O))
+                    eI[aI] !== WI && (dI = !0, eI[aI] = WI);
                 else
                   dI = !0, this._storage.set(M, O);
                 dI && sI(this, AI, oI).call(this), O instanceof t.AnnotationEditor && typeof this.onAnnotationEditor == "function" && this.onAnnotationEditor(O.constructor._type);
@@ -8077,8 +8077,8 @@ function requirePdf() {
                 this.startX = M.clientX - O.x, this.startY = M.clientY - O.y, M.dataTransfer.setData("text/plain", this.id), M.dataTransfer.effectAllowed = "move";
               }
               setAt(M, O, eI, dI) {
-                const [aI, wI] = this.parent.viewportBaseDimensions;
-                [eI, dI] = this.screenToPageTranslation(eI, dI), this.x = (M + eI) / aI, this.y = (O + dI) / wI, this.div.style.left = `${100 * this.x}%`, this.div.style.top = `${100 * this.y}%`;
+                const [aI, WI] = this.parent.viewportBaseDimensions;
+                [eI, dI] = this.screenToPageTranslation(eI, dI), this.x = (M + eI) / aI, this.y = (O + dI) / WI, this.div.style.left = `${100 * this.x}%`, this.div.style.top = `${100 * this.y}%`;
               }
               translate(M, O) {
                 const [eI, dI] = this.parent.viewportBaseDimensions;
@@ -8120,31 +8120,31 @@ function requirePdf() {
                 M.ctrlKey && !O || M.shiftKey || M.metaKey && O ? this.parent.toggleSelected(this) : this.parent.setSelected(this), R(this, AI, !0);
               }
               getRect(M, O) {
-                const [eI, dI] = this.parent.viewportBaseDimensions, [aI, wI] = this.parent.pageDimensions, GI = aI * M / eI, HI = wI * O / dI, MI = this.x * aI, KI = this.y * wI, DI = this.width * aI, NI = this.height * wI;
+                const [eI, dI] = this.parent.viewportBaseDimensions, [aI, WI] = this.parent.pageDimensions, GI = aI * M / eI, HI = WI * O / dI, MI = this.x * aI, KI = this.y * WI, DI = this.width * aI, NI = this.height * WI;
                 switch (this.rotation) {
                   case 0:
-                    return [MI + GI, wI - KI - HI - NI, MI + GI + DI, wI - KI - HI];
+                    return [MI + GI, WI - KI - HI - NI, MI + GI + DI, WI - KI - HI];
                   case 90:
-                    return [MI + HI, wI - KI + GI, MI + HI + NI, wI - KI + GI + DI];
+                    return [MI + HI, WI - KI + GI, MI + HI + NI, WI - KI + GI + DI];
                   case 180:
-                    return [MI - GI - DI, wI - KI + HI, MI - GI, wI - KI + HI + NI];
+                    return [MI - GI - DI, WI - KI + HI, MI - GI, WI - KI + HI + NI];
                   case 270:
-                    return [MI - HI - NI, wI - KI - GI - DI, MI - HI, wI - KI - GI];
+                    return [MI - HI - NI, WI - KI - GI - DI, MI - HI, WI - KI - GI];
                   default:
                     throw new Error("Invalid rotation");
                 }
               }
               getRectInCurrentCoords(M, O) {
-                const [eI, dI, aI, wI] = M, GI = aI - eI, HI = wI - dI;
+                const [eI, dI, aI, WI] = M, GI = aI - eI, HI = WI - dI;
                 switch (this.rotation) {
                   case 0:
-                    return [eI, O - wI, GI, HI];
+                    return [eI, O - WI, GI, HI];
                   case 90:
                     return [eI, O - dI, HI, GI];
                   case 180:
                     return [aI, O - dI, GI, HI];
                   case 270:
-                    return [aI, O - wI, HI, GI];
+                    return [aI, O - WI, HI, GI];
                   default:
                     throw new Error("Invalid rotation");
                 }
@@ -8182,8 +8182,8 @@ function requirePdf() {
                   id: O.getNextId()
                 });
                 eI.rotation = M.rotation;
-                const [dI, aI] = O.pageDimensions, [wI, GI, HI, MI] = eI.getRectInCurrentCoords(M.rect, aI);
-                return eI.x = wI / dI, eI.y = GI / aI, eI.width = HI / dI, eI.height = MI / aI, eI;
+                const [dI, aI] = O.pageDimensions, [WI, GI, HI, MI] = eI.getRectInCurrentCoords(M.rect, aI);
+                return eI.x = WI / dI, eI.y = GI / aI, eI.width = HI / dI, eI.height = MI / aI, eI;
               }
               remove() {
                 this.div.removeEventListener("focusin", H(this, iI)), this.div.removeEventListener("focusout", H(this, sI)), this.isEmpty() || this.commit(), this.parent.remove(this);
@@ -8312,7 +8312,7 @@ function requirePdf() {
                   mustExec: Kg,
                   type: Ig = NaN,
                   overwriteIfSameType: og = !1,
-                  keepUndo: Wg = !1
+                  keepUndo: wg = !1
                 } = vI;
                 if (Kg && Cg(), j(this, II))
                   return;
@@ -8326,7 +8326,7 @@ function requirePdf() {
                   return;
                 }
                 if (og && j(this, _)[j(this, O)].type === Ig) {
-                  Wg && (UI.undo = j(this, _)[j(this, O)].undo), j(this, _)[j(this, O)] = UI;
+                  wg && (UI.undo = j(this, _)[j(this, O)].undo), j(this, _)[j(this, O)] = UI;
                   return;
                 }
                 const JI = j(this, O) + 1;
@@ -8370,12 +8370,12 @@ function requirePdf() {
               exec(vI, Cg) {
                 if (!this.allKeys.has(Cg.key))
                   return;
-                const Gg = this.callbacks.get(B(this, dI, wI).call(this, Cg));
+                const Gg = this.callbacks.get(B(this, dI, WI).call(this, Cg));
                 Gg && (Gg.bind(vI)(), Cg.stopPropagation(), Cg.preventDefault());
               }
             }
             A.KeyboardManager = aI;
-            function wI(dg) {
+            function WI(dg) {
               dg.altKey && this.buffer.push("alt"), dg.ctrlKey && this.buffer.push("ctrl"), dg.metaKey && this.buffer.push("meta"), dg.shiftKey && this.buffer.push("shift"), this.buffer.push(dg.key);
               const vI = this.buffer.join("+");
               return this.buffer.length = 0, vI;
@@ -8421,7 +8421,7 @@ function requirePdf() {
               }
             }
             A.ColorManager = MI, a(MI, "_colorsMapping", /* @__PURE__ */ new Map([["CanvasText", [0, 0, 0]], ["Canvas", [255, 255, 255]]]));
-            var KI = /* @__PURE__ */ new WeakMap(), DI = /* @__PURE__ */ new WeakMap(), NI = /* @__PURE__ */ new WeakMap(), yI = /* @__PURE__ */ new WeakMap(), VI = /* @__PURE__ */ new WeakMap(), hI = /* @__PURE__ */ new WeakMap(), WI = /* @__PURE__ */ new WeakMap(), pI = /* @__PURE__ */ new WeakMap(), xI = /* @__PURE__ */ new WeakMap(), PI = /* @__PURE__ */ new WeakMap(), XI = /* @__PURE__ */ new WeakMap(), tI = /* @__PURE__ */ new WeakMap(), mI = /* @__PURE__ */ new WeakMap(), uI = /* @__PURE__ */ new WeakMap(), BI = /* @__PURE__ */ new WeakMap(), gI = /* @__PURE__ */ new WeakMap(), cI = /* @__PURE__ */ new WeakMap(), bI = /* @__PURE__ */ new WeakSet(), nI = /* @__PURE__ */ new WeakSet(), YI = /* @__PURE__ */ new WeakSet(), rI = /* @__PURE__ */ new WeakSet(), FI = /* @__PURE__ */ new WeakSet(), kI = /* @__PURE__ */ new WeakSet(), TI = /* @__PURE__ */ new WeakSet(), QI = /* @__PURE__ */ new WeakSet(), fI = /* @__PURE__ */ new WeakSet();
+            var KI = /* @__PURE__ */ new WeakMap(), DI = /* @__PURE__ */ new WeakMap(), NI = /* @__PURE__ */ new WeakMap(), yI = /* @__PURE__ */ new WeakMap(), VI = /* @__PURE__ */ new WeakMap(), hI = /* @__PURE__ */ new WeakMap(), wI = /* @__PURE__ */ new WeakMap(), pI = /* @__PURE__ */ new WeakMap(), xI = /* @__PURE__ */ new WeakMap(), PI = /* @__PURE__ */ new WeakMap(), XI = /* @__PURE__ */ new WeakMap(), tI = /* @__PURE__ */ new WeakMap(), mI = /* @__PURE__ */ new WeakMap(), uI = /* @__PURE__ */ new WeakMap(), BI = /* @__PURE__ */ new WeakMap(), gI = /* @__PURE__ */ new WeakMap(), cI = /* @__PURE__ */ new WeakMap(), bI = /* @__PURE__ */ new WeakSet(), nI = /* @__PURE__ */ new WeakSet(), YI = /* @__PURE__ */ new WeakSet(), rI = /* @__PURE__ */ new WeakSet(), FI = /* @__PURE__ */ new WeakSet(), kI = /* @__PURE__ */ new WeakSet(), TI = /* @__PURE__ */ new WeakSet(), QI = /* @__PURE__ */ new WeakSet(), fI = /* @__PURE__ */ new WeakSet();
             class OI {
               constructor(vI, Cg) {
                 n(this, fI), n(this, QI), n(this, TI), n(this, kI), n(this, FI), n(this, rI), n(this, YI), n(this, nI), n(this, bI), R(this, KI, {
@@ -8442,7 +8442,7 @@ function requirePdf() {
                 }), R(this, hI, {
                   writable: !0,
                   value: 0
-                }), R(this, WI, {
+                }), R(this, wI, {
                   writable: !0,
                   value: null
                 }), R(this, pI, {
@@ -8519,8 +8519,8 @@ function requirePdf() {
                 }));
               }
               registerEditorTypes(vI) {
-                H(this, WI, vI);
-                for (const Cg of j(this, WI))
+                H(this, wI, vI);
+                for (const Cg of j(this, wI))
                   B(this, rI, sg).call(this, Cg.defaultPropertiesToUpdate);
               }
               getId() {
@@ -8550,7 +8550,7 @@ function requirePdf() {
               updateParams(vI, Cg) {
                 for (const Gg of j(this, tI))
                   Gg.updateParams(vI, Cg);
-                for (const Gg of j(this, WI))
+                for (const Gg of j(this, wI))
                   Gg.updateDefaultParams(vI, Cg);
               }
               getEditors(vI) {
@@ -8761,7 +8761,7 @@ function requirePdf() {
           (e, A, l) => {
             Object.defineProperty(A, "__esModule", {
               value: !0
-            }), A.StatTimer = A.RenderingCancelledException = A.PixelsPerInch = A.PageViewport = A.PDFDateString = A.DOMStandardFontDataFactory = A.DOMSVGFactory = A.DOMCanvasFactory = A.DOMCMapReaderFactory = A.AnnotationPrefix = void 0, A.deprecated = eI, A.getColorValues = HI, A.getCurrentTransform = MI, A.getCurrentTransformInverse = KI, A.getFilenameFromUrl = E, A.getPdfFilenameFromUrl = _, A.getRGB = GI, A.getXfaPageViewport = wI, A.isDataScheme = lI, A.isPdfFile = oI, A.isValidFetchUrl = M, A.loadScript = O;
+            }), A.StatTimer = A.RenderingCancelledException = A.PixelsPerInch = A.PageViewport = A.PDFDateString = A.DOMStandardFontDataFactory = A.DOMSVGFactory = A.DOMCanvasFactory = A.DOMCMapReaderFactory = A.AnnotationPrefix = void 0, A.deprecated = eI, A.getColorValues = HI, A.getCurrentTransform = MI, A.getCurrentTransformInverse = KI, A.getFilenameFromUrl = E, A.getPdfFilenameFromUrl = _, A.getRGB = GI, A.getXfaPageViewport = WI, A.isDataScheme = lI, A.isPdfFile = oI, A.isValidFetchUrl = M, A.loadScript = O;
             var o = l(134), t = l(1);
             function a(DI, NI, yI) {
               return NI in DI ? Object.defineProperty(DI, NI, { value: yI, enumerable: !0, configurable: !0, writable: !0 }) : DI[NI] = yI, DI;
@@ -8797,9 +8797,9 @@ function requirePdf() {
                 hI.open("GET", DI, !0), NI && (hI.responseType = "arraybuffer"), hI.onreadystatechange = () => {
                   if (hI.readyState === XMLHttpRequest.DONE) {
                     if (hI.status === 200 || hI.status === 0) {
-                      let WI;
-                      if (NI && hI.response ? WI = new Uint8Array(hI.response) : !NI && hI.responseText && (WI = (0, t.stringToBytes)(hI.responseText)), WI) {
-                        yI(WI);
+                      let wI;
+                      if (NI && hI.response ? wI = new Uint8Array(hI.response) : !NI && hI.responseText && (wI = (0, t.stringToBytes)(hI.responseText)), wI) {
+                        yI(wI);
                         return;
                       }
                     }
@@ -8835,11 +8835,11 @@ function requirePdf() {
                   viewBox: yI,
                   scale: VI,
                   rotation: hI,
-                  offsetX: WI = 0,
+                  offsetX: wI = 0,
                   offsetY: pI = 0,
                   dontFlip: xI = !1
                 } = NI;
-                this.viewBox = yI, this.scale = VI, this.rotation = hI, this.offsetX = WI, this.offsetY = pI;
+                this.viewBox = yI, this.scale = VI, this.rotation = hI, this.offsetX = wI, this.offsetY = pI;
                 const PI = (yI[2] + yI[0]) / 2, XI = (yI[3] + yI[1]) / 2;
                 let tI, mI, uI, BI;
                 switch (hI %= 360, hI < 0 && (hI += 360), hI) {
@@ -8860,7 +8860,7 @@ function requirePdf() {
                 }
                 xI && (uI = -uI, BI = -BI);
                 let gI, cI, bI, nI;
-                tI === 0 ? (gI = Math.abs(XI - yI[1]) * VI + WI, cI = Math.abs(PI - yI[0]) * VI + pI, bI = Math.abs(yI[3] - yI[1]) * VI, nI = Math.abs(yI[2] - yI[0]) * VI) : (gI = Math.abs(PI - yI[0]) * VI + WI, cI = Math.abs(XI - yI[1]) * VI + pI, bI = Math.abs(yI[2] - yI[0]) * VI, nI = Math.abs(yI[3] - yI[1]) * VI), this.transform = [tI * VI, mI * VI, uI * VI, BI * VI, gI - tI * VI * PI - uI * VI * XI, cI - mI * VI * PI - BI * VI * XI], this.width = bI, this.height = nI;
+                tI === 0 ? (gI = Math.abs(XI - yI[1]) * VI + wI, cI = Math.abs(PI - yI[0]) * VI + pI, bI = Math.abs(yI[3] - yI[1]) * VI, nI = Math.abs(yI[2] - yI[0]) * VI) : (gI = Math.abs(PI - yI[0]) * VI + wI, cI = Math.abs(XI - yI[1]) * VI + pI, bI = Math.abs(yI[2] - yI[0]) * VI, nI = Math.abs(yI[3] - yI[1]) * VI), this.transform = [tI * VI, mI * VI, uI * VI, BI * VI, gI - tI * VI * PI - uI * VI * XI, cI - mI * VI * PI - BI * VI * XI], this.width = bI, this.height = nI;
               }
               clone() {
                 let {
@@ -8868,7 +8868,7 @@ function requirePdf() {
                   rotation: yI = this.rotation,
                   offsetX: VI = this.offsetX,
                   offsetY: hI = this.offsetY,
-                  dontFlip: WI = !1
+                  dontFlip: wI = !1
                 } = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
                 return new sI({
                   viewBox: this.viewBox.slice(),
@@ -8876,7 +8876,7 @@ function requirePdf() {
                   rotation: yI,
                   offsetX: VI,
                   offsetY: hI,
-                  dontFlip: WI
+                  dontFlip: wI
                 });
               }
               convertToViewportPoint(NI, yI) {
@@ -8918,13 +8918,13 @@ function requirePdf() {
               if (lI(DI))
                 return (0, t.warn)('getPdfFilenameFromUrl: ignore "data:"-URL for performance reasons.'), NI;
               const yI = /^(?:(?:[^:]+:)?\/\/[^/]+)?([^?#]*)(\?[^#]*)?(#.*)?$/, VI = /[^/?#=]+\.pdf\b(?!.*\.pdf\b)/i, hI = yI.exec(DI);
-              let WI = VI.exec(hI[1]) || VI.exec(hI[2]) || VI.exec(hI[3]);
-              if (WI && (WI = WI[0], WI.includes("%")))
+              let wI = VI.exec(hI[1]) || VI.exec(hI[2]) || VI.exec(hI[3]);
+              if (wI && (wI = wI[0], wI.includes("%")))
                 try {
-                  WI = VI.exec(decodeURIComponent(WI))[0];
+                  wI = VI.exec(decodeURIComponent(wI))[0];
                 } catch {
                 }
-              return WI || NI;
+              return wI || NI;
             }
             class II {
               constructor() {
@@ -8970,8 +8970,8 @@ function requirePdf() {
               let NI = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : !1;
               return new Promise((yI, VI) => {
                 const hI = document.createElement("script");
-                hI.src = DI, hI.onload = function(WI) {
-                  NI && hI.remove(), yI(WI);
+                hI.src = DI, hI.onload = function(wI) {
+                  NI && hI.remove(), yI(wI);
                 }, hI.onerror = function() {
                   VI(new Error(`Cannot load script at: ${hI.src}`));
                 }, (document.head || document.documentElement).append(hI);
@@ -8992,8 +8992,8 @@ function requirePdf() {
                 const VI = parseInt(yI[1], 10);
                 let hI = parseInt(yI[2], 10);
                 hI = hI >= 1 && hI <= 12 ? hI - 1 : 0;
-                let WI = parseInt(yI[3], 10);
-                WI = WI >= 1 && WI <= 31 ? WI : 1;
+                let wI = parseInt(yI[3], 10);
+                wI = wI >= 1 && wI <= 31 ? wI : 1;
                 let pI = parseInt(yI[4], 10);
                 pI = pI >= 0 && pI <= 23 ? pI : 0;
                 let xI = parseInt(yI[5], 10);
@@ -9004,19 +9004,19 @@ function requirePdf() {
                 let tI = parseInt(yI[8], 10);
                 tI = tI >= 0 && tI <= 23 ? tI : 0;
                 let mI = parseInt(yI[9], 10) || 0;
-                return mI = mI >= 0 && mI <= 59 ? mI : 0, XI === "-" ? (pI += tI, xI += mI) : XI === "+" && (pI -= tI, xI -= mI), new Date(Date.UTC(VI, hI, WI, pI, xI, PI));
+                return mI = mI >= 0 && mI <= 59 ? mI : 0, XI === "-" ? (pI += tI, xI += mI) : XI === "+" && (pI -= tI, xI -= mI), new Date(Date.UTC(VI, hI, wI, pI, xI, PI));
               }
             }
             A.PDFDateString = aI;
-            function wI(DI, NI) {
+            function WI(DI, NI) {
               let {
                 scale: yI = 1,
                 rotation: VI = 0
               } = NI;
               const {
                 width: hI,
-                height: WI
-              } = DI.attributes.style, pI = [0, 0, parseInt(hI), parseInt(WI)];
+                height: wI
+              } = DI.attributes.style, pI = [0, 0, parseInt(hI), parseInt(wI)];
               return new sI({
                 viewBox: pI,
                 scale: yI,
@@ -9046,10 +9046,10 @@ function requirePdf() {
                 b: yI,
                 c: VI,
                 d: hI,
-                e: WI,
+                e: wI,
                 f: pI
               } = DI.getTransform();
-              return [NI, yI, VI, hI, WI, pI];
+              return [NI, yI, VI, hI, wI, pI];
             }
             function KI(DI) {
               const {
@@ -9057,10 +9057,10 @@ function requirePdf() {
                 b: yI,
                 c: VI,
                 d: hI,
-                e: WI,
+                e: wI,
                 f: pI
               } = DI.getTransform().invertSelf();
-              return [NI, yI, VI, hI, WI, pI];
+              return [NI, yI, VI, hI, wI, pI];
             }
           },
           /* 134 */
@@ -9368,8 +9368,8 @@ function requirePdf() {
                 for (iI = 0, sI = _.length - 3; iI < sI; iI += 4)
                   dI = dI - eI + CI(_, iI) | 0;
                 iI < _.length && (dI = dI - eI + CI(_ + "XXX", iI) | 0), II = j(II, O, 4, (0, o.string32)(dI));
-                const aI = `url(data:font/opentype;base64,${btoa(II)});`, wI = `@font-face {font-family:"${_}";src:${aI}}`;
-                this.insertRule(wI);
+                const aI = `url(data:font/opentype;base64,${btoa(II)});`, WI = `@font-face {font-family:"${_}";src:${aI}}`;
+                this.insertRule(WI);
                 const GI = [];
                 for (const MI of r)
                   GI.push(MI.loadedName);
@@ -9749,7 +9749,7 @@ function requirePdf() {
               }
               XI.setLineDash !== void 0 && (tI.setLineDash(XI.getLineDash()), tI.lineDashOffset = XI.lineDashOffset);
             }
-            function wI(XI, tI) {
+            function WI(XI, tI) {
               XI.strokeStyle = XI.fillStyle = tI || "#000000", XI.fillRule = "nonzero", XI.globalAlpha = 1, XI.lineWidth = 1, XI.lineCap = "butt", XI.lineJoin = "miter", XI.miterLimit = 10, XI.globalCompositeOperation = "source-over", XI.font = "10px sans-serif", XI.setLineDash !== void 0 && (XI.setLineDash([]), XI.lineDashOffset = 0);
             }
             function GI(XI, tI, mI, uI) {
@@ -9798,7 +9798,7 @@ function requirePdf() {
               const uI = Math.fround((globalThis.devicePixelRatio || 1) * o.PixelsPerInch.PDF_TO_CSS_UNITS);
               return tI !== void 0 ? tI : mI[0] <= uI || mI[1] <= uI;
             }
-            const yI = ["butt", "round", "square"], VI = ["miter", "round", "bevel"], hI = {}, WI = {};
+            const yI = ["butt", "round", "square"], VI = ["miter", "round", "bevel"], hI = {}, wI = {};
             var pI = /* @__PURE__ */ new WeakSet();
             class xI {
               constructor(tI, mI, uI, BI, gI, cI, bI, nI) {
@@ -9836,7 +9836,7 @@ function requirePdf() {
                   const YI = this.cachedCanvases.getCanvas("transparent", cI, bI);
                   this.compositeCtx = this.ctx, this.transparentCanvas = YI.canvas, this.ctx = YI.context, this.ctx.save(), this.ctx.transform(...(0, o.getCurrentTransform)(this.compositeCtx));
                 }
-                this.ctx.save(), wI(this.ctx, this.foregroundColor), mI && (this.ctx.transform(...mI), this.outputScaleX = mI[0], this.outputScaleY = mI[0]), this.ctx.transform(...uI.transform), this.viewportScale = uI.scale, this.baseTransform = (0, o.getCurrentTransform)(this.ctx), this.imageLayer && ((0, o.deprecated)("The `imageLayer` functionality will be removed in the future."), this.imageLayer.beginLayout());
+                this.ctx.save(), WI(this.ctx, this.foregroundColor), mI && (this.ctx.transform(...mI), this.outputScaleX = mI[0], this.outputScaleY = mI[0]), this.ctx.transform(...uI.transform), this.viewportScale = uI.scale, this.baseTransform = (0, o.getCurrentTransform)(this.ctx), this.imageLayer && ((0, o.deprecated)("The `imageLayer` functionality will be removed in the future."), this.imageLayer.beginLayout());
               }
               executeOperatorList(tI, mI, uI, BI) {
                 const gI = tI.argsArray, cI = tI.fnArray;
@@ -10098,7 +10098,7 @@ function requirePdf() {
                 this.pendingClip = hI;
               }
               eoClip() {
-                this.pendingClip = WI;
+                this.pendingClip = wI;
               }
               beginText() {
                 this.current.textMatrix = t.IDENTITY_MATRIX, this.current.textMatrixScale = 1, this.current.x = this.current.lineX = 0, this.current.y = this.current.lineY = 0;
@@ -10216,8 +10216,8 @@ function requirePdf() {
                   const rg = (ig.isSpace ? nI : 0) + bI, mg = ig.fontChar, dg = ig.accent;
                   let vI, Cg, Gg = ig.width;
                   if (kI) {
-                    const Ig = ig.vmetric || QI, og = -(ig.vmetric ? Ig[1] : Gg * 0.5) * fI, Wg = Ig[2] * fI;
-                    Gg = Ig ? -Ig[0] : Gg, vI = og / cI, Cg = (sg + Wg) / cI;
+                    const Ig = ig.vmetric || QI, og = -(ig.vmetric ? Ig[1] : Gg * 0.5) * fI, wg = Ig[2] * fI;
+                    Gg = Ig ? -Ig[0] : Gg, vI = og / cI, Cg = (sg + wg) / cI;
                   } else
                     vI = sg / cI, Cg = 0;
                   if (uI.remeasure && Gg > 0) {
@@ -10372,7 +10372,7 @@ function requirePdf() {
                 }
               }
               beginAnnotation(tI, mI, uI, BI, gI) {
-                if (H(this, pI, PI).call(this), wI(this.ctx, this.foregroundColor), this.ctx.save(), this.save(), this.baseTransform && this.ctx.setTransform(...this.baseTransform), Array.isArray(mI) && mI.length === 4) {
+                if (H(this, pI, PI).call(this), WI(this.ctx, this.foregroundColor), this.ctx.save(), this.save(), this.baseTransform && this.ctx.setTransform(...this.baseTransform), Array.isArray(mI) && mI.length === 4) {
                   const cI = mI[2] - mI[0], bI = mI[3] - mI[1];
                   if (gI && this.annotationCanvasMap) {
                     uI = uI.slice(), uI[4] -= mI[0], uI[5] -= mI[1], mI = mI.slice(), mI[0] = mI[1] = 0, mI[2] = cI, mI[3] = bI;
@@ -10384,9 +10384,9 @@ function requirePdf() {
                       canvas: TI,
                       context: QI
                     } = this.annotationCanvas;
-                    this.annotationCanvasMap.set(tI, TI), this.annotationCanvas.savedCtx = this.ctx, this.ctx = QI, this.ctx.setTransform(nI, 0, 0, -YI, 0, bI * YI), wI(this.ctx, this.foregroundColor);
+                    this.annotationCanvasMap.set(tI, TI), this.annotationCanvas.savedCtx = this.ctx, this.ctx = QI, this.ctx.setTransform(nI, 0, 0, -YI, 0, bI * YI), WI(this.ctx, this.foregroundColor);
                   } else
-                    wI(this.ctx, this.foregroundColor), this.ctx.rect(mI[0], mI[1], cI, bI), this.ctx.clip(), this.endPath();
+                    WI(this.ctx, this.foregroundColor), this.ctx.rect(mI[0], mI[1], cI, bI), this.ctx.clip(), this.endPath();
                 }
                 this.current = new O(this.ctx.canvas.width, this.ctx.canvas.height), this.transform(...uI), this.transform(...BI);
               }
@@ -10546,7 +10546,7 @@ function requirePdf() {
                 const mI = this.current.isEmptyClip();
                 this.pendingClip && this.current.updateClipFromPath(), this.pendingClip || this.compose(tI);
                 const uI = this.ctx;
-                this.pendingClip && (mI || (this.pendingClip === WI ? uI.clip("evenodd") : uI.clip()), this.pendingClip = null), this.current.startNewPathAndClipBox(this.current.clipBox), uI.beginPath();
+                this.pendingClip && (mI || (this.pendingClip === wI ? uI.clip("evenodd") : uI.clip()), this.pendingClip = null), this.current.startNewPathAndClipBox(this.current.clipBox), uI.beginPath();
               }
               getSinglePixelWidth() {
                 if (!this._cachedGetSinglePixelWidth) {
@@ -10659,8 +10659,8 @@ function requirePdf() {
               getPattern(E, _, II, M) {
                 let O;
                 if (M === n.STROKE || M === n.FILL) {
-                  const eI = _.current.getClippedPathBoundingBox(M, (0, t.getCurrentTransform)(E)) || [0, 0, 0, 0], dI = Math.ceil(eI[2] - eI[0]) || 1, aI = Math.ceil(eI[3] - eI[1]) || 1, wI = _.cachedCanvases.getCanvas("pattern", dI, aI, !0), GI = wI.context;
-                  GI.clearRect(0, 0, GI.canvas.width, GI.canvas.height), GI.beginPath(), GI.rect(0, 0, GI.canvas.width, GI.canvas.height), GI.translate(-eI[0], -eI[1]), II = o.Util.transform(II, [1, 0, 0, 1, eI[0], eI[1]]), GI.transform(..._.baseTransform), this.matrix && GI.transform(...this.matrix), B(GI, this._bbox), GI.fillStyle = this._createGradient(GI), GI.fill(), O = E.createPattern(wI.canvas, "no-repeat");
+                  const eI = _.current.getClippedPathBoundingBox(M, (0, t.getCurrentTransform)(E)) || [0, 0, 0, 0], dI = Math.ceil(eI[2] - eI[0]) || 1, aI = Math.ceil(eI[3] - eI[1]) || 1, WI = _.cachedCanvases.getCanvas("pattern", dI, aI, !0), GI = WI.context;
+                  GI.clearRect(0, 0, GI.canvas.width, GI.canvas.height), GI.beginPath(), GI.rect(0, 0, GI.canvas.width, GI.canvas.height), GI.translate(-eI[0], -eI[1]), II = o.Util.transform(II, [1, 0, 0, 1, eI[0], eI[1]]), GI.transform(..._.baseTransform), this.matrix && GI.transform(...this.matrix), B(GI, this._bbox), GI.fillStyle = this._createGradient(GI), GI.fill(), O = E.createPattern(WI.canvas, "no-repeat");
                   const HI = new DOMMatrix(II);
                   try {
                     O.setTransform(HI);
@@ -10673,24 +10673,24 @@ function requirePdf() {
               }
             }
             function H(oI, E, _, II, M, O, eI, dI) {
-              const aI = E.coords, wI = E.colors, GI = oI.data, HI = oI.width * 4;
+              const aI = E.coords, WI = E.colors, GI = oI.data, HI = oI.width * 4;
               let MI;
               aI[_ + 1] > aI[II + 1] && (MI = _, _ = II, II = MI, MI = O, O = eI, eI = MI), aI[II + 1] > aI[M + 1] && (MI = II, II = M, M = MI, MI = eI, eI = dI, dI = MI), aI[_ + 1] > aI[II + 1] && (MI = _, _ = II, II = MI, MI = O, O = eI, eI = MI);
               const KI = (aI[_] + E.offsetX) * E.scaleX, DI = (aI[_ + 1] + E.offsetY) * E.scaleY, NI = (aI[II] + E.offsetX) * E.scaleX, yI = (aI[II + 1] + E.offsetY) * E.scaleY, VI = (aI[M] + E.offsetX) * E.scaleX, hI = (aI[M + 1] + E.offsetY) * E.scaleY;
               if (DI >= hI)
                 return;
-              const WI = wI[O], pI = wI[O + 1], xI = wI[O + 2], PI = wI[eI], XI = wI[eI + 1], tI = wI[eI + 2], mI = wI[dI], uI = wI[dI + 1], BI = wI[dI + 2], gI = Math.round(DI), cI = Math.round(hI);
+              const wI = WI[O], pI = WI[O + 1], xI = WI[O + 2], PI = WI[eI], XI = WI[eI + 1], tI = WI[eI + 2], mI = WI[dI], uI = WI[dI + 1], BI = WI[dI + 2], gI = Math.round(DI), cI = Math.round(hI);
               let bI, nI, YI, rI, FI, kI, TI, QI;
               for (let fI = gI; fI <= cI; fI++) {
                 if (fI < yI) {
                   let sg;
-                  fI < DI ? sg = 0 : sg = (DI - fI) / (DI - yI), bI = KI - (KI - NI) * sg, nI = WI - (WI - PI) * sg, YI = pI - (pI - XI) * sg, rI = xI - (xI - tI) * sg;
+                  fI < DI ? sg = 0 : sg = (DI - fI) / (DI - yI), bI = KI - (KI - NI) * sg, nI = wI - (wI - PI) * sg, YI = pI - (pI - XI) * sg, rI = xI - (xI - tI) * sg;
                 } else {
                   let sg;
                   fI > hI ? sg = 1 : yI === hI ? sg = 0 : sg = (yI - fI) / (yI - hI), bI = NI - (NI - VI) * sg, nI = PI - (PI - mI) * sg, YI = XI - (XI - uI) * sg, rI = tI - (tI - BI) * sg;
                 }
                 let OI;
-                fI < DI ? OI = 0 : fI > hI ? OI = 1 : OI = (DI - fI) / (DI - hI), FI = KI - (KI - VI) * OI, kI = WI - (WI - mI) * OI, TI = pI - (pI - uI) * OI, QI = xI - (xI - BI) * OI;
+                fI < DI ? OI = 0 : fI > hI ? OI = 1 : OI = (DI - fI) / (DI - hI), FI = KI - (KI - VI) * OI, kI = wI - (wI - mI) * OI, TI = pI - (pI - uI) * OI, QI = xI - (xI - BI) * OI;
                 const qI = Math.round(Math.min(bI, FI)), gg = Math.round(Math.max(bI, FI));
                 let lg = HI * fI + qI * 4;
                 for (let sg = qI; sg <= gg; sg++)
@@ -10702,10 +10702,10 @@ function requirePdf() {
               let O, eI;
               switch (E.type) {
                 case "lattice":
-                  const dI = E.verticesPerRow, aI = Math.floor(II.length / dI) - 1, wI = dI - 1;
+                  const dI = E.verticesPerRow, aI = Math.floor(II.length / dI) - 1, WI = dI - 1;
                   for (O = 0; O < aI; O++) {
                     let GI = O * dI;
-                    for (let HI = 0; HI < wI; HI++, GI++)
+                    for (let HI = 0; HI < WI; HI++, GI++)
                       H(oI, _, II[GI], II[GI + 1], II[GI + dI], M[GI], M[GI + 1], M[GI + dI]), H(oI, _, II[GI + dI + 1], II[GI + 1], II[GI + dI], M[GI + dI + 1], M[GI + 1], M[GI + dI]);
                   }
                   break;
@@ -10722,14 +10722,14 @@ function requirePdf() {
                 super(), this._coords = E[2], this._colors = E[3], this._figures = E[4], this._bounds = E[5], this._bbox = E[7], this._background = E[8], this.matrix = null;
               }
               _createMeshCanvas(E, _, II) {
-                const dI = Math.floor(this._bounds[0]), aI = Math.floor(this._bounds[1]), wI = Math.ceil(this._bounds[2]) - dI, GI = Math.ceil(this._bounds[3]) - aI, HI = Math.min(Math.ceil(Math.abs(wI * E[0] * 1.1)), 3e3), MI = Math.min(Math.ceil(Math.abs(GI * E[1] * 1.1)), 3e3), KI = wI / HI, DI = GI / MI, NI = {
+                const dI = Math.floor(this._bounds[0]), aI = Math.floor(this._bounds[1]), WI = Math.ceil(this._bounds[2]) - dI, GI = Math.ceil(this._bounds[3]) - aI, HI = Math.min(Math.ceil(Math.abs(WI * E[0] * 1.1)), 3e3), MI = Math.min(Math.ceil(Math.abs(GI * E[1] * 1.1)), 3e3), KI = WI / HI, DI = GI / MI, NI = {
                   coords: this._coords,
                   colors: this._colors,
                   offsetX: -dI,
                   offsetY: -aI,
                   scaleX: 1 / KI,
                   scaleY: 1 / DI
-                }, yI = HI + 2 * 2, VI = MI + 2 * 2, hI = II.getCanvas("mesh", yI, VI, !1), WI = hI.context, pI = WI.createImageData(HI, MI);
+                }, yI = HI + 2 * 2, VI = MI + 2 * 2, hI = II.getCanvas("mesh", yI, VI, !1), wI = hI.context, pI = wI.createImageData(HI, MI);
                 if (_) {
                   const PI = pI.data;
                   for (let XI = 0, tI = PI.length; XI < tI; XI += 4)
@@ -10737,7 +10737,7 @@ function requirePdf() {
                 }
                 for (const PI of this._figures)
                   CI(pI, PI, NI);
-                return WI.putImageData(pI, 2, 2), {
+                return wI.putImageData(pI, 2, 2), {
                   canvas: hI.canvas,
                   offsetX: dI - 2 * KI,
                   offsetY: aI - 2 * DI,
@@ -10786,13 +10786,13 @@ function requirePdf() {
                 this.operatorList = E[2], this.matrix = E[3] || [1, 0, 0, 1, 0, 0], this.bbox = E[4], this.xstep = E[5], this.ystep = E[6], this.paintType = E[7], this.tilingType = E[8], this.color = _, this.ctx = II, this.canvasGraphicsFactory = M, this.baseTransform = O;
               }
               createPatternCanvas(E) {
-                const _ = this.operatorList, II = this.bbox, M = this.xstep, O = this.ystep, eI = this.paintType, dI = this.tilingType, aI = this.color, wI = this.canvasGraphicsFactory;
+                const _ = this.operatorList, II = this.bbox, M = this.xstep, O = this.ystep, eI = this.paintType, dI = this.tilingType, aI = this.color, WI = this.canvasGraphicsFactory;
                 (0, o.info)("TilingType: " + dI);
-                const GI = II[0], HI = II[1], MI = II[2], KI = II[3], DI = o.Util.singularValueDecompose2dScale(this.matrix), NI = o.Util.singularValueDecompose2dScale(this.baseTransform), yI = [DI[0] * NI[0], DI[1] * NI[1]], VI = this.getSizeAndScale(M, this.ctx.canvas.width, yI[0]), hI = this.getSizeAndScale(O, this.ctx.canvas.height, yI[1]), WI = E.cachedCanvases.getCanvas("pattern", VI.size, hI.size, !0), pI = WI.context, xI = wI.createCanvasGraphics(pI);
+                const GI = II[0], HI = II[1], MI = II[2], KI = II[3], DI = o.Util.singularValueDecompose2dScale(this.matrix), NI = o.Util.singularValueDecompose2dScale(this.baseTransform), yI = [DI[0] * NI[0], DI[1] * NI[1]], VI = this.getSizeAndScale(M, this.ctx.canvas.width, yI[0]), hI = this.getSizeAndScale(O, this.ctx.canvas.height, yI[1]), wI = E.cachedCanvases.getCanvas("pattern", VI.size, hI.size, !0), pI = wI.context, xI = WI.createCanvasGraphics(pI);
                 xI.groupLevel = E.groupLevel, this.setFillAndStrokeStyleToContext(xI, eI, aI);
                 let PI = GI, XI = HI, tI = MI, mI = KI;
                 return GI < 0 && (PI = 0, tI += Math.abs(GI)), HI < 0 && (XI = 0, mI += Math.abs(HI)), pI.translate(-(VI.scale * PI), -(hI.scale * XI)), xI.transform(VI.scale, 0, 0, hI.scale, 0, 0), pI.save(), this.clipBbox(xI, PI, XI, tI, mI), xI.baseTransform = (0, t.getCurrentTransform)(xI.ctx), xI.executeOperatorList(_), xI.endDrawing(), {
-                  canvas: WI.canvas,
+                  canvas: wI.canvas,
                   scaleX: VI.scale,
                   scaleY: hI.scale,
                   offsetX: PI,
@@ -10836,8 +10836,8 @@ function requirePdf() {
                 const aI = E.createPattern(eI.canvas, "repeat");
                 try {
                   aI.setTransform(dI);
-                } catch (wI) {
-                  (0, o.warn)(`TilingPattern.getPattern: "${wI?.message}".`);
+                } catch (WI) {
+                  (0, o.warn)(`TilingPattern.getPattern: "${WI?.message}".`);
                 }
                 return aI;
               }
@@ -11297,8 +11297,8 @@ function requirePdf() {
                 throw new TypeError("Cannot initialize the same private elements twice on an object");
             }
             function R(eI, dI, aI) {
-              var wI = CI(eI, dI, "set");
-              return r(eI, wI, aI), aI;
+              var WI = CI(eI, dI, "set");
+              return r(eI, WI, aI), aI;
             }
             function r(eI, dI, aI) {
               if (dI.set)
@@ -11364,8 +11364,8 @@ function requirePdf() {
                   for (const aI of dI.off)
                     H(this, oI).get(aI)._setVisible(iI, !1);
                   R(this, E, /* @__PURE__ */ new Map());
-                  for (const [aI, wI] of H(this, oI))
-                    H(this, E).set(aI, wI.visible);
+                  for (const [aI, WI] of H(this, oI))
+                    H(this, E).set(aI, WI.visible);
                 }
               }
               isVisible(dI) {
@@ -11427,8 +11427,8 @@ function requirePdf() {
                 if (H(this, lI) !== null)
                   return H(this, lI);
                 for (const [dI, aI] of H(this, oI)) {
-                  const wI = H(this, E).get(dI);
-                  if (aI.visible !== wI)
+                  const WI = H(this, E).get(dI);
+                  if (aI.visible !== WI)
                     return R(this, lI, !1);
                 }
                 return R(this, lI, !0);
@@ -11449,8 +11449,8 @@ function requirePdf() {
               if (dI < 2)
                 return !0;
               const aI = eI[0];
-              for (let wI = 1; wI < dI; wI++) {
-                const GI = eI[wI];
+              for (let WI = 1; WI < dI; WI++) {
+                const GI = eI[WI];
                 let HI;
                 if (Array.isArray(GI))
                   HI = a(this, II, O).call(this, GI);
@@ -11760,50 +11760,50 @@ function requirePdf() {
             function B(VI, hI) {
               H(VI, hI), hI.add(VI);
             }
-            function R(VI, hI, WI) {
-              return hI in VI ? Object.defineProperty(VI, hI, { value: WI, enumerable: !0, configurable: !0, writable: !0 }) : VI[hI] = WI, VI;
+            function R(VI, hI, wI) {
+              return hI in VI ? Object.defineProperty(VI, hI, { value: wI, enumerable: !0, configurable: !0, writable: !0 }) : VI[hI] = wI, VI;
             }
-            function r(VI, hI, WI) {
-              H(VI, hI), hI.set(VI, WI);
+            function r(VI, hI, wI) {
+              H(VI, hI), hI.set(VI, wI);
             }
             function H(VI, hI) {
               if (hI.has(VI))
                 throw new TypeError("Cannot initialize the same private elements twice on an object");
             }
-            function CI(VI, hI, WI) {
+            function CI(VI, hI, wI) {
               if (!hI.has(VI))
                 throw new TypeError("attempted to get private field on non-instance");
-              return WI;
+              return wI;
             }
             function j(VI, hI) {
-              var WI = AI(VI, hI, "get");
-              return iI(VI, WI);
+              var wI = AI(VI, hI, "get");
+              return iI(VI, wI);
             }
             function iI(VI, hI) {
               return hI.get ? hI.get.call(VI) : hI.value;
             }
-            function sI(VI, hI, WI) {
+            function sI(VI, hI, wI) {
               var pI = AI(VI, hI, "set");
-              return lI(VI, pI, WI), WI;
+              return lI(VI, pI, wI), wI;
             }
-            function AI(VI, hI, WI) {
+            function AI(VI, hI, wI) {
               if (!hI.has(VI))
-                throw new TypeError("attempted to " + WI + " private field on non-instance");
+                throw new TypeError("attempted to " + wI + " private field on non-instance");
               return hI.get(VI);
             }
-            function lI(VI, hI, WI) {
+            function lI(VI, hI, wI) {
               if (hI.set)
-                hI.set.call(VI, WI);
+                hI.set.call(VI, wI);
               else {
                 if (!hI.writable)
                   throw new TypeError("attempted to set read only private field");
-                hI.value = WI;
+                hI.value = wI;
               }
             }
-            var oI = /* @__PURE__ */ new WeakMap(), E = /* @__PURE__ */ new WeakMap(), _ = /* @__PURE__ */ new WeakMap(), II = /* @__PURE__ */ new WeakMap(), M = /* @__PURE__ */ new WeakMap(), O = /* @__PURE__ */ new WeakMap(), eI = /* @__PURE__ */ new WeakMap(), dI = /* @__PURE__ */ new WeakMap(), aI = /* @__PURE__ */ new WeakSet(), wI = /* @__PURE__ */ new WeakSet(), GI = /* @__PURE__ */ new WeakSet(), HI = /* @__PURE__ */ new WeakSet();
+            var oI = /* @__PURE__ */ new WeakMap(), E = /* @__PURE__ */ new WeakMap(), _ = /* @__PURE__ */ new WeakMap(), II = /* @__PURE__ */ new WeakMap(), M = /* @__PURE__ */ new WeakMap(), O = /* @__PURE__ */ new WeakMap(), eI = /* @__PURE__ */ new WeakMap(), dI = /* @__PURE__ */ new WeakMap(), aI = /* @__PURE__ */ new WeakSet(), WI = /* @__PURE__ */ new WeakSet(), GI = /* @__PURE__ */ new WeakSet(), HI = /* @__PURE__ */ new WeakSet();
             class MI {
               constructor(hI) {
-                B(this, HI), B(this, GI), B(this, wI), B(this, aI), r(this, oI, {
+                B(this, HI), B(this, GI), B(this, WI), B(this, aI), r(this, oI, {
                   writable: !0,
                   value: void 0
                 }), r(this, E, {
@@ -11880,8 +11880,8 @@ function requirePdf() {
                 j(this, M).set(hI.id, hI);
               }
               detach(hI) {
-                var WI;
-                j(this, M).delete(hI.id), (WI = j(this, oI)) === null || WI === void 0 || WI.removePointerInTextLayer(hI.contentDiv);
+                var wI;
+                j(this, M).delete(hI.id), (wI = j(this, oI)) === null || wI === void 0 || wI.removePointerInTextLayer(hI.contentDiv);
               }
               remove(hI) {
                 j(this, dI).removeEditor(hI), this.detach(hI), this.annotationStorage.remove(hI.id), hI.div.style.display = "none", setTimeout(() => {
@@ -11890,14 +11890,14 @@ function requirePdf() {
               }
               add(hI) {
                 if (CI(this, aI, KI).call(this, hI), j(this, dI).addEditor(hI), this.attach(hI), !hI.isAttachedToDOM) {
-                  const WI = hI.render();
-                  this.div.append(WI), hI.isAttachedToDOM = !0;
+                  const wI = hI.render();
+                  this.div.append(wI), hI.isAttachedToDOM = !0;
                 }
                 this.moveEditorInDOM(hI), hI.onceAdded(), this.addToAnnotationStorage(hI);
               }
               moveEditorInDOM(hI) {
-                var WI;
-                (WI = j(this, oI)) === null || WI === void 0 || WI.moveElementInDOM(this.div, hI.div, hI.contentDiv, !0);
+                var wI;
+                (wI = j(this, oI)) === null || wI === void 0 || wI.moveElementInDOM(this.div, hI.div, hI.contentDiv, !0);
               }
               addToAnnotationStorage(hI) {
                 !hI.isEmpty() && !this.annotationStorage.has(hI.id) && this.annotationStorage.setValue(hI.id, hI);
@@ -11906,25 +11906,25 @@ function requirePdf() {
                 hI.needsToBeRebuilt() ? hI.rebuild() : this.add(hI);
               }
               addANewEditor(hI) {
-                const WI = () => {
+                const wI = () => {
                   this.addOrRebuild(hI);
                 }, pI = () => {
                   hI.remove();
                 };
                 this.addCommands({
-                  cmd: WI,
+                  cmd: wI,
                   undo: pI,
                   mustExec: !0
                 });
               }
               addUndoableEditor(hI) {
-                const WI = () => {
+                const wI = () => {
                   this.addOrRebuild(hI);
                 }, pI = () => {
                   hI.remove();
                 };
                 this.addCommands({
-                  cmd: WI,
+                  cmd: wI,
                   undo: pI,
                   mustExec: !1
                 });
@@ -11954,8 +11954,8 @@ function requirePdf() {
                 j(this, dI).unselect(hI);
               }
               pointerup(hI) {
-                const WI = o.KeyboardManager.platform.isMac;
-                if (!(hI.button !== 0 || hI.ctrlKey && WI) && hI.target === this.div && j(this, O)) {
+                const wI = o.KeyboardManager.platform.isMac;
+                if (!(hI.button !== 0 || hI.ctrlKey && wI) && hI.target === this.div && j(this, O)) {
                   if (sI(this, O, !1), !j(this, E)) {
                     sI(this, E, !0);
                     return;
@@ -11964,15 +11964,15 @@ function requirePdf() {
                 }
               }
               pointerdown(hI) {
-                const WI = o.KeyboardManager.platform.isMac;
-                if (hI.button !== 0 || hI.ctrlKey && WI || hI.target !== this.div)
+                const wI = o.KeyboardManager.platform.isMac;
+                if (hI.button !== 0 || hI.ctrlKey && wI || hI.target !== this.div)
                   return;
                 sI(this, O, !0);
                 const pI = j(this, dI).getActive();
                 sI(this, E, !pI || pI.isEmpty());
               }
               drop(hI) {
-                const WI = hI.dataTransfer.getData("text/plain"), pI = j(this, dI).getEditor(WI);
+                const wI = hI.dataTransfer.getData("text/plain"), pI = j(this, dI).getEditor(wI);
                 if (!pI)
                   return;
                 hI.preventDefault(), hI.dataTransfer.dropEffect = "move", CI(this, aI, KI).call(this, pI);
@@ -11986,15 +11986,15 @@ function requirePdf() {
                 var hI;
                 ((hI = j(this, dI).getActive()) === null || hI === void 0 ? void 0 : hI.parent) === this && j(this, dI).setActiveEditor(null);
                 for (const pI of j(this, M).values()) {
-                  var WI;
-                  (WI = j(this, oI)) === null || WI === void 0 || WI.removePointerInTextLayer(pI.contentDiv), pI.isAttachedToDOM = !1, pI.div.remove(), pI.parent = null;
+                  var wI;
+                  (wI = j(this, oI)) === null || wI === void 0 || wI.removePointerInTextLayer(pI.contentDiv), pI.isAttachedToDOM = !1, pI.div.remove(), pI.parent = null;
                 }
                 this.div = null, j(this, M).clear(), j(this, dI).removeLayer(this);
               }
               render(hI) {
                 this.viewport = hI.viewport, (0, o.bindEvents)(this, this.div, ["dragover", "drop"]), this.setDimensions();
-                for (const WI of j(this, dI).getEditors(this.pageIndex))
-                  this.add(WI);
+                for (const wI of j(this, dI).getEditors(this.pageIndex))
+                  this.add(wI);
                 this.updateMode();
               }
               update(hI) {
@@ -12004,23 +12004,23 @@ function requirePdf() {
                 return this.viewport.scale;
               }
               get pageDimensions() {
-                const [hI, WI, pI, xI] = this.viewport.viewBox, PI = pI - hI, XI = xI - WI;
+                const [hI, wI, pI, xI] = this.viewport.viewBox, PI = pI - hI, XI = xI - wI;
                 return [PI, XI];
               }
               get viewportBaseDimensions() {
                 const {
                   width: hI,
-                  height: WI,
+                  height: wI,
                   rotation: pI
                 } = this.viewport;
-                return pI % 180 === 0 ? [hI, WI] : [WI, hI];
+                return pI % 180 === 0 ? [hI, wI] : [wI, hI];
               }
               setDimensions() {
                 const {
                   width: hI,
-                  height: WI,
+                  height: wI,
                   rotation: pI
-                } = this.viewport, xI = pI % 180 !== 0, PI = Math.floor(hI) + "px", XI = Math.floor(WI) + "px";
+                } = this.viewport, xI = pI % 180 !== 0, PI = Math.floor(hI) + "px", XI = Math.floor(wI) + "px";
                 this.div.style.width = xI ? XI : PI, this.div.style.height = xI ? PI : XI, this.div.setAttribute("data-main-rotation", pI);
               }
             }
@@ -12039,13 +12039,13 @@ function requirePdf() {
               return null;
             }
             function NI(VI) {
-              const hI = this.getNextId(), WI = CI(this, wI, DI).call(this, {
+              const hI = this.getNextId(), wI = CI(this, WI, DI).call(this, {
                 parent: this,
                 id: hI,
                 x: VI.offsetX,
                 y: VI.offsetY
               });
-              return WI && this.add(WI), WI;
+              return wI && this.add(wI), wI;
             }
             function yI() {
               sI(this, eI, !0);
@@ -12105,13 +12105,13 @@ function requirePdf() {
                 yI.value = VI;
               }
             }
-            var lI = /* @__PURE__ */ new WeakMap(), oI = /* @__PURE__ */ new WeakMap(), E = /* @__PURE__ */ new WeakMap(), _ = /* @__PURE__ */ new WeakMap(), II = /* @__PURE__ */ new WeakMap(), M = /* @__PURE__ */ new WeakMap(), O = /* @__PURE__ */ new WeakMap(), eI = /* @__PURE__ */ new WeakSet(), dI = /* @__PURE__ */ new WeakSet(), aI = /* @__PURE__ */ new WeakSet(), wI = /* @__PURE__ */ new WeakSet();
+            var lI = /* @__PURE__ */ new WeakMap(), oI = /* @__PURE__ */ new WeakMap(), E = /* @__PURE__ */ new WeakMap(), _ = /* @__PURE__ */ new WeakMap(), II = /* @__PURE__ */ new WeakMap(), M = /* @__PURE__ */ new WeakMap(), O = /* @__PURE__ */ new WeakMap(), eI = /* @__PURE__ */ new WeakSet(), dI = /* @__PURE__ */ new WeakSet(), aI = /* @__PURE__ */ new WeakSet(), WI = /* @__PURE__ */ new WeakSet();
             class GI extends a.AnnotationEditor {
               constructor(yI) {
                 super({
                   ...yI,
                   name: "freeTextEditor"
-                }), n(this, wI), n(this, aI), n(this, dI), n(this, eI), R(this, lI, {
+                }), n(this, WI), n(this, aI), n(this, dI), n(this, eI), R(this, lI, {
                   writable: !0,
                   value: this.editorDivBlur.bind(this)
                 }), R(this, oI, {
@@ -12190,7 +12190,7 @@ function requirePdf() {
                 this.isEditing = !1, this.parent.setEditingState(!0), super.remove();
               }
               commit() {
-                super.commit(), H(this, M) || (iI(this, M, !0), this.parent.addUndoableEditor(this)), this.disableEditMode(), iI(this, II, j(this, aI, KI).call(this).trimEnd()), j(this, wI, DI).call(this);
+                super.commit(), H(this, M) || (iI(this, M, !0), this.parent.addUndoableEditor(this)), this.disableEditMode(), iI(this, II, j(this, aI, KI).call(this).trimEnd()), j(this, WI, DI).call(this);
               }
               shouldGetKeyboardEvents() {
                 return this.isInEditMode();
@@ -12220,19 +12220,19 @@ function requirePdf() {
                 if (this.div)
                   return this.div;
                 let yI, VI;
-                this.width && (yI = this.x, VI = this.y), super.render(), this.editorDiv = document.createElement("div"), this.editorDiv.className = "internal", this.editorDiv.setAttribute("id", `${this.id}-editor`), this.enableEditing(), GI._l10nPromise.get("editor_free_text_aria_label").then((WI) => {
+                this.width && (yI = this.x, VI = this.y), super.render(), this.editorDiv = document.createElement("div"), this.editorDiv.className = "internal", this.editorDiv.setAttribute("id", `${this.id}-editor`), this.enableEditing(), GI._l10nPromise.get("editor_free_text_aria_label").then((wI) => {
                   var pI;
-                  return (pI = this.editorDiv) === null || pI === void 0 ? void 0 : pI.setAttribute("aria-label", WI);
-                }), GI._l10nPromise.get("free_text_default_content").then((WI) => {
+                  return (pI = this.editorDiv) === null || pI === void 0 ? void 0 : pI.setAttribute("aria-label", wI);
+                }), GI._l10nPromise.get("free_text_default_content").then((wI) => {
                   var pI;
-                  return (pI = this.editorDiv) === null || pI === void 0 ? void 0 : pI.setAttribute("default-content", WI);
+                  return (pI = this.editorDiv) === null || pI === void 0 ? void 0 : pI.setAttribute("default-content", wI);
                 }), this.editorDiv.contentEditable = !0;
                 const {
                   style: hI
                 } = this.editorDiv;
                 if (hI.fontSize = `calc(${H(this, O)}px * var(--scale-factor))`, hI.color = H(this, _), this.div.append(this.editorDiv), this.overlayDiv = document.createElement("div"), this.overlayDiv.classList.add("overlay", "enabled"), this.div.append(this.overlayDiv), (0, t.bindEvents)(this, this.div, ["dblclick", "keydown"]), this.width) {
-                  const [WI, pI] = this.parent.viewportBaseDimensions;
-                  this.setAt(yI * WI, VI * pI, this.width * WI, this.height * pI);
+                  const [wI, pI] = this.parent.viewportBaseDimensions;
+                  this.setAt(yI * wI, VI * pI, this.width * wI, this.height * pI);
                   for (const xI of H(this, II).split(`
 `)) {
                     const PI = document.createElement("div");
@@ -12268,7 +12268,7 @@ function requirePdf() {
             A.FreeTextEditor = GI;
             function HI(NI) {
               const yI = (hI) => {
-                this.editorDiv.style.fontSize = `calc(${hI}px * var(--scale-factor))`, this.translate(0, -(hI - H(this, O)) * this.parent.scaleFactor), iI(this, O, hI), j(this, wI, DI).call(this);
+                this.editorDiv.style.fontSize = `calc(${hI}px * var(--scale-factor))`, this.translate(0, -(hI - H(this, O)) * this.parent.scaleFactor), iI(this, O, hI), j(this, WI, DI).call(this);
               }, VI = H(this, O);
               this.parent.addCommands({
                 cmd: () => {
@@ -12379,13 +12379,13 @@ function requirePdf() {
               return Ag;
             }
             const _ = 16;
-            var II = /* @__PURE__ */ new WeakMap(), M = /* @__PURE__ */ new WeakMap(), O = /* @__PURE__ */ new WeakMap(), eI = /* @__PURE__ */ new WeakMap(), dI = /* @__PURE__ */ new WeakMap(), aI = /* @__PURE__ */ new WeakMap(), wI = /* @__PURE__ */ new WeakMap(), GI = /* @__PURE__ */ new WeakMap(), HI = /* @__PURE__ */ new WeakMap(), MI = /* @__PURE__ */ new WeakMap(), KI = /* @__PURE__ */ new WeakMap(), DI = /* @__PURE__ */ new WeakMap(), NI = /* @__PURE__ */ new WeakMap(), yI = /* @__PURE__ */ new WeakMap(), VI = /* @__PURE__ */ new WeakSet(), hI = /* @__PURE__ */ new WeakSet(), WI = /* @__PURE__ */ new WeakSet(), pI = /* @__PURE__ */ new WeakSet(), xI = /* @__PURE__ */ new WeakSet(), PI = /* @__PURE__ */ new WeakSet(), XI = /* @__PURE__ */ new WeakSet(), tI = /* @__PURE__ */ new WeakSet(), mI = /* @__PURE__ */ new WeakSet(), uI = /* @__PURE__ */ new WeakSet(), BI = /* @__PURE__ */ new WeakSet(), gI = /* @__PURE__ */ new WeakSet(), cI = /* @__PURE__ */ new WeakSet(), bI = /* @__PURE__ */ new WeakSet(), nI = /* @__PURE__ */ new WeakSet(), YI = /* @__PURE__ */ new WeakSet(), rI = /* @__PURE__ */ new WeakSet(), FI = /* @__PURE__ */ new WeakSet(), kI = /* @__PURE__ */ new WeakSet(), TI = /* @__PURE__ */ new WeakSet(), QI = /* @__PURE__ */ new WeakSet(), fI = /* @__PURE__ */ new WeakSet();
+            var II = /* @__PURE__ */ new WeakMap(), M = /* @__PURE__ */ new WeakMap(), O = /* @__PURE__ */ new WeakMap(), eI = /* @__PURE__ */ new WeakMap(), dI = /* @__PURE__ */ new WeakMap(), aI = /* @__PURE__ */ new WeakMap(), WI = /* @__PURE__ */ new WeakMap(), GI = /* @__PURE__ */ new WeakMap(), HI = /* @__PURE__ */ new WeakMap(), MI = /* @__PURE__ */ new WeakMap(), KI = /* @__PURE__ */ new WeakMap(), DI = /* @__PURE__ */ new WeakMap(), NI = /* @__PURE__ */ new WeakMap(), yI = /* @__PURE__ */ new WeakMap(), VI = /* @__PURE__ */ new WeakSet(), hI = /* @__PURE__ */ new WeakSet(), wI = /* @__PURE__ */ new WeakSet(), pI = /* @__PURE__ */ new WeakSet(), xI = /* @__PURE__ */ new WeakSet(), PI = /* @__PURE__ */ new WeakSet(), XI = /* @__PURE__ */ new WeakSet(), tI = /* @__PURE__ */ new WeakSet(), mI = /* @__PURE__ */ new WeakSet(), uI = /* @__PURE__ */ new WeakSet(), BI = /* @__PURE__ */ new WeakSet(), gI = /* @__PURE__ */ new WeakSet(), cI = /* @__PURE__ */ new WeakSet(), bI = /* @__PURE__ */ new WeakSet(), nI = /* @__PURE__ */ new WeakSet(), YI = /* @__PURE__ */ new WeakSet(), rI = /* @__PURE__ */ new WeakSet(), FI = /* @__PURE__ */ new WeakSet(), kI = /* @__PURE__ */ new WeakSet(), TI = /* @__PURE__ */ new WeakSet(), QI = /* @__PURE__ */ new WeakSet(), fI = /* @__PURE__ */ new WeakSet();
             class OI extends t.AnnotationEditor {
               constructor(jI) {
                 super({
                   ...jI,
                   name: "inkEditor"
-                }), B(this, fI), B(this, QI), B(this, TI), B(this, kI), B(this, FI), B(this, rI), B(this, YI), B(this, nI), B(this, bI), B(this, cI), B(this, gI), B(this, BI), B(this, uI), B(this, mI), B(this, tI), B(this, XI), B(this, PI), B(this, xI), B(this, pI), B(this, WI), B(this, hI), B(this, VI), r(this, II, {
+                }), B(this, fI), B(this, QI), B(this, TI), B(this, kI), B(this, FI), B(this, rI), B(this, YI), B(this, nI), B(this, bI), B(this, cI), B(this, gI), B(this, BI), B(this, uI), B(this, mI), B(this, tI), B(this, XI), B(this, PI), B(this, xI), B(this, pI), B(this, wI), B(this, hI), B(this, VI), r(this, II, {
                   writable: !0,
                   value: 0
                 }), r(this, M, {
@@ -12403,7 +12403,7 @@ function requirePdf() {
                 }), r(this, aI, {
                   writable: !0,
                   value: this.canvasPointerup.bind(this)
-                }), r(this, wI, {
+                }), r(this, WI, {
                   writable: !0,
                   value: this.canvasPointerdown.bind(this)
                 }), r(this, GI, {
@@ -12454,7 +12454,7 @@ function requirePdf() {
                     E(this, hI, gg).call(this, Ag);
                     break;
                   case o.AnnotationEditorParamsType.INK_OPACITY:
-                    E(this, WI, lg).call(this, Ag);
+                    E(this, wI, lg).call(this, Ag);
                     break;
                 }
               }
@@ -12472,10 +12472,10 @@ function requirePdf() {
                 this.canvas !== null && (this.isEmpty() || this.commit(), this.canvas.width = this.canvas.height = 0, this.canvas.remove(), this.canvas = null, AI(this, KI).disconnect(), iI(this, KI, null), super.remove());
               }
               enableEditMode() {
-                AI(this, GI) || this.canvas === null || (super.enableEditMode(), this.div.draggable = !1, this.canvas.addEventListener("pointerdown", AI(this, wI)), this.canvas.addEventListener("pointerup", AI(this, aI)));
+                AI(this, GI) || this.canvas === null || (super.enableEditMode(), this.div.draggable = !1, this.canvas.addEventListener("pointerdown", AI(this, WI)), this.canvas.addEventListener("pointerup", AI(this, aI)));
               }
               disableEditMode() {
-                !this.isInEditMode() || this.canvas === null || (super.disableEditMode(), this.div.draggable = !this.isEmpty(), this.div.classList.remove("editing"), this.canvas.removeEventListener("pointerdown", AI(this, wI)), this.canvas.removeEventListener("pointerup", AI(this, aI)));
+                !this.isInEditMode() || this.canvas === null || (super.disableEditMode(), this.div.draggable = !this.isEmpty(), this.div.classList.remove("editing"), this.canvas.removeEventListener("pointerdown", AI(this, WI)), this.canvas.removeEventListener("pointerup", AI(this, aI)));
               }
               onceAdded() {
                 this.div.draggable = !this.isEmpty();
@@ -12512,7 +12512,7 @@ function requirePdf() {
                 const [Zg, hg, Vg, Yg] = E(this, pI, sg).call(this);
                 if (this.setAt(Zg, hg, 0, 0), this.setDims(Vg, Yg), E(this, BI, vI).call(this), this.width) {
                   const [yg, ng] = this.parent.viewportBaseDimensions;
-                  this.setAt(jI * yg, Ag * ng, this.width * yg, this.height * ng), iI(this, HI, !0), E(this, cI, Gg).call(this), this.setDims(this.width * yg, this.height * ng), E(this, mI, mg).call(this), E(this, fI, wg).call(this), this.div.classList.add("disabled");
+                  this.setAt(jI * yg, Ag * ng, this.width * yg, this.height * ng), iI(this, HI, !0), E(this, cI, Gg).call(this), this.setDims(this.width * yg, this.height * ng), E(this, mI, mg).call(this), E(this, fI, Wg).call(this), this.div.classList.add("disabled");
                 } else
                   this.div.classList.add("editing"), this.enableEditMode();
                 return E(this, gI, Cg).call(this), this.div;
@@ -12555,7 +12555,7 @@ function requirePdf() {
                   color: Zg,
                   thickness: this.thickness,
                   opacity: this.opacity,
-                  paths: E(this, YI, Wg).call(this, this.scaleFactor / this.parent.scaleFactor, this.translationX, this.translationY, Ag),
+                  paths: E(this, YI, wg).call(this, this.scaleFactor / this.parent.scaleFactor, this.translationX, this.translationY, Ag),
                   pageIndex: this.parent.pageIndex,
                   rect: jI,
                   rotation: this.rotation
@@ -12717,7 +12717,7 @@ function requirePdf() {
               }
               return jI;
             }
-            function Wg(EI, jI, Ag, Zg) {
+            function wg(EI, jI, Ag, Zg) {
               const Vg = [], Yg = this.thickness / 2;
               let yg, ng;
               for (const Mg of this.paths) {
@@ -12773,13 +12773,13 @@ function requirePdf() {
               const jI = E(this, kI, LI).call(this), Ag = E(this, TI, $I).call(this);
               iI(this, O, Math.max(_, jI[2] - jI[0])), iI(this, M, Math.max(_, jI[3] - jI[1]));
               const Zg = Math.ceil(Ag + AI(this, O) * this.scaleFactor), hg = Math.ceil(Ag + AI(this, M) * this.scaleFactor), [Vg, Yg] = this.parent.viewportBaseDimensions;
-              this.width = Zg / Vg, this.height = hg / Yg, iI(this, II, Zg / hg), E(this, fI, wg).call(this);
+              this.width = Zg / Vg, this.height = hg / Yg, iI(this, II, Zg / hg), E(this, fI, Wg).call(this);
               const yg = this.translationX, ng = this.translationY;
               this.translationX = -jI[0], this.translationY = -jI[1], E(this, cI, Gg).call(this), E(this, mI, mg).call(this), iI(this, DI, Zg), iI(this, NI, hg), this.setDims(Zg, hg);
               const Mg = EI ? Ag / this.scaleFactor / 2 : 0;
               this.translate(yg - this.translationX - Mg, ng - this.translationY - Mg);
             }
-            function wg() {
+            function Wg() {
               const {
                 style: EI
               } = this.div;
@@ -12811,21 +12811,21 @@ function requirePdf() {
               return l(sI, E, _, AI, lI);
             }
             function l(sI, AI, lI, oI, E) {
-              var II, M, O, eI, dI, aI, wI, GI, HI, MI, KI, DI, NI;
+              var II, M, O, eI, dI, aI, WI, GI, HI, MI, KI, DI, NI;
               if (sI.length === 2)
                 return DI = j.vectorLen(j.subtract(sI[0], sI[1])) / 3, II = [sI[0], j.addArrays(sI[0], j.mulItems(AI, DI)), j.addArrays(sI[1], j.mulItems(lI, DI)), sI[1]], [II];
               if (M = B(sI), [II, eI, aI] = o(sI, M, M, AI, lI, E), eI === 0 || eI < oI)
                 return [II];
               if (eI < oI * oI)
-                for (O = M, dI = eI, wI = aI, NI = 0; NI < 20; NI++) {
+                for (O = M, dI = eI, WI = aI, NI = 0; NI < 20; NI++) {
                   if (O = a(II, sI, O), [II, eI, aI] = o(sI, M, O, AI, lI, E), eI < oI)
                     return [II];
-                  if (aI === wI) {
+                  if (aI === WI) {
                     let yI = eI / dI;
                     if (yI > 0.9999 && yI < 1.0001)
                       break;
                   }
-                  dI = eI, wI = aI;
+                  dI = eI, WI = aI;
                 }
               return KI = [], GI = j.subtract(sI[aI - 1], sI[aI + 1]), GI.every((yI) => yI === 0) && (GI = j.subtract(sI[aI - 1], sI[aI]), [GI[0], GI[1]] = [-GI[1], GI[0]]), HI = j.normalize(GI), MI = j.mulItems(HI, -1), KI = KI.concat(l(sI.slice(0, aI + 1), AI, HI, oI, E)), KI = KI.concat(l(sI.slice(aI), MI, lI, oI, E)), KI;
             }
@@ -12840,12 +12840,12 @@ function requirePdf() {
               }), [II, M, O];
             }
             function t(sI, AI, lI, oI) {
-              var E, _, II, M, O, eI, dI, aI, wI, GI, HI, MI, KI, DI, NI, yI, VI, hI = sI[0], WI = sI[sI.length - 1];
-              for (E = [hI, null, null, WI], _ = j.zeros_Xx2x2(AI.length), KI = 0, DI = AI.length; KI < DI; KI++)
+              var E, _, II, M, O, eI, dI, aI, WI, GI, HI, MI, KI, DI, NI, yI, VI, hI = sI[0], wI = sI[sI.length - 1];
+              for (E = [hI, null, null, wI], _ = j.zeros_Xx2x2(AI.length), KI = 0, DI = AI.length; KI < DI; KI++)
                 yI = AI[KI], VI = 1 - yI, II = _[KI], II[0] = j.mulItems(lI, 3 * yI * (VI * VI)), II[1] = j.mulItems(oI, 3 * VI * (yI * yI));
               for (M = [[0, 0], [0, 0]], O = [0, 0], KI = 0, DI = sI.length; KI < DI; KI++)
-                yI = AI[KI], II = _[KI], M[0][0] += j.dot(II[0], II[0]), M[0][1] += j.dot(II[0], II[1]), M[1][0] += j.dot(II[0], II[1]), M[1][1] += j.dot(II[1], II[1]), NI = j.subtract(sI[KI], iI.q([hI, hI, WI, WI], yI)), O[0] += j.dot(II[0], NI), O[1] += j.dot(II[1], NI);
-              return eI = M[0][0] * M[1][1] - M[1][0] * M[0][1], dI = M[0][0] * O[1] - M[1][0] * O[0], aI = O[0] * M[1][1] - O[1] * M[0][1], wI = eI === 0 ? 0 : aI / eI, GI = eI === 0 ? 0 : dI / eI, MI = j.vectorLen(j.subtract(hI, WI)), HI = 1e-6 * MI, wI < HI || GI < HI ? (E[1] = j.addArrays(hI, j.mulItems(lI, MI / 3)), E[2] = j.addArrays(WI, j.mulItems(oI, MI / 3))) : (E[1] = j.addArrays(hI, j.mulItems(lI, wI)), E[2] = j.addArrays(WI, j.mulItems(oI, GI))), E;
+                yI = AI[KI], II = _[KI], M[0][0] += j.dot(II[0], II[0]), M[0][1] += j.dot(II[0], II[1]), M[1][0] += j.dot(II[0], II[1]), M[1][1] += j.dot(II[1], II[1]), NI = j.subtract(sI[KI], iI.q([hI, hI, wI, wI], yI)), O[0] += j.dot(II[0], NI), O[1] += j.dot(II[1], NI);
+              return eI = M[0][0] * M[1][1] - M[1][0] * M[0][1], dI = M[0][0] * O[1] - M[1][0] * O[0], aI = O[0] * M[1][1] - O[1] * M[0][1], WI = eI === 0 ? 0 : aI / eI, GI = eI === 0 ? 0 : dI / eI, MI = j.vectorLen(j.subtract(hI, wI)), HI = 1e-6 * MI, WI < HI || GI < HI ? (E[1] = j.addArrays(hI, j.mulItems(lI, MI / 3)), E[2] = j.addArrays(wI, j.mulItems(oI, MI / 3))) : (E[1] = j.addArrays(hI, j.mulItems(lI, WI)), E[2] = j.addArrays(wI, j.mulItems(oI, GI))), E;
             }
             function a(sI, AI, lI) {
               return lI.map((oI, E) => n(sI, AI[E], oI));
@@ -12984,7 +12984,7 @@ function requirePdf() {
                   case o.AnnotationType.POPUP:
                     return new dI(gI);
                   case o.AnnotationType.FREETEXT:
-                    return new wI(gI);
+                    return new WI(gI);
                   case o.AnnotationType.LINE:
                     return new GI(gI);
                   case o.AnnotationType.SQUARE:
@@ -13004,7 +13004,7 @@ function requirePdf() {
                   case o.AnnotationType.UNDERLINE:
                     return new hI(gI);
                   case o.AnnotationType.SQUIGGLY:
-                    return new WI(gI);
+                    return new wI(gI);
                   case o.AnnotationType.STRIKEOUT:
                     return new pI(gI);
                   case o.AnnotationType.STAMP:
@@ -13986,7 +13986,7 @@ function requirePdf() {
                 (arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : !0) && (this.pinned = !1), !this.hideElement.hidden && !this.pinned && (this.hideElement.hidden = !0, this.container.style.zIndex = parseInt(this.container.style.zIndex) - 1e3);
               }
             }
-            class wI extends AI {
+            class WI extends AI {
               constructor(gI) {
                 var cI, bI, nI;
                 const YI = !!(gI.data.hasPopup || (cI = gI.data.titleObj) !== null && cI !== void 0 && cI.str || (bI = gI.data.contentsObj) !== null && bI !== void 0 && bI.str || (nI = gI.data.richText) !== null && nI !== void 0 && nI.str);
@@ -14161,7 +14161,7 @@ function requirePdf() {
                 return this.data.hasPopup || this._createPopup(null, this.data), this.quadrilaterals ? this._renderQuadrilaterals("underlineAnnotation") : (this.container.className = "underlineAnnotation", this.container);
               }
             }
-            class WI extends AI {
+            class wI extends AI {
               constructor(gI) {
                 var cI, bI, nI;
                 const YI = !!(gI.data.hasPopup || (cI = gI.data.titleObj) !== null && cI !== void 0 && cI.str || (bI = gI.data.contentsObj) !== null && bI !== void 0 && bI.str || (nI = gI.data.richText) !== null && nI !== void 0 && nI.str);
@@ -14537,26 +14537,26 @@ function requirePdf() {
               let eI = O.fontBoundingBoxAscent, dI = Math.abs(O.fontBoundingBoxDescent);
               if (eI) {
                 II.restore();
-                const wI = eI / (eI + dI);
-                return R.set(_, wI), wI;
+                const WI = eI / (eI + dI);
+                return R.set(_, WI), WI;
               }
               II.strokeStyle = "red", II.clearRect(0, 0, n, n), II.strokeText("g", 0, 0);
               let aI = II.getImageData(0, 0, n, n).data;
               dI = 0;
-              for (let wI = aI.length - 1 - 3; wI >= 0; wI -= 4)
-                if (aI[wI] > 0) {
-                  dI = Math.ceil(wI / 4 / n);
+              for (let WI = aI.length - 1 - 3; WI >= 0; WI -= 4)
+                if (aI[WI] > 0) {
+                  dI = Math.ceil(WI / 4 / n);
                   break;
                 }
               II.clearRect(0, 0, n, n), II.strokeText("A", 0, n), aI = II.getImageData(0, 0, n, n).data, eI = 0;
-              for (let wI = 0, GI = aI.length; wI < GI; wI += 4)
-                if (aI[wI] > 0) {
-                  eI = n - Math.floor(wI / 4 / n);
+              for (let WI = 0, GI = aI.length; WI < GI; WI += 4)
+                if (aI[WI] > 0) {
+                  eI = n - Math.floor(WI / 4 / n);
                   break;
                 }
               if (II.restore(), eI) {
-                const wI = eI / (eI + dI);
-                return R.set(_, wI), wI;
+                const WI = eI / (eI + dI);
+                return R.set(_, WI), WI;
               }
               return R.set(_, B), B;
             }
@@ -14582,12 +14582,12 @@ function requirePdf() {
               };
               _._textDivs.push(eI);
               const aI = o.Util.transform(_._viewport.transform, II.transform);
-              let wI = Math.atan2(aI[1], aI[0]);
+              let WI = Math.atan2(aI[1], aI[0]);
               const GI = M[II.fontName];
-              GI.vertical && (wI += Math.PI / 2);
+              GI.vertical && (WI += Math.PI / 2);
               const HI = Math.hypot(aI[2], aI[3]), MI = HI * H(GI.fontFamily, O);
               let KI, DI;
-              wI === 0 ? (KI = aI[4], DI = aI[5] - MI) : (KI = aI[4] + MI * Math.sin(wI), DI = aI[5] - MI * Math.cos(wI)), eI.style.left = `${KI}px`, eI.style.top = `${DI}px`, eI.style.fontSize = `${HI}px`, eI.style.fontFamily = GI.fontFamily, dI.fontSize = HI, eI.setAttribute("role", "presentation"), eI.textContent = II.str, eI.dir = II.dir, _._fontInspectorEnabled && (eI.dataset.fontName = II.fontName), wI !== 0 && (dI.angle = wI * (180 / Math.PI));
+              WI === 0 ? (KI = aI[4], DI = aI[5] - MI) : (KI = aI[4] + MI * Math.sin(WI), DI = aI[5] - MI * Math.cos(WI)), eI.style.left = `${KI}px`, eI.style.top = `${DI}px`, eI.style.fontSize = `${HI}px`, eI.style.fontFamily = GI.fontFamily, dI.fontSize = HI, eI.setAttribute("role", "presentation"), eI.textContent = II.str, eI.dir = II.dir, _._fontInspectorEnabled && (eI.dataset.fontName = II.fontName), WI !== 0 && (dI.angle = WI * (180 / Math.PI));
               let NI = !1;
               if (II.str.length > 1 || _._enhanceTextSelection && r.test(II.str))
                 NI = !0;
@@ -14597,16 +14597,16 @@ function requirePdf() {
               }
               if (NI && (GI.vertical ? dI.canvasWidth = II.height * _._viewport.scale : dI.canvasWidth = II.width * _._viewport.scale), _._textDivProperties.set(eI, dI), _._textContentStream && _._layoutText(eI), _._enhanceTextSelection && dI.hasText) {
                 let yI = 1, VI = 0;
-                wI !== 0 && (yI = Math.cos(wI), VI = Math.sin(wI));
-                const hI = (GI.vertical ? II.height : II.width) * _._viewport.scale, WI = HI;
+                WI !== 0 && (yI = Math.cos(WI), VI = Math.sin(WI));
+                const hI = (GI.vertical ? II.height : II.width) * _._viewport.scale, wI = HI;
                 let pI, xI;
-                wI !== 0 ? (pI = [yI, VI, -VI, yI, KI, DI], xI = o.Util.getAxialAlignedBoundingBox([0, 0, hI, WI], pI)) : xI = [KI, DI, KI + hI, DI + WI], _._bounds.push({
+                WI !== 0 ? (pI = [yI, VI, -VI, yI, KI, DI], xI = o.Util.getAxialAlignedBoundingBox([0, 0, hI, wI], pI)) : xI = [KI, DI, KI + hI, DI + wI], _._bounds.push({
                   left: xI[0],
                   top: xI[1],
                   right: xI[2],
                   bottom: xI[3],
                   div: eI,
-                  size: [hI, WI],
+                  size: [hI, wI],
                   m: pI
                 });
               }
@@ -14640,10 +14640,10 @@ function requirePdf() {
                   aI.paddingLeft = II[eI].left - O[eI].left, aI.paddingTop = II[eI].top - O[eI].top, aI.paddingRight = O[eI].right - II[eI].right, aI.paddingBottom = O[eI].bottom - II[eI].bottom, _._textDivProperties.set(dI, aI);
                   continue;
                 }
-                const wI = O[eI], GI = II[eI], HI = GI.m, MI = HI[0], KI = HI[1], DI = [[0, 0], [0, GI.size[1]], [GI.size[0], 0], GI.size], NI = new Float64Array(64);
+                const WI = O[eI], GI = II[eI], HI = GI.m, MI = HI[0], KI = HI[1], DI = [[0, 0], [0, GI.size[1]], [GI.size[0], 0], GI.size], NI = new Float64Array(64);
                 for (let VI = 0, hI = DI.length; VI < hI; VI++) {
-                  const WI = o.Util.applyTransform(DI[VI], HI);
-                  NI[VI + 0] = MI && (wI.left - WI[0]) / MI, NI[VI + 4] = KI && (wI.top - WI[1]) / KI, NI[VI + 8] = MI && (wI.right - WI[0]) / MI, NI[VI + 12] = KI && (wI.bottom - WI[1]) / KI, NI[VI + 16] = KI && (wI.left - WI[0]) / -KI, NI[VI + 20] = MI && (wI.top - WI[1]) / MI, NI[VI + 24] = KI && (wI.right - WI[0]) / -KI, NI[VI + 28] = MI && (wI.bottom - WI[1]) / MI, NI[VI + 32] = MI && (wI.left - WI[0]) / -MI, NI[VI + 36] = KI && (wI.top - WI[1]) / -KI, NI[VI + 40] = MI && (wI.right - WI[0]) / -MI, NI[VI + 44] = KI && (wI.bottom - WI[1]) / -KI, NI[VI + 48] = KI && (wI.left - WI[0]) / KI, NI[VI + 52] = MI && (wI.top - WI[1]) / -MI, NI[VI + 56] = KI && (wI.right - WI[0]) / KI, NI[VI + 60] = MI && (wI.bottom - WI[1]) / -MI;
+                  const wI = o.Util.applyTransform(DI[VI], HI);
+                  NI[VI + 0] = MI && (WI.left - wI[0]) / MI, NI[VI + 4] = KI && (WI.top - wI[1]) / KI, NI[VI + 8] = MI && (WI.right - wI[0]) / MI, NI[VI + 12] = KI && (WI.bottom - wI[1]) / KI, NI[VI + 16] = KI && (WI.left - wI[0]) / -KI, NI[VI + 20] = MI && (WI.top - wI[1]) / MI, NI[VI + 24] = KI && (WI.right - wI[0]) / -KI, NI[VI + 28] = MI && (WI.bottom - wI[1]) / MI, NI[VI + 32] = MI && (WI.left - wI[0]) / -MI, NI[VI + 36] = KI && (WI.top - wI[1]) / -KI, NI[VI + 40] = MI && (WI.right - wI[0]) / -MI, NI[VI + 44] = KI && (WI.bottom - wI[1]) / -KI, NI[VI + 48] = KI && (WI.left - wI[0]) / KI, NI[VI + 52] = MI && (WI.top - wI[1]) / -MI, NI[VI + 56] = KI && (WI.right - wI[0]) / KI, NI[VI + 60] = MI && (WI.bottom - wI[1]) / -MI;
                 }
                 const yI = 1 + Math.min(Math.abs(MI), Math.abs(KI));
                 aI.paddingLeft = iI(NI, 32, 16) / yI, aI.paddingTop = iI(NI, 48, 16) / yI, aI.paddingRight = iI(NI, 0, 16) / yI, aI.paddingBottom = iI(NI, 16, 16) / yI, _._textDivProperties.set(dI, aI);
@@ -14673,8 +14673,8 @@ function requirePdf() {
                 };
               }
               M.map(function(dI, aI) {
-                const wI = eI[aI], GI = O[aI];
-                GI.x1 = dI.top, GI.y1 = _ - wI.right, GI.x2 = dI.bottom, GI.y2 = _ - wI.left, GI.index = aI, GI.x1New = void 0, GI.x2New = void 0;
+                const WI = eI[aI], GI = O[aI];
+                GI.x1 = dI.top, GI.y1 = _ - WI.right, GI.x2 = dI.bottom, GI.y2 = _ - WI.left, GI.index = aI, GI.x1New = void 0, GI.x2New = void 0;
               }), lI(II, O);
               for (const dI of O) {
                 const aI = dI.index;
@@ -14706,22 +14706,22 @@ function requirePdf() {
                 let aI = O.length - 1;
                 for (; aI >= 0 && O[aI].start >= eI.y2; )
                   aI--;
-                let wI, GI, HI, MI, KI = -1 / 0;
+                let WI, GI, HI, MI, KI = -1 / 0;
                 for (HI = dI; HI <= aI; HI++) {
-                  wI = O[HI], GI = wI.boundary;
+                  WI = O[HI], GI = WI.boundary;
                   let yI;
                   GI.x2 > eI.x1 ? yI = GI.index > eI.index ? GI.x1New : eI.x1 : GI.x2New === void 0 ? yI = (GI.x2 + eI.x1) / 2 : yI = GI.x2New, yI > KI && (KI = yI);
                 }
                 for (eI.x1New = KI, HI = dI; HI <= aI; HI++)
-                  wI = O[HI], GI = wI.boundary, GI.x2New === void 0 ? GI.x2 > eI.x1 ? GI.index > eI.index && (GI.x2New = GI.x2) : GI.x2New = KI : GI.x2New > KI && (GI.x2New = Math.max(KI, GI.x2));
+                  WI = O[HI], GI = WI.boundary, GI.x2New === void 0 ? GI.x2 > eI.x1 ? GI.index > eI.index && (GI.x2New = GI.x2) : GI.x2New = KI : GI.x2New > KI && (GI.x2New = Math.max(KI, GI.x2));
                 const DI = [];
                 let NI = null;
                 for (HI = dI; HI <= aI; HI++) {
-                  wI = O[HI], GI = wI.boundary;
+                  WI = O[HI], GI = WI.boundary;
                   const yI = GI.x2 > eI.x2 ? GI : eI;
-                  NI === yI ? DI.at(-1).end = wI.end : (DI.push({
-                    start: wI.start,
-                    end: wI.end,
+                  NI === yI ? DI.at(-1).end = WI.end : (DI.push({
+                    start: WI.start,
+                    end: WI.end,
                     boundary: yI
                   }), NI = yI);
                 }
@@ -14734,7 +14734,7 @@ function requirePdf() {
                   end: O[aI].end,
                   boundary: O[aI].boundary
                 })), HI = dI; HI <= aI; HI++) {
-                  if (wI = O[HI], GI = wI.boundary, GI.x2New !== void 0)
+                  if (WI = O[HI], GI = WI.boundary, GI.x2New !== void 0)
                     continue;
                   let yI = !1;
                   for (MI = dI - 1; !yI && MI >= 0 && O[MI].start >= GI.y1; MI--)
@@ -14760,11 +14760,11 @@ function requirePdf() {
                   textContentStream: eI,
                   container: dI,
                   viewport: aI,
-                  textDivs: wI,
+                  textDivs: WI,
                   textContentItemsStr: GI,
                   enhanceTextSelection: HI
                 } = II;
-                HI && (0, t.deprecated)("The `enhanceTextSelection` functionality will be removed in the future."), this._textContent = O, this._textContentStream = eI, this._container = dI, this._document = dI.ownerDocument, this._viewport = aI, this._textDivs = wI || [], this._textContentItemsStr = GI || [], this._enhanceTextSelection = !!HI, this._fontInspectorEnabled = !!((M = globalThis.FontInspector) !== null && M !== void 0 && M.enabled), this._reader = null, this._layoutTextLastFontSize = null, this._layoutTextLastFontFamily = null, this._layoutTextCtx = null, this._textDivProperties = /* @__PURE__ */ new WeakMap(), this._renderingDone = !1, this._canceled = !1, this._capability = (0, o.createPromiseCapability)(), this._renderTimer = null, this._bounds = [], this._devicePixelRatio = globalThis.devicePixelRatio || 1, this._capability.promise.finally(() => {
+                HI && (0, t.deprecated)("The `enhanceTextSelection` functionality will be removed in the future."), this._textContent = O, this._textContentStream = eI, this._container = dI, this._document = dI.ownerDocument, this._viewport = aI, this._textDivs = WI || [], this._textContentItemsStr = GI || [], this._enhanceTextSelection = !!HI, this._fontInspectorEnabled = !!((M = globalThis.FontInspector) !== null && M !== void 0 && M.enabled), this._reader = null, this._layoutTextLastFontSize = null, this._layoutTextLastFontFamily = null, this._layoutTextCtx = null, this._textDivProperties = /* @__PURE__ */ new WeakMap(), this._renderingDone = !1, this._canceled = !1, this._capability = (0, o.createPromiseCapability)(), this._renderTimer = null, this._bounds = [], this._devicePixelRatio = globalThis.devicePixelRatio || 1, this._capability.promise.finally(() => {
                   this._enhanceTextSelection || (this._textDivProperties = null), this._layoutTextCtx && (this._layoutTextCtx.canvas.width = 0, this._layoutTextCtx.canvas.height = 0, this._layoutTextCtx = null);
                 }).catch(() => {
                 });
@@ -14802,8 +14802,8 @@ function requirePdf() {
                     width: aI
                   } = this._layoutTextCtx.measureText(II.textContent);
                   if (aI > 0) {
-                    const wI = this._devicePixelRatio * M.canvasWidth / aI;
-                    this._enhanceTextSelection && (M.scale = wI), O = `scaleX(${wI})`;
+                    const WI = this._devicePixelRatio * M.canvasWidth / aI;
+                    this._enhanceTextSelection && (M.scale = WI), O = `scaleX(${WI})`;
                   }
                 }
                 if (M.angle !== 0 && (O = `rotate(${M.angle}deg) ${O}`), O.length > 0 && (this._enhanceTextSelection && (M.originalTransform = O), II.style.transform = O), M.hasText && this._container.append(II), M.hasEOL) {
@@ -14825,14 +14825,14 @@ function requirePdf() {
                   const dI = () => {
                     this._reader.read().then((aI) => {
                       let {
-                        value: wI,
+                        value: WI,
                         done: GI
                       } = aI;
                       if (GI) {
                         M.resolve();
                         return;
                       }
-                      Object.assign(O, wI.styles), this._processItems(wI.items, O), dI();
+                      Object.assign(O, WI.styles), this._processItems(WI.items, O), dI();
                     }, M.reject);
                   };
                   this._reader = this._textContentStream.getReader(), dI();
@@ -14851,8 +14851,8 @@ function requirePdf() {
                 this._bounds !== null && (sI(this), this._bounds = null);
                 const M = [], O = [];
                 for (let eI = 0, dI = this._textDivs.length; eI < dI; eI++) {
-                  const aI = this._textDivs[eI], wI = this._textDivProperties.get(aI);
-                  wI.hasText && (II ? (M.length = 0, O.length = 0, wI.originalTransform && M.push(wI.originalTransform), wI.paddingTop > 0 ? (O.push(`${wI.paddingTop}px`), M.push(`translateY(${-wI.paddingTop}px)`)) : O.push(0), wI.paddingRight > 0 ? O.push(`${wI.paddingRight / wI.scale}px`) : O.push(0), wI.paddingBottom > 0 ? O.push(`${wI.paddingBottom}px`) : O.push(0), wI.paddingLeft > 0 ? (O.push(`${wI.paddingLeft / wI.scale}px`), M.push(`translateX(${-wI.paddingLeft / wI.scale}px)`)) : O.push(0), aI.style.padding = O.join(" "), M.length && (aI.style.transform = M.join(" "))) : (aI.style.padding = null, aI.style.transform = wI.originalTransform));
+                  const aI = this._textDivs[eI], WI = this._textDivProperties.get(aI);
+                  WI.hasText && (II ? (M.length = 0, O.length = 0, WI.originalTransform && M.push(WI.originalTransform), WI.paddingTop > 0 ? (O.push(`${WI.paddingTop}px`), M.push(`translateY(${-WI.paddingTop}px)`)) : O.push(0), WI.paddingRight > 0 ? O.push(`${WI.paddingRight / WI.scale}px`) : O.push(0), WI.paddingBottom > 0 ? O.push(`${WI.paddingBottom}px`) : O.push(0), WI.paddingLeft > 0 ? (O.push(`${WI.paddingLeft / WI.scale}px`), M.push(`translateX(${-WI.paddingLeft / WI.scale}px)`)) : O.push(0), aI.style.padding = O.join(" "), M.length && (aI.style.transform = M.join(" "))) : (aI.style.padding = null, aI.style.transform = WI.originalTransform));
                 }
               }
             }
@@ -14934,8 +14934,8 @@ function requirePdf() {
                   }));
                 const dI = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
                 let aI = `data:${O};base64,`;
-                for (let wI = 0, GI = M.length; wI < GI; wI += 3) {
-                  const HI = M[wI] & 255, MI = M[wI + 1] & 255, KI = M[wI + 2] & 255, DI = HI >> 2, NI = (HI & 3) << 4 | MI >> 4, yI = wI + 1 < GI ? (MI & 15) << 2 | KI >> 6 : 64, VI = wI + 2 < GI ? KI & 63 : 64;
+                for (let WI = 0, GI = M.length; WI < GI; WI += 3) {
+                  const HI = M[WI] & 255, MI = M[WI + 1] & 255, KI = M[WI + 2] & 255, DI = HI >> 2, NI = (HI & 3) << 4 | MI >> 4, yI = WI + 1 < GI ? (MI & 15) << 2 | KI >> 6 : 64, VI = WI + 2 < GI ? KI & 63 : 64;
                   aI += dI[DI] + dI[NI] + dI[yI] + dI[VI];
                 }
                 return aI;
@@ -14950,8 +14950,8 @@ function requirePdf() {
                 function dI(KI, DI, NI) {
                   let yI = -1;
                   for (let VI = DI; VI < NI; VI++) {
-                    const hI = (yI ^ KI[VI]) & 255, WI = eI[hI];
-                    yI = yI >>> 8 ^ WI;
+                    const hI = (yI ^ KI[VI]) & 255, wI = eI[hI];
+                    yI = yI >>> 8 ^ wI;
                   }
                   return yI ^ -1;
                 }
@@ -14959,10 +14959,10 @@ function requirePdf() {
                   let VI = yI;
                   const hI = DI.length;
                   NI[VI] = hI >> 24 & 255, NI[VI + 1] = hI >> 16 & 255, NI[VI + 2] = hI >> 8 & 255, NI[VI + 3] = hI & 255, VI += 4, NI[VI] = KI.charCodeAt(0) & 255, NI[VI + 1] = KI.charCodeAt(1) & 255, NI[VI + 2] = KI.charCodeAt(2) & 255, NI[VI + 3] = KI.charCodeAt(3) & 255, VI += 4, NI.set(DI, VI), VI += DI.length;
-                  const WI = dI(NI, yI + 4, VI);
-                  NI[VI] = WI >> 24 & 255, NI[VI + 1] = WI >> 16 & 255, NI[VI + 2] = WI >> 8 & 255, NI[VI + 3] = WI & 255;
+                  const wI = dI(NI, yI + 4, VI);
+                  NI[VI] = wI >> 24 & 255, NI[VI + 1] = wI >> 16 & 255, NI[VI + 2] = wI >> 8 & 255, NI[VI + 3] = wI & 255;
                 }
-                function wI(KI, DI, NI) {
+                function WI(KI, DI, NI) {
                   let yI = 1, VI = 0;
                   for (let hI = DI; hI < NI; ++hI)
                     yI = (yI + (KI[hI] & 255)) % 65521, VI = (VI + yI) % 65521;
@@ -14988,26 +14988,26 @@ function requirePdf() {
                   const NI = 65535, yI = Math.ceil(DI / NI), VI = new Uint8Array(2 + DI + yI * 5 + 4);
                   let hI = 0;
                   VI[hI++] = 120, VI[hI++] = 156;
-                  let WI = 0;
+                  let wI = 0;
                   for (; DI > NI; )
-                    VI[hI++] = 0, VI[hI++] = 255, VI[hI++] = 255, VI[hI++] = 0, VI[hI++] = 0, VI.set(KI.subarray(WI, WI + NI), hI), hI += NI, WI += NI, DI -= NI;
-                  VI[hI++] = 1, VI[hI++] = DI & 255, VI[hI++] = DI >> 8 & 255, VI[hI++] = ~DI & 65535 & 255, VI[hI++] = (~DI & 65535) >> 8 & 255, VI.set(KI.subarray(WI), hI), hI += KI.length - WI;
-                  const pI = wI(KI, 0, KI.length);
+                    VI[hI++] = 0, VI[hI++] = 255, VI[hI++] = 255, VI[hI++] = 0, VI[hI++] = 0, VI.set(KI.subarray(wI, wI + NI), hI), hI += NI, wI += NI, DI -= NI;
+                  VI[hI++] = 1, VI[hI++] = DI & 255, VI[hI++] = DI >> 8 & 255, VI[hI++] = ~DI & 65535 & 255, VI[hI++] = (~DI & 65535) >> 8 & 255, VI.set(KI.subarray(wI), hI), hI += KI.length - wI;
+                  const pI = WI(KI, 0, KI.length);
                   return VI[hI++] = pI >> 24 & 255, VI[hI++] = pI >> 16 & 255, VI[hI++] = pI >> 8 & 255, VI[hI++] = pI & 255, VI;
                 }
                 function MI(KI, DI, NI, yI) {
                   const VI = KI.width, hI = KI.height;
-                  let WI, pI, xI;
+                  let wI, pI, xI;
                   const PI = KI.data;
                   switch (DI) {
                     case t.ImageKind.GRAYSCALE_1BPP:
-                      pI = 0, WI = 1, xI = VI + 7 >> 3;
+                      pI = 0, wI = 1, xI = VI + 7 >> 3;
                       break;
                     case t.ImageKind.RGB_24BPP:
-                      pI = 2, WI = 8, xI = VI * 3;
+                      pI = 2, wI = 8, xI = VI * 3;
                       break;
                     case t.ImageKind.RGBA_32BPP:
-                      pI = 6, WI = 8, xI = VI * 4;
+                      pI = 6, wI = 8, xI = VI * 4;
                       break;
                     default:
                       throw new Error("invalid format");
@@ -15024,7 +15024,7 @@ function requirePdf() {
                         XI[tI++] ^= 255;
                     }
                   }
-                  const uI = new Uint8Array([VI >> 24 & 255, VI >> 16 & 255, VI >> 8 & 255, VI & 255, hI >> 24 & 255, hI >> 16 & 255, hI >> 8 & 255, hI & 255, WI, pI, 0, 0, 0]), BI = GI(XI), gI = M.length + O * 3 + uI.length + BI.length, cI = new Uint8Array(gI);
+                  const uI = new Uint8Array([VI >> 24 & 255, VI >> 16 & 255, VI >> 8 & 255, VI & 255, hI >> 24 & 255, hI >> 16 & 255, hI >> 8 & 255, hI & 255, wI, pI, 0, 0, 0]), BI = GI(XI), gI = M.length + O * 3 + uI.length + BI.length, cI = new Uint8Array(gI);
                   let bI = 0;
                   return cI.set(M, bI), bI += M.length, aI("IHDR", uI, cI, bI), bI += O + uI.length, aI("IDATA", BI, cI, bI), bI += O + BI.length, aI("IEND", new Uint8Array(0), cI, bI), j(cI, "image/png", NI);
                 }
@@ -15067,16 +15067,16 @@ function requirePdf() {
                   const O = M.fnArray, eI = M.argsArray;
                   for (let dI = 0, aI = O.length; dI < aI; dI++)
                     if (O[dI] === t.OPS.dependency)
-                      for (const wI of eI[dI]) {
-                        const GI = wI.startsWith("g_") ? this.commonObjs : this.objs, HI = new Promise((MI) => {
-                          GI.get(wI, MI);
+                      for (const WI of eI[dI]) {
+                        const GI = WI.startsWith("g_") ? this.commonObjs : this.objs, HI = new Promise((MI) => {
+                          GI.get(WI, MI);
                         });
                         this.current.dependencies.push(HI);
                       }
                   return Promise.all(this.current.dependencies);
                 }
-                transform(M, O, eI, dI, aI, wI) {
-                  const GI = [M, O, eI, dI, aI, wI];
+                transform(M, O, eI, dI, aI, WI) {
+                  const GI = [M, O, eI, dI, aI, WI];
                   this.transformMatrix = t.Util.transform(this.transformMatrix, GI), this.tgrp = null;
                 }
                 getSVG(M, O) {
@@ -15086,12 +15086,12 @@ function requirePdf() {
                 }
                 convertOpList(M) {
                   const O = this._operatorIdMapping, eI = M.argsArray, dI = M.fnArray, aI = [];
-                  for (let wI = 0, GI = dI.length; wI < GI; wI++) {
-                    const HI = dI[wI];
+                  for (let WI = 0, GI = dI.length; WI < GI; WI++) {
+                    const HI = dI[WI];
                     aI.push({
                       fnId: HI,
                       fn: O[HI],
-                      args: eI[wI]
+                      args: eI[WI]
                     });
                   }
                   return AI(aI);
@@ -15264,9 +15264,9 @@ function requirePdf() {
                 nextLine() {
                   this.moveText(0, this.current.leading);
                 }
-                setTextMatrix(M, O, eI, dI, aI, wI) {
+                setTextMatrix(M, O, eI, dI, aI, WI) {
                   const GI = this.current;
-                  GI.textMatrix = GI.lineMatrix = [M, O, eI, dI, aI, wI], GI.textMatrixScale = Math.hypot(M, O), GI.x = GI.lineX = 0, GI.y = GI.lineY = 0, GI.xcoords = [], GI.ycoords = [], GI.tspan = this.svgFactory.createElement("svg:tspan"), GI.tspan.setAttributeNS(null, "font-family", GI.fontFamily), GI.tspan.setAttributeNS(null, "font-size", `${lI(GI.fontSize)}px`), GI.tspan.setAttributeNS(null, "y", lI(-GI.y)), GI.txtElement = this.svgFactory.createElement("svg:text"), GI.txtElement.append(GI.tspan);
+                  GI.textMatrix = GI.lineMatrix = [M, O, eI, dI, aI, WI], GI.textMatrixScale = Math.hypot(M, O), GI.x = GI.lineX = 0, GI.y = GI.lineY = 0, GI.xcoords = [], GI.ycoords = [], GI.tspan = this.svgFactory.createElement("svg:tspan"), GI.tspan.setAttributeNS(null, "font-family", GI.fontFamily), GI.tspan.setAttributeNS(null, "font-size", `${lI(GI.fontSize)}px`), GI.tspan.setAttributeNS(null, "y", lI(-GI.y)), GI.txtElement = this.svgFactory.createElement("svg:text"), GI.txtElement.append(GI.tspan);
                 }
                 beginText() {
                   const M = this.current;
@@ -15280,7 +15280,7 @@ function requirePdf() {
                   const O = this.current, eI = O.font, dI = O.fontSize;
                   if (dI === 0)
                     return;
-                  const aI = O.fontSizeScale, wI = O.charSpacing, GI = O.wordSpacing, HI = O.fontDirection, MI = O.textHScale * HI, KI = eI.vertical, DI = KI ? 1 : -1, NI = eI.defaultVMetrics, yI = dI * O.fontMatrix[0];
+                  const aI = O.fontSizeScale, WI = O.charSpacing, GI = O.wordSpacing, HI = O.fontDirection, MI = O.textHScale * HI, KI = eI.vertical, DI = KI ? 1 : -1, NI = eI.defaultVMetrics, yI = dI * O.fontMatrix[0];
                   let VI = 0;
                   for (const pI of M) {
                     if (pI === null) {
@@ -15290,7 +15290,7 @@ function requirePdf() {
                       VI += DI * pI * dI / 1e3;
                       continue;
                     }
-                    const xI = (pI.isSpace ? GI : 0) + wI, PI = pI.fontChar;
+                    const xI = (pI.isSpace ? GI : 0) + WI, PI = pI.fontChar;
                     let XI, tI, mI = pI.width;
                     if (KI) {
                       let BI;
@@ -15310,8 +15310,8 @@ function requirePdf() {
                     const pI = 1 / (O.textMatrixScale || 1);
                     this._setStrokeAttributes(O.tspan, pI);
                   }
-                  let WI = O.textMatrix;
-                  O.textRise !== 0 && (WI = WI.slice(), WI[5] += O.textRise), O.txtElement.setAttributeNS(null, "transform", `${oI(WI)} scale(${lI(MI)}, -1)`), O.txtElement.setAttributeNS(R, "xml:space", "preserve"), O.txtElement.append(O.tspan), O.txtgrp.append(O.txtElement), this._ensureTransformGroup().append(O.txtElement);
+                  let wI = O.textMatrix;
+                  O.textRise !== 0 && (wI = wI.slice(), wI[5] += O.textRise), O.txtElement.setAttributeNS(null, "transform", `${oI(wI)} scale(${lI(MI)}, -1)`), O.txtElement.setAttributeNS(R, "xml:space", "preserve"), O.txtElement.append(O.tspan), O.txtgrp.append(O.txtElement), this._ensureTransformGroup().append(O.txtElement);
                 }
                 setLeadingMoveText(M, O) {
                   this.setLeading(-O), this.moveText(M, O);
@@ -15330,8 +15330,8 @@ function requirePdf() {
                   O.font = eI, this.embedFonts && !eI.missingFile && !this.embeddedFonts[eI.loadedName] && (this.addFontStyle(eI), this.embeddedFonts[eI.loadedName] = eI), O.fontMatrix = eI.fontMatrix || t.FONT_IDENTITY_MATRIX;
                   let aI = "normal";
                   eI.black ? aI = "900" : eI.bold && (aI = "bold");
-                  const wI = eI.italic ? "italic" : "normal";
-                  dI < 0 ? (dI = -dI, O.fontDirection = -1) : O.fontDirection = 1, O.fontSize = dI, O.fontFamily = eI.loadedName, O.fontWeight = aI, O.fontStyle = wI, O.tspan = this.svgFactory.createElement("svg:tspan"), O.tspan.setAttributeNS(null, "y", lI(-O.y)), O.xcoords = [], O.ycoords = [];
+                  const WI = eI.italic ? "italic" : "normal";
+                  dI < 0 ? (dI = -dI, O.fontDirection = -1) : O.fontDirection = 1, O.fontSize = dI, O.fontFamily = eI.loadedName, O.fontWeight = aI, O.fontStyle = WI, O.tspan = this.svgFactory.createElement("svg:tspan"), O.tspan.setAttributeNS(null, "y", lI(-O.y)), O.xcoords = [], O.ycoords = [];
                 }
                 endText() {
                   var M;
@@ -15369,16 +15369,16 @@ function requirePdf() {
                   this.current.fillColor = this._makeColorN_Pattern(M);
                 }
                 shadingFill(M) {
-                  const O = this.viewport.width, eI = this.viewport.height, dI = t.Util.inverseTransform(this.transformMatrix), aI = t.Util.applyTransform([0, 0], dI), wI = t.Util.applyTransform([0, eI], dI), GI = t.Util.applyTransform([O, 0], dI), HI = t.Util.applyTransform([O, eI], dI), MI = Math.min(aI[0], wI[0], GI[0], HI[0]), KI = Math.min(aI[1], wI[1], GI[1], HI[1]), DI = Math.max(aI[0], wI[0], GI[0], HI[0]), NI = Math.max(aI[1], wI[1], GI[1], HI[1]), yI = this.svgFactory.createElement("svg:rect");
+                  const O = this.viewport.width, eI = this.viewport.height, dI = t.Util.inverseTransform(this.transformMatrix), aI = t.Util.applyTransform([0, 0], dI), WI = t.Util.applyTransform([0, eI], dI), GI = t.Util.applyTransform([O, 0], dI), HI = t.Util.applyTransform([O, eI], dI), MI = Math.min(aI[0], WI[0], GI[0], HI[0]), KI = Math.min(aI[1], WI[1], GI[1], HI[1]), DI = Math.max(aI[0], WI[0], GI[0], HI[0]), NI = Math.max(aI[1], WI[1], GI[1], HI[1]), yI = this.svgFactory.createElement("svg:rect");
                   yI.setAttributeNS(null, "x", MI), yI.setAttributeNS(null, "y", KI), yI.setAttributeNS(null, "width", DI - MI), yI.setAttributeNS(null, "height", NI - KI), yI.setAttributeNS(null, "fill", this._makeShadingPattern(M)), this.current.fillAlpha < 1 && yI.setAttributeNS(null, "fill-opacity", this.current.fillAlpha), this._ensureTransformGroup().append(yI);
                 }
                 _makeColorN_Pattern(M) {
                   return M[0] === "TilingPattern" ? this._makeTilingPattern(M) : this._makeShadingPattern(M);
                 }
                 _makeTilingPattern(M) {
-                  const O = M[1], eI = M[2], dI = M[3] || t.IDENTITY_MATRIX, [aI, wI, GI, HI] = M[4], MI = M[5], KI = M[6], DI = M[7], NI = `shading${II++}`, [yI, VI, hI, WI] = t.Util.normalizeRect([...t.Util.applyTransform([aI, wI], dI), ...t.Util.applyTransform([GI, HI], dI)]), [pI, xI] = t.Util.singularValueDecompose2dScale(dI), PI = MI * pI, XI = KI * xI, tI = this.svgFactory.createElement("svg:pattern");
+                  const O = M[1], eI = M[2], dI = M[3] || t.IDENTITY_MATRIX, [aI, WI, GI, HI] = M[4], MI = M[5], KI = M[6], DI = M[7], NI = `shading${II++}`, [yI, VI, hI, wI] = t.Util.normalizeRect([...t.Util.applyTransform([aI, WI], dI), ...t.Util.applyTransform([GI, HI], dI)]), [pI, xI] = t.Util.singularValueDecompose2dScale(dI), PI = MI * pI, XI = KI * xI, tI = this.svgFactory.createElement("svg:pattern");
                   tI.setAttributeNS(null, "id", NI), tI.setAttributeNS(null, "patternUnits", "userSpaceOnUse"), tI.setAttributeNS(null, "width", PI), tI.setAttributeNS(null, "height", XI), tI.setAttributeNS(null, "x", `${yI}`), tI.setAttributeNS(null, "y", `${VI}`);
-                  const mI = this.svg, uI = this.transformMatrix, BI = this.current.fillColor, gI = this.current.strokeColor, cI = this.svgFactory.create(hI - yI, WI - VI);
+                  const mI = this.svg, uI = this.transformMatrix, BI = this.current.fillColor, gI = this.current.strokeColor, cI = this.svgFactory.create(hI - yI, wI - VI);
                   if (this.svg = cI, this.transformMatrix = dI, DI === 2) {
                     const bI = t.Util.makeHexColor(...O);
                     this.current.fillColor = bI, this.current.strokeColor = bI;
@@ -15392,8 +15392,8 @@ function requirePdf() {
                       let dI;
                       switch (M[1]) {
                         case "axial":
-                          const aI = M[4], wI = M[5];
-                          dI = this.svgFactory.createElement("svg:linearGradient"), dI.setAttributeNS(null, "id", O), dI.setAttributeNS(null, "gradientUnits", "userSpaceOnUse"), dI.setAttributeNS(null, "x1", aI[0]), dI.setAttributeNS(null, "y1", aI[1]), dI.setAttributeNS(null, "x2", wI[0]), dI.setAttributeNS(null, "y2", wI[1]);
+                          const aI = M[4], WI = M[5];
+                          dI = this.svgFactory.createElement("svg:linearGradient"), dI.setAttributeNS(null, "id", O), dI.setAttributeNS(null, "gradientUnits", "userSpaceOnUse"), dI.setAttributeNS(null, "x1", aI[0]), dI.setAttributeNS(null, "y1", aI[1]), dI.setAttributeNS(null, "x2", WI[0]), dI.setAttributeNS(null, "y2", WI[1]);
                           break;
                         case "radial":
                           const GI = M[4], HI = M[5], MI = M[6], KI = M[7];
@@ -15403,8 +15403,8 @@ function requirePdf() {
                           throw new Error(`Unknown RadialAxial type: ${M[1]}`);
                       }
                       for (const aI of eI) {
-                        const wI = this.svgFactory.createElement("svg:stop");
-                        wI.setAttributeNS(null, "offset", aI[0]), wI.setAttributeNS(null, "stop-color", aI[1]), dI.append(wI);
+                        const WI = this.svgFactory.createElement("svg:stop");
+                        WI.setAttributeNS(null, "offset", aI[0]), WI.setAttributeNS(null, "stop-color", aI[1]), dI.append(WI);
                       }
                       return this.defs.append(dI), `url(#${O})`;
                     case "Mesh":
@@ -15420,34 +15420,34 @@ function requirePdf() {
                 }
                 constructPath(M, O) {
                   const eI = this.current;
-                  let dI = eI.x, aI = eI.y, wI = [], GI = 0;
+                  let dI = eI.x, aI = eI.y, WI = [], GI = 0;
                   for (const HI of M)
                     switch (HI | 0) {
                       case t.OPS.rectangle:
                         dI = O[GI++], aI = O[GI++];
                         const MI = O[GI++], KI = O[GI++], DI = dI + MI, NI = aI + KI;
-                        wI.push("M", lI(dI), lI(aI), "L", lI(DI), lI(aI), "L", lI(DI), lI(NI), "L", lI(dI), lI(NI), "Z");
+                        WI.push("M", lI(dI), lI(aI), "L", lI(DI), lI(aI), "L", lI(DI), lI(NI), "L", lI(dI), lI(NI), "Z");
                         break;
                       case t.OPS.moveTo:
-                        dI = O[GI++], aI = O[GI++], wI.push("M", lI(dI), lI(aI));
+                        dI = O[GI++], aI = O[GI++], WI.push("M", lI(dI), lI(aI));
                         break;
                       case t.OPS.lineTo:
-                        dI = O[GI++], aI = O[GI++], wI.push("L", lI(dI), lI(aI));
+                        dI = O[GI++], aI = O[GI++], WI.push("L", lI(dI), lI(aI));
                         break;
                       case t.OPS.curveTo:
-                        dI = O[GI + 4], aI = O[GI + 5], wI.push("C", lI(O[GI]), lI(O[GI + 1]), lI(O[GI + 2]), lI(O[GI + 3]), lI(dI), lI(aI)), GI += 6;
+                        dI = O[GI + 4], aI = O[GI + 5], WI.push("C", lI(O[GI]), lI(O[GI + 1]), lI(O[GI + 2]), lI(O[GI + 3]), lI(dI), lI(aI)), GI += 6;
                         break;
                       case t.OPS.curveTo2:
-                        wI.push("C", lI(dI), lI(aI), lI(O[GI]), lI(O[GI + 1]), lI(O[GI + 2]), lI(O[GI + 3])), dI = O[GI + 2], aI = O[GI + 3], GI += 4;
+                        WI.push("C", lI(dI), lI(aI), lI(O[GI]), lI(O[GI + 1]), lI(O[GI + 2]), lI(O[GI + 3])), dI = O[GI + 2], aI = O[GI + 3], GI += 4;
                         break;
                       case t.OPS.curveTo3:
-                        dI = O[GI + 2], aI = O[GI + 3], wI.push("C", lI(O[GI]), lI(O[GI + 1]), lI(dI), lI(aI), lI(dI), lI(aI)), GI += 4;
+                        dI = O[GI + 2], aI = O[GI + 3], WI.push("C", lI(O[GI]), lI(O[GI + 1]), lI(dI), lI(aI), lI(dI), lI(aI)), GI += 4;
                         break;
                       case t.OPS.closePath:
-                        wI.push("Z");
+                        WI.push("Z");
                         break;
                     }
-                  wI = wI.join(" "), eI.path && M.length > 0 && M[0] !== t.OPS.rectangle && M[0] !== t.OPS.moveTo ? wI = eI.path.getAttributeNS(null, "d") + wI : (eI.path = this.svgFactory.createElement("svg:path"), this._ensureTransformGroup().append(eI.path)), eI.path.setAttributeNS(null, "d", wI), eI.path.setAttributeNS(null, "fill", "none"), eI.element = eI.path, eI.setCurrentPoint(dI, aI);
+                  WI = WI.join(" "), eI.path && M.length > 0 && M[0] !== t.OPS.rectangle && M[0] !== t.OPS.moveTo ? WI = eI.path.getAttributeNS(null, "d") + WI : (eI.path = this.svgFactory.createElement("svg:path"), this._ensureTransformGroup().append(eI.path)), eI.path.setAttributeNS(null, "d", WI), eI.path.setAttributeNS(null, "fill", "none"), eI.element = eI.path, eI.setCurrentPoint(dI, aI);
                 }
                 endPath() {
                   const M = this.current;
@@ -15579,18 +15579,18 @@ function requirePdf() {
                   this.paintInlineImageXObject(O);
                 }
                 paintInlineImageXObject(M, O) {
-                  const eI = M.width, dI = M.height, aI = iI(M, this.forceDataSchema, !!O), wI = this.svgFactory.createElement("svg:rect");
-                  wI.setAttributeNS(null, "x", "0"), wI.setAttributeNS(null, "y", "0"), wI.setAttributeNS(null, "width", lI(eI)), wI.setAttributeNS(null, "height", lI(dI)), this.current.element = wI, this.clip("nonzero");
+                  const eI = M.width, dI = M.height, aI = iI(M, this.forceDataSchema, !!O), WI = this.svgFactory.createElement("svg:rect");
+                  WI.setAttributeNS(null, "x", "0"), WI.setAttributeNS(null, "y", "0"), WI.setAttributeNS(null, "width", lI(eI)), WI.setAttributeNS(null, "height", lI(dI)), this.current.element = WI, this.clip("nonzero");
                   const GI = this.svgFactory.createElement("svg:image");
                   GI.setAttributeNS(r, "xlink:href", aI), GI.setAttributeNS(null, "x", "0"), GI.setAttributeNS(null, "y", lI(-dI)), GI.setAttributeNS(null, "width", lI(eI) + "px"), GI.setAttributeNS(null, "height", lI(dI) + "px"), GI.setAttributeNS(null, "transform", `scale(${lI(1 / eI)} ${lI(-1 / dI)})`), O ? O.append(GI) : this._ensureTransformGroup().append(GI);
                 }
                 paintImageMaskXObject(M) {
                   const O = this.current, eI = M.width, dI = M.height, aI = O.fillColor;
                   O.maskId = `mask${_++}`;
-                  const wI = this.svgFactory.createElement("svg:mask");
-                  wI.setAttributeNS(null, "id", O.maskId);
+                  const WI = this.svgFactory.createElement("svg:mask");
+                  WI.setAttributeNS(null, "id", O.maskId);
                   const GI = this.svgFactory.createElement("svg:rect");
-                  GI.setAttributeNS(null, "x", "0"), GI.setAttributeNS(null, "y", "0"), GI.setAttributeNS(null, "width", lI(eI)), GI.setAttributeNS(null, "height", lI(dI)), GI.setAttributeNS(null, "fill", aI), GI.setAttributeNS(null, "mask", `url(#${O.maskId})`), this.defs.append(wI), this._ensureTransformGroup().append(GI), this.paintInlineImageXObject(M, wI);
+                  GI.setAttributeNS(null, "x", "0"), GI.setAttributeNS(null, "y", "0"), GI.setAttributeNS(null, "width", lI(eI)), GI.setAttributeNS(null, "height", lI(dI)), GI.setAttributeNS(null, "fill", aI), GI.setAttributeNS(null, "mask", `url(#${O.maskId})`), this.defs.append(WI), this._ensureTransformGroup().append(GI), this.paintInlineImageXObject(M, WI);
                 }
                 paintFormXObjectBegin(M, O) {
                   if (Array.isArray(M) && M.length === 6 && this.transform(M[0], M[1], M[2], M[3], M[4], M[5]), O) {
@@ -15774,12 +15774,12 @@ function requirePdf() {
                 super(II);
                 const M = (O) => {
                   if (O.statusCode === 404) {
-                    const wI = new o.MissingPDFException(`Missing PDF "${this._url}".`);
-                    this._storedError = wI, this._headersCapability.reject(wI);
+                    const WI = new o.MissingPDFException(`Missing PDF "${this._url}".`);
+                    this._storedError = WI, this._headersCapability.reject(WI);
                     return;
                   }
                   this._headersCapability.resolve(), this._setReadableStream(O);
-                  const eI = (wI) => this._readableStream.headers[wI.toLowerCase()], {
+                  const eI = (WI) => this._readableStream.headers[WI.toLowerCase()], {
                     allowRangeRequests: dI,
                     suggestedLength: aI
                   } = (0, t.validateRangeRequestCapabilities)({
@@ -17023,8 +17023,8 @@ function requireDist() {
       const M = B(j, oI, E), O = R(j, E, M), eI = j.slice(M, O);
       if (sI[eI] === void 0) {
         let dI = B(j, E + 1, II), aI = R(j, II, dI);
-        const wI = lI(j.slice(dI, aI));
-        sI[eI] = wI;
+        const WI = lI(j.slice(dI, aI));
+        sI[eI] = WI;
       }
       oI = II + 1;
     } while (oI < AI);
@@ -18141,8 +18141,8 @@ var ABSOLUTE_URL_REGEX2 = /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i, Link = React2.forward
     let { basename: sI } = React2.useContext(NavigationContext), AI = typeof r == "string" && ABSOLUTE_URL_REGEX2.test(r), lI, oI = !1;
     if (typeof r == "string" && AI && (lI = r, isBrowser))
       try {
-        let aI = new URL(window.location.href), wI = r.startsWith("//") ? new URL(aI.protocol + r) : new URL(r), GI = stripBasename(wI.pathname, sI);
-        wI.origin === aI.origin && GI != null ? r = GI + wI.search + wI.hash : oI = !0;
+        let aI = new URL(window.location.href), WI = r.startsWith("//") ? new URL(aI.protocol + r) : new URL(r), GI = stripBasename(WI.pathname, sI);
+        WI.origin === aI.origin && GI != null ? r = GI + WI.search + WI.hash : oI = !0;
       } catch {
         warning(
           !1,
@@ -18210,7 +18210,7 @@ var NavLink = React2.forwardRef(
       O ? "pending" : null,
       lI ? "transitioning" : null
     ].filter(Boolean).join(" ");
-    let wI = typeof a == "function" ? a(eI) : a;
+    let WI = typeof a == "function" ? a(eI) : a;
     return /* @__PURE__ */ React2.createElement(
       Link,
       {
@@ -18218,7 +18218,7 @@ var NavLink = React2.forwardRef(
         "aria-current": dI,
         className: aI,
         ref: H,
-        style: wI,
+        style: WI,
         to: n,
         viewTransition: B
       },
@@ -18422,7 +18422,7 @@ const extractRouteParams = (e, A = window?.location?.pathname || "") => {
     { path: A }
   )), /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: A, element: a, children: o && DesmyRenderRoutes(o) }, t);
 });
-var DesmyState = /* @__PURE__ */ ((e) => (e.SPECIFIC_GROUP_SIZE = "SPECIFIC_GROUP_SIZE", e.ORGANIZATIONAL_UNIT_GROUPS = "ORGANIZATIONAL_UNIT_GROUPS", e.TOTAL_COURSE_COUNT = "TOTAL_COURSE_COUNT", e.CREDIT_HOUR_LIMITS = "CREDIT_HOUR_LIMITS", e.PROGRAMME_TYPE = "PROGRAMME_TYPE", e.FACULTY_COURSES = "FACULTY_COURSES", e.RELOAD_ACCOUNT = "RELOAD_ACCOUNT", e.COURSE = "COURSE", e.LOADING = "LOADING", e.SPECIFIC_COURSE = "SPECIFIC_COURSE", e.ERROR = "ERROR", e.SUCCESS = "SUCCESS", e.BOOLEAN = "BOOLEAN", e.DROPDOWN = "DROPDOWN", e.CAMPUS = "CAMPUS", e.APPROVED = "APPROVED", e.SUBMITTED = "SUBMITTED", e.CONFIRMED = "CONFIRMED", e.STUDENT_GROUPS = "STUDENT_GROUPS", e.STARTED = "STARTED", e.NOT_STARTED = "NOT_STARTED", e.ACTIVE = "ACTIVE", e.ACCREDITED = "ACCREDITED", e.ACCEPTED = "ACCEPTED", e.CREATED = "CREATED", e.LOADED = "LOADED", e.LOCKED = "LOCKED", e.RUNNING = "RUNNING", e.ADMITTED = "ADMITTED", e.ADMIT = "ADMIT", e.COMMITTEE = "COMMITTEE", e.BOARD = "BOARD", e.UPDATED = "UPDATED", e.NO = "NO", e.YES = "YES", e.COURSE_ALLOCATION = "COURSE_ALLOCATION", e.ELECTIVE = "ELECTIVE", e.CORE = "CORE", e.NOTIFICATION = "NOTIFICATION", e.NOTIFICATION_ALERT = "NOTIFICATION_ALERT", e.NOTIFICATION_ALERT_CLOSE = "NOTIFICATION_ALERT_CLOSE", e.HEALTHY = "HEALTHY", e.UNHEALTHY = "UNHEALTHY", e.TEACHING = "TEACHING", e.NONTEACHING = "NONTEACHING", e.STUDENTS = "STUDENTS", e.APPLICANTS = "APPLICANTS", e.PROGRAMMES = "PROGRAMMES", e.APPOINTMENT = "APPOINTMENT", e.UNITS = "UNITS", e.SUBGROUPS = "SUBGROUPS", e.CURRICULUM = "CURRICULUM", e.EXAMINATIONS = "EXAMINATIONS", e.LEAVE = "LEAVE", e.ORGANIZATIONAL_UNITS = "ORGANIZATIONAL_UNITS", e.PROGRESS = "PROGRESS", e.COMPLETED = "COMPLETED", e.QUALIFIED = "QUALIFIED", e.WAITING = "WAITING", e.NAVIGATION = "NAVIGATION", e.PENDING = "PENDING", e.IN_PROGRESS = "IN_PROGRESS", e.CIRRICULUM = "CIRRICULUM", e.NOTICE = "NOTICE", e.OPEN_SIDEBAR = "OPEN_SIDEBAR", e.OPEN = "OPEN", e.ACCESS_TOKEN = "access_token", e.CLIENT_ACCESS_TOKEN = "client_token", e.APPLICATION_ACCESS_TOKEN = "a_token", e.APPLICATION = "APPLICATION", e.APPLY_AS_AWAITING = "APPLY_AS_AWAITING", e.UPLOAD_RESULTS = "UPLOAD_RESULTS", e.TEXT = "TEXT", e.TEXTAREA = "TEXTAREA", e.EMAIL = "EMAIL", e.PHONE = "PHONE", e.PHONE_NUMBER = "PHONE_NUMBER", e.NUMBER = "NUMBER", e.PASSWORD = "PASSWORD", e.DOCUMENT = "DOCUMENT", e.EDIT = "EDIT", e.DELETE = "DELETE", e.ACADEMIC = "ACADEMIC", e.NONACADEMIC = "NONACADEMIC", e.INTERNATIONAL = "INTERNATIONAL", e.VOUCHER_PARAM = "VOUCHER_PARAM", e.VOUCHER = "VOUCHER", e.EMAIL_ADDRESS = "EMAIL_ADDRESS", e.MOBILE_MONEY = "MOBILE_MONEY", e.LOCAL = "LOCAL", e.FRONT = "FRONT", e.ADMISSION = "ADMISSION", e.MEDIA_CAPTURED = "MEDIA_CAPTURED", e.FEMALE = "FEMALE", e.MALE = "MALE", e.DATASETTABLE_REQUEST = "DATASETTABLE_REQUEST", e.SMALL = "SMALL", e.NORMAL = "NORMAL", e.LARGE = "LARGE", e.AGGREGATE = "AGGREGATE", e.AUTOMATIC = "AUTOMATIC", e.MANUAL = "MANUAL", e.INTERVIEW = "INTERVIEW", e.PASS = "PASS", e.FAIL = "FAIL", e.ENTRANCE_EXAMS = "ENTRANCE_EXAMS", e.REJECT = "REJECT", e.SYSTEM_GET_STARTED = "SYSTEM_GET_STARTED", e.COURSE_POLICY = "COURSE_POLICY", e.REJECTED = "REJECTED", e.COURSES = "COURSES", e.GRADE_CUT_OFF_POINT_STATE = "GRADE_CUT_OFF_POINT_STATE", e.AGGREGATE_CUT_OFF_POINT_STATE = "AGGREGATE_CUT_OFF_POINT_STATE", e.GENDER_CUT_OFF_POINT_STATE = "GENDER_CUT_OFF_POINT_STATE", e.MATURE_INVITATION = "MATURE_INVITATION", e.RESULTS = "RESULTS", e.FILE_UPLOAD = "FILE_UPLOAD", e.COURSE_REMOVED = "COURSE_REMOVED", e.COURSE_ADDED = "COURSE_ADDED", e.RECOMMENDATION_LETTER = "RECOMMENDATION_LETTER", e.ERROR_MESSAGE = "Sorry for the inconvenience caused by the error. Please contact us if the issue persists. ", e.POSITIONS = "POSITIONS", e.WASSCE_RESULTS = "WASSCE_RESULTS", e.NEW_SITTING = "NEW_SITTING", e.REFEREE = "REFEREE", e.CERTIFICATE = "CERTIFICATE", e.TRANSCRIPT = "TRANSCRIPT", e.CERTIFICATES_AND_TRANSCRIPTS = "CERTIFICATES_AND_TRANSCRIPTS", e.RECOMMENDATION_LETTERS = "RECOMMENDATION_LETTERS", e.SECONDARY_SCHOOL_DOCUMENTS = "SECONDARY_SCHOOL_DOCUMENTS", e.UPDATE_INFORMATION = "UPDATE_INFORMATION", e.SUB_CAMPUSES = "SUB_CAMPUSES", e.CONTINUOUS_ASSESSMENT = "CONTINUOUS_ASSESSMENT", e.END_OF_SEMESTER = "END_OF_SEMESTER", e.CAMPUSES = "CAMPUSES", e.VOUCHER_FEES = "VOUCHER_FEES", e.REPORT = "REPORT", e.NEW_DOCUMENT = "NEW_DOCUMENT", e.OTHERS = "OTHERS", e.COURSE_QUOTA = "COURSE_QUOTA", e.RE_ACCREDITATION = "RE_ACCREDITATION", e.ACCREDITATION = "ACCREDITATION", e.REGULAR = "REGULAR", e.INTERNAL = "INTERNAL", e.EXTERNAL = "EXTERNAL", e.COLOR = "COLOR", e.SEARCH = "SEARCH", e.IMMEDIATELY = "IMMEDIATELY", e.CUSTOM = "CUSTOM", e.ACTING = "ACTING", e.SUBSTANTIVE = "SUBSTANTIVE", e.CURRENT_ACADEMIC_YEAR = "CURRENT_ACADEMIC_YEAR", e.DURATION_OF_ENTIRE_PROGRAMME = "DURATION_OF_ENTIRE_PROGRAMME", e.REMAINDER_OF_PROGRAMME = "REMAINDER_OF_PROGRAMME", e.SPECIFIC = "SPECIFIC", e.UPLOAD_MANAGER_REQUEST = "UPLOAD_MANAGER_REQUEST", e.INTERVIEW_INVITATION = "INTERVIEW_INVITATION", e.ALL = "ALL", e.ALL_TEACHING_WITH_SPECIFIC_NON_TEACHING = "ALL_TEACHING_WITH_SPECIFIC_NON_TEACHING", e.ALL_NON_TEACHING_WITH_SPECIFIC_TEACHING = "ALL_NON_TEACHING_WITH_SPECIFIC_TEACHING", e.SPECIFIC_TEACHING_AND_NON_TEACHING = "SPECIFIC_TEACHING_AND_NON_TEACHING", e.ABSOLUTE_AMOUNT = "ABSOLUTE_AMOUNT", e.ENTRY_MODE = "ENTRY_MODE", e.AMOUNT = "AMOUNT", e.DECIMAL = "DECIMAL", e.PERCENTAGE_OF_TOTAL_FEES_DUE = "PERCENTAGE_OF_TOTAL_FEES_DUE", e.REFUND = "REFUND", e.OWING = "OWING", e.NONE = "NONE", e.FEE_PARAM = "", e.NON_SCORING = "NON_SCORING", e.SCORING = "SCORING", e.NOMINATING_AUTHORITY = "NOMINATING_AUTHORITY", e.APPOINTING_AUTHORITY = "APPOINTING_AUTHORITY", e.CHANGE_PROGRAMME = "CHANGE_PROGRAMME", e.CHANGE_PASSWORD = "CHANGE_PASSWORD", e.EDIT_PROFILE = "EDIT_PROFILE", e.PUBLISHED_RESULTS = "PUBLISHED_RESULTS", e.PUBLISHED = "PUBLISHED", e.UNIVERSITY = "UNIVERSITY", e))(DesmyState || {}), top = "top", bottom = "bottom", right = "right", left = "left", auto = "auto", basePlacements = [top, bottom, right, left], start = "start", end = "end", clippingParents = "clippingParents", viewport = "viewport", popper = "popper", reference = "reference", variationPlacements = /* @__PURE__ */ basePlacements.reduce(function(e, A) {
+var DesmyState = /* @__PURE__ */ ((e) => (e.SPECIFIC_GROUP_SIZE = "SPECIFIC_GROUP_SIZE", e.ORGANIZATIONAL_UNIT_GROUPS = "ORGANIZATIONAL_UNIT_GROUPS", e.TOTAL_COURSE_COUNT = "TOTAL_COURSE_COUNT", e.CREDIT_HOUR_LIMITS = "CREDIT_HOUR_LIMITS", e.PROGRAMME_TYPE = "PROGRAMME_TYPE", e.FACULTY_COURSES = "FACULTY_COURSES", e.RELOAD_ACCOUNT = "RELOAD_ACCOUNT", e.COURSE = "COURSE", e.LOADING = "LOADING", e.SPECIFIC_COURSE = "SPECIFIC_COURSE", e.ERROR = "ERROR", e.SUCCESS = "SUCCESS", e.BOOLEAN = "BOOLEAN", e.DROPDOWN = "DROPDOWN", e.CAMPUS = "CAMPUS", e.APPROVED = "APPROVED", e.SUBMITTED = "SUBMITTED", e.CONFIRMED = "CONFIRMED", e.STUDENT_GROUPS = "STUDENT_GROUPS", e.STARTED = "STARTED", e.NOT_STARTED = "NOT_STARTED", e.ACTIVE = "ACTIVE", e.ACCREDITED = "ACCREDITED", e.ACCEPTED = "ACCEPTED", e.CREATED = "CREATED", e.LOADED = "LOADED", e.LOCKED = "LOCKED", e.RUNNING = "RUNNING", e.ADMITTED = "ADMITTED", e.ADMIT = "ADMIT", e.COMMITTEE = "COMMITTEE", e.BOARD = "BOARD", e.UPDATED = "UPDATED", e.NO = "NO", e.YES = "YES", e.COURSE_ALLOCATION = "COURSE_ALLOCATION", e.ELECTIVE = "ELECTIVE", e.CORE = "CORE", e.NOTIFICATION = "NOTIFICATION", e.NOTIFICATION_ALERT = "NOTIFICATION_ALERT", e.NOTIFICATION_ALERT_CLOSE = "NOTIFICATION_ALERT_CLOSE", e.HEALTHY = "HEALTHY", e.UNHEALTHY = "UNHEALTHY", e.TEACHING = "TEACHING", e.NONTEACHING = "NONTEACHING", e.STUDENTS = "STUDENTS", e.APPLICANTS = "APPLICANTS", e.PROGRAMMES = "PROGRAMMES", e.APPOINTMENT = "APPOINTMENT", e.UNITS = "UNITS", e.SUBGROUPS = "SUBGROUPS", e.CURRICULUM = "CURRICULUM", e.EXAMINATIONS = "EXAMINATIONS", e.LEAVE = "LEAVE", e.ORGANIZATIONAL_UNITS = "ORGANIZATIONAL_UNITS", e.PROGRESS = "PROGRESS", e.COMPLETED = "COMPLETED", e.QUALIFIED = "QUALIFIED", e.WAITING = "WAITING", e.NAVIGATION = "NAVIGATION", e.PENDING = "PENDING", e.IN_PROGRESS = "IN_PROGRESS", e.CIRRICULUM = "CIRRICULUM", e.NOTICE = "NOTICE", e.OPEN_SIDEBAR = "OPEN_SIDEBAR", e.OPEN = "OPEN", e.TESTING = "TESTING", e.VOUCHER_ACCESS_TOKEN = "v_access_token", e.ACCESS_TOKEN = "access_token", e.CLIENT_ACCESS_TOKEN = "client_token", e.APPLICATION_ACCESS_TOKEN = "a_token", e.APPLICATION = "APPLICATION", e.APPLY_AS_AWAITING = "APPLY_AS_AWAITING", e.UPLOAD_RESULTS = "UPLOAD_RESULTS", e.TEXT = "TEXT", e.TEXTAREA = "TEXTAREA", e.EMAIL = "EMAIL", e.PHONE = "PHONE", e.PHONE_NUMBER = "PHONE_NUMBER", e.NUMBER = "NUMBER", e.PASSWORD = "PASSWORD", e.DOCUMENT = "DOCUMENT", e.EDIT = "EDIT", e.DELETE = "DELETE", e.ACADEMIC = "ACADEMIC", e.NONACADEMIC = "NONACADEMIC", e.INTERNATIONAL = "INTERNATIONAL", e.VOUCHER_PARAM = "VOUCHER_PARAM", e.VOUCHER = "VOUCHER", e.EMAIL_ADDRESS = "EMAIL_ADDRESS", e.MOBILE_MONEY = "MOBILE_MONEY", e.LOCAL = "LOCAL", e.FRONT = "FRONT", e.ADMISSION = "ADMISSION", e.MEDIA_CAPTURED = "MEDIA_CAPTURED", e.FEMALE = "FEMALE", e.MALE = "MALE", e.DATASETTABLE_REQUEST = "DATASETTABLE_REQUEST", e.SMALL = "SMALL", e.NORMAL = "NORMAL", e.LARGE = "LARGE", e.AGGREGATE = "AGGREGATE", e.AUTOMATIC = "AUTOMATIC", e.MANUAL = "MANUAL", e.INTERVIEW = "INTERVIEW", e.PASS = "PASS", e.FAIL = "FAIL", e.ENTRANCE_EXAMS = "ENTRANCE_EXAMS", e.REJECT = "REJECT", e.SYSTEM_GET_STARTED = "SYSTEM_GET_STARTED", e.COURSE_POLICY = "COURSE_POLICY", e.REJECTED = "REJECTED", e.COURSES = "COURSES", e.GRADE_CUT_OFF_POINT_STATE = "GRADE_CUT_OFF_POINT_STATE", e.AGGREGATE_CUT_OFF_POINT_STATE = "AGGREGATE_CUT_OFF_POINT_STATE", e.GENDER_CUT_OFF_POINT_STATE = "GENDER_CUT_OFF_POINT_STATE", e.MATURE_INVITATION = "MATURE_INVITATION", e.RESULTS = "RESULTS", e.FILE_UPLOAD = "FILE_UPLOAD", e.COURSE_REMOVED = "COURSE_REMOVED", e.COURSE_ADDED = "COURSE_ADDED", e.RECOMMENDATION_LETTER = "RECOMMENDATION_LETTER", e.ERROR_MESSAGE = "Please check your internet connection and retry again. Please contact us if the issue persists. ", e.POSITIONS = "POSITIONS", e.WASSCE_RESULTS = "WASSCE_RESULTS", e.NEW_SITTING = "NEW_SITTING", e.REFEREE = "REFEREE", e.CERTIFICATE = "CERTIFICATE", e.TRANSCRIPT = "TRANSCRIPT", e.CERTIFICATES_AND_TRANSCRIPTS = "CERTIFICATES_AND_TRANSCRIPTS", e.RECOMMENDATION_LETTERS = "RECOMMENDATION_LETTERS", e.SECONDARY_SCHOOL_DOCUMENTS = "SECONDARY_SCHOOL_DOCUMENTS", e.UPDATE_INFORMATION = "UPDATE_INFORMATION", e.SUB_CAMPUSES = "SUB_CAMPUSES", e.CONTINUOUS_ASSESSMENT = "CONTINUOUS_ASSESSMENT", e.END_OF_SEMESTER = "END_OF_SEMESTER", e.CAMPUSES = "CAMPUSES", e.VOUCHER_FEES = "VOUCHER_FEES", e.REPORT = "REPORT", e.NEW_DOCUMENT = "NEW_DOCUMENT", e.OTHERS = "OTHERS", e.COURSE_QUOTA = "COURSE_QUOTA", e.RE_ACCREDITATION = "RE_ACCREDITATION", e.ACCREDITATION = "ACCREDITATION", e.REGULAR = "REGULAR", e.INTERNAL = "INTERNAL", e.EXTERNAL = "EXTERNAL", e.COLOR = "COLOR", e.SEARCH = "SEARCH", e.IMMEDIATELY = "IMMEDIATELY", e.CUSTOM = "CUSTOM", e.ACTING = "ACTING", e.SUBSTANTIVE = "SUBSTANTIVE", e.CURRENT_ACADEMIC_YEAR = "CURRENT_ACADEMIC_YEAR", e.DURATION_OF_ENTIRE_PROGRAMME = "DURATION_OF_ENTIRE_PROGRAMME", e.REMAINDER_OF_PROGRAMME = "REMAINDER_OF_PROGRAMME", e.SPECIFIC = "SPECIFIC", e.UPLOAD_MANAGER_REQUEST = "UPLOAD_MANAGER_REQUEST", e.INTERVIEW_INVITATION = "INTERVIEW_INVITATION", e.ALL = "ALL", e.ALL_TEACHING_WITH_SPECIFIC_NON_TEACHING = "ALL_TEACHING_WITH_SPECIFIC_NON_TEACHING", e.ALL_NON_TEACHING_WITH_SPECIFIC_TEACHING = "ALL_NON_TEACHING_WITH_SPECIFIC_TEACHING", e.SPECIFIC_TEACHING_AND_NON_TEACHING = "SPECIFIC_TEACHING_AND_NON_TEACHING", e.ABSOLUTE_AMOUNT = "ABSOLUTE_AMOUNT", e.ENTRY_MODE = "ENTRY_MODE", e.AMOUNT = "AMOUNT", e.DECIMAL = "DECIMAL", e.PERCENTAGE_OF_TOTAL_FEES_DUE = "PERCENTAGE_OF_TOTAL_FEES_DUE", e.REFUND = "REFUND", e.OWING = "OWING", e.NONE = "NONE", e.FEE_PARAM = "", e.NON_SCORING = "NON_SCORING", e.SCORING = "SCORING", e.NOMINATING_AUTHORITY = "NOMINATING_AUTHORITY", e.APPOINTING_AUTHORITY = "APPOINTING_AUTHORITY", e.CHANGE_PROGRAMME = "CHANGE_PROGRAMME", e.CHANGE_PASSWORD = "CHANGE_PASSWORD", e.EDIT_PROFILE = "EDIT_PROFILE", e.PUBLISHED_RESULTS = "PUBLISHED_RESULTS", e.PUBLISHED = "PUBLISHED", e.UNIVERSITY = "UNIVERSITY", e))(DesmyState || {}), top = "top", bottom = "bottom", right = "right", left = "left", auto = "auto", basePlacements = [top, bottom, right, left], start = "start", end = "end", clippingParents = "clippingParents", viewport = "viewport", popper = "popper", reference = "reference", variationPlacements = /* @__PURE__ */ basePlacements.reduce(function(e, A) {
   return e.concat([A + "-" + start, A + "-" + end]);
 }, []), placements = /* @__PURE__ */ [].concat(basePlacements, [auto]).reduce(function(e, A) {
   return e.concat([A, A + "-" + start, A + "-" + end]);
@@ -18685,11 +18685,11 @@ function mapToStyles(e) {
     }
     if (t === left || (t === top || t === bottom) && a === end) {
       _ = right;
-      var wI = CI && O === M && M.visualViewport ? M.visualViewport.width : (
+      var WI = CI && O === M && M.visualViewport ? M.visualViewport.width : (
         // $FlowFixMe[prop-missing]
         O[dI]
       );
-      iI -= wI - o.width, iI *= R ? 1 : -1;
+      iI -= WI - o.width, iI *= R ? 1 : -1;
     }
   }
   var GI = Object.assign({
@@ -18909,7 +18909,7 @@ function detectOverflow(e, A) {
     reference: O,
     element: _,
     placement: t
-  }), dI = rectToClientRect(Object.assign({}, _, eI)), aI = j === popper ? dI : O, wI = {
+  }), dI = rectToClientRect(Object.assign({}, _, eI)), aI = j === popper ? dI : O, WI = {
     top: M.top - aI.top + oI.top,
     bottom: aI.bottom - M.bottom + oI.bottom,
     left: M.left - aI.left + oI.left,
@@ -18917,12 +18917,12 @@ function detectOverflow(e, A) {
   }, GI = e.modifiersData.offset;
   if (j === popper && GI) {
     var HI = GI[t];
-    Object.keys(wI).forEach(function(MI) {
+    Object.keys(WI).forEach(function(MI) {
       var KI = [right, bottom].indexOf(MI) >= 0 ? 1 : -1, DI = [top, bottom].indexOf(MI) >= 0 ? "y" : "x";
-      wI[MI] += HI[DI] * KI;
+      WI[MI] += HI[DI] * KI;
     });
   }
-  return wI;
+  return WI;
 }
 function computeAutoPlacement(e, A) {
   A === void 0 && (A = {});
@@ -18962,8 +18962,8 @@ function flip(e) {
         flipVariations: sI,
         allowedAutoPlacements: AI
       }) : tI);
-    }, []), M = A.rects.reference, O = A.rects.popper, eI = /* @__PURE__ */ new Map(), dI = !0, aI = II[0], wI = 0; wI < II.length; wI++) {
-      var GI = II[wI], HI = getBasePlacement(GI), MI = getVariation(GI) === start, KI = [top, bottom].indexOf(HI) >= 0, DI = KI ? "width" : "height", NI = detectOverflow(A, {
+    }, []), M = A.rects.reference, O = A.rects.popper, eI = /* @__PURE__ */ new Map(), dI = !0, aI = II[0], WI = 0; WI < II.length; WI++) {
+      var GI = II[WI], HI = getBasePlacement(GI), MI = getVariation(GI) === start, KI = [top, bottom].indexOf(HI) >= 0, DI = KI ? "width" : "height", NI = detectOverflow(A, {
         placement: GI,
         boundary: H,
         rootBoundary: CI,
@@ -18981,7 +18981,7 @@ function flip(e) {
       eI.set(GI, hI);
     }
     if (dI)
-      for (var WI = sI ? 3 : 1, pI = function(tI) {
+      for (var wI = sI ? 3 : 1, pI = function(tI) {
         var mI = II.find(function(uI) {
           var BI = eI.get(uI);
           if (BI)
@@ -18991,7 +18991,7 @@ function flip(e) {
         });
         if (mI)
           return aI = mI, "break";
-      }, xI = WI; xI > 0; xI--) {
+      }, xI = wI; xI > 0; xI--) {
         var PI = pI(xI);
         if (PI === "break") break;
       }
@@ -19098,7 +19098,7 @@ function preventOverflow(e) {
     altBoundary: H
   }), oI = getBasePlacement(A.placement), E = getVariation(A.placement), _ = !E, II = getMainAxisFromPlacement(oI), M = getAltAxis(II), O = A.modifiersData.popperOffsets, eI = A.rects.reference, dI = A.rects.popper, aI = typeof AI == "function" ? AI(Object.assign({}, A.rects, {
     placement: A.placement
-  })) : AI, wI = typeof aI == "number" ? {
+  })) : AI, WI = typeof aI == "number" ? {
     mainAxis: aI,
     altAxis: aI
   } : Object.assign({
@@ -19110,14 +19110,14 @@ function preventOverflow(e) {
   };
   if (O) {
     if (a) {
-      var MI, KI = II === "y" ? top : left, DI = II === "y" ? bottom : right, NI = II === "y" ? "height" : "width", yI = O[II], VI = yI + lI[KI], hI = yI - lI[DI], WI = iI ? -dI[NI] / 2 : 0, pI = E === start ? eI[NI] : dI[NI], xI = E === start ? -dI[NI] : -eI[NI], PI = A.elements.arrow, XI = iI && PI ? getLayoutRect(PI) : {
+      var MI, KI = II === "y" ? top : left, DI = II === "y" ? bottom : right, NI = II === "y" ? "height" : "width", yI = O[II], VI = yI + lI[KI], hI = yI - lI[DI], wI = iI ? -dI[NI] / 2 : 0, pI = E === start ? eI[NI] : dI[NI], xI = E === start ? -dI[NI] : -eI[NI], PI = A.elements.arrow, XI = iI && PI ? getLayoutRect(PI) : {
         width: 0,
         height: 0
-      }, tI = A.modifiersData["arrow#persistent"] ? A.modifiersData["arrow#persistent"].padding : getFreshSideObject(), mI = tI[KI], uI = tI[DI], BI = within(0, eI[NI], XI[NI]), gI = _ ? eI[NI] / 2 - WI - BI - mI - wI.mainAxis : pI - BI - mI - wI.mainAxis, cI = _ ? -eI[NI] / 2 + WI + BI + uI + wI.mainAxis : xI + BI + uI + wI.mainAxis, bI = A.elements.arrow && getOffsetParent(A.elements.arrow), nI = bI ? II === "y" ? bI.clientTop || 0 : bI.clientLeft || 0 : 0, YI = (MI = GI?.[II]) != null ? MI : 0, rI = yI + gI - YI - nI, FI = yI + cI - YI, kI = within(iI ? min(VI, rI) : VI, yI, iI ? max$1(hI, FI) : hI);
+      }, tI = A.modifiersData["arrow#persistent"] ? A.modifiersData["arrow#persistent"].padding : getFreshSideObject(), mI = tI[KI], uI = tI[DI], BI = within(0, eI[NI], XI[NI]), gI = _ ? eI[NI] / 2 - wI - BI - mI - WI.mainAxis : pI - BI - mI - WI.mainAxis, cI = _ ? -eI[NI] / 2 + wI + BI + uI + WI.mainAxis : xI + BI + uI + WI.mainAxis, bI = A.elements.arrow && getOffsetParent(A.elements.arrow), nI = bI ? II === "y" ? bI.clientTop || 0 : bI.clientLeft || 0 : 0, YI = (MI = GI?.[II]) != null ? MI : 0, rI = yI + gI - YI - nI, FI = yI + cI - YI, kI = within(iI ? min(VI, rI) : VI, yI, iI ? max$1(hI, FI) : hI);
       O[II] = kI, HI[II] = kI - yI;
     }
     if (B) {
-      var TI, QI = II === "x" ? top : left, fI = II === "x" ? bottom : right, OI = O[M], qI = M === "y" ? "height" : "width", gg = OI + lI[QI], lg = OI - lI[fI], sg = [top, left].indexOf(oI) !== -1, tg = (TI = GI?.[M]) != null ? TI : 0, ig = sg ? gg : OI - eI[qI] - dI[qI] - tg + wI.altAxis, Xg = sg ? OI + eI[qI] + dI[qI] - tg - wI.altAxis : lg, rg = iI && sg ? withinMaxClamp(ig, OI, Xg) : within(iI ? ig : gg, OI, iI ? Xg : lg);
+      var TI, QI = II === "x" ? top : left, fI = II === "x" ? bottom : right, OI = O[M], qI = M === "y" ? "height" : "width", gg = OI + lI[QI], lg = OI - lI[fI], sg = [top, left].indexOf(oI) !== -1, tg = (TI = GI?.[M]) != null ? TI : 0, ig = sg ? gg : OI - eI[qI] - dI[qI] - tg + WI.altAxis, Xg = sg ? OI + eI[qI] + dI[qI] - tg - WI.altAxis : lg, rg = iI && sg ? withinMaxClamp(ig, OI, Xg) : within(iI ? ig : gg, OI, iI ? Xg : lg);
       O[M] = rg, HI[M] = rg - OI;
     }
     A.modifiersData[o] = HI;
@@ -19262,8 +19262,8 @@ function popperGenerator(e) {
             H.rects = {
               reference: getCompositeRect(E, getOffsetParent(_), H.options.strategy === "fixed"),
               popper: getLayoutRect(_)
-            }, H.reset = !1, H.placement = H.options.placement, H.orderedModifiers.forEach(function(wI) {
-              return H.modifiersData[wI.name] = Object.assign({}, wI.data);
+            }, H.reset = !1, H.placement = H.options.placement, H.orderedModifiers.forEach(function(WI) {
+              return H.modifiersData[WI.name] = Object.assign({}, WI.data);
             });
             for (var II = 0; II < H.orderedModifiers.length; II++) {
               if (H.reset === !0) {
@@ -21135,9 +21135,9 @@ class DesmyDropdown extends Component {
         state: !1,
         message: ""
       },
-      isMobileView: window.innerWidth <= 768 || window.innerHeight < 1e3,
-      showMobileModal: window.innerWidth <= 768 || window.innerHeight < 1e3,
-      isModal: window.innerHeight < 1e3
+      isMobileView: window.innerWidth <= 768 || window.innerHeight < 830,
+      showMobileModal: window.innerWidth <= 768 || window.innerHeight < 830,
+      isModal: window.innerHeight < 830
     };
   }
   componentDidUpdate(A, l) {
@@ -21148,7 +21148,7 @@ class DesmyDropdown extends Component {
     DesmyCommons$1.isEmptyOrNull(A) && !DesmyCommons$1.isEmptyOrNull(l) && this.handleSelectAll();
   };
   updateViewMode = () => {
-    this.closeDropdownPopover(), this.setState({ isMobileView: window.innerWidth <= 768 || window.innerHeight < 1e3, isModal: window.innerHeight < 1e3 }, () => {
+    this.setState({ isMobileView: window.innerWidth <= 768 || window.innerHeight < 830, isModal: window.innerHeight < 830 }, () => {
       !this.state.isMobileView && this.state.dropdownPopoverShow && this.handleDropdownOpen();
     });
   };
@@ -21168,7 +21168,7 @@ class DesmyDropdown extends Component {
     const l = this.props.data || [];
     this.setState({ datalist: l }, () => {
       this.handleDelayedProcess();
-    });
+    }), this.closeDropdownPopover();
   }
   componentWillUnmount() {
     document.removeEventListener("mousedown", this.handleClickOutside), window.removeEventListener("resize", this.updateViewMode);
@@ -21238,7 +21238,7 @@ class DesmyDropdown extends Component {
   handleDelayedProcess = () => {
     setTimeout(() => {
       this.handleProcess();
-    }, 1e3);
+    }, 830);
   };
   handleProcess = () => {
     this.handleDefault();
@@ -21270,8 +21270,7 @@ class DesmyDropdown extends Component {
         message: A
       };
       this.setState({ isLoading: !1, error: o });
-    } catch (l) {
-      console.error("Error occurred while handling error:", l);
+    } catch {
     }
   };
   onClear = () => {
@@ -21389,9 +21388,9 @@ class DesmyDropdown extends Component {
         "div",
         {
           ref: this.popoverDropdownRef,
-          className: (this.state.dropdownPopoverShow ? "inline-block " : "hidden ") + `${this.state.isMobileView ? `fixed top-0 left-0 right-0 bottom-0 flex flex-col z-[9999999] p-4 overflow-auto w-full h-full ${l ? "bg-black/40" : ""}` : "absolute border-[1px] border-gray-200 dark:border-gray-700 shadow-lg mt-1 min-w-[400px] max-w-[600px]"} z-[800] text-base top-0 float-left py-2 bg-inherit  ` + this.props.dropdownClass,
+          className: (this.state.dropdownPopoverShow ? "inline-block " : "hidden ") + `${this.state.isMobileView ? `fixed top-0 left-0 right-0 bottom-0 flex flex-col z-[9999999] p-4 overflow-auto w-sreen h-screen ${l ? "bg-black/40" : ""}` : "absolute border-[1px] border-gray-200 dark:border-gray-700 shadow-lg mt-1 min-w-[400px] max-w-[600px]"} z-[830] text-base top-0 float-left py-2 bg-inherit  ` + this.props.dropdownClass,
           style: { minWidth: "12rem" },
-          children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex justify-center items-center h-full ", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto dark:bg-darkDialogBackground p-3 max-w-lg bg-white rounded ", children: [
+          children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex px-5 md:px-0 justify-center items-center h-full ", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto dark:bg-darkDialogBackground p-3 max-w-lg bg-white rounded ", children: [
             A && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex text-black dark:text-white w-full justify-between mb-5", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-base px-3  font-poppinsBold", children: this.props.placeholder }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { onClick: this.closeDropdownPopover, className: `${l ? "absolute right-10 top-10 " : ""}`, children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 14 14", className: `${l ? "text-white size-5 " : "size-3 "}`, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fill: "currentColor", fillRule: "evenodd", d: "M1.707.293A1 1 0 0 0 .293 1.707L5.586 7L.293 12.293a1 1 0 1 0 1.414 1.414L7 8.414l5.293 5.293a1 1 0 0 0 1.414-1.414L8.414 7l5.293-5.293A1 1 0 0 0 12.293.293L7 5.586z", clipRule: "evenodd" }) }) })
@@ -21460,7 +21459,7 @@ class DesmyDropdown extends Component {
                   );
                 }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex w-full h-24 text-sm dark:text-white text-center justify-center items-center", children: DesmyCommons$1.isEmptyOrNull(this.props.emptymessage) ? "No data found" : this.props.emptymessage })
               ] }) }) }),
-              this.props.is_multiple !== void 0 && this.props.is_multiple && this.state.datalist.length != 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex w-full mt-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { onClick: () => this.closeDropdownPopover(), className: "flex px-3 py-3 w-full text-black text-center justify-center rounded uppercase mx-2 cursor-pointer text-xs border border-gray-800 bg-white font-poppinsSemiBold", children: "Done" }) }) : null
+              this.props.is_multiple !== void 0 && this.props.is_multiple && this.state.datalist.length != 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex w-full mt-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { onClick: () => this.closeDropdownPopover(), className: "flex px-3 py-3 w-full text-black text-center justify-center rounded uppercase mx-2 cursor-pointer text-xs border border-gray-830 bg-white font-poppinsSemiBold", children: "Done" }) }) : null
             ] })
           ] }) })
         }
@@ -21688,7 +21687,7 @@ class DesmyAxiosService {
   async loadAxios() {
     return this.axiosInstance || (this.axiosInstance = axios.create({
       baseURL: this.baseURL,
-      timeout: 1e4,
+      timeout: 1e5,
       headers: {
         "Content-Type": "application/json"
       }
@@ -21754,7 +21753,7 @@ const DesmyPermissions$1 = new DesmyPermissions(), DesmyLazyloading = (e) => laz
   const { className: A = "", isOpen: l, backdropClass: o = "", children: t } = e;
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex w-full", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `${l ? `backdrop bg-black/25 h-full w-full  ${o}` : "close-backdrop"}` }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `multi-step-modal-cover rounded-lg p-2 max-w-7xl ${A} ${l ? "open_modal" : "close_modal"}`, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: t }) })
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `multi-step-modal-cover rounded-lg p-2 ${A} ${l ? "open_modal" : "close_modal"}`, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: t }) })
   ] });
 };
 function _extends() {
@@ -21907,11 +21906,11 @@ function requireReactIs_development() {
         }
       }
     }
-    var M = R, O = r, eI = B, dI = n, aI = A, wI = H, GI = o, HI = sI, MI = iI, KI = l, DI = a, NI = t, yI = CI, VI = !1;
+    var M = R, O = r, eI = B, dI = n, aI = A, WI = H, GI = o, HI = sI, MI = iI, KI = l, DI = a, NI = t, yI = CI, VI = !1;
     function hI(nI) {
-      return VI || (VI = !0, console.warn("The ReactIs.isAsyncMode() alias has been deprecated, and will be removed in React 17+. Update your code to use ReactIs.isConcurrentMode() instead. It has the exact same API.")), WI(nI) || II(nI) === R;
+      return VI || (VI = !0, console.warn("The ReactIs.isAsyncMode() alias has been deprecated, and will be removed in React 17+. Update your code to use ReactIs.isConcurrentMode() instead. It has the exact same API.")), wI(nI) || II(nI) === R;
     }
-    function WI(nI) {
+    function wI(nI) {
       return II(nI) === r;
     }
     function pI(nI) {
@@ -21947,7 +21946,7 @@ function requireReactIs_development() {
     function bI(nI) {
       return II(nI) === CI;
     }
-    reactIs_development.AsyncMode = M, reactIs_development.ConcurrentMode = O, reactIs_development.ContextConsumer = eI, reactIs_development.ContextProvider = dI, reactIs_development.Element = aI, reactIs_development.ForwardRef = wI, reactIs_development.Fragment = GI, reactIs_development.Lazy = HI, reactIs_development.Memo = MI, reactIs_development.Portal = KI, reactIs_development.Profiler = DI, reactIs_development.StrictMode = NI, reactIs_development.Suspense = yI, reactIs_development.isAsyncMode = hI, reactIs_development.isConcurrentMode = WI, reactIs_development.isContextConsumer = pI, reactIs_development.isContextProvider = xI, reactIs_development.isElement = PI, reactIs_development.isForwardRef = XI, reactIs_development.isFragment = tI, reactIs_development.isLazy = mI, reactIs_development.isMemo = uI, reactIs_development.isPortal = BI, reactIs_development.isProfiler = gI, reactIs_development.isStrictMode = cI, reactIs_development.isSuspense = bI, reactIs_development.isValidElementType = _, reactIs_development.typeOf = II;
+    reactIs_development.AsyncMode = M, reactIs_development.ConcurrentMode = O, reactIs_development.ContextConsumer = eI, reactIs_development.ContextProvider = dI, reactIs_development.Element = aI, reactIs_development.ForwardRef = WI, reactIs_development.Fragment = GI, reactIs_development.Lazy = HI, reactIs_development.Memo = MI, reactIs_development.Portal = KI, reactIs_development.Profiler = DI, reactIs_development.StrictMode = NI, reactIs_development.Suspense = yI, reactIs_development.isAsyncMode = hI, reactIs_development.isConcurrentMode = wI, reactIs_development.isContextConsumer = pI, reactIs_development.isContextProvider = xI, reactIs_development.isElement = PI, reactIs_development.isForwardRef = XI, reactIs_development.isFragment = tI, reactIs_development.isLazy = mI, reactIs_development.isMemo = uI, reactIs_development.isPortal = BI, reactIs_development.isProfiler = gI, reactIs_development.isStrictMode = cI, reactIs_development.isSuspense = bI, reactIs_development.isValidElementType = _, reactIs_development.typeOf = II;
   }()), reactIs_development;
 }
 var hasRequiredReactIs;
@@ -22084,8 +22083,8 @@ function requireFactoryWithTypeCheckers() {
   }
   return factoryWithTypeCheckers = function(B, R) {
     var r = typeof Symbol == "function" && Symbol.iterator, H = "@@iterator";
-    function CI(WI) {
-      var pI = WI && (r && WI[r] || WI[H]);
+    function CI(wI) {
+      var pI = wI && (r && wI[r] || wI[H]);
       if (typeof pI == "function")
         return pI;
     }
@@ -22103,21 +22102,21 @@ function requireFactoryWithTypeCheckers() {
       element: II(),
       elementType: M(),
       instanceOf: O,
-      node: wI(),
+      node: WI(),
       objectOf: dI,
       oneOf: eI,
       oneOfType: aI,
       shape: HI,
       exact: MI
     };
-    function sI(WI, pI) {
-      return WI === pI ? WI !== 0 || 1 / WI === 1 / pI : WI !== WI && pI !== pI;
+    function sI(wI, pI) {
+      return wI === pI ? wI !== 0 || 1 / wI === 1 / pI : wI !== wI && pI !== pI;
     }
-    function AI(WI, pI) {
-      this.message = WI, this.data = pI && typeof pI == "object" ? pI : {}, this.stack = "";
+    function AI(wI, pI) {
+      this.message = wI, this.data = pI && typeof pI == "object" ? pI : {}, this.stack = "";
     }
     AI.prototype = Error.prototype;
-    function lI(WI) {
+    function lI(wI) {
       if (process.env.NODE_ENV !== "production")
         var pI = {}, xI = 0;
       function PI(tI, mI, uI, BI, gI, cI, bI) {
@@ -22135,19 +22134,19 @@ function requireFactoryWithTypeCheckers() {
             ), pI[YI] = !0, xI++);
           }
         }
-        return mI[uI] == null ? tI ? mI[uI] === null ? new AI("The " + gI + " `" + cI + "` is marked as required " + ("in `" + BI + "`, but its value is `null`.")) : new AI("The " + gI + " `" + cI + "` is marked as required in " + ("`" + BI + "`, but its value is `undefined`.")) : null : WI(mI, uI, BI, gI, cI);
+        return mI[uI] == null ? tI ? mI[uI] === null ? new AI("The " + gI + " `" + cI + "` is marked as required " + ("in `" + BI + "`, but its value is `null`.")) : new AI("The " + gI + " `" + cI + "` is marked as required in " + ("`" + BI + "`, but its value is `undefined`.")) : null : wI(mI, uI, BI, gI, cI);
       }
       var XI = PI.bind(null, !1);
       return XI.isRequired = PI.bind(null, !0), XI;
     }
-    function oI(WI) {
+    function oI(wI) {
       function pI(xI, PI, XI, tI, mI, uI) {
         var BI = xI[PI], gI = NI(BI);
-        if (gI !== WI) {
+        if (gI !== wI) {
           var cI = yI(BI);
           return new AI(
-            "Invalid " + tI + " `" + mI + "` of type " + ("`" + cI + "` supplied to `" + XI + "`, expected ") + ("`" + WI + "`."),
-            { expectedType: WI }
+            "Invalid " + tI + " `" + mI + "` of type " + ("`" + cI + "` supplied to `" + XI + "`, expected ") + ("`" + wI + "`."),
+            { expectedType: wI }
           );
         }
         return null;
@@ -22157,9 +22156,9 @@ function requireFactoryWithTypeCheckers() {
     function E() {
       return lI(n);
     }
-    function _(WI) {
+    function _(wI) {
       function pI(xI, PI, XI, tI, mI) {
-        if (typeof WI != "function")
+        if (typeof wI != "function")
           return new AI("Property `" + mI + "` of component `" + XI + "` has invalid PropType notation inside arrayOf.");
         var uI = xI[PI];
         if (!Array.isArray(uI)) {
@@ -22167,7 +22166,7 @@ function requireFactoryWithTypeCheckers() {
           return new AI("Invalid " + tI + " `" + mI + "` of type " + ("`" + BI + "` supplied to `" + XI + "`, expected an array."));
         }
         for (var gI = 0; gI < uI.length; gI++) {
-          var cI = WI(uI, gI, XI, tI, mI + "[" + gI + "]", l);
+          var cI = wI(uI, gI, XI, tI, mI + "[" + gI + "]", l);
           if (cI instanceof Error)
             return cI;
         }
@@ -22176,7 +22175,7 @@ function requireFactoryWithTypeCheckers() {
       return lI(pI);
     }
     function II() {
-      function WI(pI, xI, PI, XI, tI) {
+      function wI(pI, xI, PI, XI, tI) {
         var mI = pI[xI];
         if (!B(mI)) {
           var uI = NI(mI);
@@ -22184,10 +22183,10 @@ function requireFactoryWithTypeCheckers() {
         }
         return null;
       }
-      return lI(WI);
+      return lI(wI);
     }
     function M() {
-      function WI(pI, xI, PI, XI, tI) {
+      function wI(pI, xI, PI, XI, tI) {
         var mI = pI[xI];
         if (!e.isValidElementType(mI)) {
           var uI = NI(mI);
@@ -22195,28 +22194,28 @@ function requireFactoryWithTypeCheckers() {
         }
         return null;
       }
-      return lI(WI);
+      return lI(wI);
     }
-    function O(WI) {
+    function O(wI) {
       function pI(xI, PI, XI, tI, mI) {
-        if (!(xI[PI] instanceof WI)) {
-          var uI = WI.name || j, BI = hI(xI[PI]);
+        if (!(xI[PI] instanceof wI)) {
+          var uI = wI.name || j, BI = hI(xI[PI]);
           return new AI("Invalid " + tI + " `" + mI + "` of type " + ("`" + BI + "` supplied to `" + XI + "`, expected ") + ("instance of `" + uI + "`."));
         }
         return null;
       }
       return lI(pI);
     }
-    function eI(WI) {
-      if (!Array.isArray(WI))
+    function eI(wI) {
+      if (!Array.isArray(wI))
         return process.env.NODE_ENV !== "production" && (arguments.length > 1 ? a(
           "Invalid arguments supplied to oneOf, expected an array, got " + arguments.length + " arguments. A common mistake is to write oneOf(x, y, z) instead of oneOf([x, y, z])."
         ) : a("Invalid argument supplied to oneOf, expected an array.")), n;
       function pI(xI, PI, XI, tI, mI) {
-        for (var uI = xI[PI], BI = 0; BI < WI.length; BI++)
-          if (sI(uI, WI[BI]))
+        for (var uI = xI[PI], BI = 0; BI < wI.length; BI++)
+          if (sI(uI, wI[BI]))
             return null;
-        var gI = JSON.stringify(WI, function(bI, nI) {
+        var gI = JSON.stringify(wI, function(bI, nI) {
           var YI = yI(nI);
           return YI === "symbol" ? String(nI) : nI;
         });
@@ -22224,16 +22223,16 @@ function requireFactoryWithTypeCheckers() {
       }
       return lI(pI);
     }
-    function dI(WI) {
+    function dI(wI) {
       function pI(xI, PI, XI, tI, mI) {
-        if (typeof WI != "function")
+        if (typeof wI != "function")
           return new AI("Property `" + mI + "` of component `" + XI + "` has invalid PropType notation inside objectOf.");
         var uI = xI[PI], BI = NI(uI);
         if (BI !== "object")
           return new AI("Invalid " + tI + " `" + mI + "` of type " + ("`" + BI + "` supplied to `" + XI + "`, expected an object."));
         for (var gI in uI)
           if (o(uI, gI)) {
-            var cI = WI(uI, gI, XI, tI, mI + "." + gI, l);
+            var cI = wI(uI, gI, XI, tI, mI + "." + gI, l);
             if (cI instanceof Error)
               return cI;
           }
@@ -22241,19 +22240,19 @@ function requireFactoryWithTypeCheckers() {
       }
       return lI(pI);
     }
-    function aI(WI) {
-      if (!Array.isArray(WI))
+    function aI(wI) {
+      if (!Array.isArray(wI))
         return process.env.NODE_ENV !== "production" && a("Invalid argument supplied to oneOfType, expected an instance of array."), n;
-      for (var pI = 0; pI < WI.length; pI++) {
-        var xI = WI[pI];
+      for (var pI = 0; pI < wI.length; pI++) {
+        var xI = wI[pI];
         if (typeof xI != "function")
           return a(
             "Invalid argument supplied to oneOfType. Expected an array of check functions, but received " + VI(xI) + " at index " + pI + "."
           ), n;
       }
       function PI(XI, tI, mI, uI, BI) {
-        for (var gI = [], cI = 0; cI < WI.length; cI++) {
-          var bI = WI[cI], nI = bI(XI, tI, mI, uI, BI, l);
+        for (var gI = [], cI = 0; cI < wI.length; cI++) {
+          var bI = wI[cI], nI = bI(XI, tI, mI, uI, BI, l);
           if (nI == null)
             return null;
           nI.data && o(nI.data, "expectedType") && gI.push(nI.data.expectedType);
@@ -22263,24 +22262,24 @@ function requireFactoryWithTypeCheckers() {
       }
       return lI(PI);
     }
-    function wI() {
-      function WI(pI, xI, PI, XI, tI) {
+    function WI() {
+      function wI(pI, xI, PI, XI, tI) {
         return KI(pI[xI]) ? null : new AI("Invalid " + XI + " `" + tI + "` supplied to " + ("`" + PI + "`, expected a ReactNode."));
       }
-      return lI(WI);
+      return lI(wI);
     }
-    function GI(WI, pI, xI, PI, XI) {
+    function GI(wI, pI, xI, PI, XI) {
       return new AI(
-        (WI || "React class") + ": " + pI + " type `" + xI + "." + PI + "` is invalid; it must be a function, usually from the `prop-types` package, but received `" + XI + "`."
+        (wI || "React class") + ": " + pI + " type `" + xI + "." + PI + "` is invalid; it must be a function, usually from the `prop-types` package, but received `" + XI + "`."
       );
     }
-    function HI(WI) {
+    function HI(wI) {
       function pI(xI, PI, XI, tI, mI) {
         var uI = xI[PI], BI = NI(uI);
         if (BI !== "object")
           return new AI("Invalid " + tI + " `" + mI + "` of type `" + BI + "` " + ("supplied to `" + XI + "`, expected `object`."));
-        for (var gI in WI) {
-          var cI = WI[gI];
+        for (var gI in wI) {
+          var cI = wI[gI];
           if (typeof cI != "function")
             return GI(XI, tI, mI, gI, yI(cI));
           var bI = cI(uI, gI, XI, tI, mI + "." + gI, l);
@@ -22291,20 +22290,20 @@ function requireFactoryWithTypeCheckers() {
       }
       return lI(pI);
     }
-    function MI(WI) {
+    function MI(wI) {
       function pI(xI, PI, XI, tI, mI) {
         var uI = xI[PI], BI = NI(uI);
         if (BI !== "object")
           return new AI("Invalid " + tI + " `" + mI + "` of type `" + BI + "` " + ("supplied to `" + XI + "`, expected `object`."));
-        var gI = A({}, xI[PI], WI);
+        var gI = A({}, xI[PI], wI);
         for (var cI in gI) {
-          var bI = WI[cI];
-          if (o(WI, cI) && typeof bI != "function")
+          var bI = wI[cI];
+          if (o(wI, cI) && typeof bI != "function")
             return GI(XI, tI, mI, cI, yI(bI));
           if (!bI)
             return new AI(
               "Invalid " + tI + " `" + mI + "` key `" + cI + "` supplied to `" + XI + "`.\nBad object: " + JSON.stringify(xI[PI], null, "  ") + `
-Valid keys: ` + JSON.stringify(Object.keys(WI), null, "  ")
+Valid keys: ` + JSON.stringify(Object.keys(wI), null, "  ")
             );
           var nI = bI(uI, cI, XI, tI, mI + "." + cI, l);
           if (nI)
@@ -22314,23 +22313,23 @@ Valid keys: ` + JSON.stringify(Object.keys(WI), null, "  ")
       }
       return lI(pI);
     }
-    function KI(WI) {
-      switch (typeof WI) {
+    function KI(wI) {
+      switch (typeof wI) {
         case "number":
         case "string":
         case "undefined":
           return !0;
         case "boolean":
-          return !WI;
+          return !wI;
         case "object":
-          if (Array.isArray(WI))
-            return WI.every(KI);
-          if (WI === null || B(WI))
+          if (Array.isArray(wI))
+            return wI.every(KI);
+          if (wI === null || B(wI))
             return !0;
-          var pI = CI(WI);
+          var pI = CI(wI);
           if (pI) {
-            var xI = pI.call(WI), PI;
-            if (pI !== WI.entries) {
+            var xI = pI.call(wI), PI;
+            if (pI !== wI.entries) {
               for (; !(PI = xI.next()).done; )
                 if (!KI(PI.value))
                   return !1;
@@ -22347,27 +22346,27 @@ Valid keys: ` + JSON.stringify(Object.keys(WI), null, "  ")
           return !1;
       }
     }
-    function DI(WI, pI) {
-      return WI === "symbol" ? !0 : pI ? pI["@@toStringTag"] === "Symbol" || typeof Symbol == "function" && pI instanceof Symbol : !1;
+    function DI(wI, pI) {
+      return wI === "symbol" ? !0 : pI ? pI["@@toStringTag"] === "Symbol" || typeof Symbol == "function" && pI instanceof Symbol : !1;
     }
-    function NI(WI) {
-      var pI = typeof WI;
-      return Array.isArray(WI) ? "array" : WI instanceof RegExp ? "object" : DI(pI, WI) ? "symbol" : pI;
+    function NI(wI) {
+      var pI = typeof wI;
+      return Array.isArray(wI) ? "array" : wI instanceof RegExp ? "object" : DI(pI, wI) ? "symbol" : pI;
     }
-    function yI(WI) {
-      if (typeof WI > "u" || WI === null)
-        return "" + WI;
-      var pI = NI(WI);
+    function yI(wI) {
+      if (typeof wI > "u" || wI === null)
+        return "" + wI;
+      var pI = NI(wI);
       if (pI === "object") {
-        if (WI instanceof Date)
+        if (wI instanceof Date)
           return "date";
-        if (WI instanceof RegExp)
+        if (wI instanceof RegExp)
           return "regexp";
       }
       return pI;
     }
-    function VI(WI) {
-      var pI = yI(WI);
+    function VI(wI) {
+      var pI = yI(wI);
       switch (pI) {
         case "array":
         case "object":
@@ -22380,8 +22379,8 @@ Valid keys: ` + JSON.stringify(Object.keys(WI), null, "  ")
           return pI;
       }
     }
-    function hI(WI) {
-      return !WI.constructor || !WI.constructor.name ? j : WI.constructor.name;
+    function hI(wI) {
+      return !wI.constructor || !wI.constructor.name ? j : wI.constructor.name;
     }
     return iI.checkPropTypes = t, iI.resetWarningCache = t.resetWarningCache, iI.PropTypes = iI, iI;
   }, factoryWithTypeCheckers;
@@ -24015,6 +24014,2271 @@ class DesmySideBarItem extends Component {
     ] });
   }
 }
+const millisecondsInWeek = 6048e5, millisecondsInDay = 864e5, millisecondsInMinute = 6e4, millisecondsInHour = 36e5, constructFromSymbol = Symbol.for("constructDateFrom");
+function constructFrom(e, A) {
+  return typeof e == "function" ? e(A) : e && typeof e == "object" && constructFromSymbol in e ? e[constructFromSymbol](A) : e instanceof Date ? new e.constructor(A) : new Date(A);
+}
+function toDate(e, A) {
+  return constructFrom(A || e, e);
+}
+function addDays(e, A, l) {
+  const o = toDate(e, l?.in);
+  return isNaN(A) ? constructFrom(e, NaN) : (A && o.setDate(o.getDate() + A), o);
+}
+function addMonths(e, A, l) {
+  const o = toDate(e, l?.in);
+  if (isNaN(A)) return constructFrom(e, NaN);
+  if (!A)
+    return o;
+  const t = o.getDate(), a = constructFrom(e, o.getTime());
+  a.setMonth(o.getMonth() + A + 1, 0);
+  const n = a.getDate();
+  return t >= n ? a : (o.setFullYear(
+    a.getFullYear(),
+    a.getMonth(),
+    t
+  ), o);
+}
+let defaultOptions = {};
+function getDefaultOptions() {
+  return defaultOptions;
+}
+function startOfWeek(e, A) {
+  const l = getDefaultOptions(), o = A?.weekStartsOn ?? A?.locale?.options?.weekStartsOn ?? l.weekStartsOn ?? l.locale?.options?.weekStartsOn ?? 0, t = toDate(e, A?.in), a = t.getDay(), n = (a < o ? 7 : 0) + a - o;
+  return t.setDate(t.getDate() - n), t.setHours(0, 0, 0, 0), t;
+}
+function startOfISOWeek(e, A) {
+  return startOfWeek(e, { ...A, weekStartsOn: 1 });
+}
+function getISOWeekYear(e, A) {
+  const l = toDate(e, A?.in), o = l.getFullYear(), t = constructFrom(l, 0);
+  t.setFullYear(o + 1, 0, 4), t.setHours(0, 0, 0, 0);
+  const a = startOfISOWeek(t), n = constructFrom(l, 0);
+  n.setFullYear(o, 0, 4), n.setHours(0, 0, 0, 0);
+  const B = startOfISOWeek(n);
+  return l.getTime() >= a.getTime() ? o + 1 : l.getTime() >= B.getTime() ? o : o - 1;
+}
+function getTimezoneOffsetInMilliseconds(e) {
+  const A = toDate(e), l = new Date(
+    Date.UTC(
+      A.getFullYear(),
+      A.getMonth(),
+      A.getDate(),
+      A.getHours(),
+      A.getMinutes(),
+      A.getSeconds(),
+      A.getMilliseconds()
+    )
+  );
+  return l.setUTCFullYear(A.getFullYear()), +e - +l;
+}
+function normalizeDates(e, ...A) {
+  const l = constructFrom.bind(
+    null,
+    A.find((o) => typeof o == "object")
+  );
+  return A.map(l);
+}
+function startOfDay(e, A) {
+  const l = toDate(e, A?.in);
+  return l.setHours(0, 0, 0, 0), l;
+}
+function differenceInCalendarDays(e, A, l) {
+  const [o, t] = normalizeDates(
+    l?.in,
+    e,
+    A
+  ), a = startOfDay(o), n = startOfDay(t), B = +a - getTimezoneOffsetInMilliseconds(a), R = +n - getTimezoneOffsetInMilliseconds(n);
+  return Math.round((B - R) / millisecondsInDay);
+}
+function startOfISOWeekYear(e, A) {
+  const l = getISOWeekYear(e, A), o = constructFrom(e, 0);
+  return o.setFullYear(l, 0, 4), o.setHours(0, 0, 0, 0), startOfISOWeek(o);
+}
+function constructNow(e) {
+  return constructFrom(e, Date.now());
+}
+function isSameDay(e, A, l) {
+  const [o, t] = normalizeDates(
+    l?.in,
+    e,
+    A
+  );
+  return +startOfDay(o) == +startOfDay(t);
+}
+function isDate(e) {
+  return e instanceof Date || typeof e == "object" && Object.prototype.toString.call(e) === "[object Date]";
+}
+function isValid(e) {
+  return !(!isDate(e) && typeof e != "number" || isNaN(+toDate(e)));
+}
+function endOfMonth(e, A) {
+  const l = toDate(e, A?.in), o = l.getMonth();
+  return l.setFullYear(l.getFullYear(), o + 1, 0), l.setHours(23, 59, 59, 999), l;
+}
+function normalizeInterval(e, A) {
+  const [l, o] = normalizeDates(e, A.start, A.end);
+  return { start: l, end: o };
+}
+function eachDayOfInterval(e, A) {
+  const { start: l, end: o } = normalizeInterval(A?.in, e);
+  let t = +l > +o;
+  const a = t ? +l : +o, n = t ? o : l;
+  n.setHours(0, 0, 0, 0);
+  let B = 1;
+  const R = [];
+  for (; +n <= a; )
+    R.push(constructFrom(l, n)), n.setDate(n.getDate() + B), n.setHours(0, 0, 0, 0);
+  return t ? R.reverse() : R;
+}
+function startOfMonth(e, A) {
+  const l = toDate(e, A?.in);
+  return l.setDate(1), l.setHours(0, 0, 0, 0), l;
+}
+function startOfYear(e, A) {
+  const l = toDate(e, A?.in);
+  return l.setFullYear(l.getFullYear(), 0, 1), l.setHours(0, 0, 0, 0), l;
+}
+function endOfWeek(e, A) {
+  const l = getDefaultOptions(), o = l.weekStartsOn ?? l.locale?.options?.weekStartsOn ?? 0, t = toDate(e, A?.in), a = t.getDay(), n = (a < o ? -7 : 0) + 6 - (a - o);
+  return t.setDate(t.getDate() + n), t.setHours(23, 59, 59, 999), t;
+}
+const formatDistanceLocale = {
+  lessThanXSeconds: {
+    one: "less than a second",
+    other: "less than {{count}} seconds"
+  },
+  xSeconds: {
+    one: "1 second",
+    other: "{{count}} seconds"
+  },
+  halfAMinute: "half a minute",
+  lessThanXMinutes: {
+    one: "less than a minute",
+    other: "less than {{count}} minutes"
+  },
+  xMinutes: {
+    one: "1 minute",
+    other: "{{count}} minutes"
+  },
+  aboutXHours: {
+    one: "about 1 hour",
+    other: "about {{count}} hours"
+  },
+  xHours: {
+    one: "1 hour",
+    other: "{{count}} hours"
+  },
+  xDays: {
+    one: "1 day",
+    other: "{{count}} days"
+  },
+  aboutXWeeks: {
+    one: "about 1 week",
+    other: "about {{count}} weeks"
+  },
+  xWeeks: {
+    one: "1 week",
+    other: "{{count}} weeks"
+  },
+  aboutXMonths: {
+    one: "about 1 month",
+    other: "about {{count}} months"
+  },
+  xMonths: {
+    one: "1 month",
+    other: "{{count}} months"
+  },
+  aboutXYears: {
+    one: "about 1 year",
+    other: "about {{count}} years"
+  },
+  xYears: {
+    one: "1 year",
+    other: "{{count}} years"
+  },
+  overXYears: {
+    one: "over 1 year",
+    other: "over {{count}} years"
+  },
+  almostXYears: {
+    one: "almost 1 year",
+    other: "almost {{count}} years"
+  }
+}, formatDistance = (e, A, l) => {
+  let o;
+  const t = formatDistanceLocale[e];
+  return typeof t == "string" ? o = t : A === 1 ? o = t.one : o = t.other.replace("{{count}}", A.toString()), l?.addSuffix ? l.comparison && l.comparison > 0 ? "in " + o : o + " ago" : o;
+};
+function buildFormatLongFn(e) {
+  return (A = {}) => {
+    const l = A.width ? String(A.width) : e.defaultWidth;
+    return e.formats[l] || e.formats[e.defaultWidth];
+  };
+}
+const dateFormats = {
+  full: "EEEE, MMMM do, y",
+  long: "MMMM do, y",
+  medium: "MMM d, y",
+  short: "MM/dd/yyyy"
+}, timeFormats = {
+  full: "h:mm:ss a zzzz",
+  long: "h:mm:ss a z",
+  medium: "h:mm:ss a",
+  short: "h:mm a"
+}, dateTimeFormats = {
+  full: "{{date}} 'at' {{time}}",
+  long: "{{date}} 'at' {{time}}",
+  medium: "{{date}}, {{time}}",
+  short: "{{date}}, {{time}}"
+}, formatLong = {
+  date: buildFormatLongFn({
+    formats: dateFormats,
+    defaultWidth: "full"
+  }),
+  time: buildFormatLongFn({
+    formats: timeFormats,
+    defaultWidth: "full"
+  }),
+  dateTime: buildFormatLongFn({
+    formats: dateTimeFormats,
+    defaultWidth: "full"
+  })
+}, formatRelativeLocale = {
+  lastWeek: "'last' eeee 'at' p",
+  yesterday: "'yesterday at' p",
+  today: "'today at' p",
+  tomorrow: "'tomorrow at' p",
+  nextWeek: "eeee 'at' p",
+  other: "P"
+}, formatRelative = (e, A, l, o) => formatRelativeLocale[e];
+function buildLocalizeFn(e) {
+  return (A, l) => {
+    const o = l?.context ? String(l.context) : "standalone";
+    let t;
+    if (o === "formatting" && e.formattingValues) {
+      const n = e.defaultFormattingWidth || e.defaultWidth, B = l?.width ? String(l.width) : n;
+      t = e.formattingValues[B] || e.formattingValues[n];
+    } else {
+      const n = e.defaultWidth, B = l?.width ? String(l.width) : e.defaultWidth;
+      t = e.values[B] || e.values[n];
+    }
+    const a = e.argumentCallback ? e.argumentCallback(A) : A;
+    return t[a];
+  };
+}
+const eraValues = {
+  narrow: ["B", "A"],
+  abbreviated: ["BC", "AD"],
+  wide: ["Before Christ", "Anno Domini"]
+}, quarterValues = {
+  narrow: ["1", "2", "3", "4"],
+  abbreviated: ["Q1", "Q2", "Q3", "Q4"],
+  wide: ["1st quarter", "2nd quarter", "3rd quarter", "4th quarter"]
+}, monthValues = {
+  narrow: ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"],
+  abbreviated: [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ],
+  wide: [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ]
+}, dayValues = {
+  narrow: ["S", "M", "T", "W", "T", "F", "S"],
+  short: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+  abbreviated: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+  wide: [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+  ]
+}, dayPeriodValues = {
+  narrow: {
+    am: "a",
+    pm: "p",
+    midnight: "mi",
+    noon: "n",
+    morning: "morning",
+    afternoon: "afternoon",
+    evening: "evening",
+    night: "night"
+  },
+  abbreviated: {
+    am: "AM",
+    pm: "PM",
+    midnight: "midnight",
+    noon: "noon",
+    morning: "morning",
+    afternoon: "afternoon",
+    evening: "evening",
+    night: "night"
+  },
+  wide: {
+    am: "a.m.",
+    pm: "p.m.",
+    midnight: "midnight",
+    noon: "noon",
+    morning: "morning",
+    afternoon: "afternoon",
+    evening: "evening",
+    night: "night"
+  }
+}, formattingDayPeriodValues = {
+  narrow: {
+    am: "a",
+    pm: "p",
+    midnight: "mi",
+    noon: "n",
+    morning: "in the morning",
+    afternoon: "in the afternoon",
+    evening: "in the evening",
+    night: "at night"
+  },
+  abbreviated: {
+    am: "AM",
+    pm: "PM",
+    midnight: "midnight",
+    noon: "noon",
+    morning: "in the morning",
+    afternoon: "in the afternoon",
+    evening: "in the evening",
+    night: "at night"
+  },
+  wide: {
+    am: "a.m.",
+    pm: "p.m.",
+    midnight: "midnight",
+    noon: "noon",
+    morning: "in the morning",
+    afternoon: "in the afternoon",
+    evening: "in the evening",
+    night: "at night"
+  }
+}, ordinalNumber = (e, A) => {
+  const l = Number(e), o = l % 100;
+  if (o > 20 || o < 10)
+    switch (o % 10) {
+      case 1:
+        return l + "st";
+      case 2:
+        return l + "nd";
+      case 3:
+        return l + "rd";
+    }
+  return l + "th";
+}, localize = {
+  ordinalNumber,
+  era: buildLocalizeFn({
+    values: eraValues,
+    defaultWidth: "wide"
+  }),
+  quarter: buildLocalizeFn({
+    values: quarterValues,
+    defaultWidth: "wide",
+    argumentCallback: (e) => e - 1
+  }),
+  month: buildLocalizeFn({
+    values: monthValues,
+    defaultWidth: "wide"
+  }),
+  day: buildLocalizeFn({
+    values: dayValues,
+    defaultWidth: "wide"
+  }),
+  dayPeriod: buildLocalizeFn({
+    values: dayPeriodValues,
+    defaultWidth: "wide",
+    formattingValues: formattingDayPeriodValues,
+    defaultFormattingWidth: "wide"
+  })
+};
+function buildMatchFn(e) {
+  return (A, l = {}) => {
+    const o = l.width, t = o && e.matchPatterns[o] || e.matchPatterns[e.defaultMatchWidth], a = A.match(t);
+    if (!a)
+      return null;
+    const n = a[0], B = o && e.parsePatterns[o] || e.parsePatterns[e.defaultParseWidth], R = Array.isArray(B) ? findIndex(B, (CI) => CI.test(n)) : (
+      // [TODO] -- I challenge you to fix the type
+      findKey(B, (CI) => CI.test(n))
+    );
+    let r;
+    r = e.valueCallback ? e.valueCallback(R) : R, r = l.valueCallback ? (
+      // [TODO] -- I challenge you to fix the type
+      l.valueCallback(r)
+    ) : r;
+    const H = A.slice(n.length);
+    return { value: r, rest: H };
+  };
+}
+function findKey(e, A) {
+  for (const l in e)
+    if (Object.prototype.hasOwnProperty.call(e, l) && A(e[l]))
+      return l;
+}
+function findIndex(e, A) {
+  for (let l = 0; l < e.length; l++)
+    if (A(e[l]))
+      return l;
+}
+function buildMatchPatternFn(e) {
+  return (A, l = {}) => {
+    const o = A.match(e.matchPattern);
+    if (!o) return null;
+    const t = o[0], a = A.match(e.parsePattern);
+    if (!a) return null;
+    let n = e.valueCallback ? e.valueCallback(a[0]) : a[0];
+    n = l.valueCallback ? l.valueCallback(n) : n;
+    const B = A.slice(t.length);
+    return { value: n, rest: B };
+  };
+}
+const matchOrdinalNumberPattern = /^(\d+)(th|st|nd|rd)?/i, parseOrdinalNumberPattern = /\d+/i, matchEraPatterns = {
+  narrow: /^(b|a)/i,
+  abbreviated: /^(b\.?\s?c\.?|b\.?\s?c\.?\s?e\.?|a\.?\s?d\.?|c\.?\s?e\.?)/i,
+  wide: /^(before christ|before common era|anno domini|common era)/i
+}, parseEraPatterns = {
+  any: [/^b/i, /^(a|c)/i]
+}, matchQuarterPatterns = {
+  narrow: /^[1234]/i,
+  abbreviated: /^q[1234]/i,
+  wide: /^[1234](th|st|nd|rd)? quarter/i
+}, parseQuarterPatterns = {
+  any: [/1/i, /2/i, /3/i, /4/i]
+}, matchMonthPatterns = {
+  narrow: /^[jfmasond]/i,
+  abbreviated: /^(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/i,
+  wide: /^(january|february|march|april|may|june|july|august|september|october|november|december)/i
+}, parseMonthPatterns = {
+  narrow: [
+    /^j/i,
+    /^f/i,
+    /^m/i,
+    /^a/i,
+    /^m/i,
+    /^j/i,
+    /^j/i,
+    /^a/i,
+    /^s/i,
+    /^o/i,
+    /^n/i,
+    /^d/i
+  ],
+  any: [
+    /^ja/i,
+    /^f/i,
+    /^mar/i,
+    /^ap/i,
+    /^may/i,
+    /^jun/i,
+    /^jul/i,
+    /^au/i,
+    /^s/i,
+    /^o/i,
+    /^n/i,
+    /^d/i
+  ]
+}, matchDayPatterns = {
+  narrow: /^[smtwf]/i,
+  short: /^(su|mo|tu|we|th|fr|sa)/i,
+  abbreviated: /^(sun|mon|tue|wed|thu|fri|sat)/i,
+  wide: /^(sunday|monday|tuesday|wednesday|thursday|friday|saturday)/i
+}, parseDayPatterns = {
+  narrow: [/^s/i, /^m/i, /^t/i, /^w/i, /^t/i, /^f/i, /^s/i],
+  any: [/^su/i, /^m/i, /^tu/i, /^w/i, /^th/i, /^f/i, /^sa/i]
+}, matchDayPeriodPatterns = {
+  narrow: /^(a|p|mi|n|(in the|at) (morning|afternoon|evening|night))/i,
+  any: /^([ap]\.?\s?m\.?|midnight|noon|(in the|at) (morning|afternoon|evening|night))/i
+}, parseDayPeriodPatterns = {
+  any: {
+    am: /^a/i,
+    pm: /^p/i,
+    midnight: /^mi/i,
+    noon: /^no/i,
+    morning: /morning/i,
+    afternoon: /afternoon/i,
+    evening: /evening/i,
+    night: /night/i
+  }
+}, match = {
+  ordinalNumber: buildMatchPatternFn({
+    matchPattern: matchOrdinalNumberPattern,
+    parsePattern: parseOrdinalNumberPattern,
+    valueCallback: (e) => parseInt(e, 10)
+  }),
+  era: buildMatchFn({
+    matchPatterns: matchEraPatterns,
+    defaultMatchWidth: "wide",
+    parsePatterns: parseEraPatterns,
+    defaultParseWidth: "any"
+  }),
+  quarter: buildMatchFn({
+    matchPatterns: matchQuarterPatterns,
+    defaultMatchWidth: "wide",
+    parsePatterns: parseQuarterPatterns,
+    defaultParseWidth: "any",
+    valueCallback: (e) => e + 1
+  }),
+  month: buildMatchFn({
+    matchPatterns: matchMonthPatterns,
+    defaultMatchWidth: "wide",
+    parsePatterns: parseMonthPatterns,
+    defaultParseWidth: "any"
+  }),
+  day: buildMatchFn({
+    matchPatterns: matchDayPatterns,
+    defaultMatchWidth: "wide",
+    parsePatterns: parseDayPatterns,
+    defaultParseWidth: "any"
+  }),
+  dayPeriod: buildMatchFn({
+    matchPatterns: matchDayPeriodPatterns,
+    defaultMatchWidth: "any",
+    parsePatterns: parseDayPeriodPatterns,
+    defaultParseWidth: "any"
+  })
+}, enUS = {
+  code: "en-US",
+  formatDistance,
+  formatLong,
+  formatRelative,
+  localize,
+  match,
+  options: {
+    weekStartsOn: 0,
+    firstWeekContainsDate: 1
+  }
+};
+function getDayOfYear(e, A) {
+  const l = toDate(e, A?.in);
+  return differenceInCalendarDays(l, startOfYear(l)) + 1;
+}
+function getISOWeek(e, A) {
+  const l = toDate(e, A?.in), o = +startOfISOWeek(l) - +startOfISOWeekYear(l);
+  return Math.round(o / millisecondsInWeek) + 1;
+}
+function getWeekYear(e, A) {
+  const l = toDate(e, A?.in), o = l.getFullYear(), t = getDefaultOptions(), a = A?.firstWeekContainsDate ?? A?.locale?.options?.firstWeekContainsDate ?? t.firstWeekContainsDate ?? t.locale?.options?.firstWeekContainsDate ?? 1, n = constructFrom(A?.in || e, 0);
+  n.setFullYear(o + 1, 0, a), n.setHours(0, 0, 0, 0);
+  const B = startOfWeek(n, A), R = constructFrom(A?.in || e, 0);
+  R.setFullYear(o, 0, a), R.setHours(0, 0, 0, 0);
+  const r = startOfWeek(R, A);
+  return +l >= +B ? o + 1 : +l >= +r ? o : o - 1;
+}
+function startOfWeekYear(e, A) {
+  const l = getDefaultOptions(), o = A?.firstWeekContainsDate ?? A?.locale?.options?.firstWeekContainsDate ?? l.firstWeekContainsDate ?? l.locale?.options?.firstWeekContainsDate ?? 1, t = getWeekYear(e, A), a = constructFrom(A?.in || e, 0);
+  return a.setFullYear(t, 0, o), a.setHours(0, 0, 0, 0), startOfWeek(a, A);
+}
+function getWeek(e, A) {
+  const l = toDate(e, A?.in), o = +startOfWeek(l, A) - +startOfWeekYear(l, A);
+  return Math.round(o / millisecondsInWeek) + 1;
+}
+function addLeadingZeros(e, A) {
+  const l = e < 0 ? "-" : "", o = Math.abs(e).toString().padStart(A, "0");
+  return l + o;
+}
+const lightFormatters = {
+  // Year
+  y(e, A) {
+    const l = e.getFullYear(), o = l > 0 ? l : 1 - l;
+    return addLeadingZeros(A === "yy" ? o % 100 : o, A.length);
+  },
+  // Month
+  M(e, A) {
+    const l = e.getMonth();
+    return A === "M" ? String(l + 1) : addLeadingZeros(l + 1, 2);
+  },
+  // Day of the month
+  d(e, A) {
+    return addLeadingZeros(e.getDate(), A.length);
+  },
+  // AM or PM
+  a(e, A) {
+    const l = e.getHours() / 12 >= 1 ? "pm" : "am";
+    switch (A) {
+      case "a":
+      case "aa":
+        return l.toUpperCase();
+      case "aaa":
+        return l;
+      case "aaaaa":
+        return l[0];
+      case "aaaa":
+      default:
+        return l === "am" ? "a.m." : "p.m.";
+    }
+  },
+  // Hour [1-12]
+  h(e, A) {
+    return addLeadingZeros(e.getHours() % 12 || 12, A.length);
+  },
+  // Hour [0-23]
+  H(e, A) {
+    return addLeadingZeros(e.getHours(), A.length);
+  },
+  // Minute
+  m(e, A) {
+    return addLeadingZeros(e.getMinutes(), A.length);
+  },
+  // Second
+  s(e, A) {
+    return addLeadingZeros(e.getSeconds(), A.length);
+  },
+  // Fraction of second
+  S(e, A) {
+    const l = A.length, o = e.getMilliseconds(), t = Math.trunc(
+      o * Math.pow(10, l - 3)
+    );
+    return addLeadingZeros(t, A.length);
+  }
+}, dayPeriodEnum = {
+  midnight: "midnight",
+  noon: "noon",
+  morning: "morning",
+  afternoon: "afternoon",
+  evening: "evening",
+  night: "night"
+}, formatters = {
+  // Era
+  G: function(e, A, l) {
+    const o = e.getFullYear() > 0 ? 1 : 0;
+    switch (A) {
+      // AD, BC
+      case "G":
+      case "GG":
+      case "GGG":
+        return l.era(o, { width: "abbreviated" });
+      // A, B
+      case "GGGGG":
+        return l.era(o, { width: "narrow" });
+      // Anno Domini, Before Christ
+      case "GGGG":
+      default:
+        return l.era(o, { width: "wide" });
+    }
+  },
+  // Year
+  y: function(e, A, l) {
+    if (A === "yo") {
+      const o = e.getFullYear(), t = o > 0 ? o : 1 - o;
+      return l.ordinalNumber(t, { unit: "year" });
+    }
+    return lightFormatters.y(e, A);
+  },
+  // Local week-numbering year
+  Y: function(e, A, l, o) {
+    const t = getWeekYear(e, o), a = t > 0 ? t : 1 - t;
+    if (A === "YY") {
+      const n = a % 100;
+      return addLeadingZeros(n, 2);
+    }
+    return A === "Yo" ? l.ordinalNumber(a, { unit: "year" }) : addLeadingZeros(a, A.length);
+  },
+  // ISO week-numbering year
+  R: function(e, A) {
+    const l = getISOWeekYear(e);
+    return addLeadingZeros(l, A.length);
+  },
+  // Extended year. This is a single number designating the year of this calendar system.
+  // The main difference between `y` and `u` localizers are B.C. years:
+  // | Year | `y` | `u` |
+  // |------|-----|-----|
+  // | AC 1 |   1 |   1 |
+  // | BC 1 |   1 |   0 |
+  // | BC 2 |   2 |  -1 |
+  // Also `yy` always returns the last two digits of a year,
+  // while `uu` pads single digit years to 2 characters and returns other years unchanged.
+  u: function(e, A) {
+    const l = e.getFullYear();
+    return addLeadingZeros(l, A.length);
+  },
+  // Quarter
+  Q: function(e, A, l) {
+    const o = Math.ceil((e.getMonth() + 1) / 3);
+    switch (A) {
+      // 1, 2, 3, 4
+      case "Q":
+        return String(o);
+      // 01, 02, 03, 04
+      case "QQ":
+        return addLeadingZeros(o, 2);
+      // 1st, 2nd, 3rd, 4th
+      case "Qo":
+        return l.ordinalNumber(o, { unit: "quarter" });
+      // Q1, Q2, Q3, Q4
+      case "QQQ":
+        return l.quarter(o, {
+          width: "abbreviated",
+          context: "formatting"
+        });
+      // 1, 2, 3, 4 (narrow quarter; could be not numerical)
+      case "QQQQQ":
+        return l.quarter(o, {
+          width: "narrow",
+          context: "formatting"
+        });
+      // 1st quarter, 2nd quarter, ...
+      case "QQQQ":
+      default:
+        return l.quarter(o, {
+          width: "wide",
+          context: "formatting"
+        });
+    }
+  },
+  // Stand-alone quarter
+  q: function(e, A, l) {
+    const o = Math.ceil((e.getMonth() + 1) / 3);
+    switch (A) {
+      // 1, 2, 3, 4
+      case "q":
+        return String(o);
+      // 01, 02, 03, 04
+      case "qq":
+        return addLeadingZeros(o, 2);
+      // 1st, 2nd, 3rd, 4th
+      case "qo":
+        return l.ordinalNumber(o, { unit: "quarter" });
+      // Q1, Q2, Q3, Q4
+      case "qqq":
+        return l.quarter(o, {
+          width: "abbreviated",
+          context: "standalone"
+        });
+      // 1, 2, 3, 4 (narrow quarter; could be not numerical)
+      case "qqqqq":
+        return l.quarter(o, {
+          width: "narrow",
+          context: "standalone"
+        });
+      // 1st quarter, 2nd quarter, ...
+      case "qqqq":
+      default:
+        return l.quarter(o, {
+          width: "wide",
+          context: "standalone"
+        });
+    }
+  },
+  // Month
+  M: function(e, A, l) {
+    const o = e.getMonth();
+    switch (A) {
+      case "M":
+      case "MM":
+        return lightFormatters.M(e, A);
+      // 1st, 2nd, ..., 12th
+      case "Mo":
+        return l.ordinalNumber(o + 1, { unit: "month" });
+      // Jan, Feb, ..., Dec
+      case "MMM":
+        return l.month(o, {
+          width: "abbreviated",
+          context: "formatting"
+        });
+      // J, F, ..., D
+      case "MMMMM":
+        return l.month(o, {
+          width: "narrow",
+          context: "formatting"
+        });
+      // January, February, ..., December
+      case "MMMM":
+      default:
+        return l.month(o, { width: "wide", context: "formatting" });
+    }
+  },
+  // Stand-alone month
+  L: function(e, A, l) {
+    const o = e.getMonth();
+    switch (A) {
+      // 1, 2, ..., 12
+      case "L":
+        return String(o + 1);
+      // 01, 02, ..., 12
+      case "LL":
+        return addLeadingZeros(o + 1, 2);
+      // 1st, 2nd, ..., 12th
+      case "Lo":
+        return l.ordinalNumber(o + 1, { unit: "month" });
+      // Jan, Feb, ..., Dec
+      case "LLL":
+        return l.month(o, {
+          width: "abbreviated",
+          context: "standalone"
+        });
+      // J, F, ..., D
+      case "LLLLL":
+        return l.month(o, {
+          width: "narrow",
+          context: "standalone"
+        });
+      // January, February, ..., December
+      case "LLLL":
+      default:
+        return l.month(o, { width: "wide", context: "standalone" });
+    }
+  },
+  // Local week of year
+  w: function(e, A, l, o) {
+    const t = getWeek(e, o);
+    return A === "wo" ? l.ordinalNumber(t, { unit: "week" }) : addLeadingZeros(t, A.length);
+  },
+  // ISO week of year
+  I: function(e, A, l) {
+    const o = getISOWeek(e);
+    return A === "Io" ? l.ordinalNumber(o, { unit: "week" }) : addLeadingZeros(o, A.length);
+  },
+  // Day of the month
+  d: function(e, A, l) {
+    return A === "do" ? l.ordinalNumber(e.getDate(), { unit: "date" }) : lightFormatters.d(e, A);
+  },
+  // Day of year
+  D: function(e, A, l) {
+    const o = getDayOfYear(e);
+    return A === "Do" ? l.ordinalNumber(o, { unit: "dayOfYear" }) : addLeadingZeros(o, A.length);
+  },
+  // Day of week
+  E: function(e, A, l) {
+    const o = e.getDay();
+    switch (A) {
+      // Tue
+      case "E":
+      case "EE":
+      case "EEE":
+        return l.day(o, {
+          width: "abbreviated",
+          context: "formatting"
+        });
+      // T
+      case "EEEEE":
+        return l.day(o, {
+          width: "narrow",
+          context: "formatting"
+        });
+      // Tu
+      case "EEEEEE":
+        return l.day(o, {
+          width: "short",
+          context: "formatting"
+        });
+      // Tuesday
+      case "EEEE":
+      default:
+        return l.day(o, {
+          width: "wide",
+          context: "formatting"
+        });
+    }
+  },
+  // Local day of week
+  e: function(e, A, l, o) {
+    const t = e.getDay(), a = (t - o.weekStartsOn + 8) % 7 || 7;
+    switch (A) {
+      // Numerical value (Nth day of week with current locale or weekStartsOn)
+      case "e":
+        return String(a);
+      // Padded numerical value
+      case "ee":
+        return addLeadingZeros(a, 2);
+      // 1st, 2nd, ..., 7th
+      case "eo":
+        return l.ordinalNumber(a, { unit: "day" });
+      case "eee":
+        return l.day(t, {
+          width: "abbreviated",
+          context: "formatting"
+        });
+      // T
+      case "eeeee":
+        return l.day(t, {
+          width: "narrow",
+          context: "formatting"
+        });
+      // Tu
+      case "eeeeee":
+        return l.day(t, {
+          width: "short",
+          context: "formatting"
+        });
+      // Tuesday
+      case "eeee":
+      default:
+        return l.day(t, {
+          width: "wide",
+          context: "formatting"
+        });
+    }
+  },
+  // Stand-alone local day of week
+  c: function(e, A, l, o) {
+    const t = e.getDay(), a = (t - o.weekStartsOn + 8) % 7 || 7;
+    switch (A) {
+      // Numerical value (same as in `e`)
+      case "c":
+        return String(a);
+      // Padded numerical value
+      case "cc":
+        return addLeadingZeros(a, A.length);
+      // 1st, 2nd, ..., 7th
+      case "co":
+        return l.ordinalNumber(a, { unit: "day" });
+      case "ccc":
+        return l.day(t, {
+          width: "abbreviated",
+          context: "standalone"
+        });
+      // T
+      case "ccccc":
+        return l.day(t, {
+          width: "narrow",
+          context: "standalone"
+        });
+      // Tu
+      case "cccccc":
+        return l.day(t, {
+          width: "short",
+          context: "standalone"
+        });
+      // Tuesday
+      case "cccc":
+      default:
+        return l.day(t, {
+          width: "wide",
+          context: "standalone"
+        });
+    }
+  },
+  // ISO day of week
+  i: function(e, A, l) {
+    const o = e.getDay(), t = o === 0 ? 7 : o;
+    switch (A) {
+      // 2
+      case "i":
+        return String(t);
+      // 02
+      case "ii":
+        return addLeadingZeros(t, A.length);
+      // 2nd
+      case "io":
+        return l.ordinalNumber(t, { unit: "day" });
+      // Tue
+      case "iii":
+        return l.day(o, {
+          width: "abbreviated",
+          context: "formatting"
+        });
+      // T
+      case "iiiii":
+        return l.day(o, {
+          width: "narrow",
+          context: "formatting"
+        });
+      // Tu
+      case "iiiiii":
+        return l.day(o, {
+          width: "short",
+          context: "formatting"
+        });
+      // Tuesday
+      case "iiii":
+      default:
+        return l.day(o, {
+          width: "wide",
+          context: "formatting"
+        });
+    }
+  },
+  // AM or PM
+  a: function(e, A, l) {
+    const t = e.getHours() / 12 >= 1 ? "pm" : "am";
+    switch (A) {
+      case "a":
+      case "aa":
+        return l.dayPeriod(t, {
+          width: "abbreviated",
+          context: "formatting"
+        });
+      case "aaa":
+        return l.dayPeriod(t, {
+          width: "abbreviated",
+          context: "formatting"
+        }).toLowerCase();
+      case "aaaaa":
+        return l.dayPeriod(t, {
+          width: "narrow",
+          context: "formatting"
+        });
+      case "aaaa":
+      default:
+        return l.dayPeriod(t, {
+          width: "wide",
+          context: "formatting"
+        });
+    }
+  },
+  // AM, PM, midnight, noon
+  b: function(e, A, l) {
+    const o = e.getHours();
+    let t;
+    switch (o === 12 ? t = dayPeriodEnum.noon : o === 0 ? t = dayPeriodEnum.midnight : t = o / 12 >= 1 ? "pm" : "am", A) {
+      case "b":
+      case "bb":
+        return l.dayPeriod(t, {
+          width: "abbreviated",
+          context: "formatting"
+        });
+      case "bbb":
+        return l.dayPeriod(t, {
+          width: "abbreviated",
+          context: "formatting"
+        }).toLowerCase();
+      case "bbbbb":
+        return l.dayPeriod(t, {
+          width: "narrow",
+          context: "formatting"
+        });
+      case "bbbb":
+      default:
+        return l.dayPeriod(t, {
+          width: "wide",
+          context: "formatting"
+        });
+    }
+  },
+  // in the morning, in the afternoon, in the evening, at night
+  B: function(e, A, l) {
+    const o = e.getHours();
+    let t;
+    switch (o >= 17 ? t = dayPeriodEnum.evening : o >= 12 ? t = dayPeriodEnum.afternoon : o >= 4 ? t = dayPeriodEnum.morning : t = dayPeriodEnum.night, A) {
+      case "B":
+      case "BB":
+      case "BBB":
+        return l.dayPeriod(t, {
+          width: "abbreviated",
+          context: "formatting"
+        });
+      case "BBBBB":
+        return l.dayPeriod(t, {
+          width: "narrow",
+          context: "formatting"
+        });
+      case "BBBB":
+      default:
+        return l.dayPeriod(t, {
+          width: "wide",
+          context: "formatting"
+        });
+    }
+  },
+  // Hour [1-12]
+  h: function(e, A, l) {
+    if (A === "ho") {
+      let o = e.getHours() % 12;
+      return o === 0 && (o = 12), l.ordinalNumber(o, { unit: "hour" });
+    }
+    return lightFormatters.h(e, A);
+  },
+  // Hour [0-23]
+  H: function(e, A, l) {
+    return A === "Ho" ? l.ordinalNumber(e.getHours(), { unit: "hour" }) : lightFormatters.H(e, A);
+  },
+  // Hour [0-11]
+  K: function(e, A, l) {
+    const o = e.getHours() % 12;
+    return A === "Ko" ? l.ordinalNumber(o, { unit: "hour" }) : addLeadingZeros(o, A.length);
+  },
+  // Hour [1-24]
+  k: function(e, A, l) {
+    let o = e.getHours();
+    return o === 0 && (o = 24), A === "ko" ? l.ordinalNumber(o, { unit: "hour" }) : addLeadingZeros(o, A.length);
+  },
+  // Minute
+  m: function(e, A, l) {
+    return A === "mo" ? l.ordinalNumber(e.getMinutes(), { unit: "minute" }) : lightFormatters.m(e, A);
+  },
+  // Second
+  s: function(e, A, l) {
+    return A === "so" ? l.ordinalNumber(e.getSeconds(), { unit: "second" }) : lightFormatters.s(e, A);
+  },
+  // Fraction of second
+  S: function(e, A) {
+    return lightFormatters.S(e, A);
+  },
+  // Timezone (ISO-8601. If offset is 0, output is always `'Z'`)
+  X: function(e, A, l) {
+    const o = e.getTimezoneOffset();
+    if (o === 0)
+      return "Z";
+    switch (A) {
+      // Hours and optional minutes
+      case "X":
+        return formatTimezoneWithOptionalMinutes(o);
+      // Hours, minutes and optional seconds without `:` delimiter
+      // Note: neither ISO-8601 nor JavaScript supports seconds in timezone offsets
+      // so this token always has the same output as `XX`
+      case "XXXX":
+      case "XX":
+        return formatTimezone(o);
+      // Hours, minutes and optional seconds with `:` delimiter
+      // Note: neither ISO-8601 nor JavaScript supports seconds in timezone offsets
+      // so this token always has the same output as `XXX`
+      case "XXXXX":
+      case "XXX":
+      // Hours and minutes with `:` delimiter
+      default:
+        return formatTimezone(o, ":");
+    }
+  },
+  // Timezone (ISO-8601. If offset is 0, output is `'+00:00'` or equivalent)
+  x: function(e, A, l) {
+    const o = e.getTimezoneOffset();
+    switch (A) {
+      // Hours and optional minutes
+      case "x":
+        return formatTimezoneWithOptionalMinutes(o);
+      // Hours, minutes and optional seconds without `:` delimiter
+      // Note: neither ISO-8601 nor JavaScript supports seconds in timezone offsets
+      // so this token always has the same output as `xx`
+      case "xxxx":
+      case "xx":
+        return formatTimezone(o);
+      // Hours, minutes and optional seconds with `:` delimiter
+      // Note: neither ISO-8601 nor JavaScript supports seconds in timezone offsets
+      // so this token always has the same output as `xxx`
+      case "xxxxx":
+      case "xxx":
+      // Hours and minutes with `:` delimiter
+      default:
+        return formatTimezone(o, ":");
+    }
+  },
+  // Timezone (GMT)
+  O: function(e, A, l) {
+    const o = e.getTimezoneOffset();
+    switch (A) {
+      // Short
+      case "O":
+      case "OO":
+      case "OOO":
+        return "GMT" + formatTimezoneShort(o, ":");
+      // Long
+      case "OOOO":
+      default:
+        return "GMT" + formatTimezone(o, ":");
+    }
+  },
+  // Timezone (specific non-location)
+  z: function(e, A, l) {
+    const o = e.getTimezoneOffset();
+    switch (A) {
+      // Short
+      case "z":
+      case "zz":
+      case "zzz":
+        return "GMT" + formatTimezoneShort(o, ":");
+      // Long
+      case "zzzz":
+      default:
+        return "GMT" + formatTimezone(o, ":");
+    }
+  },
+  // Seconds timestamp
+  t: function(e, A, l) {
+    const o = Math.trunc(+e / 1e3);
+    return addLeadingZeros(o, A.length);
+  },
+  // Milliseconds timestamp
+  T: function(e, A, l) {
+    return addLeadingZeros(+e, A.length);
+  }
+};
+function formatTimezoneShort(e, A = "") {
+  const l = e > 0 ? "-" : "+", o = Math.abs(e), t = Math.trunc(o / 60), a = o % 60;
+  return a === 0 ? l + String(t) : l + String(t) + A + addLeadingZeros(a, 2);
+}
+function formatTimezoneWithOptionalMinutes(e, A) {
+  return e % 60 === 0 ? (e > 0 ? "-" : "+") + addLeadingZeros(Math.abs(e) / 60, 2) : formatTimezone(e, A);
+}
+function formatTimezone(e, A = "") {
+  const l = e > 0 ? "-" : "+", o = Math.abs(e), t = addLeadingZeros(Math.trunc(o / 60), 2), a = addLeadingZeros(o % 60, 2);
+  return l + t + A + a;
+}
+const dateLongFormatter = (e, A) => {
+  switch (e) {
+    case "P":
+      return A.date({ width: "short" });
+    case "PP":
+      return A.date({ width: "medium" });
+    case "PPP":
+      return A.date({ width: "long" });
+    case "PPPP":
+    default:
+      return A.date({ width: "full" });
+  }
+}, timeLongFormatter = (e, A) => {
+  switch (e) {
+    case "p":
+      return A.time({ width: "short" });
+    case "pp":
+      return A.time({ width: "medium" });
+    case "ppp":
+      return A.time({ width: "long" });
+    case "pppp":
+    default:
+      return A.time({ width: "full" });
+  }
+}, dateTimeLongFormatter = (e, A) => {
+  const l = e.match(/(P+)(p+)?/) || [], o = l[1], t = l[2];
+  if (!t)
+    return dateLongFormatter(e, A);
+  let a;
+  switch (o) {
+    case "P":
+      a = A.dateTime({ width: "short" });
+      break;
+    case "PP":
+      a = A.dateTime({ width: "medium" });
+      break;
+    case "PPP":
+      a = A.dateTime({ width: "long" });
+      break;
+    case "PPPP":
+    default:
+      a = A.dateTime({ width: "full" });
+      break;
+  }
+  return a.replace("{{date}}", dateLongFormatter(o, A)).replace("{{time}}", timeLongFormatter(t, A));
+}, longFormatters = {
+  p: timeLongFormatter,
+  P: dateTimeLongFormatter
+}, dayOfYearTokenRE = /^D+$/, weekYearTokenRE = /^Y+$/, throwTokens = ["D", "DD", "YY", "YYYY"];
+function isProtectedDayOfYearToken(e) {
+  return dayOfYearTokenRE.test(e);
+}
+function isProtectedWeekYearToken(e) {
+  return weekYearTokenRE.test(e);
+}
+function warnOrThrowProtectedError(e, A, l) {
+  const o = message(e, A, l);
+  if (console.warn(o), throwTokens.includes(e)) throw new RangeError(o);
+}
+function message(e, A, l) {
+  const o = e[0] === "Y" ? "years" : "days of the month";
+  return `Use \`${e.toLowerCase()}\` instead of \`${e}\` (in \`${A}\`) for formatting ${o} to the input \`${l}\`; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md`;
+}
+const formattingTokensRegExp = /[yYQqMLwIdDecihHKkms]o|(\w)\1*|''|'(''|[^'])+('|$)|./g, longFormattingTokensRegExp = /P+p+|P+|p+|''|'(''|[^'])+('|$)|./g, escapedStringRegExp = /^'([^]*?)'?$/, doubleQuoteRegExp = /''/g, unescapedLatinCharacterRegExp = /[a-zA-Z]/;
+function format(e, A, l) {
+  const o = getDefaultOptions(), t = o.locale ?? enUS, a = o.firstWeekContainsDate ?? o.locale?.options?.firstWeekContainsDate ?? 1, n = o.weekStartsOn ?? o.locale?.options?.weekStartsOn ?? 0, B = toDate(e, l?.in);
+  if (!isValid(B))
+    throw new RangeError("Invalid time value");
+  let R = A.match(longFormattingTokensRegExp).map((H) => {
+    const CI = H[0];
+    if (CI === "p" || CI === "P") {
+      const j = longFormatters[CI];
+      return j(H, t.formatLong);
+    }
+    return H;
+  }).join("").match(formattingTokensRegExp).map((H) => {
+    if (H === "''")
+      return { isToken: !1, value: "'" };
+    const CI = H[0];
+    if (CI === "'")
+      return { isToken: !1, value: cleanEscapedString(H) };
+    if (formatters[CI])
+      return { isToken: !0, value: H };
+    if (CI.match(unescapedLatinCharacterRegExp))
+      throw new RangeError(
+        "Format string contains an unescaped latin alphabet character `" + CI + "`"
+      );
+    return { isToken: !1, value: H };
+  });
+  t.localize.preprocessor && (R = t.localize.preprocessor(B, R));
+  const r = {
+    firstWeekContainsDate: a,
+    weekStartsOn: n,
+    locale: t
+  };
+  return R.map((H) => {
+    if (!H.isToken) return H.value;
+    const CI = H.value;
+    (isProtectedWeekYearToken(CI) || isProtectedDayOfYearToken(CI)) && warnOrThrowProtectedError(CI, A, String(e));
+    const j = formatters[CI[0]];
+    return j(B, CI, t.localize, r);
+  }).join("");
+}
+function cleanEscapedString(e) {
+  const A = e.match(escapedStringRegExp);
+  return A ? A[1].replace(doubleQuoteRegExp, "'") : e;
+}
+function getDaysInMonth(e, A) {
+  const l = toDate(e, A?.in), o = l.getFullYear(), t = l.getMonth(), a = constructFrom(l, 0);
+  return a.setFullYear(o, t + 1, 0), a.setHours(0, 0, 0, 0), a.getDate();
+}
+function isAfter(e, A) {
+  return +toDate(e) > +toDate(A);
+}
+function isBefore(e, A) {
+  return +toDate(e) < +toDate(A);
+}
+function isToday(e, A) {
+  return isSameDay(
+    constructFrom(e, e),
+    constructNow(e)
+  );
+}
+function isWithinInterval(e, A, l) {
+  const o = +toDate(e, l?.in), [t, a] = [
+    +toDate(A.start, l?.in),
+    +toDate(A.end, l?.in)
+  ].sort((n, B) => n - B);
+  return o >= t && o <= a;
+}
+function subDays(e, A, l) {
+  return addDays(e, -1, l);
+}
+function parseISO(e, A) {
+  const l = () => constructFrom(A?.in, NaN), t = splitDateString(e);
+  let a;
+  if (t.date) {
+    const r = parseYear(t.date, 2);
+    a = parseDate(r.restDateString, r.year);
+  }
+  if (!a || isNaN(+a)) return l();
+  const n = +a;
+  let B = 0, R;
+  if (t.time && (B = parseTime(t.time), isNaN(B)))
+    return l();
+  if (t.timezone) {
+    if (R = parseTimezone(t.timezone), isNaN(R)) return l();
+  } else {
+    const r = new Date(n + B), H = toDate(0, A?.in);
+    return H.setFullYear(
+      r.getUTCFullYear(),
+      r.getUTCMonth(),
+      r.getUTCDate()
+    ), H.setHours(
+      r.getUTCHours(),
+      r.getUTCMinutes(),
+      r.getUTCSeconds(),
+      r.getUTCMilliseconds()
+    ), H;
+  }
+  return toDate(n + B + R, A?.in);
+}
+const patterns = {
+  dateTimeDelimiter: /[T ]/,
+  timeZoneDelimiter: /[Z ]/i,
+  timezone: /([Z+-].*)$/
+}, dateRegex = /^-?(?:(\d{3})|(\d{2})(?:-?(\d{2}))?|W(\d{2})(?:-?(\d{1}))?|)$/, timeRegex = /^(\d{2}(?:[.,]\d*)?)(?::?(\d{2}(?:[.,]\d*)?))?(?::?(\d{2}(?:[.,]\d*)?))?$/, timezoneRegex = /^([+-])(\d{2})(?::?(\d{2}))?$/;
+function splitDateString(e) {
+  const A = {}, l = e.split(patterns.dateTimeDelimiter);
+  let o;
+  if (l.length > 2)
+    return A;
+  if (/:/.test(l[0]) ? o = l[0] : (A.date = l[0], o = l[1], patterns.timeZoneDelimiter.test(A.date) && (A.date = e.split(patterns.timeZoneDelimiter)[0], o = e.substr(
+    A.date.length,
+    e.length
+  ))), o) {
+    const t = patterns.timezone.exec(o);
+    t ? (A.time = o.replace(t[1], ""), A.timezone = t[1]) : A.time = o;
+  }
+  return A;
+}
+function parseYear(e, A) {
+  const l = new RegExp(
+    "^(?:(\\d{4}|[+-]\\d{" + (4 + A) + "})|(\\d{2}|[+-]\\d{" + (2 + A) + "})$)"
+  ), o = e.match(l);
+  if (!o) return { year: NaN, restDateString: "" };
+  const t = o[1] ? parseInt(o[1]) : null, a = o[2] ? parseInt(o[2]) : null;
+  return {
+    year: a === null ? t : a * 100,
+    restDateString: e.slice((o[1] || o[2]).length)
+  };
+}
+function parseDate(e, A) {
+  if (A === null) return /* @__PURE__ */ new Date(NaN);
+  const l = e.match(dateRegex);
+  if (!l) return /* @__PURE__ */ new Date(NaN);
+  const o = !!l[4], t = parseDateUnit(l[1]), a = parseDateUnit(l[2]) - 1, n = parseDateUnit(l[3]), B = parseDateUnit(l[4]), R = parseDateUnit(l[5]) - 1;
+  if (o)
+    return validateWeekDate(A, B, R) ? dayOfISOWeekYear(A, B, R) : /* @__PURE__ */ new Date(NaN);
+  {
+    const r = /* @__PURE__ */ new Date(0);
+    return !validateDate(A, a, n) || !validateDayOfYearDate(A, t) ? /* @__PURE__ */ new Date(NaN) : (r.setUTCFullYear(A, a, Math.max(t, n)), r);
+  }
+}
+function parseDateUnit(e) {
+  return e ? parseInt(e) : 1;
+}
+function parseTime(e) {
+  const A = e.match(timeRegex);
+  if (!A) return NaN;
+  const l = parseTimeUnit(A[1]), o = parseTimeUnit(A[2]), t = parseTimeUnit(A[3]);
+  return validateTime(l, o, t) ? l * millisecondsInHour + o * millisecondsInMinute + t * 1e3 : NaN;
+}
+function parseTimeUnit(e) {
+  return e && parseFloat(e.replace(",", ".")) || 0;
+}
+function parseTimezone(e) {
+  if (e === "Z") return 0;
+  const A = e.match(timezoneRegex);
+  if (!A) return 0;
+  const l = A[1] === "+" ? -1 : 1, o = parseInt(A[2]), t = A[3] && parseInt(A[3]) || 0;
+  return validateTimezone(o, t) ? l * (o * millisecondsInHour + t * millisecondsInMinute) : NaN;
+}
+function dayOfISOWeekYear(e, A, l) {
+  const o = /* @__PURE__ */ new Date(0);
+  o.setUTCFullYear(e, 0, 4);
+  const t = o.getUTCDay() || 7, a = (A - 1) * 7 + l + 1 - t;
+  return o.setUTCDate(o.getUTCDate() + a), o;
+}
+const daysInMonths = [31, null, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+function isLeapYearIndex(e) {
+  return e % 400 === 0 || e % 4 === 0 && e % 100 !== 0;
+}
+function validateDate(e, A, l) {
+  return A >= 0 && A <= 11 && l >= 1 && l <= (daysInMonths[A] || (isLeapYearIndex(e) ? 29 : 28));
+}
+function validateDayOfYearDate(e, A) {
+  return A >= 1 && A <= (isLeapYearIndex(e) ? 366 : 365);
+}
+function validateWeekDate(e, A, l) {
+  return A >= 1 && A <= 53 && l >= 0 && l <= 6;
+}
+function validateTime(e, A, l) {
+  return e === 24 ? A === 0 && l === 0 : l >= 0 && l < 60 && A >= 0 && A < 60 && e >= 0 && e < 25;
+}
+function validateTimezone(e, A) {
+  return A >= 0 && A <= 59;
+}
+function setMonth(e, A, l) {
+  const o = toDate(e, l?.in), t = o.getFullYear(), a = o.getDate(), n = constructFrom(e, 0);
+  n.setFullYear(t, A, 15), n.setHours(0, 0, 0, 0);
+  const B = getDaysInMonth(n);
+  return o.setMonth(A, Math.min(a, B)), o;
+}
+function setYear(e, A, l) {
+  const o = toDate(e, l?.in);
+  return isNaN(+o) ? constructFrom(e, NaN) : (o.setFullYear(A), o);
+}
+function subMonths(e, A, l) {
+  return addMonths(e, -1, l);
+}
+class DesmyButton extends React2__default.Component {
+  constructor(A) {
+    super(A);
+  }
+  render() {
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "button",
+      {
+        type: "button",
+        onClick: this.props.onClick,
+        disabled: this.props.hasRequest || this.props.disabled,
+        className: `${this.props.type === DesmyState.SMALL ? " px-4 py-3 " : " px-5 py-3 "} w-auto justifiy-center items-center  bg-[var(--color-primary)] hover:bg-primary/75  text-white dark:bg-[var(--color-darkDialogBackground)]  text-xs  dark:hover:bg-[var(--color-white)] dark:hover:text-black ${this.props.className}  font-poppinsRegular items-center   rounded-full cursor-pointer  transition duration-500 ease-in-out`,
+        children: this.props.hasRequest ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "svg",
+            {
+              role: "status",
+              className: "inline mr-3 w-5 h-5 text-white animate-spin",
+              viewBox: "0 0 100 101",
+              fill: "none",
+              xmlns: "http://www.w3.org/2000/svg",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "path",
+                  {
+                    d: "M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z",
+                    fill: "#E5E7EB"
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "path",
+                  {
+                    d: "M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z",
+                    fill: "currentColor"
+                  }
+                )
+              ]
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "hidden lg:flex", children: [
+            this.props.label_request,
+            "..."
+          ] })
+        ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-center items-center", children: [
+          this.props.icon,
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: this.props.labelClassName, children: this.props.label })
+        ] })
+      }
+    );
+  }
+}
+const DateContext = createContext(void 0);
+class DateProvider extends Component {
+  static defaultProps = {
+    useRange: !0
+  };
+  constructor(A) {
+    super(A);
+    const l = /* @__PURE__ */ new Date();
+    this.state = {
+      startDate: null,
+      endDate: null,
+      isOpen: !1,
+      currentMonthLeft: startOfMonth(l),
+      currentMonthRight: startOfMonth(addMonths(l, 1)),
+      useRange: A.useRange ?? !0,
+      startTime: null,
+      endTime: null
+    };
+  }
+  // Setters
+  setStartDate = (A) => {
+    this.setState({ startDate: A });
+  };
+  setEndDate = (A) => {
+    this.setState({ endDate: A });
+  };
+  setCurrentMonthLeft = (A) => {
+    this.setState({ currentMonthLeft: A });
+  };
+  setCurrentMonthRight = (A) => {
+    this.setState({ currentMonthRight: A });
+  };
+  setIsOpen = (A) => {
+    this.state.isOpen !== A && this.setState({ isOpen: A });
+  };
+  setStartTime = (A) => {
+    this.setState({ startTime: A });
+  };
+  setEndTime = (A) => {
+    this.setState({ endTime: A });
+  };
+  render() {
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      DateContext.Provider,
+      {
+        value: {
+          startDate: this.state.startDate,
+          endDate: this.state.endDate,
+          setStartDate: this.setStartDate,
+          setEndDate: this.setEndDate,
+          currentMonthLeft: this.state.currentMonthLeft,
+          currentMonthRight: this.state.currentMonthRight,
+          setCurrentMonthLeft: this.setCurrentMonthLeft,
+          setCurrentMonthRight: this.setCurrentMonthRight,
+          isOpen: this.state.isOpen,
+          setIsOpen: this.setIsOpen,
+          useRange: this.state.useRange,
+          startTime: this.state.startTime,
+          endTime: this.state.endTime,
+          setStartTime: this.setStartTime,
+          setEndTime: this.setEndTime
+        },
+        children: this.props.children
+      }
+    );
+  }
+}
+function withDateContext(e) {
+  return class extends Component {
+    render() {
+      return /* @__PURE__ */ jsxRuntimeExports.jsx(DateContext.Consumer, { children: (A) => {
+        if (!A)
+          throw new Error("DateContext is not available");
+        return /* @__PURE__ */ jsxRuntimeExports.jsx(e, { ...this.props, dateContext: A });
+      } });
+    }
+  };
+}
+const Months = ({
+  currentMonth: e,
+  onSelectMonth: A,
+  minDate: l,
+  maxDate: o
+}) => {
+  const t = (a) => {
+    const n = startOfMonth(setMonth(e, a)), B = endOfMonth(n);
+    if (l && o) {
+      const R = isWithinInterval(l, { start: n, end: B }), r = isWithinInterval(o, { start: n, end: B }), H = isWithinInterval(n, { start: l, end: o }) || isWithinInterval(B, { start: l, end: o });
+      return !(R || r || H);
+    }
+    return l ? isBefore(B, l) : o ? isAfter(n, o) : !1;
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-3 gap-2", children: Array.from({ length: 12 }).map((a, n) => {
+    const B = setMonth(e, n), R = t(n);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "button",
+      {
+        className: `p-2 rounded border text-sm font-medium ${R ? "text-gray-400 line-through cursor-not-allowed" : "hover:bg-gray-200 dark:hover:bg-darkPrimaryBorder"}`,
+        onClick: (r) => {
+          r.preventDefault(), !R && A(n);
+        },
+        disabled: R,
+        children: format(B, "MMM")
+      },
+      n
+    );
+  }) });
+}, Years = ({ currentYear: e, onSelectYear: A, minDate: l, maxDate: o }) => {
+  const t = e - 60, a = e + 60;
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-4 gap-2 h-80 pb-5 overflow-auto", children: Array.from({ length: a - t + 1 }).map((n, B) => {
+    const R = t + B, r = setYear(/* @__PURE__ */ new Date(), R), H = l && isBefore(r, l) || o && isAfter(r, o);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "button",
+      {
+        className: `p-2 rounded border dark:text-white dark:hover:text-white dark:border-darkPrimaryBorder dark:hover:bg-darkPrimaryBorder cursor-pointer ${H ? "text-gray-400  line-through cursor-not-allowed" : "hover:bg-gray-200"}`,
+        onClick: () => !H && A(R),
+        disabled: H,
+        children: R
+      },
+      R
+    );
+  }) });
+};
+class Days extends Component {
+  constructor(A) {
+    super(A), this.state = {
+      viewMode: "days"
+    };
+  }
+  componentDidMount() {
+    const { useRange: A, setStartDate: l, setEndDate: o, setCurrentMonthLeft: t, setCurrentMonthRight: a } = this.props.dateContext, { defaultDate: n } = this.props;
+    !A && n && (l(n), o(null), t(startOfMonth(n)), a(startOfMonth(addMonths(n, 1))));
+  }
+  componentDidUpdate(A) {
+    const {
+      startDate: l,
+      endDate: o,
+      setStartDate: t,
+      setEndDate: a,
+      setIsOpen: n
+    } = this.props.dateContext, { useRange: B, withTime: R } = this.props;
+    !B && l !== A.dateContext.startDate && (R || n(!1)), B && l && o && (l !== A.dateContext.startDate || o !== A.dateContext.endDate) && (R || n(!1)), B && l && o && isAfter(l, o) && (t(o), a(l));
+  }
+  handleSelectDay = (A, l) => {
+    A.preventDefault();
+    const { minDate: o, maxDate: t, useRange: a, onSelect: n } = this.props, { setStartDate: B, setEndDate: R } = this.props.dateContext;
+    if (!(o && isBefore(l, subDays(o))) && !(t && isAfter(l, addDays(t, 1)))) {
+      if (!a)
+        B(l), R(null);
+      else {
+        const { startDate: r, endDate: H } = this.props.dateContext;
+        !r || r && H ? (B(l), R(null)) : R(l);
+      }
+      n && n(l);
+    }
+  };
+  // Function to check if navigation is allowed
+  canNavigate = (A, l) => {
+    const { dateContext: o, minDate: t, maxDate: a, useRange: n } = this.props, { currentMonthLeft: B, currentMonthRight: R } = o;
+    if (!n) {
+      const r = A === "next" ? addMonths(B, 1) : subMonths(B);
+      return !(A === "prev" && t && isBefore(r, t) || A === "next" && a && isAfter(r, a));
+    }
+    if (l === 0) {
+      const r = A === "next" ? addMonths(B, 1) : subMonths(B);
+      return a && isBefore(r, R) && !(t && isBefore(r, t));
+    } else if (l === 1) {
+      const r = A === "next" ? addMonths(R, 1) : subMonths(R);
+      return t && isAfter(r, B) && !(a && isAfter(r, a));
+    }
+    return !0;
+  };
+  navigateMonth = (A, l) => {
+    const { dateContext: o } = this.props, { currentMonthLeft: t, setCurrentMonthLeft: a, currentMonthRight: n, setCurrentMonthRight: B } = o;
+    if (this.canNavigate(A, l)) {
+      if (l === 0) {
+        const R = A === "next" ? addMonths(t, 1) : subMonths(t);
+        a(R);
+      } else if (l === 1) {
+        const R = A === "next" ? addMonths(n, 1) : subMonths(n);
+        B(R);
+      }
+    }
+  };
+  selectMonth = (A) => {
+    const { calendarIndex: l, dateContext: o } = this.props, { currentMonthLeft: t, setCurrentMonthLeft: a, currentMonthRight: n, setCurrentMonthRight: B } = o;
+    if (l === 0) {
+      const R = setMonth(t, A);
+      if (!this.canNavigate("next", 0) && isAfter(R, n)) return;
+      a(R);
+    } else if (l === 1) {
+      const R = setMonth(n, A);
+      if (!this.canNavigate("prev", 1) && isBefore(R, t)) return;
+      B(R);
+    }
+    this.setState({ viewMode: "days" });
+  };
+  selectYear = (A) => {
+    const { calendarIndex: l, dateContext: o } = this.props, { currentMonthLeft: t, setCurrentMonthLeft: a, currentMonthRight: n, setCurrentMonthRight: B } = o;
+    if (l === 0) {
+      const R = setYear(t, A);
+      if (!this.canNavigate("next", 0) && isAfter(R, n)) return;
+      a(R);
+    } else if (l === 1) {
+      const R = setYear(n, A);
+      if (!this.canNavigate("prev", 1) && isBefore(R, t)) return;
+      B(R);
+    }
+    this.setState({ viewMode: "days" });
+  };
+  isWithinSelectedRange = (A) => {
+    const { startDate: l, endDate: o } = this.props.dateContext, { useRange: t } = this.props;
+    return t && l && o && isWithinInterval(A, { start: l, end: o });
+  };
+  isSelectedDate = (A) => {
+    const { startDate: l, endDate: o } = this.props.dateContext;
+    return l && isSameDay(A, l) || o && isSameDay(A, o);
+  };
+  isWithinCurrentMonth = (A, l) => {
+    const o = startOfMonth(l), t = endOfMonth(l);
+    return isWithinInterval(A, { start: o, end: t });
+  };
+  isTodayDate = (A) => isToday(A);
+  render() {
+    const {
+      calendarIndex: A = 0,
+      minDate: l,
+      maxDate: o,
+      dateContext: t
+    } = this.props, { currentMonthLeft: a, currentMonthRight: n } = t, { viewMode: B } = this.state, R = A === 0 ? a : n, r = startOfMonth(R), H = endOfMonth(R), CI = startOfWeek(r), j = endOfWeek(H), iI = eachDayOfInterval({ start: CI, end: j }), sI = l && isBefore(R, l), AI = o && isAfter(R, o);
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-[350px] text-xs h-96 p-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center mb-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            className: `p-1 text-gray-500 hover:bg-gray-200 rounded ${sI ? "cursor-not-allowed text-gray-300" : ""}`,
+            onClick: (lI) => {
+              lI.preventDefault(), !sI && this.navigateMonth("prev", A);
+            },
+            disabled: sI,
+            children: "<"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between w-full space-x-2 px-10", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "span",
+            {
+              className: `text-lg font-semibold cursor-pointer ${B === "months" ? "text-blue-500 underline" : "hover:text-blue-500"}`,
+              onClick: () => this.setState({ viewMode: B === "months" ? "days" : "months" }),
+              children: format(R, "MMM")
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "span",
+            {
+              className: `text-lg font-semibold cursor-pointer ${B === "years" ? "text-blue-500 underline" : "hover:text-blue-500"}`,
+              onClick: () => this.setState({ viewMode: B === "years" ? "days" : "years" }),
+              children: format(R, "yyyy")
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            className: `p-1 text-gray-500 hover:bg-gray-200 rounded ${AI ? "cursor-not-allowed text-gray-300" : ""}`,
+            onClick: (lI) => {
+              lI.preventDefault(), !AI && this.navigateMonth("next", A);
+            },
+            disabled: AI,
+            children: ">"
+          }
+        )
+      ] }),
+      B === "months" && /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Months,
+        {
+          currentMonth: R,
+          onSelectMonth: this.selectMonth,
+          minDate: l,
+          maxDate: o
+        }
+      ),
+      B === "years" && /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Years,
+        {
+          currentYear: R.getFullYear(),
+          onSelectYear: this.selectYear,
+          minDate: l,
+          maxDate: o
+        }
+      ),
+      B === "days" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-7 gap-1 text-center font-semibold text-gray-600 dark:text-white", children: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((lI) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8", children: lI }, lI)) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-7 gap-1 text-center", children: iI.map((lI) => {
+          const oI = l && isBefore(lI, subDays(l)) || o && isAfter(lI, addDays(o, 1)), E = this.isSelectedDate(lI), _ = this.isWithinSelectedRange(lI), II = this.isTodayDate(lI), M = this.isWithinCurrentMonth(lI, R);
+          return /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              className: `h-10 w-10 rounded-full text-sm cursor-pointer ${oI ? "text-gray-400 line-through cursor-not-allowed" : M ? _ ? "bg-blue-200 text-blue-600 dark:bg-darkPrimaryBorder dark:text-white" : E ? "bg-blue-500 dark:bg-darkBackground text-white" : II ? "bg-yellow-200 dark:bg-white dark:text-black text-yellow-800" : " dark:hover:bg-darkPrimaryBorder hover:bg-gray-100 text-black dark:text-white" : "text-gray-400 cursor-not-allowed"} ${II && !_ && !E && A == 0 ? "bg-primary/100 dark:bg-white dark:text-black text-white" : ""} `,
+              onClick: (O) => {
+                O.preventDefault(), !oI && this.handleSelectDay(O, lI);
+              },
+              disabled: oI,
+              children: format(lI, "d")
+            },
+            lI.toString()
+          );
+        }) })
+      ] })
+    ] });
+  }
+}
+const Days$1 = withDateContext(Days);
+class TimeSelector extends React2__default.Component {
+  parseTime(A) {
+    if (!A || !A.includes(":"))
+      return { h: 12, m: 0, meridian: "AM" };
+    const [l, o = "AM"] = A.trim().split(" "), [t, a] = l.split(":"), n = parseInt(t, 10), B = parseInt(a, 10);
+    return {
+      h: isNaN(n) ? 12 : n,
+      m: isNaN(B) ? 0 : B,
+      meridian: o.toUpperCase() === "PM" ? "PM" : "AM"
+    };
+  }
+  formatTime(A, l, o) {
+    const t = String(A || 12).padStart(2, "0"), a = String(l || 0).padStart(2, "0");
+    return `${t}:${a} ${o || "AM"}`;
+  }
+  updateTime(A, l) {
+    const { h: o, m: t, meridian: a } = this.parseTime(this.props.value);
+    let n = o, B = t, R = a;
+    A === "h" ? n = l === "up" ? n % 12 + 1 : n - 1 || 12 : A === "m" ? B = l === "up" ? (B + 1) % 60 : (B - 1 + 60) % 60 : A === "meridian" && (R = R === "AM" ? "PM" : "AM"), this.props.onChange(this.formatTime(n, B, R));
+  }
+  render() {
+    const { label: A, value: l } = this.props, { h: o, m: t, meridian: a } = this.parseTime(l);
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-xs text-center", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "flex w-full text-center lg:text-start font-bold mb-1", children: A }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "inline-flex items-center rounded p-2 gap-4 shadow dark:bg-darkBackground", children: ["h", "m", "meridian"].map((n) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: (B) => {
+              B.preventDefault(), this.updateTime(n, "up");
+            },
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", className: "size-5", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fill: "currentColor", d: "M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6l-6 6z" }) })
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex size-10 font-black text-xl text-center justify-center items-center", children: [
+          n === "h" && o,
+          n === "m" && String(t).padStart(2, "0"),
+          n === "meridian" && a
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: (B) => {
+              B.preventDefault(), this.updateTime(n, "down");
+            },
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", className: "size-5", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fill: "currentColor", d: "M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6l-6-6z" }) })
+          }
+        )
+      ] }, n)) })
+    ] });
+  }
+}
+class TimePicker extends Component {
+  static contextType = DateContext;
+  handleStartTimeChange = (A) => {
+    this.context.setStartTime(A);
+  };
+  handleEndTimeChange = (A) => {
+    this.context.setEndTime(A);
+  };
+  render() {
+    const { useRange: A, onConfirm: l } = this.props, { startTime: o, endTime: t } = this.context, a = () => !!(!o || A && !t);
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-2 mt-4 text-xs", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        TimeSelector,
+        {
+          label: "Start Time",
+          value: o || "12:00 AM",
+          onChange: (n) => this.context.setStartTime(n)
+        }
+      ),
+      A && /* @__PURE__ */ jsxRuntimeExports.jsx(
+        TimeSelector,
+        {
+          label: "End Time",
+          value: t || "12:00 PM",
+          onChange: (n) => this.context.setEndTime(n)
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex w-full justify-end items-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          type: "button",
+          className: `mt-2 px-3 rounded-full py-2 cursor-pointer text-sm ${a() ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"}`,
+          onClick: (n) => {
+            n.preventDefault(), !a() && l && l();
+          },
+          disabled: a(),
+          children: "Confirm"
+        }
+      ) })
+    ] });
+  }
+}
+class DatePickerProvider extends Component {
+  static contextType = DateContext;
+  parentContainerRef = createRef();
+  inputRef = createRef();
+  popoverDropdownRef = createRef();
+  arrowRef = createRef();
+  popperInstance = null;
+  saveDateValue;
+  constructor(A) {
+    super(A), this.state = {
+      wasOpenBeforeBlur: !1,
+      isFocusTriggered: !1,
+      isMobile: window.innerWidth <= 768 || window.innerHeight < 1e3,
+      isModal: window.innerHeight < 1e3
+    }, this.saveDateValue = { startDate: "", endDate: "" };
+  }
+  componentDidMount() {
+    document.addEventListener("mousedown", this.handleClickOutside), document.addEventListener("visibilitychange", this.handleVisibilityChange), window.addEventListener("resize", this.handleResize), this.handleDefault(), this.state.isMobile || this.handleDatePickerPopover();
+  }
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside), document.removeEventListener("visibilitychange", this.handleVisibilityChange), window.removeEventListener("resize", this.handleResize), this.popperInstance?.destroy();
+  }
+  componentDidUpdate() {
+    this.handleDateSelection();
+  }
+  handleResize = () => {
+    this.setState({ isMobile: window.innerWidth <= 768 || window.innerHeight < 1e3, isModal: window.innerHeight < 1e3 }, this.handleClose);
+  };
+  handleDefault = () => {
+    const { defaultValue: A, withTime: l, useRange: o } = this.props, { setStartDate: t, setEndDate: a, setStartTime: n, setEndTime: B } = this.context, R = (E) => E ? typeof E == "string" ? E : E instanceof Date || typeof E == "object" && "toISOString" in E ? E.toISOString() : "" : "", r = R(A?.startDate || A), H = R(A?.endDate || A), CI = o && r.includes(" - ") ? r.split(" - ") : [r, H], j = (E) => {
+      if (!E) return { date: null, time: null };
+      if (E.includes("T")) {
+        const eI = parseISO(E), dI = E.match(/T(\d{2}:\d{2})/);
+        return {
+          date: isValid(eI) ? eI : null,
+          time: dI ? dI[1] : null
+        };
+      }
+      const _ = E.trim().split(" "), II = _[0], M = _.length > 1 ? _[1] : null;
+      return {
+        date: isValid(parseISO(II)) ? parseISO(II) : null,
+        time: typeof M == "string" ? M : null
+      };
+    }, { date: iI, time: sI } = j(CI[0]), { date: AI, time: lI } = j(CI[1]);
+    iI && t(iI), AI && a(AI), sI && n(sI), lI && B(lI);
+    const oI = (E, _) => {
+      if (!E) return "";
+      const II = format(E, "yyyy-MM-dd");
+      if (l && _) {
+        const M = _.includes("AM") || _.includes("PM") ? this.convertTo24Hour(_) : _;
+        return `${II} ${M}`;
+      }
+      return II;
+    };
+    this.saveDateValue = {
+      startDate: oI(iI, sI),
+      endDate: oI(AI, lI)
+    };
+  };
+  parseDate(A) {
+    if (!A) return null;
+    if (typeof A == "string") {
+      const l = parseISO(A);
+      return isValid(l) ? l : null;
+    }
+    return A;
+  }
+  extractTime(A) {
+    if (!A) return null;
+    let l = "";
+    typeof A == "string" ? l = A : A instanceof Date && (l = A.toISOString());
+    const o = l.match(/T(\d{2}:\d{2})/);
+    return o ? o[1] : null;
+  }
+  toISOStringString(A) {
+    return A ? typeof A == "string" ? A : A instanceof Date ? A.toISOString() : "" : "";
+  }
+  handleClickOutside = (A) => {
+    this.parentContainerRef.current && !this.parentContainerRef.current.contains(A.target) && this.closeDatePickerPopover();
+  };
+  closeDatePickerPopover = () => {
+    this.context.setIsOpen(!1);
+  };
+  handleInputFocus = () => {
+    setTimeout(() => {
+      this.openDatePickerPopover();
+    }, 500);
+  };
+  openDatePickerPopover = () => {
+    this.context.setIsOpen(!0), this.state.isMobile || (this.handleDatePickerPopover(), setTimeout(this.handleDatePickerPopover, 2));
+  };
+  handleDatePickerPopover = () => {
+    this.inputRef.current && this.popoverDropdownRef.current && (this.popperInstance?.destroy(), this.popperInstance = createPopper(this.inputRef.current, this.popoverDropdownRef.current, {
+      placement: "bottom-start",
+      strategy: "fixed",
+      modifiers: [
+        { name: "offset", options: { offset: [0, 10] } },
+        {
+          name: "flip",
+          options: {
+            fallbackPlacements: ["top", "top-start", "bottom", "bottom-start"]
+          }
+        },
+        { name: "preventOverflow", options: { boundary: "viewport" } }
+      ]
+    }));
+  };
+  convertTo24Hour(A) {
+    if (!A) return "";
+    const [l, o] = A.split(" ");
+    if (!l || !o) return A;
+    let [t, a] = l.split(":").map(Number);
+    return o.toLowerCase() === "pm" && t < 12 && (t += 12), o.toLowerCase() === "am" && t === 12 && (t = 0), `${String(t).padStart(2, "0")}:${a.toString().padStart(2, "0")}`;
+  }
+  formatWithTime = (A, l) => {
+    const { withTime: o } = this.props;
+    if (!A) return "";
+    const t = o && l ? this.convertTo24Hour(l) : "";
+    return t ? `${format(A, "yyyy-MM-dd")} ${t}` : format(A, "yyyy-MM-dd");
+  };
+  handleDateSelection = () => {
+    const { onSelected: A, useRange: l, defaultValue: o, withTime: t } = this.props, { startDate: a, endDate: n, startTime: B, endTime: R, setIsOpen: r } = this.context, H = (AI, lI) => !t || !lI ? AI : `${AI} ${this.convertTo24Hour(lI)}`, CI = !DesmyCommons$1.isEmptyOrNull(o), j = DesmyCommons$1.isEmptyOrNull(this.saveDateValue?.startDate);
+    if (CI && j) {
+      this.handleDefault();
+      return;
+    }
+    const iI = a ? H(format(a, "yyyy-MM-dd"), B) : "", sI = n ? H(format(n, "yyyy-MM-dd"), R) : "";
+    iI === this.saveDateValue?.startDate && sI === this.saveDateValue?.endDate || (this.saveDateValue = {
+      startDate: iI,
+      endDate: sI
+    }, typeof A == "function" && (A({
+      startDate: iI,
+      endDate: sI
+    }), !l && !t && r(!1)));
+  };
+  handleClose = () => {
+    this.context.setIsOpen(!1), this.props.onSelected?.({});
+  };
+  handleVisibilityChange = () => {
+    document.visibilityState === "hidden" ? this.setState({ wasOpenBeforeBlur: this.context.isOpen }) : document.visibilityState === "visible" && this.state.wasOpenBeforeBlur && setTimeout(() => this.context.setIsOpen(!0), 100);
+  };
+  render() {
+    const { minDate: A, maxDate: l, label: o, disabled: t, useRange: a = !0, withTime: n } = this.props, { isOpen: B, startDate: R, endDate: r } = this.context, { isMobile: H, isModal: CI } = this.state, j = () => {
+      const iI = this.props.displayFormat || "MM/dd/yyyy", { startTime: sI, endTime: AI } = this.context, lI = (_, II) => {
+        if (!_) return "";
+        const M = format(_, iI), O = typeof II == "string" ? II : "";
+        return n && O ? `${M} ${O}` : M;
+      }, oI = lI(R, sI), E = lI(r, AI);
+      return a ? oI && E ? `${oI} - ${E}` : "" : oI;
+    };
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative w-full", ref: this.parentContainerRef, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { ref: this.inputRef, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        DesmyTextInput,
+        {
+          onFocus: this.handleInputFocus,
+          label: o,
+          disabled: t,
+          readOnly: !0,
+          defaultValue: j(),
+          onChange: () => {
+          }
+        }
+      ) }),
+      B && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "div",
+        {
+          ref: this.popoverDropdownRef,
+          className: `${H ? `fixed top-0 left-0 right-0 bottom-0 flex flex-col ${CI ? "bg-black/40" : "bg-white dark:bg-darkDialogBackground"} z-[9999999] p-4 overflow-auto` : "absolute"} ${B ? "flex opacity-100" : "hidden opacity-0"} ${CI ? "bg-black/40" : "bg-white dark:bg-darkDialogBackground dark:border-darkPrimaryBorder dark:text-white border-[2px]"} shadow-lg border-gray-100 rounded p-4 z-50 transition-opacity duration-[2000ms] ${a ? "flex gap-4" : ""}`,
+          children: [
+            !H && /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "div",
+              {
+                ref: this.arrowRef,
+                id: "arrow",
+                className: "absolute w-4 h-4 bg-white rotate-45 dark:bg-darkDialogBackground"
+              }
+            ),
+            H && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute z-[9999] right-3 top-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "svg",
+              {
+                xmlns: "http://www.w3.org/2000/svg",
+                viewBox: "0 0 12 12",
+                className: `size-8 ${CI ? "text-white" : "text-red-600"} cursor-pointer`,
+                onClick: this.handleClose,
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "path",
+                  {
+                    fill: "currentColor",
+                    d: "M3.85 3.15a.5.5 0 0 0-.707.707l2.15 2.15l-2.15 2.15a.5.5 0 0 0 .707.707L6 6.714l2.15 2.15a.5.5 0 0 0 .707-.707l-2.15-2.15l2.15-2.15a.5.5 0 0 0-.707-.707L6 5.3z"
+                  }
+                )
+              }
+            ) }),
+            CI ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex max-w-lg h-full w-full justify-center items-center  mx-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-white dark:bg-darkDialogBackground mx-auto rounded-2xl", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Days$1, { calendarIndex: 0, useRange: a, withTime: n, minDate: A, maxDate: l }),
+              a && /* @__PURE__ */ jsxRuntimeExports.jsx(Days$1, { calendarIndex: 1, useRange: a, withTime: n, minDate: A, maxDate: l }),
+              n && /* @__PURE__ */ jsxRuntimeExports.jsx(TimePicker, { useRange: a, onConfirm: () => this.context.setIsOpen(!1) })
+            ] }) }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Days$1, { calendarIndex: 0, useRange: a, withTime: n, minDate: A, maxDate: l }),
+              a && /* @__PURE__ */ jsxRuntimeExports.jsx(Days$1, { calendarIndex: 1, useRange: a, withTime: n, minDate: A, maxDate: l }),
+              n && /* @__PURE__ */ jsxRuntimeExports.jsx(TimePicker, { useRange: a, onConfirm: () => this.context.setIsOpen(!1) })
+            ] })
+          ]
+        }
+      )
+    ] });
+  }
+}
+const DesmyDatePicker = ({ ...e }) => /* @__PURE__ */ jsxRuntimeExports.jsx(DateProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(DatePickerProvider, { ...e }) });
+class DesmyFilter extends Component {
+  constructor(A) {
+    super(A), this.state = {
+      isLoading: !0,
+      hasRequest: !1,
+      input: {},
+      filters: {}
+    };
+  }
+  componentDidMount() {
+    if (this.props.content) {
+      const A = { ...this.state.input };
+      this.props.content.forEach((l) => {
+        l.label && l.value !== null && (A[l.label] = l);
+      }), console.log("content=", this.props.content, " updatedInput=", A), this.setState({ input: A });
+    }
+    this.fetchFilters();
+  }
+  fetchFilters = async () => {
+    try {
+      this.setState({ hasRequest: !0 });
+      const A = await fetch(this.props.filter?.url, {
+        method: "GET",
+        headers: {
+          "X-CSRFToken": `${DesmyAuth$1.getCookie("csrftoken")}`,
+          Authorization: `Token ${DesmyAuth$1.get(DesmyState.ACCESS_TOKEN)}`
+        }
+      });
+      if (A.ok) {
+        const l = await A.json();
+        this.setState({ filters: l.data, isLoading: !1 });
+      }
+    } catch {
+    } finally {
+      this.setState({ hasRequest: !1 });
+    }
+  };
+  handleOnSubmit = async () => {
+    const { input: A } = this.state;
+    this.props.onSuccess?.(A);
+  };
+  render() {
+    const { filters: A, input: l, isLoading: o } = this.state, t = Object.entries(A);
+    let a, n;
+    const B = t.find(([R]) => R.toLowerCase().includes("date"));
+    if (B) {
+      const [, R] = B;
+      R?.[0]?.startDate && R?.[0]?.endDate && (a = new Date(R[0].startDate), n = new Date(R[0].endDate));
+    }
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+      DesmyModalContainer,
+      {
+        data: { title: "Filter" },
+        containerClassName: "bg-white dark:bg-darkBackground border-[1px] border-gray-100 dark:border-darkDialogBackground",
+        className: "add-event-multi-modal max-w-lg p-2",
+        onClose: this.props.onClose,
+        children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col w-full min-h-52 space-y-6", children: [
+          o ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col px-4 py-5 dark:bg-darkDialogBackground w-full animate-pulse", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex w-24 rounded-full h-4 bg-gray-300 dark:bg-darkPrimaryBorderLight" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-col w-full mt-10 space-y-6", children: Array.apply(0, Array(3)).map((R, r) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `flex ${r == 0 ? "w-4/5" : r == 1 ? "w-3/5" : "w-2/5"} rounded-full h-4 bg-gray-300 dark:bg-darkPrimaryBorderLight` }, r)) })
+          ] }) : t.map(([R, r], H) => r && r.length > 0 ? R.toLowerCase().includes("date") ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+            DesmyDatePicker,
+            {
+              defaultValue: l[R]?.value,
+              label: DesmyCommons$1.toSentenceCase(String(R.replace("_", " ").toUpperCase())),
+              minDate: a,
+              maxDate: n,
+              displayFormat: "MMMM dd, yyyy",
+              useRange: !0,
+              withTime: !0,
+              onSelected: (j) => {
+                const { startDate: iI, endDate: sI } = j;
+                if (iI && sI) {
+                  const AI = {
+                    id: iI,
+                    name: `${isValid(parseISO(iI)) ? format(parseISO(iI), "MMMM dd, yyyy hh:mm a") : ""} - ${isValid(parseISO(sI)) ? format(parseISO(sI), "MMMM dd, yyyy hh:mm a") : ""}`,
+                    value: { startDate: iI, endDate: sI },
+                    label: "Date"
+                  };
+                  this.setState((lI) => ({
+                    input: {
+                      ...lI.input,
+                      [R]: AI
+                    }
+                  }));
+                }
+              }
+            },
+            H
+          ) : /* @__PURE__ */ jsxRuntimeExports.jsx(
+            DesmyDropdown,
+            {
+              defaultValue: l[R]?.id,
+              placeholder: DesmyCommons$1.toSentenceCase(String(R.replace("_", " ").toUpperCase())),
+              data: r.map((j) => ({
+                id: j.id,
+                name: j.name,
+                value: j.id || j,
+                label: j.name || j
+              })),
+              handleChange: (j) => !DesmyCommons$1.isEmptyOrNull(j) && this.setState((iI) => ({
+                input: {
+                  ...iI.input,
+                  [R]: (Array.isArray(j), j)
+                }
+              }))
+            },
+            H
+          ) : null),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex justify-end mt-5", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            DesmyButton,
+            {
+              onClick: this.handleOnSubmit,
+              hasRequest: this.state.hasRequest,
+              label: "Save"
+            }
+          ) })
+        ] })
+      }
+    ) });
+  }
+}
 class DesmyToast {
   static context;
   static initialize(A) {
@@ -24144,6 +26408,7 @@ class DesmyDataTable extends Component {
   current_page;
   search;
   filterloaded;
+  queryParam;
   constructor(A) {
     super(A), this.state = {
       exceptionalColumns: ["view", "edit", "delete"],
@@ -24151,9 +26416,9 @@ class DesmyDataTable extends Component {
       isLoading: !0,
       dtablemodal: null,
       hasRequest: !1,
+      showFilter: !0,
       filterhead: [],
       filters: {
-        search: {},
         data: []
       },
       input: {
@@ -24203,7 +26468,7 @@ class DesmyDataTable extends Component {
         type: DesmyState.ERROR,
         color: ""
       }
-    }, this.renderedSettings = [], this.dataCollection = [], this.chunkSize = 50, this.currentIndex = 0, this.hasClear = !1, this.isLoading = !1, this.hasLoadLastData = !1, this.current_page = 0, this.search = "", this.filterloaded = !1, this.handleScroll = this.handleScroll.bind(this);
+    }, this.renderedSettings = [], this.dataCollection = [], this.chunkSize = 50, this.currentIndex = 0, this.hasClear = !1, this.isLoading = !1, this.hasLoadLastData = !1, this.current_page = 0, this.search = "", this.filterloaded = !1, this.queryParam = "", this.handleScroll = this.handleScroll.bind(this);
   }
   async componentDidMount() {
     try {
@@ -24211,20 +26476,8 @@ class DesmyDataTable extends Component {
       const A = this.state.custom_settings;
       A.sorted_column = this.props.settings.default_sorted_column, this.setState({ custom_settings: A, settings: this.props.settings }, this.fetchEntities);
     } catch {
-      this.alert();
     }
   }
-  // componentDidUpdate = async (_prevProps: DataTableProps, _prevState: DataTableState) => {
-  //   try {
-  //     const { settings } = this.props;
-  //     if (settings.filter && !this.filterloaded && Array.isArray(settings.filter.data) && settings.filter.data.length > 0) {
-  //       const newFilters = { ...settings.filter };
-  //       this.setState({ filters: newFilters });
-  //       this.filterloaded = true;
-  //     }
-  //   } catch (e) {
-  //   }
-  // }
   handleScroll(A) {
     const l = A.target;
     l.scrollTop + l.clientHeight >= l.scrollHeight - 10 && this.loadNextBatch();
@@ -24240,27 +26493,21 @@ class DesmyDataTable extends Component {
       const o = this.state.error, t = this.state.input;
       t.is_searching = !1, o.state = !0, o.message = DesmyCommons$1.isEmptyOrNull(A) ? DesmyState.ERROR_MESSAGE : A, o.type = DesmyState.ERROR, o.color = "red", o.retry = l, this.setState({ isLoading: !1, error: o, input: t });
     } catch {
-      this.alert();
     }
   };
   async fetchEntities() {
     try {
-      const A = [];
-      let l = "";
-      this.state.filters.search !== void 0 && this.state.filters.search !== null && Object.entries(this.state.filters.search).length > 0 && (Object.entries(this.state.filters.search).map(([a, n]) => DesmyCommons$1.isEmptyOrNull(n.id) ? null : A.push(`${a}=${n.id}`)), l = `&${A.join("&")}`);
-      const o = this.state.entities;
-      this.setState({ isLoading: !0 });
-      const t = `${this.props.settings.url}/?page=${this.state.custom_settings.current_page}&column=${this.state.custom_settings.sorted_column}&order=${this.state.custom_settings.order}&per_page=${this.state.entities.meta.per_page}&search=${this.search}${l}`;
-      axios.get(t, {
+      const { current_page: A, sorted_column: l, order: o } = this.state.custom_settings, { per_page: t } = this.state.entities.meta, a = `${this.props.settings.url}/?page=${A}&column=${l}&order=${o}&per_page=${t}&search=${this.search}${this.queryParam ? "&" + this.queryParam : ""}`;
+      this.setState({ isLoading: !0 }), axios.get(a, {
         headers: {
           "X-CSRFToken": `${DesmyAuth$1.getCookie("csrftoken")}`,
           Authorization: `Token ${DesmyAuth$1.get(DesmyState.ACCESS_TOKEN)}`
         }
-      }).then((a) => {
-        const n = a.data;
-        n.success ? (this.dataCollection = a.data.data.data, this.hasClear = !1, o.meta = a.data.data.meta, this.setState({ isLoading: !1, entities: o }, this.initialChunck)) : (this.hasLoadLastData = !0, this.handleError(n.message, !1));
-      }).catch((a) => {
-        this.handleError(a);
+      }).then((n) => {
+        const B = n.data;
+        B.success ? (this.dataCollection = B.data.data, this.hasClear = !1, this.setState({ isLoading: !1, entities: B.data }), this.initialChunck()) : (this.hasLoadLastData = !0, this.handleError(B.message, !1));
+      }).catch((n) => {
+        this.handleError(n);
       });
     } catch {
       this.handleError();
@@ -24278,7 +26525,6 @@ class DesmyDataTable extends Component {
         this.handleClear(), l.current_page = 1, l.sorted_column = A, l.order = n, this.setState({ isLoading: !0, error: {}, custom_settings: l }, this.fetchEntities);
       }
     } catch {
-      this.alert();
     }
   }
   tableHeads = () => {
@@ -24292,8 +26538,11 @@ class DesmyDataTable extends Component {
     });
   };
   handleClear = () => {
-    const { input: A, entities: l, error: o } = this.state;
-    o.state = !1, A.is_searching = !1, l.meta.total = 0, this.setState({ input: A }), this.dataCollection = [], this.renderedSettings = [], this.currentIndex = 0, this.current_page = 0, this.forceUpdate(), this.setState({ entities: l, error: o });
+    try {
+      const { input: A, entities: l, error: o } = this.state;
+      o.state = !1, A.is_searching = !1, l.meta.total = 0, this.setState({ input: A }), this.dataCollection = [], this.renderedSettings = [], this.currentIndex = 0, this.current_page = 0, this.forceUpdate(), this.setState({ entities: l, error: o });
+    } catch {
+    }
   };
   initialChunck() {
     this.loadNextBatch();
@@ -24359,24 +26608,20 @@ class DesmyDataTable extends Component {
         DesmyCommons$1.isEmptyOrNull(this.search) && !this.state.input.is_searching && this.clearFetchEntities();
       });
     } catch {
-      this.alert();
     }
   };
   handleKeyDown = (A) => {
     try {
       A.key === "Enter" && !DesmyCommons$1.isEmptyOrNull(this.search) && this.clearFetchEntities();
     } catch {
-      this.alert();
     }
   };
   loadNextBatch = () => {
     try {
       DesmyCommons$1.isEmptyOrNull(this.dataCollection) || (this.renderChunk(), this.forceUpdate(), this.currentIndex += this.chunkSize), this.isLoading = !1;
     } catch {
-      this.alert();
     }
   };
-  alert = () => "";
   renderChunk() {
     try {
       const A = this.props.settings.headers, l = this.currentIndex + this.chunkSize > this.dataCollection.length ? this.dataCollection.length : this.currentIndex + this.chunkSize;
@@ -24402,31 +26647,24 @@ class DesmyDataTable extends Component {
         }
       }
     } catch {
-      this.alert();
     }
   }
   removeFilterByName = (A) => {
     try {
-      const l = { ...this.state.filters }, o = { ...this.state.filters.search };
-      delete o[A], l.search = o;
-      const t = this.state.filterhead.filter((n) => n.name !== A), a = this.state.filters.data.map((n) => {
-        if (n.name === A) {
-          const { defaults: B, ...R } = n;
-          return R;
-        }
-        return n;
+      const l = this.state.filterhead.filter((t) => t.label !== A), o = l.filter((t) => typeof t == "object" && "id" in t).map((t) => {
+        const { id: a, value: n, label: B } = t;
+        return `${encodeURIComponent(B)}=${encodeURIComponent(a || n || "")}`;
+      }).join("&");
+      this.handleClear(), this.queryParam = o, this.setState({ filterhead: l }, () => {
+        this.fetchEntities();
       });
-      l.data = a, this.handleClear(), this.setState({ filterhead: t, filters: l }, this.fetchEntities);
     } catch {
     }
-  };
-  handleFiltered = () => {
   };
   handleRetry = () => {
     try {
       this.clearFetchEntities();
     } catch {
-      this.alert();
     }
   };
   handleHint = () => {
@@ -24498,10 +26736,35 @@ class DesmyDataTable extends Component {
       )
     ] });
   };
+  handleOnClose = () => {
+    this.setState({ showFilter: !1 });
+  };
+  handleOnOpenFilter = () => {
+    this.setState({ showFilter: !0 });
+  };
+  handleOnFiltered = (A) => {
+    const l = Object.entries(A).map(([a, n]) => {
+      if (n && typeof n == "object" && "id" in n) {
+        const B = n, R = B.id || B.value || n;
+        return a.toLowerCase().includes("date") && B.value?.startDate && B.value?.endDate ? {
+          queryParam: `start_date=${encodeURIComponent(String(B.value?.startDate))}&end_date=${encodeURIComponent(String(B.value?.endDate))}`,
+          filterItem: { ...B, label: a }
+        } : {
+          queryParam: `${encodeURIComponent(a)}=${encodeURIComponent(String(R))}`,
+          filterItem: { ...B, label: a }
+        };
+      }
+      return null;
+    }).filter((a) => a !== null), o = l.map((a) => a.queryParam).join("&"), t = l.map((a) => a.filterItem);
+    this.handleClear(), this.queryParam = o, this.setState({ showFilter: !1, filterhead: t }, () => {
+      this.fetchEntities();
+    });
+  };
   render() {
-    const { isFocused: A, searchText: l } = this.state, o = A && l !== "";
+    const { isFocused: A, searchText: l, showFilter: o, filterhead: t } = this.state, a = A && l !== "";
     return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
       this.state.dtablemodal,
+      o && /* @__PURE__ */ jsxRuntimeExports.jsx(DesmyFilter, { content: t, filter: this.props.settings?.filter, onSuccess: this.handleOnFiltered, onClose: this.handleOnClose }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `flex flex-col w-full ${this.props.className}`, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col w-full mb-5", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("header", { className: "flex w-full flex-col md:flex-row justify-start md:justify-between items-center space-x-6", children: [
@@ -24515,7 +26778,7 @@ class DesmyDataTable extends Component {
                   "input",
                   {
                     className: `rounded-full lg:rounded-full py-3 px-4 dark:focus:border-white dark:focus:ring-0 text-gray-700 text-xs 2xl:text-sm leading-tight border focus:outline-none focus:border-primary focus:ring-0 bg-inherit dark:text-white transition-all duration-300 ease-in-out
-                                        ${o ? "w-[300px]" : "w-[200px]"}`,
+                                        ${a ? "w-[300px]" : "w-[200px]"}`,
                     onFocus: this.handleFocus,
                     onBlur: this.handleBlur,
                     name: "search",
@@ -24535,21 +26798,21 @@ class DesmyDataTable extends Component {
                 /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fill: "none", stroke: "currentColor", strokeLinecap: "round", strokeMiterlimit: 10, strokeWidth: 32, d: "M320 146s24.36-12-64-12a160 160 0 10160 160" }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fill: "none", stroke: "currentColor", strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 32, d: "M256 58l80 80-80 80" })
               ] }) }),
-              this.props.settings.filter !== void 0 && this.props.settings.filter !== null ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex w-10 h-10 2xl:w-12 2xl:h-12 ml-2 flex-shrink-0 justify-center items-center rounded-full bg-gray-200 border border-gray-200 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 cursor-pointer", onClick: () => this.handleFiltered(), children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", strokeWidth: 1.5, stroke: "currentColor", className: "w-5 h-5", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" }) }) }) : null
+              this.props.settings.filter !== void 0 && this.props.settings.filter !== null ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex w-10 h-10 2xl:w-12 2xl:h-12 ml-2 flex-shrink-0 justify-center items-center rounded-full bg-gray-200 border border-gray-200 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 cursor-pointer", onClick: () => this.handleOnOpenFilter(), children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", strokeWidth: 1.5, stroke: "currentColor", className: "w-5 h-5", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" }) }) }) : null
             ] }) }) }) })
           ] }),
           this.props.content != null ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: this.props.content }) : null
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", {}),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `scrollable_table flex flex-col min-h-[200px] ${this.renderedSettings.length > 10 ? "h-[80vh]" : "h-auto"} overflow-auto  scrollbar-width`, onScroll: this.handleScroll, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col ", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: this.state.filterhead.length > 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex w-full overflow-x-auto mb-2 space-x-4", children: this.state.filterhead.map((t, a) => DesmyCommons$1.isEmptyOrNull(t.data) ? null : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-shrink-0 text-sm relative pl-4 pr-6 py-2 rounded-none border-[1px] border-gray-200 bg-gray-50", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: t.length > 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex w-full overflow-x-auto mb-2 space-x-4", children: t.map((n, B) => DesmyCommons$1.isEmptyOrNull(n.name) ? null : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-shrink-0 text-xs relative pl-4 pr-6 py-2 rounded-lg border-[1px] cursor-pointer hover:bg-primary hover:text-white  border-gray-200 bg-gray-50", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex mr-2", children: [
-              DesmyCommons$1.capitalizeEachWord(DesmyCommons$1.convertUnderscoreToSpaceString(t.name)),
+              DesmyCommons$1.capitalizeEachWord(DesmyCommons$1.convertUnderscoreToSpaceString(n.label)),
               ":"
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex font-poppinsSemiBold", children: t.data }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { viewBox: "0 0 512 512", fill: "currentColor", className: "absolute right-1 top-2 bottom-1 cursor-pointer w-4 h-4 2xl:w-5 2xl:h-5", onClick: () => this.removeFilterByName(t.name), children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fill: "none", stroke: "currentColor", strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 32, d: "M368 368L144 144M368 144L144 368" }) })
-          ] }, `flter=${a}`)) }) : null }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex font-poppinsSemiBold", children: n.name }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { viewBox: "0 0 512 512", fill: "currentColor", className: "absolute right-1 top-2 bottom-1 cursor-pointer w-4 h-4 2xl:w-5 2xl:h-5", onClick: () => this.removeFilterByName(n.label), children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fill: "none", stroke: "currentColor", strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 32, d: "M368 368L144 144M368 144L144 368" }) })
+          ] }, `flter=${B}`)) }) : null }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col w-full pb-16", children: [
             this.renderBreadcrumb(),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { children: [
@@ -25020,7 +27283,7 @@ class DesmyCustomDataTable extends Component {
       const A = { ...this.state.entities }, l = `${this.props.settings.url}/?page=${this.state.custom_settings.current_page}&column=${this.state.custom_settings.sorted_column}&order=${this.state.custom_settings.order}&per_page=${this.state.entities.meta.per_page}&search=${this.search}`, t = (await axios.get(l, {
         headers: {
           "X-CSRFToken": `${DesmyAuth$1.getCookie("csrftoken")}`,
-          Authorization: `Token ${DesmyAuth$1.get(DesmyState.ACCESS_TOKEN)}`
+          Authorization: `Token ${this.props.settings?.token ?? DesmyAuth$1.get(DesmyState.ACCESS_TOKEN)}`
         }
       })).data;
       t.success ? (A.data = [], this.hasClear && this.handleClear(), this.dataCollection = this.dataCollection.concat(t.data.data), this.hasClear = !1, A.meta = t.data.meta, this.setState({ isLoading: !1, entities: A }, this.initialChunck)) : this.handleError(t.message);
@@ -25177,57 +27440,6 @@ class DesmyReadMoreOrLess extends Component {
       t,
       A.length > l && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { onClick: this.toggleReadMore, className: "text-blue-500 dark:text-white font-black underline", children: o ? "Read Less" : "Read More" })
     ] });
-  }
-}
-class DesmyButton extends React2__default.Component {
-  constructor(A) {
-    super(A);
-  }
-  render() {
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "button",
-      {
-        type: "button",
-        onClick: this.props.onClick,
-        disabled: this.props.hasRequest || this.props.disabled,
-        className: `${this.props.type === DesmyState.SMALL ? " px-4 py-3 " : " px-5 py-3 "} w-auto justifiy-center items-center  bg-[var(--color-primary)] hover:bg-primary/75  text-white dark:bg-[var(--color-darkDialogBackground)]  text-xs  dark:hover:bg-[var(--color-white)] dark:hover:text-black ${this.props.className}  font-poppinsRegular items-center   rounded-full cursor-pointer  transition duration-500 ease-in-out`,
-        children: this.props.hasRequest ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "svg",
-            {
-              role: "status",
-              className: "inline mr-3 w-5 h-5 text-white animate-spin",
-              viewBox: "0 0 100 101",
-              fill: "none",
-              xmlns: "http://www.w3.org/2000/svg",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "path",
-                  {
-                    d: "M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z",
-                    fill: "#E5E7EB"
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "path",
-                  {
-                    d: "M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z",
-                    fill: "currentColor"
-                  }
-                )
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "hidden lg:flex", children: [
-            this.props.label_request,
-            "..."
-          ] })
-        ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-center items-center", children: [
-          this.props.icon,
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: this.props.labelClassName, children: this.props.label })
-        ] })
-      }
-    );
   }
 }
 class DesmyPopupMenu extends Component {
@@ -26904,8 +29116,8 @@ var flrm = /* @__PURE__ */ hMap(flt, 9, 1), fdrm = /* @__PURE__ */ hMap(fdt, 5, 
           for (var O = new u8(M), eI = new u8(19), dI = 0; dI < II; ++dI)
             eI[clim[dI]] = bits(e, R + dI * 3, 7);
           R += II * 3;
-          for (var aI = max(eI), wI = (1 << aI) - 1, GI = hMap(eI, aI, 1), dI = 0; dI < M; ) {
-            var HI = GI[bits(e, R, wI)];
+          for (var aI = max(eI), WI = (1 << aI) - 1, GI = hMap(eI, aI, 1), dI = 0; dI < M; ) {
+            var HI = GI[bits(e, R, WI)];
             R += HI & 15;
             var lI = HI >>> 4;
             if (lI < 16)
@@ -26936,20 +29148,20 @@ var flrm = /* @__PURE__ */ hMap(flt, 9, 1), fdrm = /* @__PURE__ */ hMap(fdt, 5, 
     }
     t && n(r + 131072);
     for (var yI = (1 << j) - 1, VI = (1 << iI) - 1, hI = R; ; hI = R) {
-      var MI = H[bits16(e, R) & yI], WI = MI >>> 4;
+      var MI = H[bits16(e, R) & yI], wI = MI >>> 4;
       if (R += MI & 15, R > sI) {
         a && err(0);
         break;
       }
-      if (MI || err(2), WI < 256)
-        A[r++] = WI;
-      else if (WI == 256) {
+      if (MI || err(2), wI < 256)
+        A[r++] = wI;
+      else if (wI == 256) {
         hI = R, H = null;
         break;
       } else {
-        var pI = WI - 254;
-        if (WI > 264) {
-          var dI = WI - 257, xI = fleb[dI];
+        var pI = wI - 254;
+        if (wI > 264) {
+          var dI = wI - 257, xI = fleb[dI];
           pI = bits(e, R, (1 << xI) - 1) + fl[dI], R += xI;
         }
         var PI = CI[bits16(e, R) & VI], XI = PI >>> 4;
@@ -28159,18 +30371,18 @@ function mapToObjects(e, A, l) {
 }
 function read(e, A, l, o, t, a, n) {
   for (var B = {}, R = !0, r = function(dI) {
-    var aI = dI.column, wI = dI.value, GI = dI.error, HI = dI.reason, MI = {
+    var aI = dI.column, WI = dI.value, GI = dI.error, HI = dI.reason, MI = {
       error: GI,
       row: l + 1,
       column: aI,
-      value: wI
+      value: WI
     };
     return HI && (MI.reason = HI), e[aI].type && (MI.type = e[aI].type), MI;
   }, H = [], CI = function() {
-    var dI = iI[j], aI = e[dI], wI = _typeof$4(aI.type) === "object" && !Array.isArray(aI.type), GI = "".concat(o || "", ".").concat(aI.prop), HI, MI = t.indexOf(dI), KI = MI < 0;
+    var dI = iI[j], aI = e[dI], WI = _typeof$4(aI.type) === "object" && !Array.isArray(aI.type), GI = "".concat(o || "", ".").concat(aI.prop), HI, MI = t.indexOf(dI), KI = MI < 0;
     KI || (HI = A[MI]);
     var DI, NI, yI;
-    if (wI)
+    if (WI)
       DI = read(aI.type, A, l, GI, t, a, n);
     else if (KI)
       DI = n.schemaPropertyValueForMissingColumn;
@@ -28192,8 +30404,8 @@ function read(e, A, l, o, t, a, n) {
         }) : VI;
       }
     } else {
-      var WI = parseValue(HI, aI, n);
-      NI = WI.error, yI = WI.reason, DI = NI ? HI : WI.value;
+      var wI = parseValue(HI, aI, n);
+      NI = wI.error, yI = wI.reason, DI = NI ? HI : wI.value;
     }
     !NI && isEmptyValue(DI) && aI.required && H.push({
       column: dI,
@@ -28889,2100 +31101,6 @@ class DesmyPassportPicker extends Component {
     ] });
   }
 }
-const millisecondsInWeek = 6048e5, millisecondsInDay = 864e5, millisecondsInMinute = 6e4, millisecondsInHour = 36e5, constructFromSymbol = Symbol.for("constructDateFrom");
-function constructFrom(e, A) {
-  return typeof e == "function" ? e(A) : e && typeof e == "object" && constructFromSymbol in e ? e[constructFromSymbol](A) : e instanceof Date ? new e.constructor(A) : new Date(A);
-}
-function toDate(e, A) {
-  return constructFrom(A || e, e);
-}
-function addDays(e, A, l) {
-  const o = toDate(e, l?.in);
-  return isNaN(A) ? constructFrom(e, NaN) : (A && o.setDate(o.getDate() + A), o);
-}
-function addMonths(e, A, l) {
-  const o = toDate(e, l?.in);
-  if (isNaN(A)) return constructFrom(e, NaN);
-  if (!A)
-    return o;
-  const t = o.getDate(), a = constructFrom(e, o.getTime());
-  a.setMonth(o.getMonth() + A + 1, 0);
-  const n = a.getDate();
-  return t >= n ? a : (o.setFullYear(
-    a.getFullYear(),
-    a.getMonth(),
-    t
-  ), o);
-}
-let defaultOptions = {};
-function getDefaultOptions() {
-  return defaultOptions;
-}
-function startOfWeek(e, A) {
-  const l = getDefaultOptions(), o = A?.weekStartsOn ?? A?.locale?.options?.weekStartsOn ?? l.weekStartsOn ?? l.locale?.options?.weekStartsOn ?? 0, t = toDate(e, A?.in), a = t.getDay(), n = (a < o ? 7 : 0) + a - o;
-  return t.setDate(t.getDate() - n), t.setHours(0, 0, 0, 0), t;
-}
-function startOfISOWeek(e, A) {
-  return startOfWeek(e, { ...A, weekStartsOn: 1 });
-}
-function getISOWeekYear(e, A) {
-  const l = toDate(e, A?.in), o = l.getFullYear(), t = constructFrom(l, 0);
-  t.setFullYear(o + 1, 0, 4), t.setHours(0, 0, 0, 0);
-  const a = startOfISOWeek(t), n = constructFrom(l, 0);
-  n.setFullYear(o, 0, 4), n.setHours(0, 0, 0, 0);
-  const B = startOfISOWeek(n);
-  return l.getTime() >= a.getTime() ? o + 1 : l.getTime() >= B.getTime() ? o : o - 1;
-}
-function getTimezoneOffsetInMilliseconds(e) {
-  const A = toDate(e), l = new Date(
-    Date.UTC(
-      A.getFullYear(),
-      A.getMonth(),
-      A.getDate(),
-      A.getHours(),
-      A.getMinutes(),
-      A.getSeconds(),
-      A.getMilliseconds()
-    )
-  );
-  return l.setUTCFullYear(A.getFullYear()), +e - +l;
-}
-function normalizeDates(e, ...A) {
-  const l = constructFrom.bind(
-    null,
-    A.find((o) => typeof o == "object")
-  );
-  return A.map(l);
-}
-function startOfDay(e, A) {
-  const l = toDate(e, A?.in);
-  return l.setHours(0, 0, 0, 0), l;
-}
-function differenceInCalendarDays(e, A, l) {
-  const [o, t] = normalizeDates(
-    l?.in,
-    e,
-    A
-  ), a = startOfDay(o), n = startOfDay(t), B = +a - getTimezoneOffsetInMilliseconds(a), R = +n - getTimezoneOffsetInMilliseconds(n);
-  return Math.round((B - R) / millisecondsInDay);
-}
-function startOfISOWeekYear(e, A) {
-  const l = getISOWeekYear(e, A), o = constructFrom(e, 0);
-  return o.setFullYear(l, 0, 4), o.setHours(0, 0, 0, 0), startOfISOWeek(o);
-}
-function constructNow(e) {
-  return constructFrom(e, Date.now());
-}
-function isSameDay(e, A, l) {
-  const [o, t] = normalizeDates(
-    l?.in,
-    e,
-    A
-  );
-  return +startOfDay(o) == +startOfDay(t);
-}
-function isDate(e) {
-  return e instanceof Date || typeof e == "object" && Object.prototype.toString.call(e) === "[object Date]";
-}
-function isValid(e) {
-  return !(!isDate(e) && typeof e != "number" || isNaN(+toDate(e)));
-}
-function endOfMonth(e, A) {
-  const l = toDate(e, A?.in), o = l.getMonth();
-  return l.setFullYear(l.getFullYear(), o + 1, 0), l.setHours(23, 59, 59, 999), l;
-}
-function normalizeInterval(e, A) {
-  const [l, o] = normalizeDates(e, A.start, A.end);
-  return { start: l, end: o };
-}
-function eachDayOfInterval(e, A) {
-  const { start: l, end: o } = normalizeInterval(A?.in, e);
-  let t = +l > +o;
-  const a = t ? +l : +o, n = t ? o : l;
-  n.setHours(0, 0, 0, 0);
-  let B = 1;
-  const R = [];
-  for (; +n <= a; )
-    R.push(constructFrom(l, n)), n.setDate(n.getDate() + B), n.setHours(0, 0, 0, 0);
-  return t ? R.reverse() : R;
-}
-function startOfMonth(e, A) {
-  const l = toDate(e, A?.in);
-  return l.setDate(1), l.setHours(0, 0, 0, 0), l;
-}
-function startOfYear(e, A) {
-  const l = toDate(e, A?.in);
-  return l.setFullYear(l.getFullYear(), 0, 1), l.setHours(0, 0, 0, 0), l;
-}
-function endOfWeek(e, A) {
-  const l = getDefaultOptions(), o = l.weekStartsOn ?? l.locale?.options?.weekStartsOn ?? 0, t = toDate(e, A?.in), a = t.getDay(), n = (a < o ? -7 : 0) + 6 - (a - o);
-  return t.setDate(t.getDate() + n), t.setHours(23, 59, 59, 999), t;
-}
-const formatDistanceLocale = {
-  lessThanXSeconds: {
-    one: "less than a second",
-    other: "less than {{count}} seconds"
-  },
-  xSeconds: {
-    one: "1 second",
-    other: "{{count}} seconds"
-  },
-  halfAMinute: "half a minute",
-  lessThanXMinutes: {
-    one: "less than a minute",
-    other: "less than {{count}} minutes"
-  },
-  xMinutes: {
-    one: "1 minute",
-    other: "{{count}} minutes"
-  },
-  aboutXHours: {
-    one: "about 1 hour",
-    other: "about {{count}} hours"
-  },
-  xHours: {
-    one: "1 hour",
-    other: "{{count}} hours"
-  },
-  xDays: {
-    one: "1 day",
-    other: "{{count}} days"
-  },
-  aboutXWeeks: {
-    one: "about 1 week",
-    other: "about {{count}} weeks"
-  },
-  xWeeks: {
-    one: "1 week",
-    other: "{{count}} weeks"
-  },
-  aboutXMonths: {
-    one: "about 1 month",
-    other: "about {{count}} months"
-  },
-  xMonths: {
-    one: "1 month",
-    other: "{{count}} months"
-  },
-  aboutXYears: {
-    one: "about 1 year",
-    other: "about {{count}} years"
-  },
-  xYears: {
-    one: "1 year",
-    other: "{{count}} years"
-  },
-  overXYears: {
-    one: "over 1 year",
-    other: "over {{count}} years"
-  },
-  almostXYears: {
-    one: "almost 1 year",
-    other: "almost {{count}} years"
-  }
-}, formatDistance = (e, A, l) => {
-  let o;
-  const t = formatDistanceLocale[e];
-  return typeof t == "string" ? o = t : A === 1 ? o = t.one : o = t.other.replace("{{count}}", A.toString()), l?.addSuffix ? l.comparison && l.comparison > 0 ? "in " + o : o + " ago" : o;
-};
-function buildFormatLongFn(e) {
-  return (A = {}) => {
-    const l = A.width ? String(A.width) : e.defaultWidth;
-    return e.formats[l] || e.formats[e.defaultWidth];
-  };
-}
-const dateFormats = {
-  full: "EEEE, MMMM do, y",
-  long: "MMMM do, y",
-  medium: "MMM d, y",
-  short: "MM/dd/yyyy"
-}, timeFormats = {
-  full: "h:mm:ss a zzzz",
-  long: "h:mm:ss a z",
-  medium: "h:mm:ss a",
-  short: "h:mm a"
-}, dateTimeFormats = {
-  full: "{{date}} 'at' {{time}}",
-  long: "{{date}} 'at' {{time}}",
-  medium: "{{date}}, {{time}}",
-  short: "{{date}}, {{time}}"
-}, formatLong = {
-  date: buildFormatLongFn({
-    formats: dateFormats,
-    defaultWidth: "full"
-  }),
-  time: buildFormatLongFn({
-    formats: timeFormats,
-    defaultWidth: "full"
-  }),
-  dateTime: buildFormatLongFn({
-    formats: dateTimeFormats,
-    defaultWidth: "full"
-  })
-}, formatRelativeLocale = {
-  lastWeek: "'last' eeee 'at' p",
-  yesterday: "'yesterday at' p",
-  today: "'today at' p",
-  tomorrow: "'tomorrow at' p",
-  nextWeek: "eeee 'at' p",
-  other: "P"
-}, formatRelative = (e, A, l, o) => formatRelativeLocale[e];
-function buildLocalizeFn(e) {
-  return (A, l) => {
-    const o = l?.context ? String(l.context) : "standalone";
-    let t;
-    if (o === "formatting" && e.formattingValues) {
-      const n = e.defaultFormattingWidth || e.defaultWidth, B = l?.width ? String(l.width) : n;
-      t = e.formattingValues[B] || e.formattingValues[n];
-    } else {
-      const n = e.defaultWidth, B = l?.width ? String(l.width) : e.defaultWidth;
-      t = e.values[B] || e.values[n];
-    }
-    const a = e.argumentCallback ? e.argumentCallback(A) : A;
-    return t[a];
-  };
-}
-const eraValues = {
-  narrow: ["B", "A"],
-  abbreviated: ["BC", "AD"],
-  wide: ["Before Christ", "Anno Domini"]
-}, quarterValues = {
-  narrow: ["1", "2", "3", "4"],
-  abbreviated: ["Q1", "Q2", "Q3", "Q4"],
-  wide: ["1st quarter", "2nd quarter", "3rd quarter", "4th quarter"]
-}, monthValues = {
-  narrow: ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"],
-  abbreviated: [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
-  ],
-  wide: [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-  ]
-}, dayValues = {
-  narrow: ["S", "M", "T", "W", "T", "F", "S"],
-  short: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
-  abbreviated: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-  wide: [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday"
-  ]
-}, dayPeriodValues = {
-  narrow: {
-    am: "a",
-    pm: "p",
-    midnight: "mi",
-    noon: "n",
-    morning: "morning",
-    afternoon: "afternoon",
-    evening: "evening",
-    night: "night"
-  },
-  abbreviated: {
-    am: "AM",
-    pm: "PM",
-    midnight: "midnight",
-    noon: "noon",
-    morning: "morning",
-    afternoon: "afternoon",
-    evening: "evening",
-    night: "night"
-  },
-  wide: {
-    am: "a.m.",
-    pm: "p.m.",
-    midnight: "midnight",
-    noon: "noon",
-    morning: "morning",
-    afternoon: "afternoon",
-    evening: "evening",
-    night: "night"
-  }
-}, formattingDayPeriodValues = {
-  narrow: {
-    am: "a",
-    pm: "p",
-    midnight: "mi",
-    noon: "n",
-    morning: "in the morning",
-    afternoon: "in the afternoon",
-    evening: "in the evening",
-    night: "at night"
-  },
-  abbreviated: {
-    am: "AM",
-    pm: "PM",
-    midnight: "midnight",
-    noon: "noon",
-    morning: "in the morning",
-    afternoon: "in the afternoon",
-    evening: "in the evening",
-    night: "at night"
-  },
-  wide: {
-    am: "a.m.",
-    pm: "p.m.",
-    midnight: "midnight",
-    noon: "noon",
-    morning: "in the morning",
-    afternoon: "in the afternoon",
-    evening: "in the evening",
-    night: "at night"
-  }
-}, ordinalNumber = (e, A) => {
-  const l = Number(e), o = l % 100;
-  if (o > 20 || o < 10)
-    switch (o % 10) {
-      case 1:
-        return l + "st";
-      case 2:
-        return l + "nd";
-      case 3:
-        return l + "rd";
-    }
-  return l + "th";
-}, localize = {
-  ordinalNumber,
-  era: buildLocalizeFn({
-    values: eraValues,
-    defaultWidth: "wide"
-  }),
-  quarter: buildLocalizeFn({
-    values: quarterValues,
-    defaultWidth: "wide",
-    argumentCallback: (e) => e - 1
-  }),
-  month: buildLocalizeFn({
-    values: monthValues,
-    defaultWidth: "wide"
-  }),
-  day: buildLocalizeFn({
-    values: dayValues,
-    defaultWidth: "wide"
-  }),
-  dayPeriod: buildLocalizeFn({
-    values: dayPeriodValues,
-    defaultWidth: "wide",
-    formattingValues: formattingDayPeriodValues,
-    defaultFormattingWidth: "wide"
-  })
-};
-function buildMatchFn(e) {
-  return (A, l = {}) => {
-    const o = l.width, t = o && e.matchPatterns[o] || e.matchPatterns[e.defaultMatchWidth], a = A.match(t);
-    if (!a)
-      return null;
-    const n = a[0], B = o && e.parsePatterns[o] || e.parsePatterns[e.defaultParseWidth], R = Array.isArray(B) ? findIndex(B, (CI) => CI.test(n)) : (
-      // [TODO] -- I challenge you to fix the type
-      findKey(B, (CI) => CI.test(n))
-    );
-    let r;
-    r = e.valueCallback ? e.valueCallback(R) : R, r = l.valueCallback ? (
-      // [TODO] -- I challenge you to fix the type
-      l.valueCallback(r)
-    ) : r;
-    const H = A.slice(n.length);
-    return { value: r, rest: H };
-  };
-}
-function findKey(e, A) {
-  for (const l in e)
-    if (Object.prototype.hasOwnProperty.call(e, l) && A(e[l]))
-      return l;
-}
-function findIndex(e, A) {
-  for (let l = 0; l < e.length; l++)
-    if (A(e[l]))
-      return l;
-}
-function buildMatchPatternFn(e) {
-  return (A, l = {}) => {
-    const o = A.match(e.matchPattern);
-    if (!o) return null;
-    const t = o[0], a = A.match(e.parsePattern);
-    if (!a) return null;
-    let n = e.valueCallback ? e.valueCallback(a[0]) : a[0];
-    n = l.valueCallback ? l.valueCallback(n) : n;
-    const B = A.slice(t.length);
-    return { value: n, rest: B };
-  };
-}
-const matchOrdinalNumberPattern = /^(\d+)(th|st|nd|rd)?/i, parseOrdinalNumberPattern = /\d+/i, matchEraPatterns = {
-  narrow: /^(b|a)/i,
-  abbreviated: /^(b\.?\s?c\.?|b\.?\s?c\.?\s?e\.?|a\.?\s?d\.?|c\.?\s?e\.?)/i,
-  wide: /^(before christ|before common era|anno domini|common era)/i
-}, parseEraPatterns = {
-  any: [/^b/i, /^(a|c)/i]
-}, matchQuarterPatterns = {
-  narrow: /^[1234]/i,
-  abbreviated: /^q[1234]/i,
-  wide: /^[1234](th|st|nd|rd)? quarter/i
-}, parseQuarterPatterns = {
-  any: [/1/i, /2/i, /3/i, /4/i]
-}, matchMonthPatterns = {
-  narrow: /^[jfmasond]/i,
-  abbreviated: /^(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/i,
-  wide: /^(january|february|march|april|may|june|july|august|september|october|november|december)/i
-}, parseMonthPatterns = {
-  narrow: [
-    /^j/i,
-    /^f/i,
-    /^m/i,
-    /^a/i,
-    /^m/i,
-    /^j/i,
-    /^j/i,
-    /^a/i,
-    /^s/i,
-    /^o/i,
-    /^n/i,
-    /^d/i
-  ],
-  any: [
-    /^ja/i,
-    /^f/i,
-    /^mar/i,
-    /^ap/i,
-    /^may/i,
-    /^jun/i,
-    /^jul/i,
-    /^au/i,
-    /^s/i,
-    /^o/i,
-    /^n/i,
-    /^d/i
-  ]
-}, matchDayPatterns = {
-  narrow: /^[smtwf]/i,
-  short: /^(su|mo|tu|we|th|fr|sa)/i,
-  abbreviated: /^(sun|mon|tue|wed|thu|fri|sat)/i,
-  wide: /^(sunday|monday|tuesday|wednesday|thursday|friday|saturday)/i
-}, parseDayPatterns = {
-  narrow: [/^s/i, /^m/i, /^t/i, /^w/i, /^t/i, /^f/i, /^s/i],
-  any: [/^su/i, /^m/i, /^tu/i, /^w/i, /^th/i, /^f/i, /^sa/i]
-}, matchDayPeriodPatterns = {
-  narrow: /^(a|p|mi|n|(in the|at) (morning|afternoon|evening|night))/i,
-  any: /^([ap]\.?\s?m\.?|midnight|noon|(in the|at) (morning|afternoon|evening|night))/i
-}, parseDayPeriodPatterns = {
-  any: {
-    am: /^a/i,
-    pm: /^p/i,
-    midnight: /^mi/i,
-    noon: /^no/i,
-    morning: /morning/i,
-    afternoon: /afternoon/i,
-    evening: /evening/i,
-    night: /night/i
-  }
-}, match = {
-  ordinalNumber: buildMatchPatternFn({
-    matchPattern: matchOrdinalNumberPattern,
-    parsePattern: parseOrdinalNumberPattern,
-    valueCallback: (e) => parseInt(e, 10)
-  }),
-  era: buildMatchFn({
-    matchPatterns: matchEraPatterns,
-    defaultMatchWidth: "wide",
-    parsePatterns: parseEraPatterns,
-    defaultParseWidth: "any"
-  }),
-  quarter: buildMatchFn({
-    matchPatterns: matchQuarterPatterns,
-    defaultMatchWidth: "wide",
-    parsePatterns: parseQuarterPatterns,
-    defaultParseWidth: "any",
-    valueCallback: (e) => e + 1
-  }),
-  month: buildMatchFn({
-    matchPatterns: matchMonthPatterns,
-    defaultMatchWidth: "wide",
-    parsePatterns: parseMonthPatterns,
-    defaultParseWidth: "any"
-  }),
-  day: buildMatchFn({
-    matchPatterns: matchDayPatterns,
-    defaultMatchWidth: "wide",
-    parsePatterns: parseDayPatterns,
-    defaultParseWidth: "any"
-  }),
-  dayPeriod: buildMatchFn({
-    matchPatterns: matchDayPeriodPatterns,
-    defaultMatchWidth: "any",
-    parsePatterns: parseDayPeriodPatterns,
-    defaultParseWidth: "any"
-  })
-}, enUS = {
-  code: "en-US",
-  formatDistance,
-  formatLong,
-  formatRelative,
-  localize,
-  match,
-  options: {
-    weekStartsOn: 0,
-    firstWeekContainsDate: 1
-  }
-};
-function getDayOfYear(e, A) {
-  const l = toDate(e, A?.in);
-  return differenceInCalendarDays(l, startOfYear(l)) + 1;
-}
-function getISOWeek(e, A) {
-  const l = toDate(e, A?.in), o = +startOfISOWeek(l) - +startOfISOWeekYear(l);
-  return Math.round(o / millisecondsInWeek) + 1;
-}
-function getWeekYear(e, A) {
-  const l = toDate(e, A?.in), o = l.getFullYear(), t = getDefaultOptions(), a = A?.firstWeekContainsDate ?? A?.locale?.options?.firstWeekContainsDate ?? t.firstWeekContainsDate ?? t.locale?.options?.firstWeekContainsDate ?? 1, n = constructFrom(A?.in || e, 0);
-  n.setFullYear(o + 1, 0, a), n.setHours(0, 0, 0, 0);
-  const B = startOfWeek(n, A), R = constructFrom(A?.in || e, 0);
-  R.setFullYear(o, 0, a), R.setHours(0, 0, 0, 0);
-  const r = startOfWeek(R, A);
-  return +l >= +B ? o + 1 : +l >= +r ? o : o - 1;
-}
-function startOfWeekYear(e, A) {
-  const l = getDefaultOptions(), o = A?.firstWeekContainsDate ?? A?.locale?.options?.firstWeekContainsDate ?? l.firstWeekContainsDate ?? l.locale?.options?.firstWeekContainsDate ?? 1, t = getWeekYear(e, A), a = constructFrom(A?.in || e, 0);
-  return a.setFullYear(t, 0, o), a.setHours(0, 0, 0, 0), startOfWeek(a, A);
-}
-function getWeek(e, A) {
-  const l = toDate(e, A?.in), o = +startOfWeek(l, A) - +startOfWeekYear(l, A);
-  return Math.round(o / millisecondsInWeek) + 1;
-}
-function addLeadingZeros(e, A) {
-  const l = e < 0 ? "-" : "", o = Math.abs(e).toString().padStart(A, "0");
-  return l + o;
-}
-const lightFormatters = {
-  // Year
-  y(e, A) {
-    const l = e.getFullYear(), o = l > 0 ? l : 1 - l;
-    return addLeadingZeros(A === "yy" ? o % 100 : o, A.length);
-  },
-  // Month
-  M(e, A) {
-    const l = e.getMonth();
-    return A === "M" ? String(l + 1) : addLeadingZeros(l + 1, 2);
-  },
-  // Day of the month
-  d(e, A) {
-    return addLeadingZeros(e.getDate(), A.length);
-  },
-  // AM or PM
-  a(e, A) {
-    const l = e.getHours() / 12 >= 1 ? "pm" : "am";
-    switch (A) {
-      case "a":
-      case "aa":
-        return l.toUpperCase();
-      case "aaa":
-        return l;
-      case "aaaaa":
-        return l[0];
-      case "aaaa":
-      default:
-        return l === "am" ? "a.m." : "p.m.";
-    }
-  },
-  // Hour [1-12]
-  h(e, A) {
-    return addLeadingZeros(e.getHours() % 12 || 12, A.length);
-  },
-  // Hour [0-23]
-  H(e, A) {
-    return addLeadingZeros(e.getHours(), A.length);
-  },
-  // Minute
-  m(e, A) {
-    return addLeadingZeros(e.getMinutes(), A.length);
-  },
-  // Second
-  s(e, A) {
-    return addLeadingZeros(e.getSeconds(), A.length);
-  },
-  // Fraction of second
-  S(e, A) {
-    const l = A.length, o = e.getMilliseconds(), t = Math.trunc(
-      o * Math.pow(10, l - 3)
-    );
-    return addLeadingZeros(t, A.length);
-  }
-}, dayPeriodEnum = {
-  midnight: "midnight",
-  noon: "noon",
-  morning: "morning",
-  afternoon: "afternoon",
-  evening: "evening",
-  night: "night"
-}, formatters = {
-  // Era
-  G: function(e, A, l) {
-    const o = e.getFullYear() > 0 ? 1 : 0;
-    switch (A) {
-      // AD, BC
-      case "G":
-      case "GG":
-      case "GGG":
-        return l.era(o, { width: "abbreviated" });
-      // A, B
-      case "GGGGG":
-        return l.era(o, { width: "narrow" });
-      // Anno Domini, Before Christ
-      case "GGGG":
-      default:
-        return l.era(o, { width: "wide" });
-    }
-  },
-  // Year
-  y: function(e, A, l) {
-    if (A === "yo") {
-      const o = e.getFullYear(), t = o > 0 ? o : 1 - o;
-      return l.ordinalNumber(t, { unit: "year" });
-    }
-    return lightFormatters.y(e, A);
-  },
-  // Local week-numbering year
-  Y: function(e, A, l, o) {
-    const t = getWeekYear(e, o), a = t > 0 ? t : 1 - t;
-    if (A === "YY") {
-      const n = a % 100;
-      return addLeadingZeros(n, 2);
-    }
-    return A === "Yo" ? l.ordinalNumber(a, { unit: "year" }) : addLeadingZeros(a, A.length);
-  },
-  // ISO week-numbering year
-  R: function(e, A) {
-    const l = getISOWeekYear(e);
-    return addLeadingZeros(l, A.length);
-  },
-  // Extended year. This is a single number designating the year of this calendar system.
-  // The main difference between `y` and `u` localizers are B.C. years:
-  // | Year | `y` | `u` |
-  // |------|-----|-----|
-  // | AC 1 |   1 |   1 |
-  // | BC 1 |   1 |   0 |
-  // | BC 2 |   2 |  -1 |
-  // Also `yy` always returns the last two digits of a year,
-  // while `uu` pads single digit years to 2 characters and returns other years unchanged.
-  u: function(e, A) {
-    const l = e.getFullYear();
-    return addLeadingZeros(l, A.length);
-  },
-  // Quarter
-  Q: function(e, A, l) {
-    const o = Math.ceil((e.getMonth() + 1) / 3);
-    switch (A) {
-      // 1, 2, 3, 4
-      case "Q":
-        return String(o);
-      // 01, 02, 03, 04
-      case "QQ":
-        return addLeadingZeros(o, 2);
-      // 1st, 2nd, 3rd, 4th
-      case "Qo":
-        return l.ordinalNumber(o, { unit: "quarter" });
-      // Q1, Q2, Q3, Q4
-      case "QQQ":
-        return l.quarter(o, {
-          width: "abbreviated",
-          context: "formatting"
-        });
-      // 1, 2, 3, 4 (narrow quarter; could be not numerical)
-      case "QQQQQ":
-        return l.quarter(o, {
-          width: "narrow",
-          context: "formatting"
-        });
-      // 1st quarter, 2nd quarter, ...
-      case "QQQQ":
-      default:
-        return l.quarter(o, {
-          width: "wide",
-          context: "formatting"
-        });
-    }
-  },
-  // Stand-alone quarter
-  q: function(e, A, l) {
-    const o = Math.ceil((e.getMonth() + 1) / 3);
-    switch (A) {
-      // 1, 2, 3, 4
-      case "q":
-        return String(o);
-      // 01, 02, 03, 04
-      case "qq":
-        return addLeadingZeros(o, 2);
-      // 1st, 2nd, 3rd, 4th
-      case "qo":
-        return l.ordinalNumber(o, { unit: "quarter" });
-      // Q1, Q2, Q3, Q4
-      case "qqq":
-        return l.quarter(o, {
-          width: "abbreviated",
-          context: "standalone"
-        });
-      // 1, 2, 3, 4 (narrow quarter; could be not numerical)
-      case "qqqqq":
-        return l.quarter(o, {
-          width: "narrow",
-          context: "standalone"
-        });
-      // 1st quarter, 2nd quarter, ...
-      case "qqqq":
-      default:
-        return l.quarter(o, {
-          width: "wide",
-          context: "standalone"
-        });
-    }
-  },
-  // Month
-  M: function(e, A, l) {
-    const o = e.getMonth();
-    switch (A) {
-      case "M":
-      case "MM":
-        return lightFormatters.M(e, A);
-      // 1st, 2nd, ..., 12th
-      case "Mo":
-        return l.ordinalNumber(o + 1, { unit: "month" });
-      // Jan, Feb, ..., Dec
-      case "MMM":
-        return l.month(o, {
-          width: "abbreviated",
-          context: "formatting"
-        });
-      // J, F, ..., D
-      case "MMMMM":
-        return l.month(o, {
-          width: "narrow",
-          context: "formatting"
-        });
-      // January, February, ..., December
-      case "MMMM":
-      default:
-        return l.month(o, { width: "wide", context: "formatting" });
-    }
-  },
-  // Stand-alone month
-  L: function(e, A, l) {
-    const o = e.getMonth();
-    switch (A) {
-      // 1, 2, ..., 12
-      case "L":
-        return String(o + 1);
-      // 01, 02, ..., 12
-      case "LL":
-        return addLeadingZeros(o + 1, 2);
-      // 1st, 2nd, ..., 12th
-      case "Lo":
-        return l.ordinalNumber(o + 1, { unit: "month" });
-      // Jan, Feb, ..., Dec
-      case "LLL":
-        return l.month(o, {
-          width: "abbreviated",
-          context: "standalone"
-        });
-      // J, F, ..., D
-      case "LLLLL":
-        return l.month(o, {
-          width: "narrow",
-          context: "standalone"
-        });
-      // January, February, ..., December
-      case "LLLL":
-      default:
-        return l.month(o, { width: "wide", context: "standalone" });
-    }
-  },
-  // Local week of year
-  w: function(e, A, l, o) {
-    const t = getWeek(e, o);
-    return A === "wo" ? l.ordinalNumber(t, { unit: "week" }) : addLeadingZeros(t, A.length);
-  },
-  // ISO week of year
-  I: function(e, A, l) {
-    const o = getISOWeek(e);
-    return A === "Io" ? l.ordinalNumber(o, { unit: "week" }) : addLeadingZeros(o, A.length);
-  },
-  // Day of the month
-  d: function(e, A, l) {
-    return A === "do" ? l.ordinalNumber(e.getDate(), { unit: "date" }) : lightFormatters.d(e, A);
-  },
-  // Day of year
-  D: function(e, A, l) {
-    const o = getDayOfYear(e);
-    return A === "Do" ? l.ordinalNumber(o, { unit: "dayOfYear" }) : addLeadingZeros(o, A.length);
-  },
-  // Day of week
-  E: function(e, A, l) {
-    const o = e.getDay();
-    switch (A) {
-      // Tue
-      case "E":
-      case "EE":
-      case "EEE":
-        return l.day(o, {
-          width: "abbreviated",
-          context: "formatting"
-        });
-      // T
-      case "EEEEE":
-        return l.day(o, {
-          width: "narrow",
-          context: "formatting"
-        });
-      // Tu
-      case "EEEEEE":
-        return l.day(o, {
-          width: "short",
-          context: "formatting"
-        });
-      // Tuesday
-      case "EEEE":
-      default:
-        return l.day(o, {
-          width: "wide",
-          context: "formatting"
-        });
-    }
-  },
-  // Local day of week
-  e: function(e, A, l, o) {
-    const t = e.getDay(), a = (t - o.weekStartsOn + 8) % 7 || 7;
-    switch (A) {
-      // Numerical value (Nth day of week with current locale or weekStartsOn)
-      case "e":
-        return String(a);
-      // Padded numerical value
-      case "ee":
-        return addLeadingZeros(a, 2);
-      // 1st, 2nd, ..., 7th
-      case "eo":
-        return l.ordinalNumber(a, { unit: "day" });
-      case "eee":
-        return l.day(t, {
-          width: "abbreviated",
-          context: "formatting"
-        });
-      // T
-      case "eeeee":
-        return l.day(t, {
-          width: "narrow",
-          context: "formatting"
-        });
-      // Tu
-      case "eeeeee":
-        return l.day(t, {
-          width: "short",
-          context: "formatting"
-        });
-      // Tuesday
-      case "eeee":
-      default:
-        return l.day(t, {
-          width: "wide",
-          context: "formatting"
-        });
-    }
-  },
-  // Stand-alone local day of week
-  c: function(e, A, l, o) {
-    const t = e.getDay(), a = (t - o.weekStartsOn + 8) % 7 || 7;
-    switch (A) {
-      // Numerical value (same as in `e`)
-      case "c":
-        return String(a);
-      // Padded numerical value
-      case "cc":
-        return addLeadingZeros(a, A.length);
-      // 1st, 2nd, ..., 7th
-      case "co":
-        return l.ordinalNumber(a, { unit: "day" });
-      case "ccc":
-        return l.day(t, {
-          width: "abbreviated",
-          context: "standalone"
-        });
-      // T
-      case "ccccc":
-        return l.day(t, {
-          width: "narrow",
-          context: "standalone"
-        });
-      // Tu
-      case "cccccc":
-        return l.day(t, {
-          width: "short",
-          context: "standalone"
-        });
-      // Tuesday
-      case "cccc":
-      default:
-        return l.day(t, {
-          width: "wide",
-          context: "standalone"
-        });
-    }
-  },
-  // ISO day of week
-  i: function(e, A, l) {
-    const o = e.getDay(), t = o === 0 ? 7 : o;
-    switch (A) {
-      // 2
-      case "i":
-        return String(t);
-      // 02
-      case "ii":
-        return addLeadingZeros(t, A.length);
-      // 2nd
-      case "io":
-        return l.ordinalNumber(t, { unit: "day" });
-      // Tue
-      case "iii":
-        return l.day(o, {
-          width: "abbreviated",
-          context: "formatting"
-        });
-      // T
-      case "iiiii":
-        return l.day(o, {
-          width: "narrow",
-          context: "formatting"
-        });
-      // Tu
-      case "iiiiii":
-        return l.day(o, {
-          width: "short",
-          context: "formatting"
-        });
-      // Tuesday
-      case "iiii":
-      default:
-        return l.day(o, {
-          width: "wide",
-          context: "formatting"
-        });
-    }
-  },
-  // AM or PM
-  a: function(e, A, l) {
-    const t = e.getHours() / 12 >= 1 ? "pm" : "am";
-    switch (A) {
-      case "a":
-      case "aa":
-        return l.dayPeriod(t, {
-          width: "abbreviated",
-          context: "formatting"
-        });
-      case "aaa":
-        return l.dayPeriod(t, {
-          width: "abbreviated",
-          context: "formatting"
-        }).toLowerCase();
-      case "aaaaa":
-        return l.dayPeriod(t, {
-          width: "narrow",
-          context: "formatting"
-        });
-      case "aaaa":
-      default:
-        return l.dayPeriod(t, {
-          width: "wide",
-          context: "formatting"
-        });
-    }
-  },
-  // AM, PM, midnight, noon
-  b: function(e, A, l) {
-    const o = e.getHours();
-    let t;
-    switch (o === 12 ? t = dayPeriodEnum.noon : o === 0 ? t = dayPeriodEnum.midnight : t = o / 12 >= 1 ? "pm" : "am", A) {
-      case "b":
-      case "bb":
-        return l.dayPeriod(t, {
-          width: "abbreviated",
-          context: "formatting"
-        });
-      case "bbb":
-        return l.dayPeriod(t, {
-          width: "abbreviated",
-          context: "formatting"
-        }).toLowerCase();
-      case "bbbbb":
-        return l.dayPeriod(t, {
-          width: "narrow",
-          context: "formatting"
-        });
-      case "bbbb":
-      default:
-        return l.dayPeriod(t, {
-          width: "wide",
-          context: "formatting"
-        });
-    }
-  },
-  // in the morning, in the afternoon, in the evening, at night
-  B: function(e, A, l) {
-    const o = e.getHours();
-    let t;
-    switch (o >= 17 ? t = dayPeriodEnum.evening : o >= 12 ? t = dayPeriodEnum.afternoon : o >= 4 ? t = dayPeriodEnum.morning : t = dayPeriodEnum.night, A) {
-      case "B":
-      case "BB":
-      case "BBB":
-        return l.dayPeriod(t, {
-          width: "abbreviated",
-          context: "formatting"
-        });
-      case "BBBBB":
-        return l.dayPeriod(t, {
-          width: "narrow",
-          context: "formatting"
-        });
-      case "BBBB":
-      default:
-        return l.dayPeriod(t, {
-          width: "wide",
-          context: "formatting"
-        });
-    }
-  },
-  // Hour [1-12]
-  h: function(e, A, l) {
-    if (A === "ho") {
-      let o = e.getHours() % 12;
-      return o === 0 && (o = 12), l.ordinalNumber(o, { unit: "hour" });
-    }
-    return lightFormatters.h(e, A);
-  },
-  // Hour [0-23]
-  H: function(e, A, l) {
-    return A === "Ho" ? l.ordinalNumber(e.getHours(), { unit: "hour" }) : lightFormatters.H(e, A);
-  },
-  // Hour [0-11]
-  K: function(e, A, l) {
-    const o = e.getHours() % 12;
-    return A === "Ko" ? l.ordinalNumber(o, { unit: "hour" }) : addLeadingZeros(o, A.length);
-  },
-  // Hour [1-24]
-  k: function(e, A, l) {
-    let o = e.getHours();
-    return o === 0 && (o = 24), A === "ko" ? l.ordinalNumber(o, { unit: "hour" }) : addLeadingZeros(o, A.length);
-  },
-  // Minute
-  m: function(e, A, l) {
-    return A === "mo" ? l.ordinalNumber(e.getMinutes(), { unit: "minute" }) : lightFormatters.m(e, A);
-  },
-  // Second
-  s: function(e, A, l) {
-    return A === "so" ? l.ordinalNumber(e.getSeconds(), { unit: "second" }) : lightFormatters.s(e, A);
-  },
-  // Fraction of second
-  S: function(e, A) {
-    return lightFormatters.S(e, A);
-  },
-  // Timezone (ISO-8601. If offset is 0, output is always `'Z'`)
-  X: function(e, A, l) {
-    const o = e.getTimezoneOffset();
-    if (o === 0)
-      return "Z";
-    switch (A) {
-      // Hours and optional minutes
-      case "X":
-        return formatTimezoneWithOptionalMinutes(o);
-      // Hours, minutes and optional seconds without `:` delimiter
-      // Note: neither ISO-8601 nor JavaScript supports seconds in timezone offsets
-      // so this token always has the same output as `XX`
-      case "XXXX":
-      case "XX":
-        return formatTimezone(o);
-      // Hours, minutes and optional seconds with `:` delimiter
-      // Note: neither ISO-8601 nor JavaScript supports seconds in timezone offsets
-      // so this token always has the same output as `XXX`
-      case "XXXXX":
-      case "XXX":
-      // Hours and minutes with `:` delimiter
-      default:
-        return formatTimezone(o, ":");
-    }
-  },
-  // Timezone (ISO-8601. If offset is 0, output is `'+00:00'` or equivalent)
-  x: function(e, A, l) {
-    const o = e.getTimezoneOffset();
-    switch (A) {
-      // Hours and optional minutes
-      case "x":
-        return formatTimezoneWithOptionalMinutes(o);
-      // Hours, minutes and optional seconds without `:` delimiter
-      // Note: neither ISO-8601 nor JavaScript supports seconds in timezone offsets
-      // so this token always has the same output as `xx`
-      case "xxxx":
-      case "xx":
-        return formatTimezone(o);
-      // Hours, minutes and optional seconds with `:` delimiter
-      // Note: neither ISO-8601 nor JavaScript supports seconds in timezone offsets
-      // so this token always has the same output as `xxx`
-      case "xxxxx":
-      case "xxx":
-      // Hours and minutes with `:` delimiter
-      default:
-        return formatTimezone(o, ":");
-    }
-  },
-  // Timezone (GMT)
-  O: function(e, A, l) {
-    const o = e.getTimezoneOffset();
-    switch (A) {
-      // Short
-      case "O":
-      case "OO":
-      case "OOO":
-        return "GMT" + formatTimezoneShort(o, ":");
-      // Long
-      case "OOOO":
-      default:
-        return "GMT" + formatTimezone(o, ":");
-    }
-  },
-  // Timezone (specific non-location)
-  z: function(e, A, l) {
-    const o = e.getTimezoneOffset();
-    switch (A) {
-      // Short
-      case "z":
-      case "zz":
-      case "zzz":
-        return "GMT" + formatTimezoneShort(o, ":");
-      // Long
-      case "zzzz":
-      default:
-        return "GMT" + formatTimezone(o, ":");
-    }
-  },
-  // Seconds timestamp
-  t: function(e, A, l) {
-    const o = Math.trunc(+e / 1e3);
-    return addLeadingZeros(o, A.length);
-  },
-  // Milliseconds timestamp
-  T: function(e, A, l) {
-    return addLeadingZeros(+e, A.length);
-  }
-};
-function formatTimezoneShort(e, A = "") {
-  const l = e > 0 ? "-" : "+", o = Math.abs(e), t = Math.trunc(o / 60), a = o % 60;
-  return a === 0 ? l + String(t) : l + String(t) + A + addLeadingZeros(a, 2);
-}
-function formatTimezoneWithOptionalMinutes(e, A) {
-  return e % 60 === 0 ? (e > 0 ? "-" : "+") + addLeadingZeros(Math.abs(e) / 60, 2) : formatTimezone(e, A);
-}
-function formatTimezone(e, A = "") {
-  const l = e > 0 ? "-" : "+", o = Math.abs(e), t = addLeadingZeros(Math.trunc(o / 60), 2), a = addLeadingZeros(o % 60, 2);
-  return l + t + A + a;
-}
-const dateLongFormatter = (e, A) => {
-  switch (e) {
-    case "P":
-      return A.date({ width: "short" });
-    case "PP":
-      return A.date({ width: "medium" });
-    case "PPP":
-      return A.date({ width: "long" });
-    case "PPPP":
-    default:
-      return A.date({ width: "full" });
-  }
-}, timeLongFormatter = (e, A) => {
-  switch (e) {
-    case "p":
-      return A.time({ width: "short" });
-    case "pp":
-      return A.time({ width: "medium" });
-    case "ppp":
-      return A.time({ width: "long" });
-    case "pppp":
-    default:
-      return A.time({ width: "full" });
-  }
-}, dateTimeLongFormatter = (e, A) => {
-  const l = e.match(/(P+)(p+)?/) || [], o = l[1], t = l[2];
-  if (!t)
-    return dateLongFormatter(e, A);
-  let a;
-  switch (o) {
-    case "P":
-      a = A.dateTime({ width: "short" });
-      break;
-    case "PP":
-      a = A.dateTime({ width: "medium" });
-      break;
-    case "PPP":
-      a = A.dateTime({ width: "long" });
-      break;
-    case "PPPP":
-    default:
-      a = A.dateTime({ width: "full" });
-      break;
-  }
-  return a.replace("{{date}}", dateLongFormatter(o, A)).replace("{{time}}", timeLongFormatter(t, A));
-}, longFormatters = {
-  p: timeLongFormatter,
-  P: dateTimeLongFormatter
-}, dayOfYearTokenRE = /^D+$/, weekYearTokenRE = /^Y+$/, throwTokens = ["D", "DD", "YY", "YYYY"];
-function isProtectedDayOfYearToken(e) {
-  return dayOfYearTokenRE.test(e);
-}
-function isProtectedWeekYearToken(e) {
-  return weekYearTokenRE.test(e);
-}
-function warnOrThrowProtectedError(e, A, l) {
-  const o = message(e, A, l);
-  if (console.warn(o), throwTokens.includes(e)) throw new RangeError(o);
-}
-function message(e, A, l) {
-  const o = e[0] === "Y" ? "years" : "days of the month";
-  return `Use \`${e.toLowerCase()}\` instead of \`${e}\` (in \`${A}\`) for formatting ${o} to the input \`${l}\`; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md`;
-}
-const formattingTokensRegExp = /[yYQqMLwIdDecihHKkms]o|(\w)\1*|''|'(''|[^'])+('|$)|./g, longFormattingTokensRegExp = /P+p+|P+|p+|''|'(''|[^'])+('|$)|./g, escapedStringRegExp = /^'([^]*?)'?$/, doubleQuoteRegExp = /''/g, unescapedLatinCharacterRegExp = /[a-zA-Z]/;
-function format(e, A, l) {
-  const o = getDefaultOptions(), t = o.locale ?? enUS, a = o.firstWeekContainsDate ?? o.locale?.options?.firstWeekContainsDate ?? 1, n = o.weekStartsOn ?? o.locale?.options?.weekStartsOn ?? 0, B = toDate(e, l?.in);
-  if (!isValid(B))
-    throw new RangeError("Invalid time value");
-  let R = A.match(longFormattingTokensRegExp).map((H) => {
-    const CI = H[0];
-    if (CI === "p" || CI === "P") {
-      const j = longFormatters[CI];
-      return j(H, t.formatLong);
-    }
-    return H;
-  }).join("").match(formattingTokensRegExp).map((H) => {
-    if (H === "''")
-      return { isToken: !1, value: "'" };
-    const CI = H[0];
-    if (CI === "'")
-      return { isToken: !1, value: cleanEscapedString(H) };
-    if (formatters[CI])
-      return { isToken: !0, value: H };
-    if (CI.match(unescapedLatinCharacterRegExp))
-      throw new RangeError(
-        "Format string contains an unescaped latin alphabet character `" + CI + "`"
-      );
-    return { isToken: !1, value: H };
-  });
-  t.localize.preprocessor && (R = t.localize.preprocessor(B, R));
-  const r = {
-    firstWeekContainsDate: a,
-    weekStartsOn: n,
-    locale: t
-  };
-  return R.map((H) => {
-    if (!H.isToken) return H.value;
-    const CI = H.value;
-    (isProtectedWeekYearToken(CI) || isProtectedDayOfYearToken(CI)) && warnOrThrowProtectedError(CI, A, String(e));
-    const j = formatters[CI[0]];
-    return j(B, CI, t.localize, r);
-  }).join("");
-}
-function cleanEscapedString(e) {
-  const A = e.match(escapedStringRegExp);
-  return A ? A[1].replace(doubleQuoteRegExp, "'") : e;
-}
-function getDaysInMonth(e, A) {
-  const l = toDate(e, A?.in), o = l.getFullYear(), t = l.getMonth(), a = constructFrom(l, 0);
-  return a.setFullYear(o, t + 1, 0), a.setHours(0, 0, 0, 0), a.getDate();
-}
-function isAfter(e, A) {
-  return +toDate(e) > +toDate(A);
-}
-function isBefore(e, A) {
-  return +toDate(e) < +toDate(A);
-}
-function isToday(e, A) {
-  return isSameDay(
-    constructFrom(e, e),
-    constructNow(e)
-  );
-}
-function isWithinInterval(e, A, l) {
-  const o = +toDate(e, l?.in), [t, a] = [
-    +toDate(A.start, l?.in),
-    +toDate(A.end, l?.in)
-  ].sort((n, B) => n - B);
-  return o >= t && o <= a;
-}
-function subDays(e, A, l) {
-  return addDays(e, -1, l);
-}
-function parseISO(e, A) {
-  const l = () => constructFrom(A?.in, NaN), t = splitDateString(e);
-  let a;
-  if (t.date) {
-    const r = parseYear(t.date, 2);
-    a = parseDate(r.restDateString, r.year);
-  }
-  if (!a || isNaN(+a)) return l();
-  const n = +a;
-  let B = 0, R;
-  if (t.time && (B = parseTime(t.time), isNaN(B)))
-    return l();
-  if (t.timezone) {
-    if (R = parseTimezone(t.timezone), isNaN(R)) return l();
-  } else {
-    const r = new Date(n + B), H = toDate(0, A?.in);
-    return H.setFullYear(
-      r.getUTCFullYear(),
-      r.getUTCMonth(),
-      r.getUTCDate()
-    ), H.setHours(
-      r.getUTCHours(),
-      r.getUTCMinutes(),
-      r.getUTCSeconds(),
-      r.getUTCMilliseconds()
-    ), H;
-  }
-  return toDate(n + B + R, A?.in);
-}
-const patterns = {
-  dateTimeDelimiter: /[T ]/,
-  timeZoneDelimiter: /[Z ]/i,
-  timezone: /([Z+-].*)$/
-}, dateRegex = /^-?(?:(\d{3})|(\d{2})(?:-?(\d{2}))?|W(\d{2})(?:-?(\d{1}))?|)$/, timeRegex = /^(\d{2}(?:[.,]\d*)?)(?::?(\d{2}(?:[.,]\d*)?))?(?::?(\d{2}(?:[.,]\d*)?))?$/, timezoneRegex = /^([+-])(\d{2})(?::?(\d{2}))?$/;
-function splitDateString(e) {
-  const A = {}, l = e.split(patterns.dateTimeDelimiter);
-  let o;
-  if (l.length > 2)
-    return A;
-  if (/:/.test(l[0]) ? o = l[0] : (A.date = l[0], o = l[1], patterns.timeZoneDelimiter.test(A.date) && (A.date = e.split(patterns.timeZoneDelimiter)[0], o = e.substr(
-    A.date.length,
-    e.length
-  ))), o) {
-    const t = patterns.timezone.exec(o);
-    t ? (A.time = o.replace(t[1], ""), A.timezone = t[1]) : A.time = o;
-  }
-  return A;
-}
-function parseYear(e, A) {
-  const l = new RegExp(
-    "^(?:(\\d{4}|[+-]\\d{" + (4 + A) + "})|(\\d{2}|[+-]\\d{" + (2 + A) + "})$)"
-  ), o = e.match(l);
-  if (!o) return { year: NaN, restDateString: "" };
-  const t = o[1] ? parseInt(o[1]) : null, a = o[2] ? parseInt(o[2]) : null;
-  return {
-    year: a === null ? t : a * 100,
-    restDateString: e.slice((o[1] || o[2]).length)
-  };
-}
-function parseDate(e, A) {
-  if (A === null) return /* @__PURE__ */ new Date(NaN);
-  const l = e.match(dateRegex);
-  if (!l) return /* @__PURE__ */ new Date(NaN);
-  const o = !!l[4], t = parseDateUnit(l[1]), a = parseDateUnit(l[2]) - 1, n = parseDateUnit(l[3]), B = parseDateUnit(l[4]), R = parseDateUnit(l[5]) - 1;
-  if (o)
-    return validateWeekDate(A, B, R) ? dayOfISOWeekYear(A, B, R) : /* @__PURE__ */ new Date(NaN);
-  {
-    const r = /* @__PURE__ */ new Date(0);
-    return !validateDate(A, a, n) || !validateDayOfYearDate(A, t) ? /* @__PURE__ */ new Date(NaN) : (r.setUTCFullYear(A, a, Math.max(t, n)), r);
-  }
-}
-function parseDateUnit(e) {
-  return e ? parseInt(e) : 1;
-}
-function parseTime(e) {
-  const A = e.match(timeRegex);
-  if (!A) return NaN;
-  const l = parseTimeUnit(A[1]), o = parseTimeUnit(A[2]), t = parseTimeUnit(A[3]);
-  return validateTime(l, o, t) ? l * millisecondsInHour + o * millisecondsInMinute + t * 1e3 : NaN;
-}
-function parseTimeUnit(e) {
-  return e && parseFloat(e.replace(",", ".")) || 0;
-}
-function parseTimezone(e) {
-  if (e === "Z") return 0;
-  const A = e.match(timezoneRegex);
-  if (!A) return 0;
-  const l = A[1] === "+" ? -1 : 1, o = parseInt(A[2]), t = A[3] && parseInt(A[3]) || 0;
-  return validateTimezone(o, t) ? l * (o * millisecondsInHour + t * millisecondsInMinute) : NaN;
-}
-function dayOfISOWeekYear(e, A, l) {
-  const o = /* @__PURE__ */ new Date(0);
-  o.setUTCFullYear(e, 0, 4);
-  const t = o.getUTCDay() || 7, a = (A - 1) * 7 + l + 1 - t;
-  return o.setUTCDate(o.getUTCDate() + a), o;
-}
-const daysInMonths = [31, null, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-function isLeapYearIndex(e) {
-  return e % 400 === 0 || e % 4 === 0 && e % 100 !== 0;
-}
-function validateDate(e, A, l) {
-  return A >= 0 && A <= 11 && l >= 1 && l <= (daysInMonths[A] || (isLeapYearIndex(e) ? 29 : 28));
-}
-function validateDayOfYearDate(e, A) {
-  return A >= 1 && A <= (isLeapYearIndex(e) ? 366 : 365);
-}
-function validateWeekDate(e, A, l) {
-  return A >= 1 && A <= 53 && l >= 0 && l <= 6;
-}
-function validateTime(e, A, l) {
-  return e === 24 ? A === 0 && l === 0 : l >= 0 && l < 60 && A >= 0 && A < 60 && e >= 0 && e < 25;
-}
-function validateTimezone(e, A) {
-  return A >= 0 && A <= 59;
-}
-function setMonth(e, A, l) {
-  const o = toDate(e, l?.in), t = o.getFullYear(), a = o.getDate(), n = constructFrom(e, 0);
-  n.setFullYear(t, A, 15), n.setHours(0, 0, 0, 0);
-  const B = getDaysInMonth(n);
-  return o.setMonth(A, Math.min(a, B)), o;
-}
-function setYear(e, A, l) {
-  const o = toDate(e, l?.in);
-  return isNaN(+o) ? constructFrom(e, NaN) : (o.setFullYear(A), o);
-}
-function subMonths(e, A, l) {
-  return addMonths(e, -1, l);
-}
-const DateContext = createContext(void 0);
-class DateProvider extends Component {
-  static defaultProps = {
-    useRange: !0
-  };
-  constructor(A) {
-    super(A);
-    const l = /* @__PURE__ */ new Date();
-    this.state = {
-      startDate: null,
-      endDate: null,
-      isOpen: !1,
-      currentMonthLeft: startOfMonth(l),
-      currentMonthRight: startOfMonth(addMonths(l, 1)),
-      useRange: A.useRange ?? !0,
-      startTime: null,
-      endTime: null
-    };
-  }
-  // Setters
-  setStartDate = (A) => {
-    this.setState({ startDate: A });
-  };
-  setEndDate = (A) => {
-    this.setState({ endDate: A });
-  };
-  setCurrentMonthLeft = (A) => {
-    this.setState({ currentMonthLeft: A });
-  };
-  setCurrentMonthRight = (A) => {
-    this.setState({ currentMonthRight: A });
-  };
-  setIsOpen = (A) => {
-    this.state.isOpen !== A && this.setState({ isOpen: A });
-  };
-  setStartTime = (A) => {
-    this.setState({ startTime: A });
-  };
-  setEndTime = (A) => {
-    this.setState({ endTime: A });
-  };
-  render() {
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(
-      DateContext.Provider,
-      {
-        value: {
-          startDate: this.state.startDate,
-          endDate: this.state.endDate,
-          setStartDate: this.setStartDate,
-          setEndDate: this.setEndDate,
-          currentMonthLeft: this.state.currentMonthLeft,
-          currentMonthRight: this.state.currentMonthRight,
-          setCurrentMonthLeft: this.setCurrentMonthLeft,
-          setCurrentMonthRight: this.setCurrentMonthRight,
-          isOpen: this.state.isOpen,
-          setIsOpen: this.setIsOpen,
-          useRange: this.state.useRange,
-          startTime: this.state.startTime,
-          endTime: this.state.endTime,
-          setStartTime: this.setStartTime,
-          setEndTime: this.setEndTime
-        },
-        children: this.props.children
-      }
-    );
-  }
-}
-function withDateContext(e) {
-  return class extends Component {
-    render() {
-      return /* @__PURE__ */ jsxRuntimeExports.jsx(DateContext.Consumer, { children: (A) => {
-        if (!A)
-          throw new Error("DateContext is not available");
-        return /* @__PURE__ */ jsxRuntimeExports.jsx(e, { ...this.props, dateContext: A });
-      } });
-    }
-  };
-}
-const Months = ({
-  currentMonth: e,
-  onSelectMonth: A,
-  minDate: l,
-  maxDate: o
-}) => {
-  const t = (a) => {
-    const n = startOfMonth(setMonth(e, a)), B = endOfMonth(n);
-    if (l && o) {
-      const R = isWithinInterval(l, { start: n, end: B }), r = isWithinInterval(o, { start: n, end: B }), H = isWithinInterval(n, { start: l, end: o }) || isWithinInterval(B, { start: l, end: o });
-      return !(R || r || H);
-    }
-    return l ? isBefore(B, l) : o ? isAfter(n, o) : !1;
-  };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-3 gap-2", children: Array.from({ length: 12 }).map((a, n) => {
-    const B = setMonth(e, n), R = t(n);
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "button",
-      {
-        className: `p-2 rounded border text-sm font-medium ${R ? "text-gray-400 line-through cursor-not-allowed" : "hover:bg-gray-200 dark:hover:bg-darkPrimaryBorder"}`,
-        onClick: (r) => {
-          r.preventDefault(), !R && A(n);
-        },
-        disabled: R,
-        children: format(B, "MMM")
-      },
-      n
-    );
-  }) });
-}, Years = ({ currentYear: e, onSelectYear: A, minDate: l, maxDate: o }) => {
-  const t = e - 60, a = e + 60;
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-4 gap-2 h-80 pb-5 overflow-auto", children: Array.from({ length: a - t + 1 }).map((n, B) => {
-    const R = t + B, r = setYear(/* @__PURE__ */ new Date(), R), H = l && isBefore(r, l) || o && isAfter(r, o);
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "button",
-      {
-        className: `p-2 rounded border dark:text-white dark:hover:text-white dark:border-darkPrimaryBorder dark:hover:bg-darkPrimaryBorder cursor-pointer ${H ? "text-gray-400  line-through cursor-not-allowed" : "hover:bg-gray-200"}`,
-        onClick: () => !H && A(R),
-        disabled: H,
-        children: R
-      },
-      R
-    );
-  }) });
-};
-class Days extends Component {
-  constructor(A) {
-    super(A), this.state = {
-      viewMode: "days"
-    };
-  }
-  componentDidMount() {
-    const { useRange: A, setStartDate: l, setEndDate: o, setCurrentMonthLeft: t, setCurrentMonthRight: a } = this.props.dateContext, { defaultDate: n } = this.props;
-    !A && n && (l(n), o(null), t(startOfMonth(n)), a(startOfMonth(addMonths(n, 1))));
-  }
-  componentDidUpdate(A) {
-    const {
-      startDate: l,
-      endDate: o,
-      setStartDate: t,
-      setEndDate: a,
-      setIsOpen: n
-    } = this.props.dateContext, { useRange: B, withTime: R } = this.props;
-    !B && l !== A.dateContext.startDate && (R || n(!1)), B && l && o && (l !== A.dateContext.startDate || o !== A.dateContext.endDate) && (R || n(!1)), B && l && o && isAfter(l, o) && (t(o), a(l));
-  }
-  handleSelectDay = (A, l) => {
-    A.preventDefault();
-    const { minDate: o, maxDate: t, useRange: a, onSelect: n } = this.props, { setStartDate: B, setEndDate: R } = this.props.dateContext;
-    if (!(o && isBefore(l, subDays(o))) && !(t && isAfter(l, addDays(t, 1)))) {
-      if (!a)
-        B(l), R(null);
-      else {
-        const { startDate: r, endDate: H } = this.props.dateContext;
-        !r || r && H ? (B(l), R(null)) : R(l);
-      }
-      n && n(l);
-    }
-  };
-  // Function to check if navigation is allowed
-  canNavigate = (A, l) => {
-    const { dateContext: o, minDate: t, maxDate: a, useRange: n } = this.props, { currentMonthLeft: B, currentMonthRight: R } = o;
-    if (!n) {
-      const r = A === "next" ? addMonths(B, 1) : subMonths(B);
-      return !(A === "prev" && t && isBefore(r, t) || A === "next" && a && isAfter(r, a));
-    }
-    if (l === 0) {
-      const r = A === "next" ? addMonths(B, 1) : subMonths(B);
-      return a && isBefore(r, R) && !(t && isBefore(r, t));
-    } else if (l === 1) {
-      const r = A === "next" ? addMonths(R, 1) : subMonths(R);
-      return t && isAfter(r, B) && !(a && isAfter(r, a));
-    }
-    return !0;
-  };
-  navigateMonth = (A, l) => {
-    const { dateContext: o } = this.props, { currentMonthLeft: t, setCurrentMonthLeft: a, currentMonthRight: n, setCurrentMonthRight: B } = o;
-    if (this.canNavigate(A, l)) {
-      if (l === 0) {
-        const R = A === "next" ? addMonths(t, 1) : subMonths(t);
-        a(R);
-      } else if (l === 1) {
-        const R = A === "next" ? addMonths(n, 1) : subMonths(n);
-        B(R);
-      }
-    }
-  };
-  selectMonth = (A) => {
-    const { calendarIndex: l, dateContext: o } = this.props, { currentMonthLeft: t, setCurrentMonthLeft: a, currentMonthRight: n, setCurrentMonthRight: B } = o;
-    if (l === 0) {
-      const R = setMonth(t, A);
-      if (!this.canNavigate("next", 0) && isAfter(R, n)) return;
-      a(R);
-    } else if (l === 1) {
-      const R = setMonth(n, A);
-      if (!this.canNavigate("prev", 1) && isBefore(R, t)) return;
-      B(R);
-    }
-    this.setState({ viewMode: "days" });
-  };
-  selectYear = (A) => {
-    const { calendarIndex: l, dateContext: o } = this.props, { currentMonthLeft: t, setCurrentMonthLeft: a, currentMonthRight: n, setCurrentMonthRight: B } = o;
-    if (l === 0) {
-      const R = setYear(t, A);
-      if (!this.canNavigate("next", 0) && isAfter(R, n)) return;
-      a(R);
-    } else if (l === 1) {
-      const R = setYear(n, A);
-      if (!this.canNavigate("prev", 1) && isBefore(R, t)) return;
-      B(R);
-    }
-    this.setState({ viewMode: "days" });
-  };
-  isWithinSelectedRange = (A) => {
-    const { startDate: l, endDate: o } = this.props.dateContext, { useRange: t } = this.props;
-    return t && l && o && isWithinInterval(A, { start: l, end: o });
-  };
-  isSelectedDate = (A) => {
-    const { startDate: l, endDate: o } = this.props.dateContext;
-    return l && isSameDay(A, l) || o && isSameDay(A, o);
-  };
-  isWithinCurrentMonth = (A, l) => {
-    const o = startOfMonth(l), t = endOfMonth(l);
-    return isWithinInterval(A, { start: o, end: t });
-  };
-  isTodayDate = (A) => isToday(A);
-  render() {
-    const {
-      calendarIndex: A = 0,
-      minDate: l,
-      maxDate: o,
-      dateContext: t
-    } = this.props, { currentMonthLeft: a, currentMonthRight: n } = t, { viewMode: B } = this.state, R = A === 0 ? a : n, r = startOfMonth(R), H = endOfMonth(R), CI = startOfWeek(r), j = endOfWeek(H), iI = eachDayOfInterval({ start: CI, end: j }), sI = l && isBefore(R, l), AI = o && isAfter(R, o);
-    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-[350px] text-xs h-96 p-4", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center mb-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            className: `p-1 text-gray-500 hover:bg-gray-200 rounded ${sI ? "cursor-not-allowed text-gray-300" : ""}`,
-            onClick: (lI) => {
-              lI.preventDefault(), !sI && this.navigateMonth("prev", A);
-            },
-            disabled: sI,
-            children: "<"
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between w-full space-x-2 px-10", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "span",
-            {
-              className: `text-lg font-semibold cursor-pointer ${B === "months" ? "text-blue-500 underline" : "hover:text-blue-500"}`,
-              onClick: () => this.setState({ viewMode: B === "months" ? "days" : "months" }),
-              children: format(R, "MMM")
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "span",
-            {
-              className: `text-lg font-semibold cursor-pointer ${B === "years" ? "text-blue-500 underline" : "hover:text-blue-500"}`,
-              onClick: () => this.setState({ viewMode: B === "years" ? "days" : "years" }),
-              children: format(R, "yyyy")
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            className: `p-1 text-gray-500 hover:bg-gray-200 rounded ${AI ? "cursor-not-allowed text-gray-300" : ""}`,
-            onClick: (lI) => {
-              lI.preventDefault(), !AI && this.navigateMonth("next", A);
-            },
-            disabled: AI,
-            children: ">"
-          }
-        )
-      ] }),
-      B === "months" && /* @__PURE__ */ jsxRuntimeExports.jsx(
-        Months,
-        {
-          currentMonth: R,
-          onSelectMonth: this.selectMonth,
-          minDate: l,
-          maxDate: o
-        }
-      ),
-      B === "years" && /* @__PURE__ */ jsxRuntimeExports.jsx(
-        Years,
-        {
-          currentYear: R.getFullYear(),
-          onSelectYear: this.selectYear,
-          minDate: l,
-          maxDate: o
-        }
-      ),
-      B === "days" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-7 gap-1 text-center font-semibold text-gray-600 dark:text-white", children: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((lI) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8", children: lI }, lI)) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-7 gap-1 text-center", children: iI.map((lI) => {
-          const oI = l && isBefore(lI, subDays(l)) || o && isAfter(lI, addDays(o, 1)), E = this.isSelectedDate(lI), _ = this.isWithinSelectedRange(lI), II = this.isTodayDate(lI), M = this.isWithinCurrentMonth(lI, R);
-          return /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              className: `h-10 w-10 rounded-full text-sm cursor-pointer ${oI ? "text-gray-400 line-through cursor-not-allowed" : M ? _ ? "bg-blue-200 text-blue-600 dark:bg-darkPrimaryBorder dark:text-white" : E ? "bg-blue-500 dark:bg-darkBackground text-white" : II ? "bg-yellow-200 dark:bg-white dark:text-black text-yellow-800" : " dark:hover:bg-darkPrimaryBorder hover:bg-gray-100 text-black dark:text-white" : "text-gray-400 cursor-not-allowed"} ${II && !_ && !E && A == 0 ? "bg-primary/100 dark:bg-white dark:text-black text-white" : ""} `,
-              onClick: (O) => {
-                O.preventDefault(), !oI && this.handleSelectDay(O, lI);
-              },
-              disabled: oI,
-              children: format(lI, "d")
-            },
-            lI.toString()
-          );
-        }) })
-      ] })
-    ] });
-  }
-}
-const Days$1 = withDateContext(Days);
-class TimeSelector extends React2__default.Component {
-  parseTime(A) {
-    if (!A || !A.includes(":"))
-      return { h: 12, m: 0, meridian: "AM" };
-    const [l, o = "AM"] = A.trim().split(" "), [t, a] = l.split(":"), n = parseInt(t, 10), B = parseInt(a, 10);
-    return {
-      h: isNaN(n) ? 12 : n,
-      m: isNaN(B) ? 0 : B,
-      meridian: o.toUpperCase() === "PM" ? "PM" : "AM"
-    };
-  }
-  formatTime(A, l, o) {
-    const t = String(A || 12).padStart(2, "0"), a = String(l || 0).padStart(2, "0");
-    return `${t}:${a} ${o || "AM"}`;
-  }
-  updateTime(A, l) {
-    const { h: o, m: t, meridian: a } = this.parseTime(this.props.value);
-    let n = o, B = t, R = a;
-    A === "h" ? n = l === "up" ? n % 12 + 1 : n - 1 || 12 : A === "m" ? B = l === "up" ? (B + 1) % 60 : (B - 1 + 60) % 60 : A === "meridian" && (R = R === "AM" ? "PM" : "AM"), this.props.onChange(this.formatTime(n, B, R));
-  }
-  render() {
-    const { label: A, value: l } = this.props, { h: o, m: t, meridian: a } = this.parseTime(l);
-    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-xs text-center", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "flex w-full text-center lg:text-start font-bold mb-1", children: A }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "inline-flex items-center rounded p-2 gap-4 shadow dark:bg-darkBackground", children: ["h", "m", "meridian"].map((n) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            onClick: (B) => {
-              B.preventDefault(), this.updateTime(n, "up");
-            },
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", className: "size-5", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fill: "currentColor", d: "M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6l-6 6z" }) })
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex size-10 font-black text-xl text-center justify-center items-center", children: [
-          n === "h" && o,
-          n === "m" && String(t).padStart(2, "0"),
-          n === "meridian" && a
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            onClick: (B) => {
-              B.preventDefault(), this.updateTime(n, "down");
-            },
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", className: "size-5", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fill: "currentColor", d: "M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6l-6-6z" }) })
-          }
-        )
-      ] }, n)) })
-    ] });
-  }
-}
-class TimePicker extends Component {
-  static contextType = DateContext;
-  handleStartTimeChange = (A) => {
-    this.context.setStartTime(A);
-  };
-  handleEndTimeChange = (A) => {
-    this.context.setEndTime(A);
-  };
-  render() {
-    const { useRange: A, onConfirm: l } = this.props, { startTime: o, endTime: t } = this.context, a = () => !!(!o || A && !t);
-    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-2 mt-4 text-xs", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        TimeSelector,
-        {
-          label: "Start Time",
-          value: o || "12:00 AM",
-          onChange: (n) => this.context.setStartTime(n)
-        }
-      ),
-      A && /* @__PURE__ */ jsxRuntimeExports.jsx(
-        TimeSelector,
-        {
-          label: "End Time",
-          value: t || "12:00 PM",
-          onChange: (n) => this.context.setEndTime(n)
-        }
-      ),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex w-full justify-end items-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "button",
-        {
-          type: "button",
-          className: `mt-2 px-3 rounded-full py-2 cursor-pointer text-sm ${a() ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"}`,
-          onClick: (n) => {
-            n.preventDefault(), !a() && l && l();
-          },
-          disabled: a(),
-          children: "Confirm"
-        }
-      ) })
-    ] });
-  }
-}
-class DatePickerProvider extends Component {
-  static contextType = DateContext;
-  parentContainerRef = createRef();
-  inputRef = createRef();
-  popoverDropdownRef = createRef();
-  arrowRef = createRef();
-  popperInstance = null;
-  saveDateValue;
-  constructor(A) {
-    super(A), this.state = {
-      wasOpenBeforeBlur: !1,
-      isFocusTriggered: !1,
-      isMobile: window.innerWidth <= 768 || window.innerHeight < 1e3,
-      isModal: window.innerHeight < 1e3
-    }, this.saveDateValue = { startDate: "", endDate: "" };
-  }
-  componentDidMount() {
-    document.addEventListener("mousedown", this.handleClickOutside), document.addEventListener("visibilitychange", this.handleVisibilityChange), window.addEventListener("resize", this.handleResize), this.handleDefault(), this.state.isMobile || this.handleDatePickerPopover();
-  }
-  componentWillUnmount() {
-    document.removeEventListener("mousedown", this.handleClickOutside), document.removeEventListener("visibilitychange", this.handleVisibilityChange), window.removeEventListener("resize", this.handleResize), this.popperInstance?.destroy();
-  }
-  componentDidUpdate() {
-    this.handleDateSelection();
-  }
-  handleResize = () => {
-    this.setState({ isMobile: window.innerWidth <= 768 || window.innerHeight < 1e3, isModal: window.innerHeight < 1e3 }, this.handleClose);
-  };
-  handleDefault = () => {
-    const { defaultValue: A, withTime: l, useRange: o } = this.props, { setStartDate: t, setEndDate: a, setStartTime: n, setEndTime: B } = this.context, R = (E) => E ? typeof E == "string" ? E : E instanceof Date || typeof E == "object" && "toISOString" in E ? E.toISOString() : "" : "", r = R(A?.startDate || A), H = R(A?.endDate || A), CI = o && r.includes(" - ") ? r.split(" - ") : [r, H], j = (E) => {
-      if (!E) return { date: null, time: null };
-      if (E.includes("T")) {
-        const eI = parseISO(E), dI = E.match(/T(\d{2}:\d{2})/);
-        return {
-          date: isValid(eI) ? eI : null,
-          time: dI ? dI[1] : null
-        };
-      }
-      const _ = E.trim().split(" "), II = _[0], M = _.length > 1 ? _[1] : null;
-      return {
-        date: isValid(parseISO(II)) ? parseISO(II) : null,
-        time: typeof M == "string" ? M : null
-      };
-    }, { date: iI, time: sI } = j(CI[0]), { date: AI, time: lI } = j(CI[1]);
-    iI && t(iI), AI && a(AI), sI && n(sI), lI && B(lI);
-    const oI = (E, _) => {
-      if (!E) return "";
-      const II = format(E, "yyyy-MM-dd");
-      if (l && _) {
-        const M = _.includes("AM") || _.includes("PM") ? this.convertTo24Hour(_) : _;
-        return `${II} ${M}`;
-      }
-      return II;
-    };
-    this.saveDateValue = {
-      startDate: oI(iI, sI),
-      endDate: oI(AI, lI)
-    };
-  };
-  parseDate(A) {
-    if (!A) return null;
-    if (typeof A == "string") {
-      const l = parseISO(A);
-      return isValid(l) ? l : null;
-    }
-    return A;
-  }
-  extractTime(A) {
-    if (!A) return null;
-    let l = "";
-    typeof A == "string" ? l = A : A instanceof Date && (l = A.toISOString());
-    const o = l.match(/T(\d{2}:\d{2})/);
-    return o ? o[1] : null;
-  }
-  toISOStringString(A) {
-    return A ? typeof A == "string" ? A : A instanceof Date ? A.toISOString() : "" : "";
-  }
-  handleClickOutside = (A) => {
-    this.parentContainerRef.current && !this.parentContainerRef.current.contains(A.target) && this.closeDatePickerPopover();
-  };
-  closeDatePickerPopover = () => {
-    this.context.setIsOpen(!1);
-  };
-  handleInputFocus = () => {
-    setTimeout(() => {
-      this.openDatePickerPopover();
-    }, 500);
-  };
-  openDatePickerPopover = () => {
-    this.context.setIsOpen(!0), this.state.isMobile || (this.handleDatePickerPopover(), setTimeout(this.handleDatePickerPopover, 2));
-  };
-  handleDatePickerPopover = () => {
-    this.inputRef.current && this.popoverDropdownRef.current && (this.popperInstance?.destroy(), this.popperInstance = createPopper(this.inputRef.current, this.popoverDropdownRef.current, {
-      placement: "bottom-start",
-      strategy: "fixed",
-      modifiers: [
-        { name: "offset", options: { offset: [0, 10] } },
-        {
-          name: "flip",
-          options: {
-            fallbackPlacements: ["top", "top-start", "bottom", "bottom-start"]
-          }
-        },
-        { name: "preventOverflow", options: { boundary: "viewport" } }
-      ]
-    }));
-  };
-  convertTo24Hour(A) {
-    if (!A) return "";
-    const [l, o] = A.split(" ");
-    if (!l || !o) return A;
-    let [t, a] = l.split(":").map(Number);
-    return o.toLowerCase() === "pm" && t < 12 && (t += 12), o.toLowerCase() === "am" && t === 12 && (t = 0), `${String(t).padStart(2, "0")}:${a.toString().padStart(2, "0")}`;
-  }
-  formatWithTime = (A, l) => {
-    const { withTime: o } = this.props;
-    if (!A) return "";
-    const t = o && l ? this.convertTo24Hour(l) : "";
-    return t ? `${format(A, "yyyy-MM-dd")} ${t}` : format(A, "yyyy-MM-dd");
-  };
-  handleDateSelection = () => {
-    const { onSelected: A, useRange: l, defaultValue: o, withTime: t } = this.props, { startDate: a, endDate: n, startTime: B, endTime: R, setIsOpen: r } = this.context, H = (AI, lI) => !t || !lI ? AI : `${AI} ${this.convertTo24Hour(lI)}`, CI = !DesmyCommons$1.isEmptyOrNull(o), j = DesmyCommons$1.isEmptyOrNull(this.saveDateValue?.startDate);
-    if (CI && j) {
-      this.handleDefault();
-      return;
-    }
-    const iI = a ? H(format(a, "yyyy-MM-dd"), B) : "", sI = n ? H(format(n, "yyyy-MM-dd"), R) : "";
-    iI === this.saveDateValue?.startDate && sI === this.saveDateValue?.endDate || (this.saveDateValue = {
-      startDate: iI,
-      endDate: sI
-    }, typeof A == "function" && (A({
-      startDate: iI,
-      endDate: sI
-    }), !l && !t && r(!1)));
-  };
-  handleClose = () => {
-    this.context.setIsOpen(!1), this.props.onSelected?.({});
-  };
-  handleVisibilityChange = () => {
-    document.visibilityState === "hidden" ? this.setState({ wasOpenBeforeBlur: this.context.isOpen }) : document.visibilityState === "visible" && this.state.wasOpenBeforeBlur && setTimeout(() => this.context.setIsOpen(!0), 100);
-  };
-  render() {
-    const { minDate: A, maxDate: l, label: o, disabled: t, useRange: a = !0, withTime: n } = this.props, { isOpen: B, startDate: R, endDate: r } = this.context, { isMobile: H, isModal: CI } = this.state;
-    console.log("isModal=", CI);
-    const j = () => {
-      const iI = this.props.displayFormat || "MM/dd/yyyy", { startTime: sI, endTime: AI } = this.context, lI = (_, II) => {
-        if (!_) return "";
-        const M = format(_, iI), O = typeof II == "string" ? II : "";
-        return n && O ? `${M} ${O}` : M;
-      }, oI = lI(R, sI), E = lI(r, AI);
-      return a ? oI && E ? `${oI} - ${E}` : "" : oI;
-    };
-    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative w-full", ref: this.parentContainerRef, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { ref: this.inputRef, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-        DesmyTextInput,
-        {
-          onFocus: this.handleInputFocus,
-          label: o,
-          disabled: t,
-          readOnly: !0,
-          defaultValue: j(),
-          onChange: () => {
-          }
-        }
-      ) }),
-      B && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          ref: this.popoverDropdownRef,
-          className: `${H ? `fixed top-0 left-0 right-0 bottom-0 flex flex-col ${CI ? "bg-black/40" : "bg-white dark:bg-darkDialogBackground"} z-[9999999] p-4 overflow-auto` : "absolute"} ${B ? "flex opacity-100" : "hidden opacity-0"} ${CI ? "bg-black/40" : "bg-white dark:bg-darkDialogBackground dark:border-darkPrimaryBorder dark:text-white border-[2px]"} shadow-lg border-gray-100 rounded p-4 z-50 transition-opacity duration-[2000ms] ${a ? "flex gap-4" : ""}`,
-          children: [
-            !H && /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "div",
-              {
-                ref: this.arrowRef,
-                id: "arrow",
-                className: "absolute w-4 h-4 bg-white rotate-45 dark:bg-darkDialogBackground"
-              }
-            ),
-            H && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute z-[9999] right-3 top-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "svg",
-              {
-                xmlns: "http://www.w3.org/2000/svg",
-                viewBox: "0 0 12 12",
-                className: `size-8 ${CI ? "text-white" : "text-red-600"} cursor-pointer`,
-                onClick: this.handleClose,
-                children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "path",
-                  {
-                    fill: "currentColor",
-                    d: "M3.85 3.15a.5.5 0 0 0-.707.707l2.15 2.15l-2.15 2.15a.5.5 0 0 0 .707.707L6 6.714l2.15 2.15a.5.5 0 0 0 .707-.707l-2.15-2.15l2.15-2.15a.5.5 0 0 0-.707-.707L6 5.3z"
-                  }
-                )
-              }
-            ) }),
-            CI ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex max-w-lg h-full w-full justify-center items-center  mx-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-white dark:bg-darkDialogBackground mx-auto rounded-2xl", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Days$1, { calendarIndex: 0, useRange: a, withTime: n, minDate: A, maxDate: l }),
-              a && /* @__PURE__ */ jsxRuntimeExports.jsx(Days$1, { calendarIndex: 1, useRange: a, withTime: n, minDate: A, maxDate: l }),
-              n && /* @__PURE__ */ jsxRuntimeExports.jsx(TimePicker, { useRange: a, onConfirm: () => this.context.setIsOpen(!1) })
-            ] }) }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Days$1, { calendarIndex: 0, useRange: a, withTime: n, minDate: A, maxDate: l }),
-              a && /* @__PURE__ */ jsxRuntimeExports.jsx(Days$1, { calendarIndex: 1, useRange: a, withTime: n, minDate: A, maxDate: l }),
-              n && /* @__PURE__ */ jsxRuntimeExports.jsx(TimePicker, { useRange: a, onConfirm: () => this.context.setIsOpen(!1) })
-            ] })
-          ]
-        }
-      )
-    ] });
-  }
-}
-const DesmyDatePicker = ({ ...e }) => /* @__PURE__ */ jsxRuntimeExports.jsx(DateProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(DatePickerProvider, { ...e }) });
 class DesmyVerticalStepper extends Component {
   constructor(A) {
     super(A), this.state = {

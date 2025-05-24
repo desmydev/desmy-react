@@ -12,7 +12,7 @@ class DesmyAxiosService {
     if (!this.axiosInstance) {
       this.axiosInstance = axios.create({
         baseURL: this.baseURL,
-        timeout: 10000,
+        timeout: 100000,
         headers: {
           'Content-Type': 'application/json',
         },

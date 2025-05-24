@@ -33,7 +33,8 @@ export interface DataSetTableSettingsProps {
     table_data?: any[];
 }
 export interface DesmyDataTableSettingsFilterProps {
-    title: string;
+    title?: string;
+    url?: string;
     data?: {
         name: string;
         data: string;
@@ -82,6 +83,7 @@ export interface DesmyDataTableSettingsProps {
 }
 export interface DesmyCustomDataTableProps {
     url: string;
+    token?: string;
     default_sorted_column: string;
     pagination?: {
         per_page: number;

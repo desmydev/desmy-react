@@ -4,49 +4,18 @@ import Commons from '../apis/DesmyCommons';
 import { DesmyDropdown } from '../dropdown/DesmyDropdown';
 import { DesmyState as CommonState } from '../apis/DesmyState'; // Assuming State is already exported as CommonState
 import ReactDOM from 'react-dom';
+import Filters from './Filter';
 import {DatatableCard} from './DatatableCard';
 import DesmyAuth from '../apis/DesmyAuth';
 import DesmyCommons from '../apis/DesmyCommons';
 import { DesmyDataTableSettingsProps } from '../apis/SharedProps';
 
-interface Filter {
-  title: string;
-  is_multiple: boolean;
-  encrypted: boolean;
-  data: Array<any>;
+interface FilterItem {
+  id: string;
+  name: string;
+  value: any;
+  label: string;
 }
-interface DropdownItem {
-  id: number;
-  name: string | null;
-  icon: string | null;
-  data: any;
-}
-interface Settings {
-  title: string;
-  hint: string;
-  btnPosition: string;
-  btnNegative: string;
-  type: string;
-  loading: boolean;
-  data_value?: DropdownItem;
-  filter: Filter;
-  dtablemodal: any;
-  handleOnClose?: () => void;
-}
-
-interface Props {
-  settings: Partial<Settings>;
-
-  onClose: (data: any) => void;
-}
-
-interface State {
-  data: { [key: string]: any };
-  filter: { [key: string]: any };
-  settings: Settings;
-  isLoading: boolean; // Added isLoading to the state
-}
-
 export type DesmyDataTableRef = {
   handleRetry: () => void;
 };
@@ -66,9 +35,9 @@ interface DataTableState {
   exceptionalColumns: string[];
   selected: number;
   isLoading: boolean;
-  filterhead: { name: string; data: string }[];
+  showFilter:boolean
+  filterhead: FilterItem[];
   filters: {
-    search?: { [key: string]: { id: string; name: string } };
     data: { name: string; data: string; defaults?: { [key: string]: string } }[];
   };
   input: {
@@ -133,6 +102,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
   current_page: number;
   search: string;
   filterloaded: boolean;
+  queryParam:string
 
   constructor(props: DataTableProps) {
     super(props);
@@ -142,9 +112,9 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
       isLoading: true,
       dtablemodal:null,
       hasRequest : false,
+      showFilter:true,
       filterhead: [],
       filters: {
-        search: {},
         data: []
       },
       input: {
@@ -205,6 +175,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     this.current_page = 0;
     this.search = "";
     this.filterloaded = false;
+    this.queryParam=""
 
     this.handleScroll = this.handleScroll.bind(this);
   }
@@ -216,26 +187,10 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
       const custom_settings = this.state.custom_settings;
       custom_settings['sorted_column'] = this.props.settings.default_sorted_column;
       this.setState({ custom_settings, settings: this.props.settings }, this.fetchEntities);
-    }catch(e){
-      this.alert()
+    }catch(_){
     }
     
   }
-
-  // componentDidUpdate = async (_prevProps: DataTableProps, _prevState: DataTableState) => {
-  //   try {
-      
-  //     const { settings } = this.props;
-  //     if (settings.filter && !this.filterloaded && Array.isArray(settings.filter.data) && settings.filter.data.length > 0) {
-  //       const newFilters = { ...settings.filter };
-  //       this.setState({ filters: newFilters });
-  //       this.filterloaded = true;
-  //     }
-  //   } catch (e) {
-  //   }
-  // }
-  
-
   handleScroll(event: React.UIEvent<HTMLDivElement>) {
     const div = event.target as HTMLDivElement;
     if (div.scrollTop + div.clientHeight >= (div.scrollHeight - 10)) {
@@ -262,50 +217,42 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
       error["color"] = "red";
       error["retry"] = retry
       this.setState({ isLoading: false, error, input });
-    } catch (e) {
-      this.alert()
+    } catch (_) {
     }
   }
+async fetchEntities() { // Default to an empty string if filtered_data is not passed
+  try {
+    const { current_page, sorted_column, order } = this.state.custom_settings;
+    const { per_page } = this.state.entities.meta;
 
-  async fetchEntities() {
-    try {
-      const formdata: string[] = [];
-      let filtered_data = "";
-      if (this.state.filters.search !== undefined && this.state.filters.search !== null) {
-        if (Object.entries(this.state.filters.search).length > 0) {
-          Object.entries(this.state.filters.search).map(([k, v]) => (
-            !Commons.isEmptyOrNull(v.id) ? formdata.push(`${k}=${v.id}`) : null
-          ));
-          filtered_data = `&${formdata.join("&")}`;
-        }
+    const fetchUrl = `${this.props.settings.url}/?page=${current_page}&column=${sorted_column}&order=${order}&per_page=${per_page}&search=${this.search}${this.queryParam ? '&' + this.queryParam : ''}`;
+
+    this.setState({ isLoading: true });
+
+    axios.get(fetchUrl, {
+      headers: {
+        "X-CSRFToken": `${DesmyAuth.getCookie('csrftoken')}`,
+        "Authorization": `Token ${DesmyAuth.get(CommonState.ACCESS_TOKEN)}`
       }
+    }).then(response => {
+      const data = response.data;
+      if (data.success) {
+        this.dataCollection = data.data.data;
+        this.hasClear = false;
+        this.setState({ isLoading: false, entities: data.data });
+        this.initialChunck(); // Assume this is a method for initialization
+      } else {
+        this.hasLoadLastData = true;
+        this.handleError(data.message, false);
+      }
+    }).catch(e => {
+      this.handleError(e);
+    });
 
-      const entities = this.state.entities;
-      this.setState({isLoading:true})
-      const fetchUrl = `${this.props.settings.url}/?page=${this.state.custom_settings.current_page}&column=${this.state.custom_settings.sorted_column}&order=${this.state.custom_settings.order}&per_page=${this.state.entities.meta.per_page}&search=${this.search}${filtered_data}`;
-      axios.get(fetchUrl, {
-        headers: {
-          "X-CSRFToken": `${DesmyAuth.getCookie('csrftoken')}`,
-          "Authorization": `Token ${DesmyAuth.get(CommonState.ACCESS_TOKEN)}`
-        }
-      }).then(response => {
-        const data = response.data;
-        if (data.success) {
-          this.dataCollection = response.data.data.data
-          this.hasClear = false;
-          entities.meta = response.data.data.meta;
-          this.setState({ isLoading: false, entities }, this.initialChunck);
-        } else {
-          this.hasLoadLastData = true;
-          this.handleError(data.message,false);
-        }
-      }).catch(e => {
-        this.handleError(e);
-      });
-    } catch (_e) {
-      this.handleError();
-    }
+  } catch (_e) {
+    this.handleError();
   }
+}
 
   columnHead(value: string): string {
     const header = value.split('_');
@@ -336,8 +283,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
   
         this.setState({ isLoading: true, error: {}, custom_settings }, this.fetchEntities);
       }
-    } catch (e) {
-      this.alert();
+    } catch (_) {
     }
   }
   
@@ -362,17 +308,20 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
   }
 
   handleClear = () => {
-    const {input,entities,error} = this.state
-    error['state']=false
-    input['is_searching'] = false
-    entities['meta']['total']=0
-    this.setState({input})
-    this.dataCollection=[];
-    this.renderedSettings = [];
-    this.currentIndex = 0;
-    this.current_page=0;
-    this.forceUpdate();
-    this.setState({entities,error})
+    try{
+        const {input,entities,error} = this.state
+        error['state']=false
+        input['is_searching'] = false
+        entities['meta']['total']=0
+        this.setState({input})
+        this.dataCollection=[];
+        this.renderedSettings = [];
+        this.currentIndex = 0;
+        this.current_page=0;
+        this.forceUpdate();
+        this.setState({entities,error})
+    }catch(_){
+    }
   }
   initialChunck(){
      this.loadNextBatch();
@@ -463,8 +412,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
         this.clearFetchEntities();
       }
      })
-    } catch (e) {
-      this.alert()
+    } catch (_) {
     }
   }
   
@@ -473,8 +421,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
       if ((e.key === 'Enter') && !Commons.isEmptyOrNull(this.search)) {
         this.clearFetchEntities();
       }
-    } catch (e) {
-      this.alert()
+    } catch (_) {
     }
   }
   loadNextBatch = () => {
@@ -486,12 +433,10 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
       }
       
       this.isLoading = false;
-    }catch(e){
-        this.alert()
+    }catch(_){
     }
       
   };
-  alert=()=>""
   renderChunk(): void {
     try {
       const headers = this.props.settings.headers;
@@ -524,45 +469,35 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
           this.renderedSettings.push(row);
         }
       }
-    } catch (e) {
-      this.alert()
+    } catch (_) {
     }
   }
   
  
   removeFilterByName = (data: string): void => {
-    try {
-      const filter = { ...this.state.filters };
-      const newData = { ...this.state.filters.search };
-      delete newData[data];
-      filter.search = newData;
-  
-      const updatedFilters = this.state.filterhead.filter(filter => filter.name !== data);
-  
-      const updatedData = this.state.filters.data.map(item => {
-        if (item.name === data) {
-          const { defaults, ...statusWithoutDefaults } = item;
-          return statusWithoutDefaults;
-        }
-        return item;
-      });
-  
-      filter.data = updatedData;
-      this.handleClear();
-      this.setState({ filterhead: updatedFilters, filters: filter }, this.fetchEntities);
-    } catch (e) {
-    }
-  }
-  
+  try {
+      const updatedFilters = this.state.filterhead.filter(filter => filter.label !== data);
+      const filtered_data = updatedFilters
+        .filter(filter => typeof filter === 'object' && 'id' in filter)
+        .map(filter => {
+          const { id, value, label } = filter as FilterItem;
+          return `${encodeURIComponent(label)}=${encodeURIComponent(id || value || '')}`;
+        })
+        .join('&');
 
-  handleFiltered = (): void => {
-    
+      this.handleClear();
+      this.queryParam = filtered_data
+      this.setState({ filterhead: updatedFilters }, () => {
+        this.fetchEntities();
+      });
+    } catch (_) {
+    }
   };
+  
   handleRetry=()=>{
     try{
       this.clearFetchEntities()
-    }catch(e){
-      this.alert()
+    }catch(_){
     }
     
   }
@@ -700,13 +635,56 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     );
   };
   
-  
+  handleOnClose=()=>{
+    this.setState({showFilter:false})
+  }
+  handleOnOpenFilter=()=>{
+    this.setState({showFilter:true})
+  }
+  handleOnFiltered = (data: any) => {
+    const filteredDataAndFilterHead = Object.entries(data)
+      .map(([key, value]) => {
+        if (value && typeof value === 'object' && 'id' in value) {
+          const filterValue = value as FilterItem;
+          const valueId = filterValue.id || filterValue.value || value;
+
+          // Check if the key is related to date and set both start_date and end_date
+          if (key.toLowerCase().includes('date') && filterValue.value?.startDate && filterValue.value?.endDate) {
+            return {
+              queryParam: `start_date=${encodeURIComponent(String(filterValue.value?.startDate))}&end_date=${encodeURIComponent(String(filterValue.value?.endDate))}`,
+              filterItem: { ...filterValue, label: key }
+            };
+          }
+
+          return {
+            queryParam: `${encodeURIComponent(key)}=${encodeURIComponent(String(valueId))}`,
+            filterItem: { ...filterValue, label: key }
+          };
+        }
+        return null;
+      })
+      .filter((item) => item !== null);
+
+    const filtered_data = filteredDataAndFilterHead.map(item => item.queryParam).join('&');
+    const filterhead = filteredDataAndFilterHead.map(item => item.filterItem) as FilterItem[];
+
+    this.handleClear();
+    this.queryParam = filtered_data
+    this.setState({ showFilter: false, filterhead }, () => {
+      this.fetchEntities();
+    });
+}
+
+
   render() {
-    const { isFocused, searchText } = this.state;
+    const { isFocused, searchText,showFilter,filterhead } = this.state;
     const isExpanded = isFocused && searchText !== '';
     return (
       <>
         {this.state.dtablemodal}
+        {showFilter && <Filters content={filterhead} filter={this.props.settings?.filter} onSuccess={this.handleOnFiltered} onClose={this.handleOnClose}/>}
+
+
         <div className={`flex flex-col w-full ${this.props.className}`}>
               <div className='flex flex-col w-full mb-5'>
                   <header className="flex w-full flex-col md:flex-row justify-start md:justify-between items-center space-x-6">
@@ -756,7 +734,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
                                   
                                   {
                                     (this.props.settings.filter !== undefined && this.props.settings.filter !==null) ? 
-                                    <div className='flex w-10 h-10 2xl:w-12 2xl:h-12 ml-2 flex-shrink-0 justify-center items-center rounded-full bg-gray-200 border border-gray-200 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 cursor-pointer' onClick={()=>this.handleFiltered()}>
+                                    <div className='flex w-10 h-10 2xl:w-12 2xl:h-12 ml-2 flex-shrink-0 justify-center items-center rounded-full bg-gray-200 border border-gray-200 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 cursor-pointer' onClick={()=>this.handleOnOpenFilter()}>
                                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
                                       </svg>
@@ -784,13 +762,13 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
                 <div className='flex flex-col '>
                 <div>
                   {
-                    (this.state.filterhead.length > 0) ? <div className='flex w-full overflow-x-auto mb-2 space-x-4'>
+                    (filterhead.length > 0) ? <div className='flex w-full overflow-x-auto mb-2 space-x-4'>
                       {
-                        this.state.filterhead.map((data,i)=>{
-                          return (!Commons.isEmptyOrNull(data.data)) ? <div key={`flter=${i}`} className='flex flex-shrink-0 text-sm relative pl-4 pr-6 py-2 rounded-none border-[1px] border-gray-200 bg-gray-50'>
-                              <div className='flex mr-2'>{Commons.capitalizeEachWord(Commons.convertUnderscoreToSpaceString(data.name))}:</div>
-                              <div className='flex font-poppinsSemiBold'>{data.data}</div>
-                              <svg viewBox="0 0 512 512" fill="currentColor" className='absolute right-1 top-2 bottom-1 cursor-pointer w-4 h-4 2xl:w-5 2xl:h-5' onClick={()=>this.removeFilterByName(data.name)}>
+                       filterhead.map((data,i)=>{
+                          return (!Commons.isEmptyOrNull(data.name)) ? <div key={`flter=${i}`} className='flex flex-shrink-0 text-xs relative pl-4 pr-6 py-2 rounded-lg border-[1px] cursor-pointer hover:bg-primary hover:text-white  border-gray-200 bg-gray-50'>
+                              <div className='flex mr-2'>{Commons.capitalizeEachWord(Commons.convertUnderscoreToSpaceString(data.label))}:</div>
+                              <div className='flex font-poppinsSemiBold'>{data.name}</div>
+                              <svg viewBox="0 0 512 512" fill="currentColor" className='absolute right-1 top-2 bottom-1 cursor-pointer w-4 h-4 2xl:w-5 2xl:h-5' onClick={()=>this.removeFilterByName(data.label)}>
                                 <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={32} d="M368 368L144 144M368 144L144 368"/>
                               </svg>
                           </div>

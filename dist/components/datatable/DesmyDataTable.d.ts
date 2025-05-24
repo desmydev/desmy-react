@@ -1,5 +1,11 @@
 import { default as React, Component, ChangeEvent, ReactNode, KeyboardEvent } from 'react';
 import { DesmyDataTableSettingsProps } from '../apis/SharedProps';
+interface FilterItem {
+    id: string;
+    name: string;
+    value: any;
+    label: string;
+}
 export type DesmyDataTableRef = {
     handleRetry: () => void;
 };
@@ -17,17 +23,9 @@ interface DataTableState {
     exceptionalColumns: string[];
     selected: number;
     isLoading: boolean;
-    filterhead: {
-        name: string;
-        data: string;
-    }[];
+    showFilter: boolean;
+    filterhead: FilterItem[];
     filters: {
-        search?: {
-            [key: string]: {
-                id: string;
-                name: string;
-            };
-        };
         data: {
             name: string;
             data: string;
@@ -102,6 +100,7 @@ declare class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     current_page: number;
     search: string;
     filterloaded: boolean;
+    queryParam: string;
     constructor(props: DataTableProps);
     componentDidMount(): Promise<void>;
     handleScroll(event: React.UIEvent<HTMLDivElement>): void;
@@ -144,10 +143,8 @@ declare class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     onChangeValue: (event: React.ChangeEvent<HTMLInputElement>) => void;
     handleKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
     loadNextBatch: () => void;
-    alert: () => string;
     renderChunk(): void;
     removeFilterByName: (data: string) => void;
-    handleFiltered: () => void;
     handleRetry: () => void;
     handleHint: () => string;
     handleOnSuccess: (index: number) => void;
@@ -156,6 +153,9 @@ declare class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     renderBreadcrumb(): import("react/jsx-runtime").JSX.Element | null;
     handlePageChange: (pageNumber: number) => void;
     renderPagination: () => import("react/jsx-runtime").JSX.Element | null;
+    handleOnClose: () => void;
+    handleOnOpenFilter: () => void;
+    handleOnFiltered: (data: any) => void;
     render(): import("react/jsx-runtime").JSX.Element;
 }
 export { DesmyDataTable };

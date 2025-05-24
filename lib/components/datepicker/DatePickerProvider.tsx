@@ -298,7 +298,7 @@ class DatePickerProvider extends Component<DatePickerProps, DatePickerState> {
     const { minDate, maxDate, label, disabled, useRange = true, withTime } = this.props;
     const { isOpen, startDate, endDate } = this.context;
     const { isMobile,isModal } = this.state;
-    console.log("isModal=",isModal)
+    // console.log("isModal=",isModal)
 
     const formatValue = () => {
       const dateFormat = this.props.displayFormat || "MM/dd/yyyy";

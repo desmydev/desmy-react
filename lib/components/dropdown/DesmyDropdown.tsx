@@ -94,9 +94,9 @@ class DesmyDropdown extends Component<Props, State> {
                 state: false,
                 message: ""
             },
-            isMobileView: window.innerWidth <= 768 ||  window.innerHeight < 1000,
-            showMobileModal: window.innerWidth <= 768 ||  window.innerHeight < 1000,
-            isModal: window.innerHeight < 1000
+            isMobileView: window.innerWidth <= 768 ||  window.innerHeight < 830,
+            showMobileModal: window.innerWidth <= 768 ||  window.innerHeight < 830,
+            isModal: window.innerHeight < 830
         };
     }
 
@@ -123,6 +123,7 @@ class DesmyDropdown extends Component<Props, State> {
         if (this.props.request !== undefined) {
           this.handleRequestData();
         }
+        
     }
     handleDefaultClear=()=>{
        const {defaultValue} =  this.props
@@ -133,10 +134,10 @@ class DesmyDropdown extends Component<Props, State> {
        
     }
     updateViewMode = () => {
-        this.closeDropdownPopover()
-        this.setState({ isMobileView: window.innerWidth <= 768 ||  window.innerHeight < 1000,isModal: window.innerHeight < 1000  },()=>{
+    
+        this.setState({ isMobileView: window.innerWidth <= 768 ||  window.innerHeight < 830,isModal: window.innerHeight < 830  },()=>{
             if (!this.state.isMobileView && this.state.dropdownPopoverShow) {
-                this.handleDropdownOpen()
+                 this.handleDropdownOpen()
             }
         });
       };
@@ -167,6 +168,7 @@ class DesmyDropdown extends Component<Props, State> {
         this.setState({ datalist }, () => {
             this.handleDelayedProcess();
         });
+        this.closeDropdownPopover()
     }
     
     componentWillUnmount() {
@@ -285,7 +287,7 @@ class DesmyDropdown extends Component<Props, State> {
     handleDelayedProcess = (): void => {
         setTimeout(() => {
             this.handleProcess();
-        }, 1000);
+        }, 830);
     };
     handleProcess=(): void =>{
         this.handleDefault()
@@ -327,8 +329,7 @@ class DesmyDropdown extends Component<Props, State> {
                 message: message
             };
             this.setState({ isLoading: false, error: updatedError });
-        } catch (e) {
-            console.error("Error occurred while handling error:", e);
+        } catch (_) {
         }
     };
     
@@ -548,12 +549,12 @@ class DesmyDropdown extends Component<Props, State> {
                 <div ref={this.popoverDropdownRef}
                     className={
                         (this.state.dropdownPopoverShow ? "inline-block " : "hidden ") +
-                        `${this.state.isMobileView ? `fixed top-0 left-0 right-0 bottom-0 flex flex-col z-[9999999] p-4 overflow-auto w-full h-full ${isModal ? `bg-black/40`:``}` : "absolute border-[1px] border-gray-200 dark:border-gray-700 shadow-lg mt-1 min-w-[400px] max-w-[600px]"} z-[800] text-base top-0 float-left py-2 bg-inherit  `+
+                        `${this.state.isMobileView ? `fixed top-0 left-0 right-0 bottom-0 flex flex-col z-[9999999] p-4 overflow-auto w-sreen h-screen ${isModal ? `bg-black/40`:``}` : "absolute border-[1px] border-gray-200 dark:border-gray-700 shadow-lg mt-1 min-w-[400px] max-w-[600px]"} z-[830] text-base top-0 float-left py-2 bg-inherit  `+
                         (this.props.dropdownClass)
                     }
                     style={{ minWidth: "12rem" }}
                 >
-                <div className='flex justify-center items-center h-full '>
+                <div className='flex px-5 md:px-0 justify-center items-center h-full '>
                 <div className={`mx-auto dark:bg-darkDialogBackground p-3 max-w-lg bg-white rounded `}>
                 {isMobileView && <div className="flex text-black dark:text-white w-full justify-between mb-5">
                         <div className="text-base px-3  font-poppinsBold">{this.props.placeholder}</div>
@@ -647,7 +648,7 @@ class DesmyDropdown extends Component<Props, State> {
                         {
                             (this.props.is_multiple !== undefined && this.props.is_multiple && (this.state.datalist.length != 0) ) ? 
                             <div className='flex w-full mt-4'>
-                                <div onClick={()=>this.closeDropdownPopover()} className='flex px-3 py-3 w-full text-black text-center justify-center rounded uppercase mx-2 cursor-pointer text-xs border border-gray-800 bg-white font-poppinsSemiBold'>Done</div>
+                                <div onClick={()=>this.closeDropdownPopover()} className='flex px-3 py-3 w-full text-black text-center justify-center rounded uppercase mx-2 cursor-pointer text-xs border border-gray-830 bg-white font-poppinsSemiBold'>Done</div>
                             </div>
                             :null
                         }

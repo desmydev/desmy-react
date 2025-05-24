@@ -173,7 +173,7 @@ class DesmyCustomDataTable extends Component<DataTableProps, DesmyCustomState> {
       const response = await axios.get(fetchUrl, {
         headers: {
           "X-CSRFToken": `${DesmyAuth.getCookie('csrftoken')}`,
-          "Authorization": `Token ${DesmyAuth.get(CommonState.ACCESS_TOKEN)}`
+          "Authorization": `Token ${this.props.settings?.token ?? DesmyAuth.get(CommonState.ACCESS_TOKEN)}`
         }
       });
       const data = response.data;
