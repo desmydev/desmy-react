@@ -102,6 +102,7 @@ export declare enum DesmyState {
     SMALL = "SMALL",
     NORMAL = "NORMAL",
     LARGE = "LARGE",
+    COMBOBOX = "COMBOBOX",
     AGGREGATE = "AGGREGATE",
     AUTOMATIC = "AUTOMATIC",
     MANUAL = "MANUAL",

@@ -1,5 +1,6 @@
 import { default as React, Component } from 'react';
 import { OptionType } from './types';
+import { DesmyState } from '../apis/DesmyState';
 interface DesmyComboBoxProps<T extends OptionType> {
     request: {
         url: string;
@@ -10,6 +11,7 @@ interface DesmyComboBoxProps<T extends OptionType> {
     placeholder: string;
     containerClassName?: string;
     onClear?: () => void;
+    type?: DesmyState.COMBOBOX | DesmyState.NORMAL;
     onChange?: (options: T[]) => void;
     debounceTime?: number;
     is_multiple?: boolean;
@@ -45,6 +47,7 @@ export declare class DesmyComboBox<T extends OptionType> extends Component<Desmy
     handleOptionHover: (index: number) => void;
     handleKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
     renderDropdown(): import("react/jsx-runtime").JSX.Element | null;
+    handleClearAll: () => void;
     render(): import("react/jsx-runtime").JSX.Element;
 }
 export {};

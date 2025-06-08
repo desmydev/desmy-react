@@ -58,13 +58,15 @@ export class DropdownPositionWrapper extends Component<
     const stylePosition: React.CSSProperties = {};
     let maxH = maxHeight;
 
+    const padding = 5; // 5px gap
+
     if (spaceBelow < maxHeight && spaceAbove > spaceBelow) {
       // open upward
-      stylePosition.bottom = viewportHeight - rect.top;
+      stylePosition.bottom = viewportHeight - rect.top + padding; // add 5px gap above
       maxH = spaceAbove > maxHeight ? maxHeight : spaceAbove;
     } else {
       // open downward
-      stylePosition.top = rect.bottom;
+      stylePosition.top = rect.bottom + padding; // add 5px gap below
       maxH = spaceBelow > maxHeight ? maxHeight : spaceBelow;
     }
 
@@ -74,14 +76,14 @@ export class DropdownPositionWrapper extends Component<
       width: rect.width,
       maxHeight: maxH,
       overflowY: "auto",
-      boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+      boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
       fontFamily: "inherit",
-      zIndex: 2147483647, // very high z-index to overlap modals
+      zIndex: 2147483647,
       ...stylePosition,
     };
 
-    this.setState({ styles });
-  };
+  this.setState({ styles });
+};
 
   render() {
     const { visible, children, onScroll } = this.props;

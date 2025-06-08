@@ -14,7 +14,6 @@ interface Props {
     handleChange?: (data: DesmyDropdownItem | DesmyDropdownItem[]) => void;
     handleDropdownChange?: (data: DesmyDropdownItem | DesmyDropdownItem[], type?: string) => void;
     disabled?: boolean;
-    showPlaceHolderHint?: boolean;
     placeholder?: string;
     emptymessage?: string;
     all?: string;
@@ -23,12 +22,13 @@ interface Props {
     containerClassName?: string;
     enableDecrypt?: boolean;
     onClear?: string;
+    handleClear?: () => void;
     className?: string;
     onRef?: (ref: DesmyDropdown | null) => void;
 }
 interface State {
     dropdownPopoverShow: boolean;
-    selectedMultiple: any[];
+    selectedMultiple: DesmyDropdownItem[];
     datalist: DesmyDropdownItem[];
     defaultValue?: string;
     intervalId: number;
@@ -40,52 +40,37 @@ interface State {
     input: {
         search: string;
     };
-    selectedAll?: Boolean;
+    selectedAll?: boolean;
     selectedList: DesmyDropdownItem;
     error: {
         state: boolean;
         message: string;
     };
-    isMobileView: boolean;
-    isModal: boolean;
-    showMobileModal: boolean;
 }
 declare class DesmyDropdown extends Component<Props, State> {
-    private popoverDropdownRef;
     private btnDropdownRef;
-    private searchRef;
     private divRef;
+    private dropdownContentRef;
+    private searchRef;
     constructor(props: Props);
-    componentDidUpdate(prevProps: Props, _prevState: State): void;
-    handleDefaultClear: () => void;
-    updateViewMode: () => void;
-    componentDidMount(): Promise<void>;
+    componentDidMount(): void;
+    componentDidUpdate(prevProps: Props): void;
     componentWillUnmount(): void;
+    handleClickOutside: (event: MouseEvent) => void;
     handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
-    handleRequestData: () => void;
-    handleSelectedMultiple: (datalist: any[]) => Promise<any[]>;
     handleDefault: () => Promise<void>;
+    handleDefaultClear: () => void;
     handleEncrypt: (data: any) => any;
-    handleDelayedProcess: () => void;
-    handleProcess: () => void;
     fetch: () => Promise<void>;
     handleError: (message?: string) => void;
     onClear: () => void;
     openDropdownPopover: () => void;
-    handleDropdownOpen: () => void;
-    handleDropdownPopover: () => void;
-    removeItem: (object: any[], key: string, value: any) => any[];
-    handleSearch: (collection: any[], data: any) => any | false;
-    handleSelectMessage: (data: any[]) => string;
-    deleteItems: (id: number) => any[];
-    handleSelectedItem: (e: React.MouseEvent<HTMLDivElement>, data: any) => void;
+    closeDropdownPopover: () => void;
+    handleSelectAll: () => void;
+    handleClear: () => void;
+    handleSelectedItem: (e: React.MouseEvent<HTMLDivElement>, data: DesmyDropdownItem) => void;
     handleClearSearch: () => void;
     handleClickAway: () => void;
-    handleClear: () => void;
-    handleSelectAll: () => void;
-    handleClearSelected: () => void;
-    closeDropdownPopover: () => void;
-    handleClickOutside: (event: MouseEvent) => void;
     render(): import("react/jsx-runtime").JSX.Element;
 }
 export { DesmyDropdown };

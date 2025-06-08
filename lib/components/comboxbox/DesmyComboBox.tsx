@@ -5,6 +5,7 @@ import DesmyComboBoxList from "./ComboBoxList";
 import DesmySelectedTag from "./SelectedTag";
 import axios from "axios";
 import { DropdownPositionWrapper } from "../apis/DropdownPositionWrapper";
+import { DesmyState } from "../apis/DesmyState";
 
 interface DesmyComboBoxProps<T extends OptionType> {
   request: {
@@ -16,6 +17,7 @@ interface DesmyComboBoxProps<T extends OptionType> {
   placeholder:string
   containerClassName?:string
   onClear?: () => void;
+  type?: DesmyState.COMBOBOX | DesmyState.NORMAL;
   onChange?: (options: T[]) => void;
   debounceTime?: number;
   is_multiple?: boolean;
@@ -320,28 +322,53 @@ export class DesmyComboBox<T extends OptionType> extends Component<
       </DropdownPositionWrapper>
     );
   }
-
+handleClearAll = () => {
+  this.setState(
+    { selectedOptions: [] },
+    () => {
+      if (this.props.onChange) this.props.onChange([]);
+      if (this.props.onClear) this.props.onClear();
+    }
+  );
+};
   render() {
-    const { searchTerm, selectedOptions } = this.state;
-    const {placeholder,containerClassName} = this.props
-    const controlledSelectedOptions = this.props.value ?? selectedOptions;
-    const controlledSearchTerm = searchTerm;
+  const { searchTerm, selectedOptions } = this.state;
+  const { placeholder, containerClassName, type = DesmyState.COMBOBOX } = this.props;
+  const controlledSelectedOptions = this.props.value ?? selectedOptions;
+  const controlledSearchTerm = searchTerm;
 
-    return (
-      <div className={`relative w-full font-normal text-sm ${
-          containerClassName || "bg-white dark:bg-darkBackground dark:text-white"
-        }`} ref={this.containerRef}>
-        <div
-          className={`flex ${controlledSelectedOptions.length ==0 ? ``:`flex-wrap pt-5`}  items-center border font-poppinsRegular border-gray-300 dark:border-white bg-inherit rounded-none px-2 py-1 min-h-12 cursor-text  transition-all`}
-         
-        >
-          {controlledSelectedOptions.map((opt) => (
+  return (
+    <div
+      className={`relative w-full font-normal text-sm ${
+        containerClassName || "bg-white dark:bg-darkBackground dark:text-white"
+      }`}
+      ref={this.containerRef}
+    >
+      <div
+        className={`flex ${
+          controlledSelectedOptions.length === 0 ? `` : `flex-wrap ${type === DesmyState.NORMAL ? ``:`pt-5`}`
+        } items-center border font-poppinsRegular border-gray-300 dark:border-white bg-inherit rounded-none px-2 py-1 min-h-12 cursor-text  transition-all`}
+      >
+        {type === DesmyState.NORMAL ? (
+          <div className="w-full py-2 flex items-start justify-between ">
+            <div className="w-full">
+              {controlledSelectedOptions.map((opt) => opt.name).join(", ")}
+            </div>
+            {controlledSelectedOptions.length > 0 && (
+              <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 12 12" onClick={this.handleClearAll} className="size-4 ml-1 text-red-500 focus:outline-none cursor-pointer">
+                <path fill="currentColor" d="M3.85 3.15a.5.5 0 0 0-.707.707l2.15 2.15l-2.15 2.15a.5.5 0 0 0 .707.707L6 6.714l2.15 2.15a.5.5 0 0 0 .707-.707l-2.15-2.15l2.15-2.15a.5.5 0 0 0-.707-.707L6 5.3z" ></path>
+              </svg>
+            )}
+          </div>
+        ) : (
+          controlledSelectedOptions.map((opt) => (
             <DesmySelectedTag key={opt.id} option={opt} onRemove={this.handleRemoveTag} />
-          ))}
-          <div className={` ${controlledSelectedOptions.length ==0 ? `py-0`:`py-2`} w-full bg-inherit`}>
-            <DesmyComboBoxInput
+          ))
+        )}
+        <div className={`${controlledSelectedOptions.length === 0 ? `py-0` : `py-2`} w-full bg-inherit`}>
+          <DesmyComboBoxInput
             ref={this.inputRef}
-            hasData={controlledSelectedOptions.length !=0}
+            hasData={controlledSelectedOptions.length !== 0}
             onClick={() => this.focusInput()}
             value={controlledSearchTerm}
             placeholder={placeholder}
@@ -349,11 +376,12 @@ export class DesmyComboBox<T extends OptionType> extends Component<
             onFocus={this.openDropdown}
             onKeyDown={this.handleKeyDown}
           />
-          </div>
         </div>
-
-        {this.renderDropdown()}
       </div>
-    );
-  }
+
+      {this.renderDropdown()}
+    </div>
+  );
+}
+
 }
