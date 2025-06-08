@@ -16,6 +16,7 @@ declare class DesmyAuth {
     remove(name: string): void;
     save(key: string, data: string): void;
     getCookie(name: string): string | null;
+    deleteCookie(name: string, path?: string): void;
     setCookie(name: string, value: string, options?: {
         expires?: number | Date;
         path?: string;

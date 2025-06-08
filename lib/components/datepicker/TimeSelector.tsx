@@ -31,25 +31,20 @@ export default class TimeSelector extends React.Component<TimeSelectorProps> {
   }
 
   updateTime(part: "h" | "m" | "meridian", direction: "up" | "down") {
-  const { h, m, meridian } = this.parseTime(this.props.value);
-  let hour = h;
-  let min = m;
-  let period = meridian;
+    const { h, m, meridian } = this.parseTime(this.props.value);
+    let hour = h;
+    let min = m;
+    let period = meridian;
 
-  if (part === "h") {
-    // Adjust the hour (12-hour format)
-    hour = direction === "up" ? (hour % 12) + 1 : hour - 1 || 12;
-  } else if (part === "m") {
-    // Adjust the minute
-    min = direction === "up" ? (min + 1) % 60 : (min - 1 + 60) % 60;
-  } else if (part === "meridian") {
-    // Only toggle the period (AM/PM) when the meridian part is being updated
-    period = period === "AM" ? "PM" : "AM";
+    if (part === "h") {
+      hour = direction === "up" ? (hour % 12) + 1 : hour - 1 || 12;
+    } else if (part === "m") {
+      min = direction === "up" ? (min + 1) % 60 : (min - 1 + 60) % 60;
+    } else if (part === "meridian") {
+      period = period === "AM" ? "PM" : "AM";
+    }
+    this.props.onChange(this.formatTime(hour, min, period));
   }
-
-  // After adjusting, update the time with the potentially updated period
-  this.props.onChange(this.formatTime(hour, min, period));
-}
 
   render() {
     const { label, value } = this.props;

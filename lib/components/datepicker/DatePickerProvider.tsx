@@ -61,7 +61,7 @@ class DatePickerProvider extends Component<DatePickerProps, DatePickerState> {
   }
 
   handleResize = () => {
-    this.setState({ isMobile: window.innerWidth <= 768 ||  window.innerHeight < 1000,isModal: window.innerHeight < 1000 }, this.handleClose);
+    // this.setState({ isMobile: window.innerWidth <= 768 ||  window.innerHeight < 1000,isModal: window.innerHeight < 1000 }, this.handleClose);
   };
 
   handleDefault = () => {

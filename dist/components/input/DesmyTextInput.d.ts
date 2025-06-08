@@ -29,6 +29,7 @@ interface TextInputState {
 }
 declare class DesmyTextInput extends Component<TextInputProps, TextInputState> {
     enteredInput: string;
+    hasDefault: boolean;
     private popoverDropdownRef;
     private inputRef;
     constructor(props: TextInputProps);

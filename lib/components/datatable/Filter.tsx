@@ -8,6 +8,7 @@ import { DesmyDropdownItem } from '../apis/SharedProps';
 import DesmyCommons from '../apis/DesmyCommons';
 import { DesmyButton } from '../button/DesmyButton';
 import { DesmyDatePicker } from '../datepicker/DesmyDatePicker';
+import { DesmyToast } from '../toasify/DesmyToast';
 
 interface CreateProps {
     filter?: any;
@@ -64,7 +65,11 @@ class DesmyFilter extends Component<CreateProps, CreateState> {
 
             if (response.ok) {
                 const data = await response.json();
-                this.setState({ filters: data.data, isLoading: false });
+                if (data && data.success) {
+                    this.setState({ filters: data.data, isLoading: false });
+                }else{
+                    this.handleError(data?.message || 'Failed to fetch filters');
+                }
             } else {
             }
         } catch (_) {
@@ -72,7 +77,11 @@ class DesmyFilter extends Component<CreateProps, CreateState> {
             this.setState({ hasRequest: false });
         }
     };
-
+    handleError = (message: string) => { 
+        DesmyToast.error(message);
+        this.setState({ isLoading: false, hasRequest: false });   
+        this.props.onClose?.();
+    }
     handleOnSubmit = async () => {
         const { input } = this.state;
         this.props.onSuccess?.(input);

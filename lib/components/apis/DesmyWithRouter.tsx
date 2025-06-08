@@ -43,7 +43,6 @@ const DesmyWithRouter = <P extends object>(
     render() {
       const { path, ...restProps } = this.props as P & { path?: string };
       const params = path ? extractRouteParams(path) : {};
-
       return (
         <WrappedComponent
           {...(restProps as P)}

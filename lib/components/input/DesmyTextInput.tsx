@@ -36,6 +36,7 @@ interface TextInputState {
 
 class DesmyTextInput extends Component<TextInputProps, TextInputState> {
     enteredInput: string = "";
+    hasDefault: boolean =false
     private popoverDropdownRef: RefObject<HTMLDivElement  | null> = React.createRef();
     private inputRef: RefObject<HTMLInputElement | null> = React.createRef();
 
@@ -45,7 +46,7 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
             dropdownPopoverShow: false,
             hasPressed: false,
             input: {
-                data: Commons.toStringDefault(this.props.defaultValue, "")
+                data: Commons.getDefaultValue(this.props.defaultValue)
             }
         };
     }
@@ -67,8 +68,9 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
     }
     
     handleDefaultRequest = () => {
-        const data = Commons.toStringDefault(this.props.defaultValue, "");
-        if (!Commons.isEmptyOrNull(data) && Commons.isEmptyOrNull(this.state.input.data)) {
+        const data = Commons.getDefaultValue(this.props.defaultValue);
+        if (!Commons.isEmptyOrNull(data) && Commons.isEmptyOrNull(this.state.input.data) && !this.hasDefault) {
+            this.hasDefault = true;
             this.setState((prevState) => ({
                 input: {
                     ...prevState.input,
@@ -204,14 +206,15 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
     };
 
     render() {
-        const {defaultValue, prefix, postfix } = this.props
+        const {defaultValue,prefix, postfix } = this.props
+        
         return (
                 <div
                     className={`${this.props.className || 'bg-white dark:bg-darkBackground'} transition-colors duration-300`}
                 >
                     <div className={`relative bg-inherit ${this.props.type === DesmyState.SEARCH ? 'flex w-full space-x-3' : ''}`}>
                         
-                    <div className={`flex items-center ${((!DesmyCommons.isEmptyOrNull(prefix) || !DesmyCommons.isEmptyOrNull(postfix) ) ? `border border-black dark:border-white`:``)}`}>
+                    <div className={`flex items-center ${((!DesmyCommons.isEmptyOrNull(prefix) || !DesmyCommons.isEmptyOrNull(postfix) ) ? `border border-black dark:border-white`:``)} bg-inherit`}>
                             {prefix && (
                                 <span className="px-1 text-sm text-gray-600 dark:text-gray-300 mr-2">{prefix}</span>
                             )}
@@ -250,7 +253,8 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
                                 />
                             )}
 
-                            <label htmlFor="data" className={`before:content[' '] after:content[' '] pointer-events-none absolute cursor-text left-0 text-[11px] dark:text-white bg-inherit backdrop-blur-xl mx-1 px-2 peer-placeholder-shown:text-sm dark:peer-placeholder-shown:text-white  ${!(!DesmyCommons.isEmptyOrNull(prefix) || !DesmyCommons.isEmptyOrNull(prefix) ) ? ` peer-placeholder-shown:top-3 peer-focus:-top-3 peer-focus:text-black  -top-3.5  peer-focus:text-[11px]`:`-top-3.5 text-[11px]`} dark:peer-focus:text-white transition-all`}>
+                            <label htmlFor="data" className={`before:content[' '] after:content[' '] pointer-events-none absolute cursor-text left-0 text-[11px] dark:text-white bg-inherit mx-1 px-2 peer-placeholder-shown:text-sm dark:peer-placeholder-shown:text-white 
+                                 ${!(!DesmyCommons.isEmptyOrNull(prefix) || !DesmyCommons.isEmptyOrNull(prefix) ) ? ` peer-placeholder-shown:top-3 peer-focus:-top-3 peer-focus:text-black  -top-3.5  peer-focus:text-[11px]`:`-top-3.5 text-[11px]`} dark:peer-focus:text-white transition-all`}>
                                 <div className='w-full line-clamp-1'>{this.props.label}</div>
                             </label>
 

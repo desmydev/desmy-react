@@ -139,7 +139,12 @@ class DesmyCommons {
     toStringDefault(data: any, defaultValue = ""): string {
         return (!this.isEmptyOrNull(data)) ? `${data}` : `${defaultValue}`;
     }
-
+    getDefaultValue = (defaultValue:any): string => {
+    if (defaultValue && typeof defaultValue === 'object' && 'id' in defaultValue) {
+        return String((defaultValue as any).id);
+    }
+    return this.toStringDefault(defaultValue, '');
+    }
     toString(data: any): string {
         return  `${data}`;
     }

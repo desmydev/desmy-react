@@ -19,6 +19,7 @@ declare class DesmyFilter extends Component<CreateProps, CreateState> {
     constructor(props: CreateProps);
     componentDidMount(): void;
     fetchFilters: () => Promise<void>;
+    handleError: (message: string) => void;
     handleOnSubmit: () => Promise<void>;
     render(): import("react/jsx-runtime").JSX.Element;
 }

@@ -45,11 +45,13 @@ import  { DesmyDatePicker } from "./components/datepicker/DesmyDatePicker";
 import  {DesmyVerticalStepper} from './components/stepper/DesmyVerticalStepper'
 import  {DesmyLazyImage} from './components/image/DesmyLazyImage'
 import  {DesmyTimeAgo} from './components/apis/DesmyTimeAgo'
+import {DesmyComboBox} from './components/comboxbox/DesmyComboBox';
 import './index.css';
 export  {
             DesmyThemeProvider,DesmyThemeContext,
             DesmyPDFReader,
             DesmyState,
+            DesmyComboBox,
             DesmyPermissions,
             DesmyLazyloading,
             DesmyToastProvider,

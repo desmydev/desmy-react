@@ -1,9 +1,7 @@
 import axios from 'axios'; 
 import React, { Component, ChangeEvent,ReactNode, KeyboardEvent ,JSX} from 'react';
 import Commons from '../apis/DesmyCommons';
-import { DesmyDropdown } from '../dropdown/DesmyDropdown';
-import { DesmyState as CommonState } from '../apis/DesmyState'; // Assuming State is already exported as CommonState
-import ReactDOM from 'react-dom';
+import { DesmyState as CommonState } from '../apis/DesmyState';
 import Filters from './Filter';
 import {DatatableCard} from './DatatableCard';
 import DesmyAuth from '../apis/DesmyAuth';
@@ -112,7 +110,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
       isLoading: true,
       dtablemodal:null,
       hasRequest : false,
-      showFilter:true,
+      showFilter:false,
       filterhead: [],
       filters: {
         data: []
