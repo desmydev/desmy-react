@@ -7,6 +7,9 @@ interface DesmyComboBoxProps<T extends OptionType> {
     };
     defaultValue?: string | T | T[] | null;
     value?: T[];
+    placeholder: string;
+    containerClassName?: string;
+    onClear?: () => void;
     onChange?: (options: T[]) => void;
     debounceTime?: number;
     is_multiple?: boolean;

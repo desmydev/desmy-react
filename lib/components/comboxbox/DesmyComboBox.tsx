@@ -13,6 +13,9 @@ interface DesmyComboBoxProps<T extends OptionType> {
   };
   defaultValue?: string | T | T[] | null;
   value?: T[];
+  placeholder:string
+  containerClassName?:string
+  onClear?: () => void;
   onChange?: (options: T[]) => void;
   debounceTime?: number;
   is_multiple?: boolean;
@@ -206,32 +209,30 @@ export class DesmyComboBox<T extends OptionType> extends Component<
   }
 
   handleRemoveTag = (id: T["id"]) => {
-    this.setState(
-      (prev) => {
-        const newSelected = prev.selectedOptions.filter((o) => o.id !== id);
-        if (this.props.onChange) this.props.onChange(newSelected);
+  this.setState(
+    (prev) => {
+      const isLastItem = prev.selectedOptions.length === 1;
+      const newSelected = isLastItem ? [] : prev.selectedOptions.filter((o) => o.id !== id);
+      if (this.props.onChange) this.props.onChange(newSelected);
+      if (isLastItem && this.props.onClear) this.props.onClear();
 
+      let newFilteredOptions = prev.filteredOptions;
+      if (!isLastItem) {
         const optionToAddBack = prev.options.find((o) => o.id === id);
-        let newFilteredOptions = prev.filteredOptions;
-
         if (optionToAddBack && !prev.filteredOptions.some((opt) => opt.id === id)) {
           newFilteredOptions = [...prev.filteredOptions, optionToAddBack];
         }
-
         newFilteredOptions = newFilteredOptions.filter((opt) =>
           opt.name.toLowerCase().includes(prev.searchTerm.toLowerCase())
         );
-
-        return {
-          selectedOptions: newSelected,
-          filteredOptions: newFilteredOptions,
-        };
-      },
-      () => {
-        this.focusInput();
       }
-    );
-  };
+      return {
+        selectedOptions: newSelected,
+        filteredOptions: newFilteredOptions,
+      };
+    });
+};
+
 
   handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
@@ -322,26 +323,33 @@ export class DesmyComboBox<T extends OptionType> extends Component<
 
   render() {
     const { searchTerm, selectedOptions } = this.state;
-
+    const {placeholder,containerClassName} = this.props
     const controlledSelectedOptions = this.props.value ?? selectedOptions;
     const controlledSearchTerm = searchTerm;
 
     return (
-      <div className="relative w-full font-normal" ref={this.containerRef}>
+      <div className={`relative w-full font-normal text-sm ${
+          containerClassName || "bg-white dark:bg-darkBackground dark:text-white"
+        }`} ref={this.containerRef}>
         <div
-          className="flex flex-wrap items-center border font-poppinsRegular border-gray-300 rounded px-2 py-1 min-h-[40px] cursor-text"
-          onClick={() => this.focusInput()}
+          className={`flex ${controlledSelectedOptions.length ==0 ? ``:`flex-wrap pt-5`}  items-center border font-poppinsRegular border-gray-300 dark:border-white bg-inherit rounded-none px-2 py-1 min-h-12 cursor-text  transition-all`}
+         
         >
           {controlledSelectedOptions.map((opt) => (
             <DesmySelectedTag key={opt.id} option={opt} onRemove={this.handleRemoveTag} />
           ))}
-          <DesmyComboBoxInput
+          <div className={` ${controlledSelectedOptions.length ==0 ? `py-0`:`py-2`} w-full bg-inherit`}>
+            <DesmyComboBoxInput
             ref={this.inputRef}
+            hasData={controlledSelectedOptions.length !=0}
+            onClick={() => this.focusInput()}
             value={controlledSearchTerm}
+            placeholder={placeholder}
             onChange={this.handleInputChange}
             onFocus={this.openDropdown}
             onKeyDown={this.handleKeyDown}
           />
+          </div>
         </div>
 
         {this.renderDropdown()}

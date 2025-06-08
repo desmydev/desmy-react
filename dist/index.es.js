@@ -31175,20 +31175,23 @@ class DesmyTimeAgo extends React2__default.Component {
   }
 }
 const DesmyComboBoxInput = forwardRef(
-  ({ value: e, onChange: A, onFocus: l, onKeyDown: o, onClick: t }, a) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex w-full mt-4", onClick: t, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "input",
-    {
-      type: "text",
-      className: "flex flex-grow focus:outline-none text-sm w-full",
-      placeholder: "Search...",
-      value: e,
-      onChange: A,
-      onFocus: l,
-      onKeyDown: o,
-      autoComplete: "off",
-      ref: a
-    }
-  ) })
+  ({ value: e, onChange: A, onFocus: l, onKeyDown: o, onClick: t, placeholder: a, hasData: n }, B) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex w-full bg-inherit", onClick: t, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "input",
+      {
+        type: "text",
+        className: "flex flex-grow focus:outline-none text-sm w-full placeholder-gray-300 dark:placeholder-gray-600",
+        value: e,
+        onChange: A,
+        onFocus: l,
+        onKeyDown: o,
+        placeholder: `${n ? "Search here......" : ""}`,
+        autoComplete: "off",
+        ref: B
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `absolute left-1.5  ${a != null && n ? "-top-2.5  text-xs" : " text-sm top-2.5"} px-2 bg-inherit transition-all`, children: a })
+  ] })
 );
 class ComboBoxOption extends Component {
   render() {
@@ -31435,19 +31438,19 @@ class DesmyComboBox extends Component {
   handleRemoveTag = (A) => {
     this.setState(
       (l) => {
-        const o = l.selectedOptions.filter((n) => n.id !== A);
-        this.props.onChange && this.props.onChange(o);
-        const t = l.options.find((n) => n.id === A);
+        const o = l.selectedOptions.length === 1, t = o ? [] : l.selectedOptions.filter((n) => n.id !== A);
+        this.props.onChange && this.props.onChange(t), o && this.props.onClear && this.props.onClear();
         let a = l.filteredOptions;
-        return t && !l.filteredOptions.some((n) => n.id === A) && (a = [...l.filteredOptions, t]), a = a.filter(
-          (n) => n.name.toLowerCase().includes(l.searchTerm.toLowerCase())
-        ), {
-          selectedOptions: o,
+        if (!o) {
+          const n = l.options.find((B) => B.id === A);
+          n && !l.filteredOptions.some((B) => B.id === A) && (a = [...l.filteredOptions, n]), a = a.filter(
+            (B) => B.name.toLowerCase().includes(l.searchTerm.toLowerCase())
+          );
+        }
+        return {
+          selectedOptions: t,
           filteredOptions: a
         };
-      },
-      () => {
-        this.focusInput();
       }
     );
   };
@@ -31499,25 +31502,27 @@ class DesmyComboBox extends Component {
     ) }) : null;
   }
   render() {
-    const { searchTerm: A, selectedOptions: l } = this.state, o = this.props.value ?? l, t = A;
-    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative w-full font-normal", ref: this.containerRef, children: [
+    const { searchTerm: A, selectedOptions: l } = this.state, { placeholder: o, containerClassName: t } = this.props, a = this.props.value ?? l, n = A;
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `relative w-full font-normal text-sm ${t || "bg-white dark:bg-darkBackground dark:text-white"}`, ref: this.containerRef, children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "div",
         {
-          className: "flex flex-wrap items-center border font-poppinsRegular border-gray-300 rounded px-2 py-1 min-h-[40px] cursor-text",
-          onClick: () => this.focusInput(),
+          className: `flex ${a.length == 0 ? "" : "flex-wrap pt-5"}  items-center border font-poppinsRegular border-gray-300 dark:border-white bg-inherit rounded-none px-2 py-1 min-h-12 cursor-text  transition-all`,
           children: [
-            o.map((a) => /* @__PURE__ */ jsxRuntimeExports.jsx(SelectedTag, { option: a, onRemove: this.handleRemoveTag }, a.id)),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
+            a.map((B) => /* @__PURE__ */ jsxRuntimeExports.jsx(SelectedTag, { option: B, onRemove: this.handleRemoveTag }, B.id)),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: ` ${a.length == 0 ? "py-0" : "py-2"} w-full bg-inherit`, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
               DesmyComboBoxInput,
               {
                 ref: this.inputRef,
-                value: t,
+                hasData: a.length != 0,
+                onClick: () => this.focusInput(),
+                value: n,
+                placeholder: o,
                 onChange: this.handleInputChange,
                 onFocus: this.openDropdown,
                 onKeyDown: this.handleKeyDown
               }
-            )
+            ) })
           ]
         }
       ),
