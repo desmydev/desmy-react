@@ -14,8 +14,8 @@ interface DesmyComboBoxProps<T extends OptionType> {
   };
   defaultValue?: string | T | T[] | null;
   value?: T[];
-  placeholder:string
-  containerClassName?:string
+  placeholder: string;
+  containerClassName?: string;
   onClear?: () => void;
   type?: DesmyState.COMBOBOX | DesmyState.NORMAL;
   onChange?: (options: T[]) => void;
@@ -79,6 +79,25 @@ export class DesmyComboBox<T extends OptionType> extends Component<
   componentDidUpdate(prevProps: DesmyComboBoxProps<T>) {
     if (this.props.value !== prevProps.value && this.props.value) {
       this.setState({ selectedOptions: this.props.value });
+    }
+
+    // If request URL changes, reset and fetch fresh data
+    if (this.props.request.url !== prevProps.request.url) {
+      this.setState(
+        {
+          options: [],
+          filteredOptions: [],
+          page: 1,
+          totalPages: 1,
+          loading: false,
+          searchTerm: "",
+          showDropdown: false,
+          highlightedIndex: -1,
+        },
+        () => {
+          this.fetchOptions(1, "");
+        }
+      );
     }
   }
 
@@ -211,8 +230,7 @@ export class DesmyComboBox<T extends OptionType> extends Component<
   }
 
   handleRemoveTag = (id: T["id"]) => {
-  this.setState(
-    (prev) => {
+    this.setState((prev) => {
       const isLastItem = prev.selectedOptions.length === 1;
       const newSelected = isLastItem ? [] : prev.selectedOptions.filter((o) => o.id !== id);
       if (this.props.onChange) this.props.onChange(newSelected);
@@ -233,8 +251,7 @@ export class DesmyComboBox<T extends OptionType> extends Component<
         filteredOptions: newFilteredOptions,
       };
     });
-};
-
+  };
 
   handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
@@ -308,7 +325,12 @@ export class DesmyComboBox<T extends OptionType> extends Component<
     if (!showDropdown) return null;
 
     return (
-      <DropdownPositionWrapper targetRef={this.inputRef} visible={showDropdown} maxHeight={350} onScroll={this.handleScroll} >
+      <DropdownPositionWrapper
+        targetRef={this.inputRef}
+        visible={showDropdown}
+        maxHeight={350}
+        onScroll={this.handleScroll}
+      >
         <DesmyComboBoxList
           options={filteredOptions}
           loading={loading}
@@ -322,66 +344,72 @@ export class DesmyComboBox<T extends OptionType> extends Component<
       </DropdownPositionWrapper>
     );
   }
-handleClearAll = () => {
-  this.setState(
-    { selectedOptions: [] },
-    () => {
+
+  handleClearAll = () => {
+    this.setState({ selectedOptions: [] }, () => {
       if (this.props.onChange) this.props.onChange([]);
       if (this.props.onClear) this.props.onClear();
-    }
-  );
-};
+    });
+  };
+
   render() {
-  const { searchTerm, selectedOptions } = this.state;
-  const { placeholder, containerClassName, type = DesmyState.COMBOBOX } = this.props;
-  const controlledSelectedOptions = this.props.value ?? selectedOptions;
-  const controlledSearchTerm = searchTerm;
+    const { searchTerm, selectedOptions } = this.state;
+    const { placeholder, containerClassName, type = DesmyState.COMBOBOX } = this.props;
+    const controlledSelectedOptions = this.props.value ?? selectedOptions;
+    const controlledSearchTerm = searchTerm;
 
-  return (
-    <div
-      className={`relative w-full font-normal text-sm ${
-        containerClassName || "bg-white dark:bg-darkBackground dark:text-white"
-      }`}
-      ref={this.containerRef}
-    >
+    return (
       <div
-        className={`flex ${
-          controlledSelectedOptions.length === 0 ? `` : `flex-wrap ${type === DesmyState.NORMAL ? ``:`pt-5`}`
-        } items-center border font-poppinsRegular border-gray-300 dark:border-white bg-inherit rounded-none px-2 py-1 min-h-12 cursor-text  transition-all`}
+        className={`relative w-full font-normal text-sm ${
+          containerClassName || "bg-white dark:bg-darkBackground dark:text-white"
+        }`}
+        ref={this.containerRef}
       >
-        {type === DesmyState.NORMAL ? (
-          <div className="w-full py-2 flex items-start justify-between ">
-            <div className="w-full">
-              {controlledSelectedOptions.map((opt) => opt.name).join(", ")}
+        <div
+          className={`flex ${
+            controlledSelectedOptions.length === 0
+              ? ``
+              : `flex-wrap ${type === DesmyState.NORMAL ? `` : `pt-5`}`
+          } items-center border font-poppinsRegular border-black dark:border-white bg-inherit rounded-none px-2 py-1 min-h-12 cursor-text  transition-all`}
+        >
+          {type === DesmyState.NORMAL ? (
+            <div className="w-full py-2 flex items-start justify-between ">
+              <div className="w-full">{controlledSelectedOptions.map((opt) => opt.name).join(", ")}</div>
+              {controlledSelectedOptions.length > 0 && (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 12 12"
+                  onClick={this.handleClearAll}
+                  className="size-4 ml-1 text-red-500 focus:outline-none cursor-pointer"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M3.85 3.15a.5.5 0 0 0-.707.707l2.15 2.15l-2.15 2.15a.5.5 0 0 0 .707.707L6 6.714l2.15 2.15a.5.5 0 0 0 .707-.707l-2.15-2.15l2.15-2.15a.5.5 0 0 0-.707-.707L6 5.3z"
+                  ></path>
+                </svg>
+              )}
             </div>
-            {controlledSelectedOptions.length > 0 && (
-              <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 12 12" onClick={this.handleClearAll} className="size-4 ml-1 text-red-500 focus:outline-none cursor-pointer">
-                <path fill="currentColor" d="M3.85 3.15a.5.5 0 0 0-.707.707l2.15 2.15l-2.15 2.15a.5.5 0 0 0 .707.707L6 6.714l2.15 2.15a.5.5 0 0 0 .707-.707l-2.15-2.15l2.15-2.15a.5.5 0 0 0-.707-.707L6 5.3z" ></path>
-              </svg>
-            )}
+          ) : (
+            controlledSelectedOptions.map((opt) => (
+              <DesmySelectedTag key={opt.id} option={opt} onRemove={this.handleRemoveTag} />
+            ))
+          )}
+          <div className={`${controlledSelectedOptions.length === 0 ? `py-0` : `py-2`} w-full bg-inherit`}>
+            <DesmyComboBoxInput
+              ref={this.inputRef}
+              hasData={controlledSelectedOptions.length !== 0}
+              onClick={() => this.focusInput()}
+              value={controlledSearchTerm}
+              placeholder={placeholder}
+              onChange={this.handleInputChange}
+              onFocus={this.openDropdown}
+              onKeyDown={this.handleKeyDown}
+            />
           </div>
-        ) : (
-          controlledSelectedOptions.map((opt) => (
-            <DesmySelectedTag key={opt.id} option={opt} onRemove={this.handleRemoveTag} />
-          ))
-        )}
-        <div className={`${controlledSelectedOptions.length === 0 ? `py-0` : `py-2`} w-full bg-inherit`}>
-          <DesmyComboBoxInput
-            ref={this.inputRef}
-            hasData={controlledSelectedOptions.length !== 0}
-            onClick={() => this.focusInput()}
-            value={controlledSearchTerm}
-            placeholder={placeholder}
-            onChange={this.handleInputChange}
-            onFocus={this.openDropdown}
-            onKeyDown={this.handleKeyDown}
-          />
         </div>
+
+        {this.renderDropdown()}
       </div>
-
-      {this.renderDropdown()}
-    </div>
-  );
-}
-
+    );
+  }
 }

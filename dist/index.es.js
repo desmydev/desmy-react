@@ -30506,7 +30506,7 @@ const DesmyComboBoxInput = forwardRef(
       "input",
       {
         type: "text",
-        className: "flex flex-grow focus:outline-none text-sm w-full placeholder-gray-300 dark:placeholder-gray-600",
+        className: "flex flex-grow focus:outline-none text-sm w-full placeholder-gray-600 dark:placeholder-gray-600",
         value: e,
         onChange: A,
         onFocus: l,
@@ -30553,7 +30553,7 @@ class ComboBoxList extends Component {
       "div",
       {
         onScroll: n,
-        className: `z-10 max-h-72 border-[1px] border-gray-200 dark:border-gray-700 shadow-lg w-full overflow-auto rounded text-sm ${r || "bg-white dark:bg-darkBackground dark:text-white"}`,
+        className: `z-10 max-h-72 border-[1px] min-h-48 border-gray-200 dark:border-gray-700 shadow-lg w-full overflow-auto rounded text-sm ${r || "bg-white dark:bg-darkBackground dark:text-white"}`,
         role: "listbox",
         style: R,
         children: [
@@ -30623,7 +30623,21 @@ class DesmyComboBox extends Component {
     this.fetchOptions(1, this.state.searchTerm), document.addEventListener("click", this.handleClickOutside);
   }
   componentDidUpdate(A) {
-    this.props.value !== A.value && this.props.value && this.setState({ selectedOptions: this.props.value });
+    this.props.value !== A.value && this.props.value && this.setState({ selectedOptions: this.props.value }), this.props.request.url !== A.request.url && this.setState(
+      {
+        options: [],
+        filteredOptions: [],
+        page: 1,
+        totalPages: 1,
+        loading: !1,
+        searchTerm: "",
+        showDropdown: !1,
+        highlightedIndex: -1
+      },
+      () => {
+        this.fetchOptions(1, "");
+      }
+    );
   }
   componentWillUnmount() {
     document.removeEventListener("click", this.handleClickOutside), this.debounceTimer && window.clearTimeout(this.debounceTimer);
@@ -30711,23 +30725,21 @@ class DesmyComboBox extends Component {
     this.inputRef.current?.focus();
   }
   handleRemoveTag = (A) => {
-    this.setState(
-      (l) => {
-        const o = l.selectedOptions.length === 1, t = o ? [] : l.selectedOptions.filter((n) => n.id !== A);
-        this.props.onChange && this.props.onChange(t), o && this.props.onClear && this.props.onClear();
-        let a = l.filteredOptions;
-        if (!o) {
-          const n = l.options.find((B) => B.id === A);
-          n && !l.filteredOptions.some((B) => B.id === A) && (a = [...l.filteredOptions, n]), a = a.filter(
-            (B) => B.name.toLowerCase().includes(l.searchTerm.toLowerCase())
-          );
-        }
-        return {
-          selectedOptions: t,
-          filteredOptions: a
-        };
+    this.setState((l) => {
+      const o = l.selectedOptions.length === 1, t = o ? [] : l.selectedOptions.filter((n) => n.id !== A);
+      this.props.onChange && this.props.onChange(t), o && this.props.onClear && this.props.onClear();
+      let a = l.filteredOptions;
+      if (!o) {
+        const n = l.options.find((B) => B.id === A);
+        n && !l.filteredOptions.some((B) => B.id === A) && (a = [...l.filteredOptions, n]), a = a.filter(
+          (B) => B.name.toLowerCase().includes(l.searchTerm.toLowerCase())
+        );
       }
-    );
+      return {
+        selectedOptions: t,
+        filteredOptions: a
+      };
+    });
   };
   handleScroll = (A) => {
     const { scrollTop: l, scrollHeight: o, clientHeight: t } = A.currentTarget, { loading: a, page: n, totalPages: B, searchTerm: r } = this.state;
@@ -30762,27 +30774,33 @@ class DesmyComboBox extends Component {
   };
   renderDropdown() {
     const { filteredOptions: A, loading: l, showDropdown: o, highlightedIndex: t } = this.state;
-    return o ? /* @__PURE__ */ jsxRuntimeExports.jsx(DropdownPositionWrapper, { targetRef: this.inputRef, visible: o, maxHeight: 350, onScroll: this.handleScroll, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-      ComboBoxList,
+    return o ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+      DropdownPositionWrapper,
       {
-        options: A,
-        loading: l,
-        selectedOptions: this.props.value ?? this.state.selectedOptions,
-        highlightedIndex: t,
-        onOptionClick: this.handleOptionClick,
-        onOptionHover: this.handleOptionHover,
+        targetRef: this.inputRef,
+        visible: o,
+        maxHeight: 350,
         onScroll: this.handleScroll,
-        style: { width: "100%", maxHeight: "100%", overflowY: "auto" }
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          ComboBoxList,
+          {
+            options: A,
+            loading: l,
+            selectedOptions: this.props.value ?? this.state.selectedOptions,
+            highlightedIndex: t,
+            onOptionClick: this.handleOptionClick,
+            onOptionHover: this.handleOptionHover,
+            onScroll: this.handleScroll,
+            style: { width: "100%", maxHeight: "100%", overflowY: "auto" }
+          }
+        )
       }
-    ) }) : null;
+    ) : null;
   }
   handleClearAll = () => {
-    this.setState(
-      { selectedOptions: [] },
-      () => {
-        this.props.onChange && this.props.onChange([]), this.props.onClear && this.props.onClear();
-      }
-    );
+    this.setState({ selectedOptions: [] }, () => {
+      this.props.onChange && this.props.onChange([]), this.props.onClear && this.props.onClear();
+    });
   };
   render() {
     const { searchTerm: A, selectedOptions: l } = this.state, { placeholder: o, containerClassName: t, type: a = DesmyState.COMBOBOX } = this.props, n = this.props.value ?? l, B = A;
@@ -30795,11 +30813,26 @@ class DesmyComboBox extends Component {
           /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "div",
             {
-              className: `flex ${n.length === 0 ? "" : `flex-wrap ${a === DesmyState.NORMAL ? "" : "pt-5"}`} items-center border font-poppinsRegular border-gray-300 dark:border-white bg-inherit rounded-none px-2 py-1 min-h-12 cursor-text  transition-all`,
+              className: `flex ${n.length === 0 ? "" : `flex-wrap ${a === DesmyState.NORMAL ? "" : "pt-5"}`} items-center border font-poppinsRegular border-black dark:border-white bg-inherit rounded-none px-2 py-1 min-h-12 cursor-text  transition-all`,
               children: [
                 a === DesmyState.NORMAL ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full py-2 flex items-start justify-between ", children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full", children: n.map((r) => r.name).join(", ") }),
-                  n.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 12 12", onClick: this.handleClearAll, className: "size-4 ml-1 text-red-500 focus:outline-none cursor-pointer", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fill: "currentColor", d: "M3.85 3.15a.5.5 0 0 0-.707.707l2.15 2.15l-2.15 2.15a.5.5 0 0 0 .707.707L6 6.714l2.15 2.15a.5.5 0 0 0 .707-.707l-2.15-2.15l2.15-2.15a.5.5 0 0 0-.707-.707L6 5.3z" }) })
+                  n.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "svg",
+                    {
+                      xmlns: "http://www.w3.org/2000/svg",
+                      viewBox: "0 0 12 12",
+                      onClick: this.handleClearAll,
+                      className: "size-4 ml-1 text-red-500 focus:outline-none cursor-pointer",
+                      children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                        "path",
+                        {
+                          fill: "currentColor",
+                          d: "M3.85 3.15a.5.5 0 0 0-.707.707l2.15 2.15l-2.15 2.15a.5.5 0 0 0 .707.707L6 6.714l2.15 2.15a.5.5 0 0 0 .707-.707l-2.15-2.15l2.15-2.15a.5.5 0 0 0-.707-.707L6 5.3z"
+                        }
+                      )
+                    }
+                  )
                 ] }) : n.map((r) => /* @__PURE__ */ jsxRuntimeExports.jsx(SelectedTag, { option: r, onRemove: this.handleRemoveTag }, r.id)),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `${n.length === 0 ? "py-0" : "py-2"} w-full bg-inherit`, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
                   DesmyComboBoxInput,

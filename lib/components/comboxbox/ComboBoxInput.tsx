@@ -15,7 +15,7 @@ const DesmyComboBoxInput = forwardRef<HTMLInputElement, ComboBoxInputProps>(
     <div className="flex w-full bg-inherit" onClick={onClick}>
       <input
         type="text"
-        className="flex flex-grow focus:outline-none text-sm w-full placeholder-gray-300 dark:placeholder-gray-600"
+        className="flex flex-grow focus:outline-none text-sm w-full placeholder-gray-600 dark:placeholder-gray-600"
         value={value}
         onChange={onChange}
         onFocus={onFocus}

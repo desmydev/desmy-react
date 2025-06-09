@@ -31,7 +31,7 @@ export default class ComboBoxList<T extends OptionType> extends Component<ComboB
     return (
       <div
         onScroll={onScroll}
-        className={`z-10 max-h-72 border-[1px] border-gray-200 dark:border-gray-700 shadow-lg w-full overflow-auto rounded text-sm ${
+        className={`z-10 max-h-72 border-[1px] min-h-48 border-gray-200 dark:border-gray-700 shadow-lg w-full overflow-auto rounded text-sm ${
           className || "bg-white dark:bg-darkBackground dark:text-white"
         }`}
         role="listbox"
