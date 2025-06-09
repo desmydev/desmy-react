@@ -20,7 +20,10 @@ export type DesmyDataTableRef = {
 
 interface DataTableProps {
   settings: DesmyDataTableSettingsProps;
-  content?: React.ReactNode; 
+   content?: 
+    | React.ReactElement<{ searchText?: string; filterhead?: FilterItem[] }>
+    | ((args: { searchText?: string; filterhead?: any |any[] }) => React.ReactNode);
+   
   className?:string,
   onRef?: (ref: DesmyDataTable | null) => void;
 }
@@ -746,11 +749,13 @@ async fetchEntities() { // Default to an empty string if filtered_data is not pa
                       </div>
                     </div>
                   </header>
-                  {
-                    (this.props.content != null) ? 
-                      <div>{this.props.content}</div>
-                    :null
-                  }
+                  {this.props.content != null
+                    ? typeof this.props.content === 'function'
+                      ? this.props.content({ searchText: this.state.searchText, filterhead: this.queryParam }) 
+                      : React.isValidElement(this.props.content)
+                        ? React.cloneElement(this.props.content as React.ReactElement<any>, { searchText: this.state.searchText, filterhead: this.queryParam})
+                        : this.props.content 
+                    : null}
                                
               </div>
               <div>

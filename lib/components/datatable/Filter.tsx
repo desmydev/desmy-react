@@ -4,7 +4,6 @@ import { DesmyModalContainer } from '../modalcontainer/DesmyModalContainer';
 import DesmyAuth from '../apis/DesmyAuth';
 import { DesmyState as CommonState } from '../apis/DesmyState';
 import { DesmyDropdown } from '../dropdown/DesmyDropdown';
-import { DesmyDropdownItem } from '../apis/SharedProps';
 import DesmyCommons from '../apis/DesmyCommons';
 import { DesmyButton } from '../button/DesmyButton';
 import { DesmyDatePicker } from '../datepicker/DesmyDatePicker';
@@ -45,7 +44,6 @@ class DesmyFilter extends Component<CreateProps, CreateState> {
                     updatedInput[item.label] = item;
                 }
             });
-            console.log("content=",this.props.content," updatedInput=",updatedInput)
             this.setState({ input: updatedInput });
         }
         this.fetchFilters();
@@ -67,21 +65,25 @@ class DesmyFilter extends Component<CreateProps, CreateState> {
                 const data = await response.json();
                 if (data && data.success) {
                     this.setState({ filters: data.data, isLoading: false });
-                }else{
+                } else {
                     this.handleError(data?.message || 'Failed to fetch filters');
                 }
             } else {
+                this.handleError('Failed to fetch filters');
             }
-        } catch (_) {
+        } catch (error) {
+            this.handleError('An error occurred while fetching filters');
         } finally {
             this.setState({ hasRequest: false });
         }
     };
-    handleError = (message: string) => { 
+
+    handleError = (message: string) => {
         DesmyToast.error(message);
-        this.setState({ isLoading: false, hasRequest: false });   
+        this.setState({ isLoading: false, hasRequest: false });
         this.props.onClose?.();
-    }
+    };
+
     handleOnSubmit = async () => {
         const { input } = this.state;
         this.props.onSuccess?.(input);
@@ -91,107 +93,121 @@ class DesmyFilter extends Component<CreateProps, CreateState> {
         const { filters, input, isLoading } = this.state;
         const filterEntries = Object.entries(filters);
 
-        let startDate: Date | undefined;
-        let endDate: Date | undefined;
-        const dateFilter = filterEntries.find(([key]) => key.toLowerCase().includes('date'));
+        let minDate: Date | undefined;
+        let maxDate: Date | undefined;
 
-        if (dateFilter) {
-            const [, dataList] = dateFilter;
-            if (dataList?.[0]?.startDate && dataList?.[0]?.endDate) {
-                startDate = new Date(dataList[0].startDate);
-                endDate = new Date(dataList[0].endDate);
-            }
-        }
         return (
-            <>
-                <DesmyModalContainer
-                    data={{ title: `Filter` }}
-                    containerClassName={`bg-white dark:bg-darkBackground border-[1px] border-gray-100 dark:border-darkDialogBackground`}
-                    className="add-event-multi-modal max-w-lg p-2"
-                    onClose={this.props.onClose}
-                >
-                    <div className='flex flex-col w-full min-h-52 space-y-6'>
-                        {isLoading ? (
-                            <div className='flex flex-col px-4 py-5 dark:bg-darkDialogBackground w-full animate-pulse'>
-                                <div className='flex w-24 rounded-full h-4 bg-gray-300 dark:bg-darkPrimaryBorderLight'></div>
-                                <div className='flex flex-col w-full mt-10 space-y-6'>
-                                    {Array.apply(0, Array(3)).map((x, i) => (
-                                        <div key={i} className={`flex ${i == 0 ? `w-4/5` : i == 1 ? `w-3/5` : `w-2/5`} rounded-full h-4 bg-gray-300 dark:bg-darkPrimaryBorderLight`}></div>
-                                    ))}
-                                </div>
+            <DesmyModalContainer
+                data={{ title: `Filter` }}
+                containerClassName={`bg-white dark:bg-darkBackground border-[1px] border-gray-100 dark:border-darkDialogBackground`}
+                className="add-event-multi-modal max-w-lg p-2"
+                onClose={this.props.onClose}
+            >
+                <div className='flex flex-col w-full min-h-52 space-y-6'>
+                    {isLoading ? (
+                        <div className='flex flex-col px-4 py-5 dark:bg-darkDialogBackground w-full animate-pulse'>
+                            <div className='flex w-24 rounded-full h-4 bg-gray-300 dark:bg-darkPrimaryBorderLight'></div>
+                            <div className='flex flex-col w-full mt-10 space-y-6'>
+                                {Array.apply(0, Array(3)).map((_, i) => (
+                                    <div key={i} className={`flex ${i === 0 ? `w-4/5` : i === 1 ? `w-3/5` : `w-2/5`} rounded-full h-4 bg-gray-300 dark:bg-darkPrimaryBorderLight`}></div>
+                                ))}
                             </div>
-                        ) : (
-                            filterEntries.map(([key, dataList], index) => {
-                                if (dataList && dataList.length > 0) {
-                                    const isDateField = key.toLowerCase().includes('date');
-                                    if (isDateField) {
-                                        return (
+                        </div>
+                    ) : (
+                        filterEntries.map(([key, dataList], index) => {
+                            if (!dataList || dataList.length === 0) return null;
+
+                            // For date_filters, currentSelection is the id of the selected option (e.g. 'date', 'today')
+                            // For others, use id or value
+                            let currentSelection;
+                            if (key === "date_filters") {
+                                currentSelection = input[key]?.id || input[key];
+                            } else {
+                                currentSelection = input[key]?.id || input[key]?.value || input[key];
+                            }
+
+                            let showDatePicker = false;
+                            if (key === "date_filters" && input[key] !== undefined) {
+                                const selectedFilter = input[key];
+                                showDatePicker = selectedFilter?.id === "date" || selectedFilter?.value?.key === "date";
+
+                                const data = selectedFilter?.value || {};
+                                minDate = data.minDate ? parseISO(data.minDate) : undefined;
+                                maxDate = data.maxDate ? parseISO(data.maxDate) : undefined;
+                            }
+
+                            return (
+                                <div key={index} className="flex flex-col space-y-4">
+                                    <DesmyDropdown
+                                        defaultValue={currentSelection}
+                                        placeholder={DesmyCommons.toSentenceCase(String(key.replace('_', ' ').toUpperCase()))}
+                                        data={dataList.map((item: any) => ({
+                                            id: item.id || item,
+                                            name: item.name || item,
+                                            value: item.id || item,
+                                            label: item.name || item,
+                                        }))}
+                                        handleChange={(data: any) => {
+                                            if (!DesmyCommons.isEmptyOrNull(data)) {
+                                                this.setState(prevState => {
+                                                    const newInput = {
+                                                        ...prevState.input,
+                                                        [key]: data,
+                                                    };
+                                                    if (key === "date_filters" && data?.id !== "date") {
+                                                        delete newInput['date'];
+                                                    }
+                                                    return { input: newInput };
+                                                });
+                                            }
+                                        }}
+                                    />
+
+                                    {showDatePicker && (
+                                        <div className='flex w-full mt-3'>
                                             <DesmyDatePicker
-                                                key={index}
-                                                defaultValue={input[key]?.value}
-                                                label={DesmyCommons.toSentenceCase(String(key.replace('_', ' ').toUpperCase()))}
-                                                minDate={startDate}
-                                                maxDate={endDate}
-                                                displayFormat="MMMM dd, yyyy"
+                                                defaultValue={input['date']?.value || { startDate: undefined, endDate: undefined }}
+                                                label={`Select Date Range`}
+                                                minDate={minDate}
+                                                maxDate={maxDate}
+                                                displayFormat="MMMM dd, yyyy hh:mm a"
                                                 useRange={true}
                                                 withTime={true}
                                                 onSelected={(dates: { startDate?: string; endDate?: string }) => {
                                                     const { startDate, endDate } = dates;
                                                     if (startDate && endDate) {
+                                                        const formattedName = `${isValid(parseISO(startDate)) ? format(parseISO(startDate), 'MMMM dd, yyyy hh:mm a') : ''} - ${isValid(parseISO(endDate)) ? format(parseISO(endDate), 'MMMM dd, yyyy hh:mm a') : ''}`;
                                                         const selectedValue = {
-                                                            id: startDate,
-                                                            name: `${isValid(parseISO(startDate)) ? format(parseISO(startDate), 'MMMM dd, yyyy hh:mm a') : ''} - ${isValid(parseISO(endDate)) ? format(parseISO(endDate), 'MMMM dd, yyyy hh:mm a') : ''}`,
+                                                            id: 'custom',
+                                                            name: formattedName,
                                                             value: { startDate, endDate },
-                                                            label: "Date"
+                                                            label: "Custom Date Range"
                                                         };
                                                         this.setState(prevState => ({
                                                             input: {
                                                                 ...prevState.input,
-                                                                [key]: selectedValue
+                                                                ['date']: selectedValue
                                                             }
                                                         }));
                                                     }
                                                 }}
                                             />
-                                        );
-                                    } else {
-                                        return (
-                                            <DesmyDropdown
-                                                key={index}
-                                                defaultValue={input[key]?.id} 
-                                                placeholder={DesmyCommons.toSentenceCase(String(key.replace('_', ' ').toUpperCase()))} 
-                                                data={dataList.map((item: DesmyDropdownItem) => ({
-                                                    id: item.id,
-                                                    name: item.name,
-                                                    value: item.id || item, 
-                                                    label: item.name || item, 
-                                                }))}
-                                                handleChange={(data: DesmyDropdownItem | DesmyDropdownItem[]) =>
-                                                    (!DesmyCommons.isEmptyOrNull(data) && this.setState(prevState => ({
-                                                        input: { 
-                                                            ...prevState.input, 
-                                                            [key]: Array.isArray(data) ? data : data
-                                                        }
-                                                    })))
-                                                }
-                                            />
-                                        );
-                                    }
-                                }
-                                return null;
-                            })
-                        )}
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        })
+                    )}
 
-                        <div className='flex justify-end mt-5'>
-                            <DesmyButton
-                                onClick={this.handleOnSubmit} 
-                                hasRequest={this.state.hasRequest} 
-                                label={`Save`} 
-                            />
-                        </div>
+                    <div className='flex justify-end mt-5'>
+                        <DesmyButton
+                            onClick={this.handleOnSubmit}
+                            hasRequest={this.state.hasRequest}
+                            label={`Save`}
+                        />
                     </div>
-                </DesmyModalContainer>
-            </>
+                </div>
+            </DesmyModalContainer>
         );
     }
 }

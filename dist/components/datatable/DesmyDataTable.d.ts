@@ -11,7 +11,13 @@ export type DesmyDataTableRef = {
 };
 interface DataTableProps {
     settings: DesmyDataTableSettingsProps;
-    content?: React.ReactNode;
+    content?: React.ReactElement<{
+        searchText?: string;
+        filterhead?: FilterItem[];
+    }> | ((args: {
+        searchText?: string;
+        filterhead?: any | any[];
+    }) => React.ReactNode);
     className?: string;
     onRef?: (ref: DesmyDataTable | null) => void;
 }

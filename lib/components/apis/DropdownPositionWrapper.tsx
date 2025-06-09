@@ -78,61 +78,71 @@ export class DropdownPositionWrapper extends Component<
     if (this.fadeTimeout) clearTimeout(this.fadeTimeout);
   }
 
-  updatePosition = () => {
-    const { targetRef, maxHeight = 350, viewType = "auto" } = this.props;
-    const target = targetRef.current;
-    if (!target) return;
+ updatePosition = () => {
+  const { targetRef, maxHeight = 350, viewType = "auto" } = this.props;
+  const target = targetRef.current;
+  if (!target) return;
 
-    const rect = target.getBoundingClientRect();
-    const viewportHeight = window.innerHeight;
-    const viewportWidth = window.innerWidth;
+  const rect = target.getBoundingClientRect();
+  const viewportHeight = window.innerHeight;
+  const viewportWidth = window.innerWidth;
 
-    const isSmallScreen = viewportWidth <= 480;
-    const padding = 5;
+  const isSmallScreen = viewportWidth <= 480;
+  const padding = 5;
 
-    const stylePosition: React.CSSProperties = {};
-    let maxH = maxHeight;
+  const stylePosition: React.CSSProperties = {};
+  let maxH = maxHeight;
 
-    if (viewType === "full" && isSmallScreen) {
-      maxH = viewportHeight;
-      stylePosition.top = 0;
+  if (viewType === "full" && isSmallScreen) {
+    maxH = viewportHeight;
+    stylePosition.top = 0;
+  } else {
+    const spaceBelow = viewportHeight - rect.bottom;
+    const spaceAbove = rect.top;
+
+    if (spaceBelow < maxHeight && spaceAbove > spaceBelow) {
+      stylePosition.bottom = viewportHeight - rect.top + padding;
+      maxH = spaceAbove > maxHeight ? maxHeight : spaceAbove;
     } else {
-      const spaceBelow = viewportHeight - rect.bottom;
-      const spaceAbove = rect.top;
-
-      if (spaceBelow < maxHeight && spaceAbove > spaceBelow) {
-        stylePosition.bottom = viewportHeight - rect.top + padding;
-        maxH = spaceAbove > maxHeight ? maxHeight : spaceAbove;
-      } else {
-        stylePosition.top = rect.bottom + padding;
-        maxH = spaceBelow > maxHeight ? maxHeight : spaceBelow;
-      }
+      stylePosition.top = rect.bottom + padding;
+      maxH = spaceBelow > maxHeight ? maxHeight : spaceBelow;
     }
+  }
 
-    let left = rect.left;
-    let width = rect.width;
+  let left = rect.left;
+  let width = rect.width;
 
-    if (viewType === "full") {
-      width = viewportWidth;
-      const inputCenter = rect.left + rect.width / 2;
-      left = inputCenter - width / 2;
+  if (viewType === "full") {
+    width = viewportWidth;
+    const inputCenter = rect.left + rect.width / 2;
+    left = inputCenter - width / 2;
+    if (left < 0) left = 0;
+    if (left + width > viewportWidth) left = viewportWidth - width;
+  } else {
+    // Enforce minWidth of 400px here when NOT full mode
+    width = Math.max(400, rect.width);
+    // Optionally adjust left if width overflows viewport
+    if (left + width > viewportWidth) {
+      left = viewportWidth - width;
       if (left < 0) left = 0;
-      if (left + width > viewportWidth) left = viewportWidth - width;
     }
+  }
 
-    const styles: React.CSSProperties = {
-      position: "fixed",
-      left,
-      width: viewType === "full" ? "100%" : rect.width,
-      maxHeight: maxH,
-      overflowY: "auto",
-      fontFamily: "inherit",
-      zIndex: 2147483647,
-      ...stylePosition,
-    };
-
-    this.setState({ styles });
+  const styles: React.CSSProperties = {
+    position: "fixed",
+    left,
+    width,
+    minWidth: 400,  // Add minWidth here
+    maxHeight: maxH,
+    overflowY: "auto",
+    fontFamily: "inherit",
+    zIndex: 2147483647,
+    ...stylePosition,
   };
+
+  this.setState({ styles });
+};
+
 
   render() {
     const {

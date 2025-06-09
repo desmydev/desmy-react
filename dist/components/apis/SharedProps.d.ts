@@ -116,6 +116,7 @@ export interface DesmyDropdownItem {
     name: string | null;
     icon?: string | null;
     data?: any;
+    hint?: any;
 }
 export interface DesmySideBarItemData {
     url?: string;

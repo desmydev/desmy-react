@@ -16,7 +16,7 @@ import { DesmyClickOutsideListener } from './components/clickoutsidelistener/Des
 import { DesmyDropdown } from './components/dropdown/DesmyDropdown';
 import { DesmyModalContainer } from './components/modalcontainer/DesmyModalContainer';
 import { DesmyTextInput } from './components/input/DesmyTextInput';
-import { DesmySearchInput } from './components/input/DesmySearchInput';
+import { DesmySearchInput } from './components/input/search/DesmySearchInput';
 import { DesmySideBarItem } from './components/navigationbar/DesmySideBarItem';
 import { DesmyDataTable } from './components/datatable/DesmyDataTable';
 import { DesmyDataSetTable } from './components/datatable/DesmyDataSetTable';
