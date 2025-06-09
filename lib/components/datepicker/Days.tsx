@@ -249,8 +249,7 @@ canNavigate = (direction: "next" | "prev", calendarIndex: number) => {
     const isNextDisabled = maxDate && isAfter(currentMonth, maxDate);
 
     return (
-      <div className="w-[350px] text-xs h-96 p-4">
-        {/* Month and Year Navigation */}
+      <div className="w-full text-xs min-h-72  p-4 font-poppinsRegular">
         <div className="flex justify-between items-center mb-2">
           <button
             className={`p-1 text-gray-500 hover:bg-gray-200 rounded ${isPrevDisabled ? "cursor-not-allowed text-gray-300" : ""}`}
@@ -273,7 +272,7 @@ canNavigate = (direction: "next" | "prev", calendarIndex: number) => {
             </span>
             <span
               className={`text-lg font-semibold cursor-pointer ${
-                viewMode === "years" ? "text-blue-500 underline" : "hover:text-blue-500"
+                viewMode === "years" ? "text-blue-500 dark:text-white underline" : "hover:text-blue-500 dark:text-white"
               }`}
               onClick={() => this.setState({ viewMode: viewMode === "years" ? "days" : "years" })}
             >
@@ -315,13 +314,13 @@ canNavigate = (direction: "next" | "prev", calendarIndex: number) => {
         {/* Days Grid */}
         {viewMode === "days" && (
           <>
-            <div className="grid grid-cols-7 gap-1 text-center font-semibold text-gray-600 dark:text-white">
+            <div className="w-full grid grid-cols-7 gap-1 text-center font-semibold text-gray-600 dark:text-white">
               {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
                 <div key={day} className="h-8">{day}</div>
               ))}
             </div>
 
-            <div className="grid grid-cols-7 gap-1 text-center">
+            <div className="w-full grid grid-cols-7 gap-1 text-center">
               {days.map((day) => {
                 const isDisabled = 
                 (minDate && isBefore(day, subDays(minDate, 1))) || 

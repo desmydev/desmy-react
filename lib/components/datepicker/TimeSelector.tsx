@@ -51,8 +51,8 @@ export default class TimeSelector extends React.Component<TimeSelectorProps> {
     const { h, m, meridian } = this.parseTime(value);
 
     return (
-      <div className="text-xs text-center">
-        <label className="flex w-full text-center lg:text-start font-bold mb-1">{label}</label>
+      <div className="w-full text-xs text-center">
+        <label className="flex w-full text-center justify-center items-center font-bold mb-1">{label}</label>
         <div className="inline-flex items-center rounded p-2 gap-4 shadow dark:bg-darkBackground">
           {["h", "m", "meridian"].map((part) => (
             <div key={part} className="flex flex-col items-center">

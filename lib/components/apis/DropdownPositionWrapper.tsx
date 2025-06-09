@@ -6,11 +6,16 @@ interface DropdownPositionWrapperProps {
   children: ReactNode;
   maxHeight?: number;
   visible: boolean;
-  onScroll?: (e: React.UIEvent<HTMLDivElement>) => void; // Added onScroll prop
+  viewType?: "full" | "auto";
+  onScroll?: (e: React.UIEvent<HTMLDivElement>) => void;
+  fadeDurationMs?: number;
+  onClose?: () => void; // new prop for close button
 }
 
 interface DropdownPositionWrapperState {
   styles: React.CSSProperties;
+  isVisible: boolean;
+  isActive: boolean;
 }
 
 export class DropdownPositionWrapper extends Component<
@@ -18,22 +23,50 @@ export class DropdownPositionWrapper extends Component<
   DropdownPositionWrapperState
 > {
   wrapperRef = createRef<HTMLDivElement>();
+  fadeTimeout?: number;
+
+  static defaultProps = {
+    fadeDurationMs: 200,
+  };
 
   constructor(props: DropdownPositionWrapperProps) {
     super(props);
-    this.state = { styles: {} };
+    this.state = {
+      styles: {},
+      isVisible: props.visible,
+      isActive: false,
+    };
   }
 
   componentDidMount() {
     window.addEventListener("resize", this.updatePosition);
     window.addEventListener("scroll", this.updatePosition, true);
-    this.updatePosition();
+
+    if (this.state.isVisible) {
+      setTimeout(() => this.setState({ isActive: true }), 10);
+      this.updatePosition();
+    }
   }
 
   componentDidUpdate(prevProps: DropdownPositionWrapperProps) {
+    if (prevProps.visible !== this.props.visible) {
+      if (this.props.visible) {
+        this.setState({ isVisible: true }, () => {
+          this.updatePosition();
+          setTimeout(() => this.setState({ isActive: true }), 10);
+        });
+      } else {
+        this.setState({ isActive: false });
+        if (this.fadeTimeout) clearTimeout(this.fadeTimeout);
+        this.fadeTimeout = window.setTimeout(() => {
+          this.setState({ isVisible: false });
+        }, this.props.fadeDurationMs);
+      }
+    }
+
     if (
-      prevProps.visible !== this.props.visible &&
-      this.props.visible
+      (prevProps.visible !== this.props.visible && this.props.visible) ||
+      (prevProps.viewType !== this.props.viewType && this.props.visible)
     ) {
       this.updatePosition();
     }
@@ -42,62 +75,136 @@ export class DropdownPositionWrapper extends Component<
   componentWillUnmount() {
     window.removeEventListener("resize", this.updatePosition);
     window.removeEventListener("scroll", this.updatePosition, true);
+    if (this.fadeTimeout) clearTimeout(this.fadeTimeout);
   }
 
   updatePosition = () => {
-    const { targetRef, maxHeight = 350 } = this.props;
+    const { targetRef, maxHeight = 350, viewType = "auto" } = this.props;
     const target = targetRef.current;
     if (!target) return;
 
     const rect = target.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
+    const viewportWidth = window.innerWidth;
 
-    const spaceBelow = viewportHeight - rect.bottom;
-    const spaceAbove = rect.top;
+    const isSmallScreen = viewportWidth <= 480;
+    const padding = 5;
 
     const stylePosition: React.CSSProperties = {};
     let maxH = maxHeight;
 
-    const padding = 5; // 5px gap
-
-    if (spaceBelow < maxHeight && spaceAbove > spaceBelow) {
-      // open upward
-      stylePosition.bottom = viewportHeight - rect.top + padding; // add 5px gap above
-      maxH = spaceAbove > maxHeight ? maxHeight : spaceAbove;
+    if (viewType === "full" && isSmallScreen) {
+      maxH = viewportHeight;
+      stylePosition.top = 0;
     } else {
-      // open downward
-      stylePosition.top = rect.bottom + padding; // add 5px gap below
-      maxH = spaceBelow > maxHeight ? maxHeight : spaceBelow;
+      const spaceBelow = viewportHeight - rect.bottom;
+      const spaceAbove = rect.top;
+
+      if (spaceBelow < maxHeight && spaceAbove > spaceBelow) {
+        stylePosition.bottom = viewportHeight - rect.top + padding;
+        maxH = spaceAbove > maxHeight ? maxHeight : spaceAbove;
+      } else {
+        stylePosition.top = rect.bottom + padding;
+        maxH = spaceBelow > maxHeight ? maxHeight : spaceBelow;
+      }
+    }
+
+    let left = rect.left;
+    let width = rect.width;
+
+    if (viewType === "full") {
+      width = viewportWidth;
+      const inputCenter = rect.left + rect.width / 2;
+      left = inputCenter - width / 2;
+      if (left < 0) left = 0;
+      if (left + width > viewportWidth) left = viewportWidth - width;
     }
 
     const styles: React.CSSProperties = {
       position: "fixed",
-      left: rect.left,
-      width: rect.width,
+      left,
+      width: viewType === "full" ? "100%" : rect.width,
       maxHeight: maxH,
       overflowY: "auto",
-      boxShadow: "0 4px 6px rgba(0,0,0,0.2)",
       fontFamily: "inherit",
       zIndex: 2147483647,
       ...stylePosition,
     };
 
-  this.setState({ styles });
-};
+    this.setState({ styles });
+  };
 
   render() {
-    const { visible, children, onScroll } = this.props;
-    const { styles } = this.state;
+    const {
+      children,
+      onScroll,
+      fadeDurationMs = 100,
+      viewType = "auto",
+      onClose,
+    } = this.props;
+    const { styles, isVisible, isActive } = this.state;
 
-    if (!visible) return null;
+    if (!isVisible) return null;
+
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    const isSmallScreen = viewportWidth <= 480;
+
+    // Determine if we are in the full + small screen mode where maxHeight = viewportHeight
+    const isFullSmallMode =
+      viewType === "full" && isSmallScreen && styles.maxHeight === viewportHeight;
+
+    const fadeStyles: React.CSSProperties = {
+      opacity: isActive ? 1 : 0,
+      transition: `opacity ${fadeDurationMs}ms ease, transform ${fadeDurationMs}ms ease`,
+      pointerEvents: isActive ? "auto" : "none",
+      ...styles,
+    };
+
+    if (isFullSmallMode) {
+      fadeStyles.top = 0;
+      fadeStyles.height = viewportHeight;
+      fadeStyles.display = "flex";
+      fadeStyles.justifyContent = "center";
+      fadeStyles.alignItems = "center";
+      fadeStyles.transform = isActive ? "translateY(0)" : "translateY(-10px)";
+      fadeStyles.flexDirection = "column";
+      fadeStyles.position = "fixed";
+      fadeStyles.left = 0;
+      fadeStyles.width = "100%";
+    } else {
+      fadeStyles.transform = isActive ? "translateY(0)" : "translateY(-10px)";
+    }
 
     return ReactDOM.createPortal(
       <div
         ref={this.wrapperRef}
-        style={styles}
+        style={fadeStyles}
         tabIndex={-1}
         onScroll={onScroll}
       >
+        {isFullSmallMode && onClose && (
+          <button
+            onClick={onClose}
+            style={{
+              position: "absolute",
+              top: 10,
+              right: 10,
+              zIndex: 2147483648,
+              background: "rgba(0,0,0,0.5)",
+              border: "none",
+              borderRadius: "4px",
+              color: "white",
+              padding: "6px 10px",
+              cursor: "pointer",
+              fontSize: 16,
+            }}
+            aria-label="Close dropdown"
+            type="button"
+          >
+            ×
+          </button>
+        )}
         {children}
       </div>,
       document.body
