@@ -235,3 +235,13 @@ body {
   font-size: 12px;
   transition: all 0.3s ease-in-out;
 }
+.chart-wrapper {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden; /* prevent outer scroll */
+}
+
+.bar-chart-scroll-container {
+  overflow-x: auto;
+  width: 100%;
+}

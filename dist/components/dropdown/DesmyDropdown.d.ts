@@ -52,6 +52,7 @@ declare class DesmyDropdown extends Component<Props, State> {
     private divRef;
     private dropdownContentRef;
     private searchRef;
+    private hasCleared;
     constructor(props: Props);
     componentDidMount(): void;
     componentDidUpdate(prevProps: Props): void;

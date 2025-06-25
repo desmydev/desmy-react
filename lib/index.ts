@@ -45,6 +45,9 @@ import  { DesmyDatePicker } from "./components/datepicker/DesmyDatePicker";
 import  {DesmyVerticalStepper} from './components/stepper/DesmyVerticalStepper'
 import  {DesmyLazyImage} from './components/image/DesmyLazyImage'
 import  {DesmyTimeAgo} from './components/apis/DesmyTimeAgo'
+import {DesmyBarChart} from './components/chart/barchart/DesmyBarChart'
+import {DesmyAreaChart} from './components/chart/DesmyAreaChart'
+import {DesmyPieChart} from './components/chart/DesmyPieChart'
 import {DesmyComboBox} from './components/comboxbox/DesmyComboBox';
 import './index.css';
 export  {
@@ -92,7 +95,8 @@ export  {
             DesmyAxiosService,
             DesmySuspenseWrapper,
             DesmyWithRouter,DesmyRenderRoutes,DesmyDocumentPicker,
-            DesmyTimeAgo
+            DesmyTimeAgo,DesmyAreaChart,
+            DesmyBarChart,DesmyPieChart
             
         }
 

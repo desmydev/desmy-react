@@ -38,7 +38,7 @@ export default class ComboBoxList<T extends OptionType> extends Component<ComboB
         style={style}
       >
         {options.length === 0 && !loading && (
-          <div className="p-2 text-gray-500 dark:text-white">No options found</div>
+          <div className="flex w-full h-24 text-sm dark:text-white justify-center items-center text-center">No record found</div>
         )}
         {options.map((opt, i) => (
           <ComboBoxOption

@@ -13,7 +13,7 @@ interface TextInputProps {
     inputClassName?: string;
     emailExtensions?: string[];
     onChange: (value: string) => void;
-    onSearch?: (value: string) => void;
+    onSearch?: (value: any) => void;
     onRef?: (instance: HTMLInputElement | null) => void;
     autoFocus?: boolean;
     onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
@@ -30,7 +30,7 @@ interface TextInputState {
     dropdownPopoverShow: boolean;
     hasPressed: boolean;
     input: {
-        [key: string]: string;
+        [key: string]: string | string[]
     };
 }
 
@@ -311,7 +311,7 @@ class DesmyTextInput extends Component<TextInputProps, TextInputState> {
                             className="absolute border-none z-[800] w-auto float-left py-2 bg-inherit list-none text-left rounded shadow-lg mt-1"
                         >
                             <HexColorPicker
-                                color={this.state.input.data}
+                                color={ Array.isArray(this.state.input.data) ? this.state.input.data?.[0] : this.state.input.data}
                                 onChange={(data) => {
                                     this.setState((prevState) => ({
                                         input: {

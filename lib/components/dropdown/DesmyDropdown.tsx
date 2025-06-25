@@ -66,6 +66,7 @@ class DesmyDropdown extends Component<Props, State> {
     private divRef: RefObject<HTMLDivElement | null> = createRef();
     private dropdownContentRef: RefObject<HTMLDivElement | null> = createRef();
     private searchRef: RefObject<HTMLInputElement | null> = createRef();
+    private hasCleared: boolean = false;
 
     constructor(props: Props) {
         super(props);
@@ -101,9 +102,26 @@ class DesmyDropdown extends Component<Props, State> {
     }
 
     componentDidUpdate(prevProps: Props): void {
+        const { defaultValue, handleClear } = this.props;
+
+        if (
+            defaultValue !== prevProps.defaultValue &&
+            Commons.isEmptyOrNull(defaultValue) &&
+            !this.hasCleared
+        ) {
+            handleClear?.();
+            this.hasCleared = true; // mark as cleared so it won't run again immediately
+            return;
+        }
+
+        // Reset the flag if defaultValue becomes non-empty again
+        if (!Commons.isEmptyOrNull(defaultValue)) {
+            this.hasCleared = false;
+        }
         if (this.props.defaultValue !== prevProps.defaultValue) {
             this.handleDefault();
         }
+        
         if (this.props.data !== prevProps.data && this.props.data !== undefined) {
             this.setState({ datalist: this.props.data ?? [], hasLoaded: true }, this.handleDefault);
         }
@@ -135,10 +153,7 @@ class DesmyDropdown extends Component<Props, State> {
             const datalist = this.props.data ?? this.state.datalist;
             const defaultValue = this.props.defaultValue;
 
-            if (Commons.isEmptyOrNull(datalist) || Commons.isEmptyOrNull(defaultValue)) {
-                return;
-            }
-
+            
             const is_multiple = !!this.props.is_multiple;
 
             if (is_multiple) {
@@ -263,6 +278,7 @@ class DesmyDropdown extends Component<Props, State> {
     };
 
     handleClear = (): void => {
+        if(this.props.disabled) return 
         this.setState({
             selectedMultiple: [],
             selectedList: emptyDropdownItem,

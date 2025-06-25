@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { Component, ChangeEvent,ReactNode, KeyboardEvent ,JSX} from 'react';
 import Commons from '../apis/DesmyCommons';
 import { DesmyState as CommonState } from '../apis/DesmyState';
-import Filters from './Filter';
+import Filters from '../utilities/Filter';
 import {DatatableCard} from './DatatableCard';
 import DesmyAuth from '../apis/DesmyAuth';
 import DesmyCommons from '../apis/DesmyCommons';

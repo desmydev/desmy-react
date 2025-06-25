@@ -14,7 +14,7 @@ const DesmyMultiStepModal: React.FC<MultiStepModalProps> = (props) => {
 
   return (
     <div className='flex w-full'>
-      <div className={`${isOpen ? `backdrop bg-black/25 h-full w-full  ${backdropClass}` : "close-backdrop"}`}></div>
+      <div className={`${isOpen ? `backdrop-container bg-black/25 h-full w-full  ${backdropClass}` : "close-backdrop"}`}></div>
       <div className={`multi-step-modal-cover rounded-lg p-2 ${className} ${isOpen ? "open_modal" : "close_modal"}`}>
         <div>
           {children}

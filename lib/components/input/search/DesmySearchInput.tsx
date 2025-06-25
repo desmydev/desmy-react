@@ -125,82 +125,113 @@ class DesmySearchInput extends Component<Props, State> {
   };
 
   fetchData = async (searchText: string, page: number) => {
-    const { request } = this.props;
-    if (!request?.url) return;
+  const { request } = this.props;
+  if (!request?.url) return;
 
-    try {
-      this.setState({ isLoading: true });
-      const headers: HeadersInit = request.token ? { Authorization: `${request.token}` } : {};
-      const response = await fetch(`${request.url}?query=${searchText}&page=${page}`, { headers });
-      const responsedata = await response.json();
-
-      if (responsedata.success) {
-        if (!responsedata.data || !responsedata.data.meta) {
-          throw new Error("Invalid response format: 'data' or 'meta' is missing.");
-        }
-
-        const { data, meta } = responsedata.data;
-        if (!DesmyCommons.isEmptyOrNull(data)) {
-          const formattedData: DesmyDropdownItem[] = data.map((item: any) => ({
-            id: item.id,
-            name: item.name,
-            icon: null,
-            hint: item.hint || null,
-            data: item,
-          }));
-          this.setState(
-            (prevState) => ({
-              filteredOptions: page === 1 ? formattedData : [...prevState.filteredOptions, ...formattedData],
-              hasMore: meta.current_page < meta.last_page,
-              total: meta.total,
-              isLoading: false,
-              error: { state: false, message: '' },
-            }),
-            this.handleDefault
-          );
-        } else {
-          this.handleError('No data found.');
-        }
-      } else {
-        this.handleError(responsedata.message || 'Failed to fetch data.');
-      }
-    } catch {
-      this.handleError('An error occurred while fetching data. Please check your connection.');
+  if (DesmyCommons.isEmptyOrNull(searchText)) {
+    if (page === 1) {
+      this.setState({ filteredOptions: [], isLoading: false, hasMore: false, total: 0 });
     }
+    if (DesmyCommons.isEmptyOrNull(searchText) && this.state.filteredOptions.length > 0) {
+      return;
+    }
+  }
+
+  try {
+    this.setState({ isLoading: true });
+    const headers: HeadersInit = request.token ? { Authorization: `${request.token}` } : {};
+    const response = await fetch(`${request.url}?query=${searchText}&page=${page}`, { headers });
+    const responsedata = await response.json();
+
+    if (responsedata.success) {
+      if (!responsedata.data || !responsedata.data.meta) {
+        throw new Error("Invalid response format: 'data' or 'meta' is missing.");
+      }
+
+      const { data, meta } = responsedata.data;
+      if (!DesmyCommons.isEmptyOrNull(data)) {
+        const formattedData: DesmyDropdownItem[] = data.map((item: any) => ({
+          id: item.id,
+          name: item.name,
+          icon: null,
+          hint: item.hint || null,
+          data: item,
+        }));
+        this.setState(
+          (prevState) => ({
+            filteredOptions: page === 1 ? formattedData : [...prevState.filteredOptions, ...formattedData],
+            hasMore: meta.current_page < meta.last_page,
+            total: meta.total,
+            isLoading: false,
+            error: { state: false, message: '' },
+          }),
+          this.handleDefault
+        );
+      } else {
+        this.handleError('No data found.');
+      }
+    } else {
+      this.handleError(responsedata.message || 'Failed to fetch data.');
+    }
+  } catch {
+    this.handleError('An error occurred while fetching data. Please check your connection.');
+  }
   };
+
 
   handleDefault = () => {
-    const { defaultValue } = this.props;
-    const { filteredOptions } = this.state;
+  let { defaultValue, is_multiple } = this.props;
+  const { filteredOptions, searchText } = this.state;
 
-    if (!DesmyCommons.isEmptyOrNull(defaultValue) && !DesmyCommons.isEmptyOrNull(filteredOptions)) {
-      let defaultSelected: DesmyDropdownItem[] = [];
+  if (DesmyCommons.isEmptyOrNull(defaultValue) || DesmyCommons.isEmptyOrNull(filteredOptions)) {
+    return;
+  }
 
-      if (Array.isArray(defaultValue)) {
-        defaultSelected = defaultValue
-          .map((val) => {
-            if (typeof val === 'string') {
-              const matched = filteredOptions.find((d) => d.name === val || d.id === val);
-              return matched || { id: null, name: val, icon: null, hint: null, data: val };
-            }
-            return val;
-          })
-          .filter((item): item is DesmyDropdownItem => !!item);
-      } else if (typeof defaultValue === 'string') {
-        const matched = filteredOptions.find((d) => d.name === defaultValue || d.id === defaultValue);
-        defaultSelected = [matched || { id: null, name: defaultValue, icon: null, hint: null, data: defaultValue }];
-      } else if (defaultValue) {
-        const matched = filteredOptions.find((d) => d.name === defaultValue?.name || d.id === defaultValue?.id);
-        defaultSelected = [matched || { id: defaultValue?.id, name: defaultValue?.name, icon: null, hint: null, data: defaultValue }];
+  // Normalize defaultValue: if not array or object, convert to string
+  if (!Array.isArray(defaultValue) && typeof defaultValue !== 'object') {
+    defaultValue = String(defaultValue);
+  }
+
+  let defaultSelected: DesmyDropdownItem[] = [];
+
+  if (Array.isArray(defaultValue)) {
+    defaultSelected = defaultValue
+      .map((val) => {
+        if (typeof val === 'string') {
+          const matched = filteredOptions.find((d) => d.name === val || d.id === val);
+          return matched || { id: null, name: val, icon: null, hint: null, data: val };
+        } else if (typeof val === 'object' && val !== null) {
+          const matched = filteredOptions.find((d) => d.id === val.id || d.name === val.name);
+          return matched || val;
+        }
+        return null;
+      })
+      .filter((item): item is DesmyDropdownItem => !!item);
+  } else if (typeof defaultValue === 'object' && defaultValue !== null) {
+    const matched = filteredOptions.find((d) => d.name === defaultValue.name || d.id === defaultValue.id);
+    defaultSelected = [matched || { id: defaultValue.id, name: defaultValue.name, icon: null, hint: null, data: defaultValue }];
+  } else if (typeof defaultValue === 'string') {
+    const matched = filteredOptions.find((d) => String(d.name) === defaultValue || String(d.id) === defaultValue);
+    defaultSelected = [matched || { id: null, name: defaultValue, icon: null, hint: null, data: defaultValue }];
+  }
+
+  if (defaultSelected.length > 0) {
+    this.setState(
+      (prevState) => ({
+        selectedOptions: defaultSelected,
+        searchText:
+          !is_multiple && (DesmyCommons.isEmptyOrNull(prevState.searchText) || prevState.searchText === '')
+            ? String(defaultSelected[0]?.name)
+            : prevState.searchText,
+      }),
+      () => {
+        this.handleOnSelect(defaultSelected);
       }
-
-      if (defaultSelected.length > 0) {
-        this.setState({ selectedOptions: defaultSelected }, () => {
-          this.handleOnSelect(defaultSelected);
-        });
-      }
-    }
+    );
+  }
   };
+
+
 
   handleOnSelect = (data: DesmyDropdownItem | DesmyDropdownItem[]) => {
     if (Array.isArray(data)) {
@@ -214,16 +245,17 @@ class DesmySearchInput extends Component<Props, State> {
   handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const debounceDelay = this.props.debounceDelay ?? 300;
     const searchText = e.target.value;
+    this.setState({ searchText });
 
     if (this.state.debounceTimeoutId) {
       clearTimeout(this.state.debounceTimeoutId);
     }
 
     const timeoutId = setTimeout(() => {
-      this.setState({ searchText, page: 1, hasMore: true }, () => {
+      this.setState({ page: 1, hasMore: true }, () => {
         if (!DesmyCommons.isEmptyOrNull(searchText)) {
           this.fetchData(searchText, 1);
-        } else {
+        } else if (this.state.filteredOptions.length === 0) {
           this.setState({ filteredOptions: [] });
         }
       });
@@ -231,6 +263,7 @@ class DesmySearchInput extends Component<Props, State> {
 
     this.setState({ debounceTimeoutId: timeoutId });
   };
+
 
   handleClickOutside = (event: MouseEvent): void => {
     const btn = this.btnDropdownRef.current;
@@ -285,7 +318,6 @@ class DesmySearchInput extends Component<Props, State> {
       containerClassName,
     } = this.props;
     const { searchText, filteredOptions, selectedOptions, error, total, isLoading, dropdownPopoverShow } = this.state;
-
     return (
       <div
         className={`flex relative flex-col w-full ${containerClassName ?? 'bg-white dark:bg-darkBackground dark:text-white'}`}

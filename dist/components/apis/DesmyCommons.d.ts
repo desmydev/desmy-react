@@ -13,7 +13,7 @@ declare class DesmyCommons {
     isEmptyOrNull(data: any, isForce?: boolean): boolean;
     toBoolean(data: any): boolean;
     toStringDefault(data: any, defaultValue?: string): string;
-    getDefaultValue: (defaultValue: any) => string;
+    getDefaultValue: (defaultValue: any) => string | string[];
     toString(data: any): string;
     isEmpty(text: string | null | undefined): boolean;
     validatePasswords(passwordOne: string, passwordTwo: string): boolean;

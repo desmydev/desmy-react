@@ -245,7 +245,7 @@ class DatePickerProvider extends Component<DatePickerProps, DatePickerState> {
           onClose={() => this.handleClose()}
         >
           <div
-            className={`bg-white max-w-5xl mx-auto boxShadow flex-wrap md:flex-nowrap dark:bg-darkDialogBackground dark:border-darkPrimaryBorder dark:text-white border-[2px] shadow-lg rounded p-4 z-50 flex gap-4`}  ref={this.dropdownContentRef}
+            className={`bg-white max-w-5xl mx-auto boxShadow flex-wrap md:flex-nowrap dark:bg-darkDialogBackground border-gray-100 dark:border-darkPrimaryBorder dark:text-white border-[2px] shadow-lg rounded p-4 z-50 flex gap-4`}  ref={this.dropdownContentRef}
           >
             <Days calendarIndex={0} useRange={useRange} withTime={withTime} minDate={minDate} maxDate={maxDate} />
             {useRange && (
