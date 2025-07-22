@@ -7,6 +7,8 @@ interface DaysProps {
     defaultDate?: Date;
     useRange?: boolean;
     withTime?: boolean;
+    disableWeekends?: boolean;
+    disabledDates?: string[];
     onSelect?: (date: Date) => void;
     dateContext: DateContextProps;
 }

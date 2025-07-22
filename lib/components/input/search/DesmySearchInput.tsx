@@ -23,6 +23,7 @@ interface Props {
   containerClassName?: string;
   inputClassName?: string;
   onSelect: (data: DesmyDropdownItem | DesmyDropdownItem[]) => void;
+  onClear?:()=>void,
   autoFocus?: boolean;
   maxLength?: number;
   label: string;
@@ -256,7 +257,9 @@ class DesmySearchInput extends Component<Props, State> {
         if (!DesmyCommons.isEmptyOrNull(searchText)) {
           this.fetchData(searchText, 1);
         } else if (this.state.filteredOptions.length === 0) {
-          this.setState({ filteredOptions: [] });
+          this.setState({ filteredOptions: [] },()=>{
+            this.props.onClear?.()
+          });
         }
       });
     }, debounceDelay);

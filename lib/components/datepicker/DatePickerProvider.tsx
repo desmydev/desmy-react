@@ -247,11 +247,11 @@ class DatePickerProvider extends Component<DatePickerProps, DatePickerState> {
           <div
             className={`bg-white max-w-5xl mx-auto boxShadow flex-wrap md:flex-nowrap dark:bg-darkDialogBackground border-gray-100 dark:border-darkPrimaryBorder dark:text-white border-[2px] shadow-lg rounded p-4 z-50 flex gap-4`}  ref={this.dropdownContentRef}
           >
-            <Days calendarIndex={0} useRange={useRange} withTime={withTime} minDate={minDate} maxDate={maxDate} />
+            <Days calendarIndex={0} useRange={useRange}  disableWeekends={this.props.disableWeekends} disabledDates={this.props.disabledDates} withTime={withTime} minDate={minDate} maxDate={maxDate} />
             {useRange && (
-              <Days calendarIndex={1} useRange={useRange} withTime={withTime} minDate={minDate} maxDate={maxDate} />
+              <Days calendarIndex={1}  disableWeekends={this.props.disableWeekends} useRange={useRange} disabledDates={this.props.disabledDates} withTime={withTime} minDate={minDate} maxDate={maxDate} />
             )}
-            {withTime && <TimePicker useRange={useRange} onConfirm={() => this.context.setIsOpen(false)} />}
+            {withTime && <TimePicker  useRange={useRange} onConfirm={() => this.context.setIsOpen(false)} />}
           </div>
         </DropdownPositionWrapper>
       </div>

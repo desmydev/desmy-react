@@ -7,6 +7,7 @@ declare class DesmyCommons {
     nameToText(value: string): string;
     getRandomColor(): string;
     toSentenceCase: (str: string) => string;
+    isCurrentPath(urlPaths: string | string[]): boolean;
     generateKey: () => number;
     concat(a: string, b: string): string;
     isObject(data: any): boolean;

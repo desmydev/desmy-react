@@ -17,9 +17,11 @@ import {
   addDays,
   addMonths,
   subMonths,
+  getDay,
+  parseISO,
 } from "date-fns";
-import { withDateContext } from "./withDateContext"; // Import the HOC
-import { DateContextProps } from "./DateContext"; // Import DateContextProps
+import { withDateContext } from "./withDateContext";
+import { DateContextProps } from "./DateContext";
 import Months from "./Months";
 import Years from "./Years";
 
@@ -30,6 +32,8 @@ interface DaysProps {
   defaultDate?: Date;
   useRange?: boolean;
   withTime?: boolean;
+  disableWeekends?: boolean;
+  disabledDates?: string[];  
   onSelect?: (date: Date) => void;
   dateContext: DateContextProps;
 }
@@ -39,7 +43,6 @@ interface DaysState {
 }
 
 class Days extends Component<DaysProps, DaysState> {
-  
   constructor(props: DaysProps) {
     super(props);
     this.state = {
@@ -67,15 +70,15 @@ class Days extends Component<DaysProps, DaysState> {
       setEndDate,
       setIsOpen,
     } = this.props.dateContext;
-  
+
     const { useRange, withTime } = this.props;
-  
+
     if (!useRange && startDate !== prevProps.dateContext.startDate) {
       if (!withTime) {
         setIsOpen(false);
       }
     }
-  
+
     if (
       useRange &&
       startDate &&
@@ -86,76 +89,92 @@ class Days extends Component<DaysProps, DaysState> {
         setIsOpen(false);
       }
     }
-  
+
     // Auto fix inverted dates
     if (useRange && startDate && endDate && isAfter(startDate, endDate)) {
       setStartDate(endDate);
       setEndDate(startDate);
     }
   }
-  
+
+  isDateDisabled = (day: Date): boolean => {
+    const { disableWeekends, disabledDates } = this.props;
+    const isWeekend = getDay(day) === 0 || getDay(day) === 6;
+
+    // Disable weekend if flag is on
+    if (disableWeekends && isWeekend) {
+      return true;
+    }
+
+    // Disable specific dates
+    if (disabledDates && disabledDates.length > 0) {
+      for (const d of disabledDates) {
+        const disabledDateObj = parseISO(d);
+        if (isSameDay(day, disabledDateObj)) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  };
 
   handleSelectDay = (event: React.MouseEvent<HTMLButtonElement>, day: Date) => {
     event.preventDefault();
     const { minDate, maxDate, useRange, onSelect } = this.props;
     const { setStartDate, setEndDate } = this.props.dateContext;
 
-    // Prevent selecting days outside the min/max range
+    if (this.isDateDisabled(day)) return; // Prevent selecting disabled days
+
     if (minDate && isBefore(day, subDays(minDate, 1))) return;
     if (maxDate && isAfter(day, addDays(maxDate, 1))) return;
 
     if (!useRange) {
+      setStartDate(day);
+      setEndDate(null);
+    } else {
+      const { startDate, endDate } = this.props.dateContext;
+      if (!startDate || (startDate && endDate)) {
         setStartDate(day);
         setEndDate(null);
-    } else {
-        const { startDate, endDate } = this.props.dateContext;
-        if (!startDate || (startDate && endDate)) {
-            setStartDate(day);
-            setEndDate(null);
-        } else {
-            setEndDate(day);
-        }
+      } else {
+        setEndDate(day);
+      }
     }
 
     if (onSelect) {
-        onSelect(day);
+      onSelect(day);
     }
-};
+  };
 
+  canNavigate = (direction: "next" | "prev", calendarIndex: number) => {
+    const { dateContext, minDate, maxDate, useRange } = this.props;
+    const { currentMonthLeft, currentMonthRight } = dateContext;
 
-  // Function to check if navigation is allowed
-canNavigate = (direction: "next" | "prev", calendarIndex: number) => {
-  const { dateContext, minDate, maxDate,useRange } = this.props;
-  const { currentMonthLeft, currentMonthRight } = dateContext;
+    if (!useRange) {
+      const newMonth = direction === "next" ? addMonths(currentMonthLeft, 1) : subMonths(currentMonthLeft, 1);
 
-  // If useRange is false, handle the navigation freely with checks for minDate and maxDate
-  if (!useRange) {
-    const newMonth = direction === "next" ? addMonths(currentMonthLeft, 1) : subMonths(currentMonthLeft, 1);
-    
-    // If moving to the previous month, check if it's after minDate
-    if (direction === "prev" && minDate && isBefore(newMonth, minDate)) {
-      return false; // Prevent navigation if it's before minDate
+      if (direction === "prev" && minDate && isBefore(newMonth, minDate)) {
+        return false;
+      }
+
+      if (direction === "next" && maxDate && isAfter(newMonth, maxDate)) {
+        return false;
+      }
+
+      return true;
     }
-    
-    // If moving to the next month, check if it's before maxDate
-    if (direction === "next" && maxDate && isAfter(newMonth, maxDate)) {
-      return false; // Prevent navigation if it's after maxDate
+
+    if (calendarIndex === 0) {
+      const newMonth = direction === "next" ? addMonths(currentMonthLeft, 1) : subMonths(currentMonthLeft, 1);
+      return maxDate && isBefore(newMonth, currentMonthRight) && !(minDate && isBefore(newMonth, minDate));
+    } else if (calendarIndex === 1) {
+      const newMonth = direction === "next" ? addMonths(currentMonthRight, 1) : subMonths(currentMonthRight, 1);
+      return minDate && isAfter(newMonth, currentMonthLeft) && !(maxDate && isAfter(newMonth, maxDate));
     }
-    
+
     return true;
-  }
-
-  if (calendarIndex === 0) {
-    const newMonth = direction === "next" ? addMonths(currentMonthLeft, 1) : subMonths(currentMonthLeft, 1);
-    return maxDate && isBefore(newMonth, currentMonthRight) && !(minDate && isBefore(newMonth, minDate));
-  } else if (calendarIndex === 1) {
-    const newMonth = direction === "next" ? addMonths(currentMonthRight, 1) : subMonths(currentMonthRight, 1);
-    return minDate && isAfter(newMonth, currentMonthLeft) && !(maxDate && isAfter(newMonth, maxDate));
-  }
-
-  return true;
-};
-
+  };
 
   navigateMonth = (direction: "next" | "prev", calendarIndex: number) => {
     const { dateContext } = this.props;
@@ -174,40 +193,41 @@ canNavigate = (direction: "next" | "prev", calendarIndex: number) => {
   selectMonth = (monthIndex: number) => {
     const { calendarIndex, dateContext } = this.props;
     const { currentMonthLeft, setCurrentMonthLeft, currentMonthRight, setCurrentMonthRight } = dateContext;
-  
+
     if (calendarIndex === 0) {
       const newDate = setMonth(currentMonthLeft, monthIndex);
-      if (!this.canNavigate("next", 0) && isAfter(newDate, currentMonthRight)) return; 
+      if (!this.canNavigate("next", 0) && isAfter(newDate, currentMonthRight)) return;
       setCurrentMonthLeft(newDate);
     } else if (calendarIndex === 1) {
       const newDate = setMonth(currentMonthRight, monthIndex);
 
-    if (!this.canNavigate("prev", 1) && isBefore(newDate, currentMonthLeft)) return; 
+      if (!this.canNavigate("prev", 1) && isBefore(newDate, currentMonthLeft)) return;
       setCurrentMonthRight(newDate);
     }
-  
+
     this.setState({ viewMode: "days" });
   };
 
   selectYear = (year: number) => {
     const { calendarIndex, dateContext } = this.props;
     const { currentMonthLeft, setCurrentMonthLeft, currentMonthRight, setCurrentMonthRight } = dateContext;
-  
+
     if (calendarIndex === 0) {
       const newDate = setYear(currentMonthLeft, year);
       if (!this.canNavigate("next", 0) && isAfter(newDate, currentMonthRight)) return;
       setCurrentMonthLeft(newDate);
     } else if (calendarIndex === 1) {
       const newDate = setYear(currentMonthRight, year);
-      if (!this.canNavigate("prev", 1) && isBefore(newDate, currentMonthLeft)) return; 
+      if (!this.canNavigate("prev", 1) && isBefore(newDate, currentMonthLeft)) return;
       setCurrentMonthRight(newDate);
     }
-  
+
     this.setState({ viewMode: "days" });
   };
+
   isWithinSelectedRange = (day: Date) => {
     const { startDate, endDate } = this.props.dateContext;
-    const {useRange} = this.props
+    const { useRange } = this.props;
     return useRange && startDate && endDate && isWithinInterval(day, { start: startDate, end: endDate });
   };
 
@@ -232,6 +252,8 @@ canNavigate = (direction: "next" | "prev", calendarIndex: number) => {
       minDate,
       maxDate,
       dateContext,
+      disableWeekends,
+      disabledDates,
     } = this.props;
 
     const { currentMonthLeft, currentMonthRight } = dateContext;
@@ -322,10 +344,11 @@ canNavigate = (direction: "next" | "prev", calendarIndex: number) => {
 
             <div className="w-full grid grid-cols-7 gap-1 text-center">
               {days.map((day) => {
-                const isDisabled = 
-                (minDate && isBefore(day, subDays(minDate, 1))) || 
-                (maxDate && isAfter(day, addDays(maxDate, 1)));  
-              
+                const isDisabled =
+                  (minDate && isBefore(day, subDays(minDate, 1))) ||
+                  (maxDate && isAfter(day, addDays(maxDate, 1))) ||
+                  this.isDateDisabled(day);
+
                 const selected = this.isSelectedDate(day);
                 const inRange = this.isWithinSelectedRange(day);
                 const today = this.isTodayDate(day);
@@ -337,7 +360,7 @@ canNavigate = (direction: "next" | "prev", calendarIndex: number) => {
                     className={`h-10 w-10 rounded-full text-sm cursor-pointer ${
                       isDisabled
                         ? "text-gray-400 line-through cursor-not-allowed"
-                        : !withinCurrentMonth?"text-gray-400 cursor-not-allowed"
+                        : !withinCurrentMonth ? "text-gray-400 cursor-not-allowed"
                         : inRange
                         ? "bg-blue-200 text-blue-600 dark:bg-darkPrimaryBorder dark:text-white"
                         : selected
@@ -345,10 +368,10 @@ canNavigate = (direction: "next" | "prev", calendarIndex: number) => {
                         : today
                         ? "bg-yellow-200 dark:bg-white dark:text-black text-yellow-800"
                         : " dark:hover:bg-darkPrimaryBorder hover:bg-gray-100 text-black dark:text-white"
-                    } ${(today && !inRange && !selected && calendarIndex==0)? `bg-primary/100 dark:bg-white dark:text-black text-white`:``} `}
-                    onClick={(event) =>{
-                      event.preventDefault()
-                      !isDisabled && this.handleSelectDay(event, day)
+                    } ${(today && !inRange && !selected && calendarIndex === 0) ? `bg-primary/100 dark:bg-white dark:text-black text-white` : ``} `}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      !isDisabled && this.handleSelectDay(event, day);
                     }}
                     disabled={isDisabled}
                   >

@@ -13,6 +13,7 @@ type HomeState = {
   dataList: any[];
   modals: ModalData[];
   modalId: number;
+  mounted: boolean;  // Add mounted flag to state
 };
 
 type HomeProps = {
@@ -29,11 +30,14 @@ class DesmyUploadManager extends Component<HomeProps, HomeState> {
       dataList: [],
       modals: [],
       modalId: 1,
+      mounted: false,  // Initialize mounted as false
     };
     this.modalContainerRef = React.createRef();
   }
 
   async componentDidMount() {
+    this.setState({ mounted: true }); // Mark mounted on client side
+
     this.subscription = DesmyRxServices.getSubscription().subscribe((data: any) => {
       if (data.type !== undefined && data.type === DesmyState.UPLOAD_MANAGER_REQUEST) {
         this.addNewModal(data.data);
@@ -55,7 +59,7 @@ class DesmyUploadManager extends Component<HomeProps, HomeState> {
         modalId: prevState.modalId + 1,
       }),
       () => {
-        if (this.modalContainerRef.current) {
+        if (this.state.mounted && this.modalContainerRef.current) {
           this.modalContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
         }
       }
@@ -69,29 +73,31 @@ class DesmyUploadManager extends Component<HomeProps, HomeState> {
   };
 
   render() {
-    const { modals } = this.state;
+    const { modals, mounted } = this.state;
     const { className } = this.props;
 
-    return (
-      <>
-       {createPortal(
-          <div
-            ref={this.modalContainerRef}
-            className={`fixed right-2 bottom-6 z-[10000] w-full md:w-[500px]  lg:w-[500px] max-h-[90vh]  overflow-y-auto ${className}`}
-            style={{ scrollbarWidth: 'thin', scrollbarColor: '#888 #f5f5f5' }}
-          >
-            {modals.map((modal) => (
-              <div key={modal.id} className="w-full mb-4">
-                <UploadModal data={modal.data} onClose={() => this.closeModal(modal.id)} />
-              </div>
-            ))}
-          </div>,
-          document.getElementById('uploadmanager-root')!
-        )}
-      </>
-      
+    // Avoid rendering portal during SSR
+    if (!mounted) {
+      // Render fallback or nothing server-side
+      return null;
+    }
+
+    // Now safe to use document and create portals on client side
+    return createPortal(
+      <div
+        ref={this.modalContainerRef}
+        className={`fixed right-2 bottom-6 z-[10000] w-full md:w-[500px] lg:w-[500px] max-h-[90vh] overflow-y-auto ${className ?? ''}`}
+        style={{ scrollbarWidth: 'thin', scrollbarColor: '#888 #f5f5f5' }}
+      >
+        {modals.map((modal) => (
+          <div key={modal.id} className="w-full mb-4">
+            <UploadModal data={modal.data} onClose={() => this.closeModal(modal.id)} />
+          </div>
+        ))}
+      </div>,
+      document.getElementById('uploadmanager-root')!
     );
   }
 }
 
-export {DesmyUploadManager};
+export { DesmyUploadManager };

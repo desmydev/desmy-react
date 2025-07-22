@@ -16,6 +16,7 @@ interface Props {
     containerClassName?: string;
     inputClassName?: string;
     onSelect: (data: DesmyDropdownItem | DesmyDropdownItem[]) => void;
+    onClear?: () => void;
     autoFocus?: boolean;
     maxLength?: number;
     label: string;

@@ -13,11 +13,24 @@ interface ThemeProviderState {
 class DesmyThemeProvider extends Component<ThemeProviderProps, ThemeProviderState> {
     constructor(props: ThemeProviderProps) {
         super(props);
+        // Default theme to light during SSR
+        this.state = { theme: 'light' };
+    }
 
-        const savedTheme = (localStorage.getItem('color-theme') || 'light') as 'dark' | 'light';
-        this.state = { theme: savedTheme };
+    componentDidMount() {
+        // Now safe to access browser APIs
+        let savedTheme: 'dark' | 'light' = 'light';
 
-        this.syncTheme();
+        if (typeof window !== 'undefined' && window.localStorage) {
+            const stored = localStorage.getItem('color-theme');
+            if (stored === 'dark' || stored === 'light') {
+                savedTheme = stored;
+            }
+        }
+
+        this.setState({ theme: savedTheme }, () => {
+            this.syncTheme();
+        });
     }
 
     toggleTheme = () => {
@@ -27,11 +40,16 @@ class DesmyThemeProvider extends Component<ThemeProviderProps, ThemeProviderStat
             }),
             () => {
                 DesmyCommons.forceTheme(this.state.theme);
+                if (typeof window !== 'undefined' && window.localStorage) {
+                    localStorage.setItem('color-theme', this.state.theme);
+                }
             }
         );
     };
 
     syncTheme = () => {
+        if (typeof window === 'undefined') return; // Do nothing during SSR
+
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
         const storedTheme = localStorage.getItem('color-theme');

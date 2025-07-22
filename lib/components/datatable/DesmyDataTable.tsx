@@ -26,6 +26,7 @@ interface DataTableProps {
    
   className?:string,
   onRef?: (ref: DesmyDataTable | null) => void;
+  onFilteredURL?:(data:any)=>void
 }
 
 interface DataTableState {
@@ -489,6 +490,7 @@ async fetchEntities() { // Default to an empty string if filtered_data is not pa
       this.handleClear();
       this.queryParam = filtered_data
       this.setState({ filterhead: updatedFilters }, () => {
+        this.props.onFilteredURL?.(filtered_data)
         this.fetchEntities();
       });
     } catch (_) {
@@ -672,6 +674,7 @@ async fetchEntities() { // Default to an empty string if filtered_data is not pa
     this.handleClear();
     this.queryParam = filtered_data
     this.setState({ showFilter: false, filterhead }, () => {
+      this.props.onFilteredURL?.(filtered_data)
       this.fetchEntities();
     });
 }
@@ -768,7 +771,7 @@ async fetchEntities() { // Default to an empty string if filtered_data is not pa
                     (filterhead.length > 0) ? <div className='flex w-full overflow-x-auto mb-2 space-x-4'>
                       {
                        filterhead.map((data,i)=>{
-                          return (!Commons.isEmptyOrNull(data.name)) ? <div key={`flter=${i}`} className='flex flex-shrink-0 text-xs relative pl-4 pr-6 py-2 rounded-lg border-[1px] cursor-pointer hover:bg-primary hover:text-white  border-gray-200 bg-gray-50'>
+                          return (!Commons.isEmptyOrNull(data.name)) ? <div key={`flter=${i}`} className='flex flex-shrink-0 text-xs relative pl-4 pr-6 py-2 rounded-lg border-[1px] cursor-pointer hover:bg-primary dark:hover:bg-white dark:hover:text-black hover:text-white  border-gray-200 bg-gray-50'>
                               <div className='flex mr-2'>{Commons.capitalizeEachWord(Commons.convertUnderscoreToSpaceString(data.label))}:</div>
                               <div className='flex font-poppinsSemiBold'>{data.name}</div>
                               <svg viewBox="0 0 512 512" fill="currentColor" className='absolute right-1 top-2 bottom-1 cursor-pointer w-4 h-4 2xl:w-5 2xl:h-5' onClick={()=>this.removeFilterByName(data.label)}>

@@ -20,6 +20,7 @@ interface DataTableProps {
     }) => React.ReactNode);
     className?: string;
     onRef?: (ref: DesmyDataTable | null) => void;
+    onFilteredURL?: (data: any) => void;
 }
 interface DataTableState {
     isFocused?: boolean;

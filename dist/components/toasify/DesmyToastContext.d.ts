@@ -13,6 +13,7 @@ interface DesmyToastProviderProps {
 }
 interface DesmyToastProviderState {
     toasts: ToastMessage[];
+    mounted: boolean;
 }
 export declare class DesmyToastProvider extends Component<DesmyToastProviderProps, DesmyToastProviderState> {
     state: DesmyToastProviderState;

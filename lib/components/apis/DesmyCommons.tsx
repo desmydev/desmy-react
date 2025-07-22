@@ -56,7 +56,25 @@ class DesmyCommons {
           .replace(/_/g, ' ')                   // Replace underscores with spaces
           .replace(/(?:^|\s)\S/g, (match) => match.toUpperCase()); // Capitalize first letter of each word
       };
-      
+    isCurrentPath(urlPaths: string | string[]): boolean {
+        let currentPath = window.location.pathname;
+        if (!currentPath.endsWith('/')) {
+            currentPath += '/';
+        }
+
+        // Normalize input to array
+        const paths = Array.isArray(urlPaths) ? urlPaths : [urlPaths];
+
+        return paths.some(path => {
+            let normalizedPath = path;
+            if (!normalizedPath.endsWith('/')) {
+            normalizedPath += '/';
+            }
+            return normalizedPath === currentPath;
+        });
+        }
+
+
     generateKey = (): number => {
         return Math.floor(Math.random() * 100) + 1;
     }

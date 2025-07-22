@@ -7,6 +7,7 @@ interface ThemeProviderState {
 }
 declare class DesmyThemeProvider extends Component<ThemeProviderProps, ThemeProviderState> {
     constructor(props: ThemeProviderProps);
+    componentDidMount(): void;
     toggleTheme: () => void;
     syncTheme: () => void;
     render(): import("react/jsx-runtime").JSX.Element;

@@ -153,8 +153,10 @@ export interface DatePickerProps {
   maxDate?: Date;
   displayFormat?: string;
   label:string;
+  disableWeekends?:boolean
   disabled?:boolean
   useRange?: boolean;
+  disabledDates?: string[]; 
   className?:string,
   onSelected?: (dates: { startDate?: string; endDate?: string }) => void;
   withTime?: boolean;

@@ -204,7 +204,7 @@ class DatatableCard extends Component<Props, State> {
             {(this.header === "edit") ? 
                 <span onClick={() => this.handleEdit()}>{editBtn}</span> : 
             (this.header === "view") ? 
-                <span onClick={() => this.props.settings.handleOnViewClick?.(this.props.user)}>{viewBtn}</span> : 
+                <span className="dark:text-black" onClick={() => this.props.settings.handleOnViewClick?.(this.props.user)}>{viewBtn}</span> : 
 
             this.extra_handle() ?
             <span onClick={() => this.props.settings.handleOnClickExtra?.(

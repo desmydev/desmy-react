@@ -22,11 +22,13 @@ interface DesmyToastProviderProps {
 
 interface DesmyToastProviderState {
   toasts: ToastMessage[];
+  mounted: boolean; // track if mounted on client
 }
 
 export class DesmyToastProvider extends Component<DesmyToastProviderProps, DesmyToastProviderState> {
   state: DesmyToastProviderState = {
     toasts: [],
+    mounted: false,
   };
 
   private toastId = 0;
@@ -39,31 +41,38 @@ export class DesmyToastProvider extends Component<DesmyToastProviderProps, Desmy
   };
 
   removeToast = (id: number) => {
-    const toast = document.getElementById(`toast-${id}`);
+    const toast = this.state.mounted ? document.getElementById(`toast-${id}`) : null;
     if (toast) {
-        toast.classList.remove('animate-toast-slide-in');
-        toast.classList.add('animate-toast-slide-out');
+      toast.classList.remove('animate-toast-slide-in');
+      toast.classList.add('animate-toast-slide-out');
       setTimeout(() => {
         this.setState(prevState => ({
           toasts: prevState.toasts.filter(toast => toast.id !== id),
         }));
       }, 500); 
+    } else {
+      // fallback: just remove immediately if no document (SSR)
+      this.setState(prevState => ({
+        toasts: prevState.toasts.filter(toast => toast.id !== id),
+      }));
     }
   };
 
   componentDidMount() {
-   
-    DesmyToast.initialize(this);
+    this.setState({ mounted: true }, () => {
+      DesmyToast.initialize(this);
+    });
   }
 
   render() {
+    const { mounted, toasts } = this.state;
+
     return (
-        <ToastContext.Provider value={{ addToast: this.addToast, removeToast: this.removeToast }}>
+      <ToastContext.Provider value={{ addToast: this.addToast, removeToast: this.removeToast }}>
         {this.props.children}
-        
-        {createPortal(
+        {mounted && typeof document !== 'undefined' && createPortal(
           <div className="fixed top-4 right-4 z-[9999999] space-y-4">
-            {this.state.toasts.map(toast => (
+            {toasts.map(toast => (
               <Toast
                 key={toast.id}
                 message={toast.message}

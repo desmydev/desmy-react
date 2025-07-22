@@ -10,49 +10,12 @@ declare const DesmyWithRouter: <P extends object>(WrappedComponent: React.Compon
     params?: {
         [key: string]: string | undefined;
     };
-}>) => {
-    new (props: P & {
-        path?: string;
-    }): {
-        render(): import("react/jsx-runtime").JSX.Element;
-        context: unknown;
-        setState<K extends never>(state: {} | ((prevState: Readonly<{}>, props: Readonly<P & {
-            path?: string;
-        }>) => {} | Pick<{}, K> | null) | Pick<{}, K> | null, callback?: (() => void) | undefined): void;
-        forceUpdate(callback?: (() => void) | undefined): void;
-        readonly props: Readonly<P & {
-            path?: string;
-        }>;
-        state: Readonly<{}>;
-        componentDidMount?(): void;
-        shouldComponentUpdate?(nextProps: Readonly<P & {
-            path?: string;
-        }>, nextState: Readonly<{}>, nextContext: any): boolean;
-        componentWillUnmount?(): void;
-        componentDidCatch?(error: Error, errorInfo: React.ErrorInfo): void;
-        getSnapshotBeforeUpdate?(prevProps: Readonly<P & {
-            path?: string;
-        }>, prevState: Readonly<{}>): any;
-        componentDidUpdate?(prevProps: Readonly<P & {
-            path?: string;
-        }>, prevState: Readonly<{}>, snapshot?: any): void;
-        componentWillMount?(): void;
-        UNSAFE_componentWillMount?(): void;
-        componentWillReceiveProps?(nextProps: Readonly<P & {
-            path?: string;
-        }>, nextContext: any): void;
-        UNSAFE_componentWillReceiveProps?(nextProps: Readonly<P & {
-            path?: string;
-        }>, nextContext: any): void;
-        componentWillUpdate?(nextProps: Readonly<P & {
-            path?: string;
-        }>, nextState: Readonly<{}>, nextContext: any): void;
-        UNSAFE_componentWillUpdate?(nextProps: Readonly<P & {
-            path?: string;
-        }>, nextState: Readonly<{}>, nextContext: any): void;
-    };
-    contextType?: React.Context<any> | undefined;
-    propTypes?: any;
-};
+    navigate?: (to: string, options?: {
+        replace?: boolean;
+        state?: any;
+    }) => void;
+}>, hasPermission?: boolean) => (props: P & {
+    path?: string;
+}) => import("react/jsx-runtime").JSX.Element;
 declare const DesmyRenderRoutes: (routes: DesmyRoute[]) => ReactElement[];
 export { DesmyWithRouter, RoutesContext, DesmyRenderRoutes };

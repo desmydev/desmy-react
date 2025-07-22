@@ -124,7 +124,6 @@ class Toast extends Component<ToastProps> {
         : "bg-blue-500 border-blue-100  text-white";
 
     const iconClass = type === "success" ? "text-green-500" : type === "error" ? "text-red-400 " : "text-blue-500";
-
     return (
       <div id={id} onMouseLeave={this.handleMouseLeave} onMouseEnter={this.handleMouseEnter} className={`relative cursor-pointer z-[99999999] w-full m-2 my-8 min-w-sm md:max-w-sm rounded-lg overflow-hidden ${toastClass} px-12 py-6 shadow-md animate-toast-slide-in transition-all duration-100 ease-out`} style={{ pointerEvents: "auto" }}>
         <button className="absolute top-0  right-0 p-4 text-white cursor-pointer" onClick={this.handleOnClose}>

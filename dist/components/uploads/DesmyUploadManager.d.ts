@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { default as React, Component } from 'react';
 type ModalData = {
     id: number;
     data: any;
@@ -7,6 +7,7 @@ type HomeState = {
     dataList: any[];
     modals: ModalData[];
     modalId: number;
+    mounted: boolean;
 };
 type HomeProps = {
     className?: string;
@@ -19,6 +20,6 @@ declare class DesmyUploadManager extends Component<HomeProps, HomeState> {
     componentWillUnmount(): void;
     addNewModal: (data: any) => void;
     closeModal: (modalId: number) => void;
-    render(): import("react/jsx-runtime").JSX.Element;
+    render(): React.ReactPortal | null;
 }
 export { DesmyUploadManager };

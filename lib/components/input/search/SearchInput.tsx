@@ -40,7 +40,8 @@ export class SearchInput extends Component<Props> {
         />
         <label
           htmlFor="data"
-          className="pointer-events-none absolute cursor-text left-0 -top-3.5 text-[11px] dark:text-white bg-inherit mx-1 px-2 peer-placeholder-shown:text-sm dark:peer-placeholder-shown:text-white peer-placeholder-shown:top-3 peer-focus:-top-3 peer-focus:text-black dark:peer-focus:text-white peer-focus:text-[11px] transition-all"
+          title={label}
+          className="pointer-events-none absolute cursor-text line-clamp-1 left-0 -top-3.5 text-[11px] dark:text-white bg-inherit mx-1 px-2 peer-placeholder-shown:text-sm dark:peer-placeholder-shown:text-white peer-placeholder-shown:top-3 peer-focus:-top-3 peer-focus:text-black dark:peer-focus:text-white peer-focus:text-[11px] transition-all"
         >
           {label}
         </label>
