@@ -15,7 +15,7 @@ interface FilterPanelProps {
   onRemoveFilter: (label: string) => void;
   onFiltered: (filters: { [key: string]: any }) => void;
   onClose: () => void;
-  filter: { url: string };
+  filter: { url?: string, token?:string };
 }
 
 export class FilterPanel extends Component<FilterPanelProps> {

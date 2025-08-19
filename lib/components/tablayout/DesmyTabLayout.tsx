@@ -9,6 +9,7 @@ interface Tab {
 interface TabLayoutProps {
   tabs: Tab[];
   children: React.ReactNode[];
+  onActiveTabChange?: (activeIndex: number) => void; // callback when active tab changes
 }
 
 interface TabLayoutState {
@@ -24,7 +25,12 @@ class DesmyTabLayout extends Component<TabLayoutProps, TabLayoutState> {
   }
 
   setActiveTab = (index: number) => {
-    this.setState({ activeTabIndex: index });
+    this.setState({ activeTabIndex: index }, () => {
+      // call callback after state update
+      if (this.props.onActiveTabChange) {
+        this.props.onActiveTabChange(index);
+      }
+    });
   };
 
   render() {
@@ -33,34 +39,32 @@ class DesmyTabLayout extends Component<TabLayoutProps, TabLayoutState> {
 
     return (
       <div className="w-full">
-        <div className='flex flex-col w-full'>
-        <div className="flex border-b border-gray-300">
-          {tabs.map((tab, index) => (
-            <div
-              key={index}
-              onClick={() => this.setActiveTab(index)}
-              className={classNames(
-                'py-2 px-4 cursor-pointer text-sm font-medium focus:outline-none transition-all flex items-center',
-                {
-                  'border-b-2 border-blue-500 text-blue-500 dark:text-white dark:border-white': activeTabIndex === index,
-                  'text-gray-600 hover:text-blue-500 dark:hover:text-white': activeTabIndex !== index,
-                }
-              )}
-            >
-              {tab.icon && <span className="mr-2">{tab.icon}</span>}
-              {tab.label}
-            </div>
-          ))}
-        </div>
+        <div className="flex flex-col w-full">
+          <div className="flex border-b border-gray-300">
+            {tabs.map((tab, index) => (
+              <div
+                key={index}
+                onClick={() => this.setActiveTab(index)}
+                className={classNames(
+                  'py-2 px-4 cursor-pointer text-sm font-medium focus:outline-none transition-all flex items-center',
+                  {
+                    'border-b-2 border-blue-500 text-blue-500 dark:text-white dark:border-white': activeTabIndex === index,
+                    'text-gray-600 hover:text-blue-500 dark:hover:text-white': activeTabIndex !== index,
+                  }
+                )}
+              >
+                {tab.icon && <span className="mr-2">{tab.icon}</span>}
+                {tab.label}
+              </div>
+            ))}
+          </div>
 
-        <div className="mt-4">
-          {children[activeTabIndex]}
+          <div className="mt-4">{children[activeTabIndex]}</div>
         </div>
-        </div>
-       
       </div>
     );
   }
 }
 
-export {DesmyTabLayout};
+
+export { DesmyTabLayout };

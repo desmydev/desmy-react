@@ -139,15 +139,9 @@ class DesmyTableCard extends Component<Props, State> {
     const { isLoading } = this.props;
     return (
       <>
-        {isLoading ? (
-          <tr>
-            <td>Loading...</td>
-          </tr>
-        ) : (
-          <tr className={`text-sm cursor-pointer hover:bg-gray-200 dark:text-white dark:hover:bg-white dark:hover:text-black ${this.props.background} transition-all ease-in-out duration-150`}>
+          <tr className={`text-sm cursor-pointer hover:bg-gray-200 dark:text-white dark:hover:bg-white dark:hover:text-black ${this.props.background} cursor-pointer transition-all ease-in-out duration-150`}>
             {this.renderTableData()}
           </tr>
-        )}
       </>
     );
   }

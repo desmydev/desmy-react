@@ -15,6 +15,7 @@ interface Settings {
   handleOnClickExtra?: (user: any, name: string) => void;
   handleEdit?: (user: any) => void;
   extra_handle?: Array<{ name: string; icon: React.ReactNode }>;
+  style?:{maxlines?:number}
   read_more_limit?: number;
 }
 
@@ -52,7 +53,7 @@ class DatatableCard extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      stateList: [ModalState.APPROVED, ModalState.ACTIVE,ModalState.SUBMITTED,ModalState.CONFIRMED,ModalState.PUBLISHED,ModalState.CREATED,ModalState.ACCREDITED, ModalState.RUNNING,ModalState.ADMITTED,ModalState.QUALIFIED, ModalState.IN_PROGRESS,ModalState.ACCEPTED],
+      stateList: [ModalState.APPROVED,ModalState.PAID, ModalState.ACTIVE,ModalState.SUBMITTED,ModalState.CONFIRMED,ModalState.PUBLISHED,ModalState.CREATED,ModalState.ACCREDITED, ModalState.RUNNING,ModalState.ADMITTED,ModalState.QUALIFIED, ModalState.IN_PROGRESS,ModalState.ACCEPTED],
       imageExtensions: ['jpg', 'jpeg', 'png', 'svg'],
       imgColumnTypes: ['picture', 'photo'],
       title: '',
@@ -170,6 +171,7 @@ class DatatableCard extends Component<Props, State> {
     let data = user[headers[key]];
     this.header = Commons.toString(headers[key]).toLowerCase();
     this.status = user['status'] ?? user['process_state'];
+
     this.setState({ title: !Array.isArray(data) ? data?.name ?? Commons.toString(data) : "",contentlist:Array.isArray(data) ? data:[] });   
   }
   toggleView = () => {
@@ -187,7 +189,7 @@ class DatatableCard extends Component<Props, State> {
   render() {
     const editBtn = <span className="text-blue-800 dark:text-blue-300 cursor-pointer flex-col" ><svg   className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></span>
     const deleteBtn = <span className="text-red-800 dark:text-red-300 cursor-pointer" ><svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></span>
-    const viewBtn = <span className="text-black dark:text-white cursor-pointer " ><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg></span>
+    const viewBtn = <span className="cursor-pointer " ><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg></span>
     // const resetBtn = <span className="text-black dark:text-white cursor-pointer " ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-green-600"><path fillRule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z" clipRule="evenodd" /></svg></span>
     // const _roleBtn = <span className="text-black dark:text-white cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4"><path fillRule="evenodd" d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12a4.49 4.49 0 01-1.549 3.397 4.491 4.491 0 01-1.307 3.497 4.491 4.491 0 01-3.497 1.307A4.49 4.49 0 0112 21.75a4.49 4.49 0 01-3.397-1.549 4.49 4.49 0 01-3.498-1.306 4.491 4.491 0 01-1.307-3.498A4.49 4.49 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.497 4.49 4.49 0 013.497-1.307zm7.007 6.387a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clipRule="evenodd" /></svg></span>
     // const infoBtn = <span className="text-black dark:text-white cursor-pointer "><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4"><path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 01.67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 11-.671-1.34l.041-.022zM12 9a.75.75 0 100-1.5.75.75 0 000 1.5z" clipRule="evenodd" /></svg></span>
@@ -204,7 +206,7 @@ class DatatableCard extends Component<Props, State> {
             {(this.header === "edit") ? 
                 <span onClick={() => this.handleEdit()}>{editBtn}</span> : 
             (this.header === "view") ? 
-                <span className="dark:text-black" onClick={() => this.props.settings.handleOnViewClick?.(this.props.user)}>{viewBtn}</span> : 
+                <span onClick={() => this.props.settings.handleOnViewClick?.(this.props.user)}>{viewBtn}</span> : 
 
             this.extra_handle() ?
             <span onClick={() => this.props.settings.handleOnClickExtra?.(
@@ -223,14 +225,16 @@ class DatatableCard extends Component<Props, State> {
         </div> 
         :
         (["status", "process_state"].includes(this.header.toLowerCase())) ? 
-            <div className={`w-16 text-[8px] px-1 line-clamp-1 rounded-full border ${(this.state.stateList.includes(this.state.title)) ? `bg-green-200 text-green-700 border-green-500 hover:bg-green-500 hover:text-white` : `bg-red-200 text-red-700 border-red-500 hover:bg-red-500 hover:text-white`} py-1 justify-center text-center items-center`}>
+            <div className="flex w-full justify-center items-center">
+              <div className={`min-w-16 max-w-42 text-[8px] px-1 line-clamp-1 rounded-full border ${(this.state.stateList.includes(this.state.title)) ? `bg-green-200 text-green-700 border-green-500 hover:bg-green-500 hover:text-white` : `bg-red-200 text-red-700 border-red-500 hover:bg-red-500 hover:text-white`} py-1 justify-center text-center items-center`}>
                 {String(this.state.title).toLowerCase()}
-            </div> :
+              </div> 
+            </div>:
        (this.state.imgColumnTypes.includes(this.header?.toLowerCase() || '') || this.state.imageExtensions.includes((this.state.title?.toLowerCase().split('.').pop() || ''))) ?
             <div className={`w-8 ml-3`}>
                 <img onClick={() => this.onImageClick(this.state.title)} title="View photo" className={`object-center object-cover w-6 h-6 2xl:w-8 2xl:h-8 ${(!(this.props.settings.image == null || this.props.settings.image.rounded == false)) ? 'rounded-full' : ''} cursor-pointer mx-auto`} alt={`photo`} src={imageurl} />
             </div> :
-            <span className="text-xs 2xl:text-sm px-4 py-2 flex items-center">
+            <div className={`w-full text-xs 2xl:text-sm px-4 py-2 flex items-center`}>
                 {this.state.contentlist.length > 0 ? (
                      <ul className={`flex flex-col w-full ${listClass}`}>
                       {itemsToShow.map((item, index) => (
@@ -257,10 +261,10 @@ class DatatableCard extends Component<Props, State> {
                       )} */}
                     </ul>
                 ) : (
-                  this.state.title
+                  <div title={String(this.state.title)}  className={`min-w-24 line-clamp-${this.props.settings?.style?.maxlines}`}>{this.state.title}</div>
                 )}
                 
-            </span>
+            </div>
 }
 
         </>

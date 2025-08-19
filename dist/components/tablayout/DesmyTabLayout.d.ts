@@ -6,6 +6,7 @@ interface Tab {
 interface TabLayoutProps {
     tabs: Tab[];
     children: React.ReactNode[];
+    onActiveTabChange?: (activeIndex: number) => void;
 }
 interface TabLayoutState {
     activeTabIndex: number;

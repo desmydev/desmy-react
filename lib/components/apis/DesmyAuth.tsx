@@ -73,33 +73,51 @@ class DesmyAuth {
     deleteCookie(name: string, path: string = '/'): void {
       document.cookie = `${encodeURIComponent(name)}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=${path}`;
     }
-    setCookie(name: string, value: string, options?: { expires?: number | Date; path?: string; secure?: boolean }): void {
-      let cookieString = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`;
-
-      // Handle expiration
-      if (options?.expires) {
-          if (typeof options.expires === 'number') {
-              const date = new Date();
-              date.setTime(date.getTime() + options.expires * 24 * 60 * 60 * 1000); // Days to milliseconds
-              cookieString += `; expires=${date.toUTCString()}`;
-          } else if (options.expires instanceof Date) {
-              cookieString += `; expires=${options.expires.toUTCString()}`;
-          }
-      }
-
-      // Handle path
-      if (options?.path) {
-          cookieString += `; path=${options.path}`;
-      }
-
-      // Handle secure flag
-      if (options?.secure) {
-          cookieString += '; secure';
-      }
-
-      // Set the cookie
-      document.cookie = cookieString;
+   setCookie(
+  name: string,
+  value: string,
+  options?: {
+    expires?: number | Date;
+    path?: string;
+    secure?: boolean;
+    sameSite?: 'Lax' | 'Strict' | 'None';
   }
+): void {
+  let cookieString = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`;
+
+  // Handle expiration
+  if (options?.expires) {
+    if (typeof options.expires === 'number') {
+      const date = new Date();
+      date.setTime(date.getTime() + options.expires * 24 * 60 * 60 * 1000); // days → ms
+      cookieString += `; expires=${date.toUTCString()}`;
+    } else if (options.expires instanceof Date) {
+      cookieString += `; expires=${options.expires.toUTCString()}`;
+    }
+  } else {
+    // Default to 7-day expiration
+    const date = new Date();
+    date.setTime(date.getTime() + 7 * 24 * 60 * 60 * 1000);
+    cookieString += `; expires=${date.toUTCString()}`;
+  }
+
+  // Handle path (default to '/')
+  cookieString += `; path=${options?.path || '/'}`;
+
+  // Handle secure flag
+  if (options?.secure) {
+    cookieString += '; secure';
+  }
+
+  // Handle SameSite
+  if (options?.sameSite) {
+    cookieString += `; SameSite=${options.sameSite}`;
+  }
+
+  // Set the cookie
+  document.cookie = cookieString;
+}
+
 }
 
 export default new DesmyAuth();

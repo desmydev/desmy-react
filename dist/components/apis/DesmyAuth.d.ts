@@ -21,6 +21,7 @@ declare class DesmyAuth {
         expires?: number | Date;
         path?: string;
         secure?: boolean;
+        sameSite?: 'Lax' | 'Strict' | 'None';
     }): void;
 }
 declare const _default: DesmyAuth;

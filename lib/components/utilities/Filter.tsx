@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React,{ Component } from 'react';
 import { format, parseISO, isValid } from 'date-fns';
 import { DesmyModalContainer } from '../modalcontainer/DesmyModalContainer';
 import DesmyAuth from '../apis/DesmyAuth';
@@ -16,13 +16,28 @@ interface CreateProps {
     onSuccess?: (data: any) => void;
 }
 
+interface InputState {
+    [key: string]: any;
+    date?: {
+        id: string;
+        name: string;
+        value: { startDate: string; endDate: string };
+        label: string;
+    };
+    date_filters?: any;
+}
+
+interface FiltersState {
+    extra_fields?: { id: string; child?: { id: string } }[];
+    date_filters?: any[];
+    [key: string]: any;
+}
+
 interface CreateState {
     hasRequest: boolean;
     isLoading: boolean;
-    input: {
-        [key: string]: any;
-    };
-    filters: { [key: string]: Array<any> };
+    input: InputState;
+    filters: FiltersState;
 }
 
 class DesmyFilter extends Component<CreateProps, CreateState> {
@@ -38,7 +53,7 @@ class DesmyFilter extends Component<CreateProps, CreateState> {
 
     componentDidMount() {
         if (this.props.content) {
-            const updatedInput: { [key: string]: any } = { ...this.state.input };
+            const updatedInput: InputState = { ...this.state.input };
             this.props.content.forEach(item => {
                 if (item.label && item.value !== null) {
                     updatedInput[item.label] = item;
@@ -57,7 +72,7 @@ class DesmyFilter extends Component<CreateProps, CreateState> {
                 method: 'GET',
                 headers: {
                     "X-CSRFToken": `${DesmyAuth.getCookie('csrftoken')}`,
-                    "Authorization": `Token ${DesmyAuth.get(CommonState.ACCESS_TOKEN)}`
+                    "Authorization": this.props.filter?.token ?? `Token ${DesmyAuth.get(CommonState.ACCESS_TOKEN)}`
                 }
             });
 
@@ -91,16 +106,13 @@ class DesmyFilter extends Component<CreateProps, CreateState> {
 
     render() {
         const { filters, input, isLoading } = this.state;
-        const filterEntries = Object.entries(filters);
-
-        let minDate: Date | undefined;
-        let maxDate: Date | undefined;
+        const extraFields = filters.extra_fields || [];
 
         return (
             <DesmyModalContainer
                 data={{ title: `Filter` }}
                 containerClassName={`bg-white dark:bg-darkBackground border-[1px] border-gray-100 dark:border-darkDialogBackground`}
-                className="add-event-multi-modal max-w-lg p-2"
+                className={`add-event-multi-modal ${(!isLoading && extraFields.length > 5) ? `max-w-4xl` : `max-w-lg`} p-2 transition-all`}
                 onClose={this.props.onClose}
             >
                 <div className='flex flex-col w-full min-h-52 space-y-6'>
@@ -114,62 +126,89 @@ class DesmyFilter extends Component<CreateProps, CreateState> {
                             </div>
                         </div>
                     ) : (
-                        filterEntries.map(([key, dataList], index) => {
-                            if (!dataList || dataList.length === 0) return null;
+                        <div className={`grid ${extraFields.length > 5 ? `grid-cols-2` : `grid-cols-1`} gap-6`}>
+                            {extraFields.map((field, index) => {
+                                const fieldKey = field.id;
+                                const childKey = field.child?.id;
+                                const currentSelection = input[fieldKey]?.id || input[fieldKey]?.value || input[fieldKey];
 
-                            // For date_filters, currentSelection is the id of the selected option (e.g. 'date', 'today')
-                            // For others, use id or value
-                            let currentSelection;
-                            if (key === "date_filters") {
-                                currentSelection = input[key]?.id || input[key];
-                            } else {
-                                currentSelection = input[key]?.id || input[key]?.value || input[key];
-                            }
+                                return (
+                                    <React.Fragment key={index}>
+                                        {/* Parent dropdown */}
+                                        <div className="flex flex-col">
+                                            <DesmyDropdown
+                                                request={{
+                                                    url: `${this.props.filter?.url}?option=${fieldKey}`,
+                                                    token: this.props.filter?.token ?? `${DesmyAuth.get(CommonState.ACCESS_TOKEN)}`
+                                                }}
+                                                defaultValue={currentSelection}
+                                                placeholder={DesmyCommons.toSentenceCase(String(fieldKey.replace('_', ' ').toUpperCase()))}
+                                                handleChange={(data: any) => {
+                                                    if (!DesmyCommons.isEmptyOrNull(data)) {
+                                                        this.setState(prevState => {
+                                                            const newInput = { ...prevState.input, [fieldKey]: data };
+                                                            if (childKey) Reflect.deleteProperty(newInput, childKey);
+                                                            return { input: newInput };
+                                                        });
+                                                    }
+                                                }}
+                                            />
+                                        </div>
 
-                            let showDatePicker = false;
-                            if (key === "date_filters" && input[key] !== undefined) {
-                                const selectedFilter = input[key];
-                                showDatePicker = selectedFilter?.id === "date" || selectedFilter?.value?.key === "date";
+                                        {/* Child dropdown as its own grid item */}
+                                        {childKey && input[fieldKey] && (
+                                            <div className="flex flex-col">
+                                                <DesmyDropdown
+                                                    request={{
+                                                        url: `${this.props.filter?.url}?option=${childKey}&value=${input[fieldKey].id}`,
+                                                        token: this.props.filter?.token ?? `${DesmyAuth.get(CommonState.ACCESS_TOKEN)}`
+                                                    }}
+                                                    defaultValue={input[childKey]?.id || input[childKey]}
+                                                    placeholder={DesmyCommons.toSentenceCase(String(childKey.replace('_', ' ').toUpperCase()))}
+                                                    handleChange={(data: any) => {
+                                                        if (!DesmyCommons.isEmptyOrNull(data)) {
+                                                            this.setState(prevState => ({
+                                                                input: { ...prevState.input, [childKey]: data }
+                                                            }));
+                                                        }
+                                                    }}
+                                                />
+                                            </div>
+                                        )}
+                                    </React.Fragment>
+                                );
+                            })}
 
-                                const data = selectedFilter?.value || {};
-                                minDate = data.minDate ? parseISO(data.minDate) : undefined;
-                                maxDate = data.maxDate ? parseISO(data.maxDate) : undefined;
-                            }
-
-                            return (
-                                <div key={index} className="flex flex-col space-y-4">
+                            {/* Date filters */}
+                            {filters.date_filters && (
+                                <div className="flex flex-col space-y-4">
                                     <DesmyDropdown
-                                        defaultValue={currentSelection}
-                                        placeholder={DesmyCommons.toSentenceCase(String(key.replace('_', ' ').toUpperCase()))}
-                                        data={dataList.map((item: any) => ({
-                                            id: item.id || item,
-                                            name: item.name || item,
-                                            value: item.id || item,
-                                            label: item.name || item,
+                                        defaultValue={input["date_filters"]?.id || input["date_filters"]}
+                                        placeholder="Date Filters"
+                                        data={filters.date_filters.map((item: any) => ({
+                                            id: item.key,
+                                            name: item.name,
+                                            value: item,
+                                            label: item.name,
                                         }))}
                                         handleChange={(data: any) => {
                                             if (!DesmyCommons.isEmptyOrNull(data)) {
                                                 this.setState(prevState => {
-                                                    const newInput = {
-                                                        ...prevState.input,
-                                                        [key]: data,
-                                                    };
-                                                    if (key === "date_filters" && data?.id !== "date") {
-                                                        delete newInput['date'];
-                                                    }
+                                                    const newInput: InputState = { ...prevState.input, ["date_filters"]: data };
+                                                    if (data?.id !== "date") Reflect.deleteProperty(newInput, "date");
                                                     return { input: newInput };
                                                 });
                                             }
                                         }}
                                     />
 
-                                    {showDatePicker && (
+                                    {input["date_filters"]?.id === "date" && (
                                         <div className='flex w-full mt-3'>
                                             <DesmyDatePicker
                                                 defaultValue={input['date']?.value || { startDate: undefined, endDate: undefined }}
                                                 label={`Select Date Range`}
-                                                minDate={minDate}
-                                                maxDate={maxDate}
+                                                minDate={parseISO(filters.date_filters.find((d: any) => d.key === "date")?.minDate || "")}
+                                                maxDate={parseISO(filters.date_filters.find((d: any) => d.key === "date")?.maxDate || "")}
                                                 displayFormat="MMMM dd, yyyy hh:mm a"
                                                 useRange={true}
                                                 withTime={true}
@@ -184,10 +223,7 @@ class DesmyFilter extends Component<CreateProps, CreateState> {
                                                             label: "Custom Date Range"
                                                         };
                                                         this.setState(prevState => ({
-                                                            input: {
-                                                                ...prevState.input,
-                                                                ['date']: selectedValue
-                                                            }
+                                                            input: { ...prevState.input, ['date']: selectedValue }
                                                         }));
                                                     }
                                                 }}
@@ -195,15 +231,15 @@ class DesmyFilter extends Component<CreateProps, CreateState> {
                                         </div>
                                     )}
                                 </div>
-                            );
-                        })
+                            )}
+                        </div>
                     )}
 
                     <div className='flex justify-end mt-5'>
                         <DesmyButton
                             onClick={this.handleOnSubmit}
                             hasRequest={this.state.hasRequest}
-                            label={`Save`}
+                            label={`Save And Continue`}
                         />
                     </div>
                 </div>

@@ -1,14 +1,6 @@
-import { default as React, Component, ChangeEvent, ReactNode, KeyboardEvent } from 'react';
+import { default as React, Component, KeyboardEvent, ChangeEvent } from 'react';
 import { DesmyDataTableSettingsProps } from '../apis/SharedProps';
-interface FilterItem {
-    id: string;
-    name: string;
-    value: any;
-    label: string;
-}
-export type DesmyDataTableRef = {
-    handleRetry: () => void;
-};
+import { FilterItem } from './FilterTags';
 interface DataTableProps {
     settings: DesmyDataTableSettingsProps;
     content?: React.ReactElement<{
@@ -59,7 +51,7 @@ interface DataTableState {
     };
     custom_settings: {
         sorted_column: string;
-        order: "asc" | "desc";
+        order: 'asc' | 'desc';
         first_page: number;
         current_page: number;
         offset: number;
@@ -71,6 +63,9 @@ interface DataTableState {
             class?: string;
             hint?: string;
         };
+        style?: {
+            maxlines?: number;
+        };
         breadcrumb?: {
             name: string;
             url: string;
@@ -81,6 +76,7 @@ interface DataTableState {
             name: string;
             class: string;
         }[];
+        filter?: any;
     };
     error: {
         state?: boolean;
@@ -95,74 +91,41 @@ interface DataTableState {
         type: string;
         color: string;
     };
+    scrollTop: number;
 }
 declare class DesmyDataTable extends Component<DataTableProps, DataTableState> {
-    renderedSettings: any[];
     dataCollection: any[];
     chunkSize: number;
     currentIndex: number;
     hasClear: boolean;
-    isLoading: boolean;
     hasLoadLastData: boolean;
-    current_page: number;
     search: string;
-    filterloaded: boolean;
     queryParam: string;
+    debounceTimer?: ReturnType<typeof setTimeout>;
+    throttleTimer?: ReturnType<typeof setTimeout>;
+    rowHeight: number;
+    visibleHeight: number;
     constructor(props: DataTableProps);
-    componentDidMount(): Promise<void>;
+    componentDidMount(): void;
+    handleFiltered: () => void;
     handleScroll(event: React.UIEvent<HTMLDivElement>): void;
-    errors: (data: {
-        state: boolean;
-        message: string;
-        type: string;
-        color: string;
-    }) => void;
-    handleReset: () => void;
-    handleError: (message?: string, retry?: boolean) => void;
-    fetchEntities(): Promise<void>;
-    columnHead(value: string): string;
-    sortByColumn(column: string): void;
-    tableHeads: () => ReactNode[];
+    fetchEntities: () => void;
+    handleError: (message?: unknown, retry?: boolean) => void;
     handleClear: () => void;
-    initialChunck(): void;
-    addHeaderAndColumn: (header: string, column: string) => void;
-    removeHeaderAndColumn: (header: string) => void;
     clearFetchEntities: () => void;
-    handleSearch: (event: KeyboardEvent<HTMLInputElement>) => void;
-    searchFilter: (filters: {
-        search: {
-            [key: string]: {
-                id: string;
-                name: string;
-            };
-        };
-        data: {
-            name: string;
-            data: string;
-            defaults?: {
-                [key: string]: string;
-            };
-        }[];
-    }) => Promise<void>;
-    handleInput: (event: ChangeEvent<HTMLInputElement>) => void;
-    handleFocus: () => void;
-    handleBlur: () => void;
-    onChangeValue: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    handleKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-    loadNextBatch: () => void;
-    renderChunk(): void;
+    handleSearchInput(event: ChangeEvent<HTMLInputElement>): void;
+    handleSearchKeyDown: (e: KeyboardEvent<HTMLInputElement>) => void;
+    handleSort: (column: string) => void;
     removeFilterByName: (data: string) => void;
-    handleRetry: () => void;
-    handleHint: () => string;
-    handleOnSuccess: (index: number) => void;
-    handleEdit: (user: any, type?: string) => void;
-    handleBreadCrumbNavigations(e: React.MouseEvent, url: string): void;
-    renderBreadcrumb(): import("react/jsx-runtime").JSX.Element | null;
     handlePageChange: (pageNumber: number) => void;
-    renderPagination: () => import("react/jsx-runtime").JSX.Element | null;
+    handleOnSuccess: (index: number) => void;
+    handleOnFiltered: (data: any) => void;
     handleOnClose: () => void;
     handleOnOpenFilter: () => void;
-    handleOnFiltered: (data: any) => void;
+    handleRetry: () => void;
+    handleEdit: (user: any, type?: string) => void;
+    renderBreadcrumb(): import("react/jsx-runtime").JSX.Element | null;
+    handleHint: () => string;
     render(): import("react/jsx-runtime").JSX.Element;
 }
 export { DesmyDataTable };

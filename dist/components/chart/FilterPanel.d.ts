@@ -14,7 +14,8 @@ interface FilterPanelProps {
     }) => void;
     onClose: () => void;
     filter: {
-        url: string;
+        url?: string;
+        token?: string;
     };
 }
 export declare class FilterPanel extends Component<FilterPanelProps> {

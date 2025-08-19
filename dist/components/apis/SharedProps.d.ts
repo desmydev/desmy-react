@@ -55,6 +55,9 @@ export interface DesmyDataTableSettingsProps {
         name: string;
         id: string;
     };
+    style?: {
+        maxlines?: number;
+    };
     breadcrumb?: {
         name: string;
         url: string;

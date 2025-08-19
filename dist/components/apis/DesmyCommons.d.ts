@@ -29,7 +29,7 @@ declare class DesmyCommons {
     };
     isNotEmpty(value: string): boolean;
     columnHead(value: string): string;
-    convertUnderscoreToSpaceString(str: string): string;
+    convertUnderscoreToSpaceString(str?: string): string;
     isDarkTheme(): boolean;
     /**
      * Force the theme to update based on a provided mode.

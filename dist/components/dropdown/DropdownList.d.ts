@@ -24,6 +24,20 @@ interface Props {
     encryptHandler?: (data: any) => any;
 }
 export declare class DropdownList extends Component<Props> {
+    renderRow: ({ index, style, data, }: {
+        index: number;
+        style: React.CSSProperties;
+        data: {
+            items: DesmyDropdownItem[];
+            isMultiple?: boolean;
+            selectedMultiple: DesmyDropdownItem[];
+            selectedSingle: DesmyDropdownItem;
+            onSelectItem: (e: React.MouseEvent<HTMLDivElement>, item: DesmyDropdownItem) => void;
+            dropdownListClass?: string;
+            enableDecrypt?: boolean;
+            encryptHandler?: (data: any) => any;
+        };
+    }) => import("react/jsx-runtime").JSX.Element;
     render(): import("react/jsx-runtime").JSX.Element;
 }
 export {};

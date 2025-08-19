@@ -1,5 +1,6 @@
 import { DesmyPDFReader } from './components/pdfreader/DesmyPDFReader';
 import { DesmyThemeProvider } from './components/apis/DesmyThemeProvider';
+import { DesmyBroadcasterManager, DesmyBroadcaster } from './components/apis/DesmyBroadcasterManager';
 import { DesmyThemeContext } from './components/apis/DesmyThemeContext';
 import { DataSetTableSettingsProps, DesmyDataTableSettingsProps, DesmyDropdownItem, DesmyCustomDataTableProps, DesmyModalHandlerState, DesmySideBarItemData, DesmySideBarItemProps, DesmySmartFormUploadReadTableFilterColums, DesmyModalHandlerSettingsProps, DesmyDataTableSettingsFilterProps } from './components/apis/SharedProps';
 import { DesmyWithRouter, DesmyRenderRoutes } from './components/apis/DesmyWithRouter';
@@ -46,8 +47,9 @@ import { DesmyVerticalStepper } from './components/stepper/DesmyVerticalStepper'
 import { DesmyLazyImage } from './components/image/DesmyLazyImage';
 import { DesmyTimeAgo } from './components/apis/DesmyTimeAgo';
 import { DesmyBarChart } from './components/chart/barchart/DesmyBarChart';
+import { DesmyTrendChart } from './components/chart/trendchart/CanvasTrendChart';
 import { DesmyAreaChart } from './components/chart/DesmyAreaChart';
 import { DesmyPieChart } from './components/chart/DesmyPieChart';
 import { DesmyComboBox } from './components/comboxbox/DesmyComboBox';
-export { DesmyThemeProvider, DesmyThemeContext, DesmyPDFReader, DesmyState, DesmyComboBox, DesmyPermissions, DesmyLazyloading, DesmyToastProvider, useToast, DesmyToast, DesmyDropdown, DesmyModalHandler, DesmyModalContainer, DesmyModalWrapper, DesmyClickOutsideListener, DesmyAuth, DesmyCommons, DesmyAccordion, DesmyTextInput, DesmySearchInput, DesmyDataTable, DesmyDataSetTable, DesmyCustomDataTable, DesmyReadMoreOrLess, DesmyTabLayout, DesmyButton, DesmyPopupMenu, DesmyFilePicker, DesmyListCard, DesmyEmpty, DesmyNetworkError, DesmyNoDataFound, DesmyRxServices, DesmyTableCard, DesmySideBarItem, DesmyUploadManager, DesmySmartFormUpload, DesmyPassportPicker, DesmyMultiStepModal, DesmyDatePicker, DesmyVerticalStepper, DesmyWizard, DesmyLazyImage, DesmyAxiosService, DesmySuspenseWrapper, DesmyWithRouter, DesmyRenderRoutes, DesmyDocumentPicker, DesmyTimeAgo, DesmyAreaChart, DesmyBarChart, DesmyPieChart };
+export { DesmyThemeProvider, DesmyThemeContext, DesmyPDFReader, DesmyState, DesmyComboBox, DesmyPermissions, DesmyLazyloading, DesmyToastProvider, useToast, DesmyToast, DesmyDropdown, DesmyModalHandler, DesmyModalContainer, DesmyModalWrapper, DesmyClickOutsideListener, DesmyAuth, DesmyCommons, DesmyAccordion, DesmyTextInput, DesmySearchInput, DesmyDataTable, DesmyDataSetTable, DesmyCustomDataTable, DesmyReadMoreOrLess, DesmyTabLayout, DesmyButton, DesmyPopupMenu, DesmyFilePicker, DesmyListCard, DesmyEmpty, DesmyNetworkError, DesmyNoDataFound, DesmyRxServices, DesmyTableCard, DesmySideBarItem, DesmyUploadManager, DesmySmartFormUpload, DesmyPassportPicker, DesmyMultiStepModal, DesmyDatePicker, DesmyVerticalStepper, DesmyWizard, DesmyLazyImage, DesmyAxiosService, DesmySuspenseWrapper, DesmyWithRouter, DesmyRenderRoutes, DesmyDocumentPicker, DesmyTimeAgo, DesmyAreaChart, DesmyBarChart, DesmyPieChart, DesmyTrendChart, DesmyBroadcasterManager, DesmyBroadcaster };
 export type { DataSetTableSettingsProps, DesmyDataTableSettingsProps, DesmyDropdownItem, DesmyCustomDataTableProps, DesmySideBarItemData, DesmySideBarItemProps, DesmySmartFormUploadReadTableFilterColums, DesmyModalHandlerSettingsProps, DesmyDataTableSettingsFilterProps, DesmyModalHandlerState };

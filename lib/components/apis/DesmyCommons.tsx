@@ -224,7 +224,8 @@ class DesmyCommons {
         }
     }
     
-    convertUnderscoreToSpaceString(str: string): string {
+    convertUnderscoreToSpaceString(str?: string): string {
+    if (!str) return ""; // or return str ?? ""
         return str.replace(/_/g, ' ');
     }
     

@@ -16,6 +16,9 @@ interface Settings {
         name: string;
         icon: React.ReactNode;
     }>;
+    style?: {
+        maxlines?: number;
+    };
     read_more_limit?: number;
 }
 interface Props {
