@@ -7,23 +7,39 @@ interface TableBodyProps {
     handleOnSuccess: (index: number) => void;
     settings: any;
     isLoading?: boolean;
+    isFetchingMore?: boolean;
     handleEdit: (user: any, type?: string) => void;
     rowHeight: number;
     onRowClick?: (user: any, index: number) => void;
+    hasMore?: boolean;
+    error?: {
+        state?: boolean;
+        message?: string;
+    };
+    onRetry?: () => void;
+    entities?: {
+        meta?: {
+            current_page: number;
+            from: number;
+            last_page: number;
+            per_page: number;
+            to: number;
+            total: number;
+            next?: string | null;
+            next_page?: number | null;
+            next_cursor?: string | null;
+            count?: number | null;
+        };
+    };
+    searchText?: string;
 }
 interface TableBodyState {
     visibleCount: number;
 }
 export declare class TableBody extends Component<TableBodyProps, TableBodyState> {
     tableBodyRef: React.RefObject<HTMLTableSectionElement | null>;
-    observer: IntersectionObserver | null;
-    sentinelRef: React.RefObject<HTMLTableRowElement | null>;
     constructor(props: TableBodyProps);
-    componentDidMount(): void;
-    componentDidUpdate(prevProps: TableBodyProps, prevState: TableBodyState): void;
-    componentWillUnmount(): void;
-    setupObserver(): void;
-    loadMore: () => void;
+    componentDidUpdate(prevProps: TableBodyProps): void;
     render(): import("react/jsx-runtime").JSX.Element;
 }
 export {};

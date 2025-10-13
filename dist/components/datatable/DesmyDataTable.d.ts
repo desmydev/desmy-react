@@ -1,11 +1,10 @@
 import { default as React, Component, KeyboardEvent, ChangeEvent } from 'react';
-import { DesmyDataTableSettingsProps } from '../apis/SharedProps';
-import { FilterItem } from './FilterTags';
+import { DesmyDataTableSettingsProps, DesmyFilterItem } from '../apis/SharedProps';
 interface DataTableProps {
     settings: DesmyDataTableSettingsProps;
     content?: React.ReactElement<{
         searchText?: string;
-        filterhead?: FilterItem[];
+        filterhead?: DesmyFilterItem[];
     }> | ((args: {
         searchText?: string;
         filterhead?: any | any[];
@@ -22,8 +21,14 @@ interface DataTableState {
     exceptionalColumns: string[];
     selected: number;
     isLoading: boolean;
+    isFetchingMore: boolean;
     showFilter: boolean;
-    filterhead: FilterItem[];
+    filterhead: DesmyFilterItem[];
+    showExportOption: boolean;
+    exportDetails: {
+        url?: string;
+        queryString?: string;
+    };
     filters: {
         data: {
             name: string;
@@ -41,42 +46,29 @@ interface DataTableState {
         data: any[];
         meta: {
             current_page: number;
-            next_page: number | null;
             from: number;
             last_page: number;
             per_page: number;
             to: number;
             total: number;
+            next?: string | null;
+            next_page?: number | null;
+            next_cursor?: string | null;
+            count?: number | null;
         };
     };
     custom_settings: {
         sorted_column: string;
-        order: 'asc' | 'desc';
+        order: "asc" | "desc";
         first_page: number;
         current_page: number;
         offset: number;
     };
-    settings: {
-        default_sorted_column: string;
-        header: {
-            title?: string;
-            class?: string;
-            hint?: string;
-        };
-        style?: {
-            maxlines?: number;
-        };
-        breadcrumb?: {
-            name: string;
-            url: string;
-        }[];
-        headers: any[];
-        columns: string[];
+    settings: DesmyDataTableSettingsProps & {
         table_data?: {
             name: string;
             class: string;
         }[];
-        filter?: any;
     };
     error: {
         state?: boolean;
@@ -94,22 +86,18 @@ interface DataTableState {
     scrollTop: number;
 }
 declare class DesmyDataTable extends Component<DataTableProps, DataTableState> {
-    dataCollection: any[];
-    chunkSize: number;
-    currentIndex: number;
-    hasClear: boolean;
-    hasLoadLastData: boolean;
     search: string;
     queryParam: string;
     debounceTimer?: ReturnType<typeof setTimeout>;
-    throttleTimer?: ReturnType<typeof setTimeout>;
+    scrollContainer: React.RefObject<HTMLDivElement | null>;
     rowHeight: number;
-    visibleHeight: number;
     constructor(props: DataTableProps);
     componentDidMount(): void;
+    handleExport: (url: string, queryString: string) => void;
+    handleOnFiltered: (data: any) => void;
     handleFiltered: () => void;
-    handleScroll(event: React.UIEvent<HTMLDivElement>): void;
-    fetchEntities: () => void;
+    handleScroll(): void;
+    fetchEntities: (append?: boolean) => Promise<void>;
     handleError: (message?: unknown, retry?: boolean) => void;
     handleClear: () => void;
     clearFetchEntities: () => void;
@@ -117,14 +105,13 @@ declare class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     handleSearchKeyDown: (e: KeyboardEvent<HTMLInputElement>) => void;
     handleSort: (column: string) => void;
     removeFilterByName: (data: string) => void;
+    renderBreadcrumb(): import("react/jsx-runtime").JSX.Element | null;
     handlePageChange: (pageNumber: number) => void;
-    handleOnSuccess: (index: number) => void;
-    handleOnFiltered: (data: any) => void;
     handleOnClose: () => void;
+    handleOnSuccess: (index: number) => void;
     handleOnOpenFilter: () => void;
     handleRetry: () => void;
-    handleEdit: (user: any, type?: string) => void;
-    renderBreadcrumb(): import("react/jsx-runtime").JSX.Element | null;
+    renderExtraActions(): import("react/jsx-runtime").JSX.Element;
     handleHint: () => string;
     render(): import("react/jsx-runtime").JSX.Element;
 }

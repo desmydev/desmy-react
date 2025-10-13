@@ -1,248 +1,331 @@
-import React, { Component, createRef } from 'react';
-import readXlsxFile from 'read-excel-file';
-import ReadTables from './ReadTables';
-import DesmyCommons from '../apis/DesmyCommons';
-import { DataSetTableSettingsProps, DesmySmartFormUploadReadTable, DesmySmartFormUploadReadTableFilterColums } from '../apis/SharedProps';
-// import DesmyCommons from '../apis/DesmyCommons';
+import React, { Component } from "react";
+import readXlsxFile from "read-excel-file";
+import ReadTables from "./ReadTables";
+import DesmyCommons from "../apis/DesmyCommons";
+import {
+  DataSetTableSettingsProps,
+  DesmySmartFormUploadReadTable,
+  DesmySmartFormUploadReadTableFilterColums,
+} from "../apis/SharedProps";
 
 interface DataItem {
   [key: string]: any;
 }
 
 interface Props {
-  database: Array<{ id: string, readOnly: boolean }>;
-  filter_column?: DesmySmartFormUploadReadTableFilterColums,
-  [key: string]: any;
+  database: Array<{ id: string; readOnly: boolean }>;
+  filter_column?: DesmySmartFormUploadReadTableFilterColums;
   settings: DataSetTableSettingsProps;
-  reader:DesmySmartFormUploadReadTable
+  reader: DesmySmartFormUploadReadTable;
 }
 
 interface State {
   hasRequest: boolean;
-  filedata: any[];
+  cancelRequested: boolean;
+  progress: number;
+  totalRows: number;
+  fileLoaded: boolean;
+  partiallyLoaded: boolean;
+  rows: any[] | null;
+  headers: string[];
   data: {
     meta: {
-      count: number;
-      current_page: number;
-      next_page: number | null;
       total: number;
-      from: number;
-      to: number;
+      current_page: number;
       last_page: number;
       per_page: number;
+      from: number;
+      to: number;
+      next_page: number | null;
     };
-    links: {
-      first: string | null;
-      last: string | null;
-    };
-    next: string | null;
-    previous: string | null;
-    count: number;
     data: DataItem[];
   };
-  input: { [key: string]: any };
 }
-type Row = any[]
 
 class DesmySmartFormUpload extends Component<Props, State> {
-  wizardActionRef: React.RefObject<any>;
-
   constructor(props: Props) {
     super(props);
-    this.wizardActionRef = createRef();
     this.state = {
       hasRequest: false,
-      filedata: [],
+      cancelRequested: false,
+      fileLoaded: false,
+      partiallyLoaded: false,
+      progress: 0,
+      totalRows: 0,
+      rows: null,
+      headers: [],
       data: {
         meta: {
-          count: 0,
-          current_page: 1,
-          next_page: null,
           total: 0,
-          from: 1,
-          to: 0,
+          current_page: 1,
           last_page: 1,
           per_page: 100,
+          from: 1,
+          to: 0,
+          next_page: null,
         },
-        links: {
-          first: null,
-          last: null,
-        },
-        next: null,
-        previous: null,
-        count: 0,
         data: [],
       },
-      input: {},
     };
   }
 
-  handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  /** Handles Excel file upload and initial parsing */
+  handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    this.setState({
+      hasRequest: true,
+      cancelRequested: false,
+      progress: 0,
+      fileLoaded: false,
+      partiallyLoaded: false,
+      totalRows: 0,
+    });
+
     try {
-      const { database } = this.props;
-      const file = event.target.files?.[0];
-  
-      if (!file) return;
-  
-      readXlsxFile(file, { sheet: this.props.reader.sheet_name }).then((rows: Row[]) => {
-        if (rows.length === 0) return;
-        const headers = rows[0].map((header) =>
-          `${header}`.toLowerCase().replace(/\s+/g, '_')
-        );
-        rows = rows.slice(1);
-  
-        const parentUnitIndex = headers.indexOf(this.props.filter_column?.parent ?? "");
-        const uniqueFieldIndices = this.props.filter_column?.unique_fields
-          ? this.props.filter_column.unique_fields.map((field) =>
-              headers.indexOf(field)
-            )
-          : [];
-  
-        const parentData: { [key: string]: any } = {};
-  
-        if (parentUnitIndex !== -1 && uniqueFieldIndices.some((index) => index !== -1)) {
-          rows.forEach((row) => {
-            uniqueFieldIndices.forEach((uniqueFieldIndex) => {
-              const uniqueFieldValue = DesmyCommons.toString(
-                row[uniqueFieldIndex]
-              ).toLowerCase();
-              if (uniqueFieldValue) {
-                parentData[uniqueFieldValue] = row;
-              }
-            });
-          });
-        }
-  
-        let chunkSize = 100;
-        let startIndex = 0;
-  
-        const processChunk = async () => {
-          const endIndex = Math.min(startIndex + chunkSize, rows.length);
-          const currentChunk = rows.slice(startIndex, endIndex);
-  
-          const chunkData = currentChunk.map((row) => {
-            const rowData: Record<string, any> = {};
-            headers.forEach((header, index) => {
-              const column = database.find((col) => col.id === header);
-              if (column) {
-                rowData[header] = DesmyCommons.toStringDefault(row[index], '');
-              }
-            });
-
-            if (!DesmyCommons.isEmptyOrNull(rowData?.parent_unit)) {
-              const parentCode = DesmyCommons.toStringDefault(
-                row[parentUnitIndex],
-                ''
-              ).toLowerCase();
-              const foundParent = parentData[parentCode];
-  
-              if (foundParent) {
-                const parentObject: { [key: string]: any } = {};
-                headers.forEach((header, index) => {
-                  if (header !== this.props.filter_column?.parent) {
-                    parentObject[header] = foundParent[index];
-                  }
-                });
-                rowData[this.props.filter_column?.custom ?? ""] = JSON.stringify(
-                  parentObject
-                );
-              }
-            }
-            if (uniqueFieldIndices.length > 0) {
-              uniqueFieldIndices.forEach((uniqueFieldIndex) => {
-                if (rowData[headers[uniqueFieldIndex]]) {
-                  rowData.extra = `${rowData[headers[uniqueFieldIndex]]}`;
-                }
-              });
-            }
-            return rowData;
-          });
-  
-          const newMeta = {
-            ...this.state.data.meta,
-            count: this.state.data.data.length + chunkData.length,
-            total: this.state.data.data.length + chunkData.length,
-            to: this.state.data.data.length + chunkData.length,
-          };
-
-          const dataset = {
-            ...this.state.data,
-            data: [...this.state.data.data, ...chunkData],
-            meta: newMeta,
-          };
-          this.setState(
-            {
-              filedata: [...this.state.filedata, ...currentChunk],
-              data: dataset,
-            },
-            () => {
-              if (endIndex < rows.length) {
-                startIndex = endIndex;
-                setTimeout(processChunk, 0);
-              }
-            }
-          );
-        };
-        processChunk();
+      const rows = await readXlsxFile(file, {
+        sheet: this.props.reader?.sheet_name ?? undefined,
       });
-    } catch (e) {
-      console.error(e);
+
+      if (!rows || rows.length === 0) {
+        this.setState({ hasRequest: false });
+        return;
+      }
+
+      const headers = rows[0].map((h) =>
+        `${h}`.toLowerCase().replace(/\s+/g, "_")
+      );
+      const dataRows = rows.slice(1);
+
+      this.setState(
+        {
+          totalRows: dataRows.length,
+          rows: dataRows,
+          headers,
+          fileLoaded: true,
+        },
+        () => this.processChunkedRows(true)
+      );
+    } catch (error) {
+      console.error("Excel read error:", error);
+      this.setState({ hasRequest: false, fileLoaded: false });
     }
   };
-  ;
+
+  /** Cancels the current upload */
+  cancelUpload = () => {
+    this.setState({
+      cancelRequested: true,
+      hasRequest: false,
+      partiallyLoaded: false,
+    });
+  };
+
+  /** Reset everything after cancellation or completion */
+  resetAll = () => {
+    this.setState({
+      cancelRequested: false,
+      hasRequest: false,
+      fileLoaded: false,
+      partiallyLoaded: false,
+      progress: 0,
+      totalRows: 0,
+      rows: null,
+      headers: [],
+      data: {
+        ...this.state.data,
+        data: [],
+        meta: { ...this.state.data.meta, total: 0, to: 0 },
+      },
+    });
+  };
+
+  /** Processes Excel rows in batches to prevent UI freezing */
+  processChunkedRows = (initial = false) => {
+    const { database } = this.props;
+    const { rows, headers } = this.state;
+    if (!rows) return;
+
+    const CHUNK_SIZE = 200;
+    const INITIAL_LIMIT = 2000;
+    let index = 0;
+    let maxIndex = initial ? Math.min(INITIAL_LIMIT, rows.length) : rows.length;
+
+    const processChunk = () => {
+      // Check for cancel
+      if (this.state.cancelRequested) {
+        this.resetAll();
+        return;
+      }
+
+      const end = Math.min(index + CHUNK_SIZE, maxIndex);
+      const chunk = rows.slice(index, end);
+
+      const chunkData = chunk.map((row) => {
+        const rowData: Record<string, any> = {};
+        headers.forEach((header, i) => {
+          if (database.some((c) => c.id === header)) {
+            rowData[header] = DesmyCommons.toStringDefault(row[i], "");
+          }
+        });
+        return rowData;
+      });
+
+      this.setState((prev) => {
+        const newLength = prev.data.data.length + chunkData.length;
+        return {
+          data: {
+            ...prev.data,
+            data: [...prev.data.data, ...chunkData],
+            meta: {
+              ...prev.data.meta,
+              total: newLength,
+              to: newLength,
+            },
+          },
+          progress: Math.min((end / rows.length) * 100, 100),
+        };
+      });
+
+      index = end;
+      if (end < maxIndex) {
+        if ("requestIdleCallback" in window) {
+          (window as any).requestIdleCallback(processChunk);
+        } else {
+          setTimeout(processChunk, 5);
+        }
+      } else {
+        this.setState({
+          hasRequest: false,
+          partiallyLoaded: maxIndex < rows.length,
+        });
+      }
+    };
+
+    if ("requestIdleCallback" in window) {
+      (window as any).requestIdleCallback(processChunk);
+    } else {
+      setTimeout(processChunk, 0);
+    }
+  };
+
+  /** Load remaining unprocessed rows */
+  handleLoadRemaining = () => {
+    this.setState(
+      { hasRequest: true, partiallyLoaded: false },
+      () => this.processChunkedRows(false)
+    );
+  };
 
   render() {
-    const databaseIds = this.props.database.map((column) => column.id);
-    this.props.settings.headers = databaseIds; this.props.settings.columns = databaseIds;
+    const { settings, reader, database } = this.props;
+    const {
+      data,
+      progress,
+      fileLoaded,
+      partiallyLoaded,
+      hasRequest,
+      totalRows,
+    } = this.state;
+
+    // Map database columns dynamically
+    const dbIds = database.map((c) => c.id);
+    settings.headers = dbIds;
+    settings.columns = dbIds;
 
     return (
-      <>
-        <div className='flex flex-col w-full overflow-auto'>
-          <div className='w-full font-poppinsRegular '>
-            <div className='flex flex-col h-full w-full'>
-              {this.state.data.data.length === 0 ? (
-                <div className='w-full  my-16 space-y-4'>
-                  <div className={`bg-gray-200 dark:bg-darkPrimary rounded-lg w-full max-w-lg  mx-auto shadow-sm h-60 cursor-pointer relative overflow-hidden group`}>
-                    <input
-                      type="file"
-                      disabled={this.state.hasRequest}
-                      className="absolute inset-0 w-full h-full opacity-0 z-50 cursor-pointer"
-                      accept={`application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel`}
-                      onChange={this.handleFileUpload}
-                    />
-                    <div className='flex-col text-gray-500 dark:text-gray-400 flex h-full justify-center items-center'>
-                      <div className='w-16 h-16 mb-2'>
-                        <img
-                          className={`object-center object-cover w-full h-full cursor-pointer m-auto`}
-                          alt={`photo`}
-                          src={this.props.reader?.ui?.icon  ?? `./excel.png`}
-                        />
-                      </div>
-                      <div className='text-xs md:text-sm'>{this.props.reader?.ui?.label  ?? `[Drag and Drop or Click to Upload Excel]`}</div>
-                    </div>
-                  </div>
-                  {
-                    !(DesmyCommons.isEmptyOrNull(this.props.reader.template_url)) ? 
-                      <div className={` w-full max-w-lg mx-auto`}>
-                        <div className='flex w-full justify-end'>
-                          <a href={`${this.props.reader.template_url}`} target='_blank' className='uppercase text-xs bg-green-700 text-white px-4 py-2.5 rounded-full cursor-pointer'>
-                            Download Template
-                          </a>
-                        </div>
-                      </div>
-                    :null
-                  }
-                  
+      <div className="flex flex-col w-full overflow-auto font-poppinsRegular">
+        {/* Step 1: Upload UI / Spinner */}
+        {!fileLoaded && !hasRequest ? (
+          <div className="w-full my-16 space-y-4">
+            <div className="bg-gray-200 dark:bg-darkPrimary rounded-lg w-full max-w-lg mx-auto shadow-sm h-60 cursor-pointer relative overflow-hidden group">
+              <input
+                type="file"
+                disabled={hasRequest}
+                className="absolute inset-0 w-full h-full opacity-0 z-50 cursor-pointer"
+                accept=".xls,.xlsx"
+                onChange={this.handleFileUpload}
+              />
+              <div className="flex-col text-gray-500 dark:text-gray-400 flex h-full justify-center items-center">
+                <div className="w-16 h-16 mb-2">
+                  <img
+                    src={reader?.ui?.icon ?? "./excel.png"}
+                    alt="excel"
+                    className="object-cover w-full h-full"
+                  />
                 </div>
-              ) : (
-                <div className='z-5'>
-                  <ReadTables headers={databaseIds}  datalist={this.state.data} {...this.props} />
+                <div className="text-xs md:text-sm">
+                  {reader?.ui?.label ?? `[Click to Upload Excel]`}
                 </div>
-              )}
+              </div>
             </div>
+            {reader.template_url && (
+              <div className="w-full max-w-lg mx-auto flex justify-end">
+                <a
+                  href={reader.template_url}
+                  target="_blank"
+                  className="uppercase text-xs bg-green-700 text-white px-4 py-2.5 rounded-full"
+                >
+                  Download Template
+                </a>
+              </div>
+            )}
           </div>
-        </div>
-      </>
+        ) : hasRequest && (
+          <div className="flex flex-col items-center w-full mb-6 space-y-3 mt-10">
+            {/* Spinner */}
+            <div className="w-10 h-10 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+
+            {/* Progress Bar */}
+            <div className="flex flex-col w-full bg-gray-300 rounded-full h-2 dark:bg-gray-700 overflow-hidden max-w-lg">
+              <div
+                className="bg-green-600 h-2 transition-all ease-in-out"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+
+            <span className="text-xs text-gray-700 dark:text-white">
+              Reading file... {Math.round(progress)}%
+            </span>
+
+            {totalRows > 0 && (
+              <span className="text-[11px] text-gray-500 dark:text-gray-400">
+                {data.data.length}/{totalRows} rows processed
+              </span>
+            )}
+
+            {/* Cancel Button (visible after 10% progress) */}
+            {progress >= 10 && (
+              <button
+                onClick={this.cancelUpload}
+                className="mt-2 px-4 py-1.5 bg-red-600 text-white rounded-full text-xs hover:bg-red-700 transition"
+              >
+                Cancel Upload
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* Step 2: Table Display */}
+        {fileLoaded && (
+          <>
+            <ReadTables headers={dbIds} datalist={data} {...this.props} />
+
+            {/* Step 3: Load Remaining Button */}
+            {partiallyLoaded && !hasRequest && (
+              <div className="flex justify-center my-6">
+                <button
+                  onClick={this.handleLoadRemaining}
+                  className="px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all text-sm"
+                >
+                  Load Remaining Data
+                </button>
+              </div>
+            )}
+          </>
+        )}
+      </div>
     );
   }
 }

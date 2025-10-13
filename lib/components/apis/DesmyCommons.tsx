@@ -74,7 +74,16 @@ class DesmyCommons {
         });
         }
 
-
+    getArrayWithJSONObjectFields(query: string) {
+        try {
+            const params = new URLSearchParams(query);
+            const raw = params.get("show_extra_fields");
+            return raw ? JSON.parse(decodeURIComponent(raw)) : [];
+        } catch (err) {
+            console.error("Failed to parse show_extra_fields:", err);
+            return [];
+        }
+    }
     generateKey = (): number => {
         return Math.floor(Math.random() * 100) + 1;
     }

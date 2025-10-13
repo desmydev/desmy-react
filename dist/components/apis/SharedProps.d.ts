@@ -45,6 +45,7 @@ export interface DesmyDataTableSettingsFilterProps {
 }
 export interface DesmyDataTableSettingsProps {
     default_sorted_column: string;
+    order?: 'asc' | 'desc';
     onURLClick?: (url: any) => void;
     header: {
         title?: string;
@@ -83,6 +84,11 @@ export interface DesmyDataTableSettingsProps {
     filter?: DesmyDataTableSettingsFilterProps;
     url?: string;
     handleEdit?: (user: any, type?: string) => void;
+    extraActions?: {
+        name?: string;
+        url: string;
+        icon?: React.ReactNode;
+    }[];
 }
 export interface DesmyCustomDataTableProps {
     url: string;
@@ -229,4 +235,10 @@ export interface DesmyModalHandlerSettingsProps {
     };
     inputFieldLabel?: string;
     handleOnClose?: boolean;
+}
+export interface DesmyFilterItem {
+    id: string;
+    name?: string;
+    label?: string;
+    value?: any;
 }

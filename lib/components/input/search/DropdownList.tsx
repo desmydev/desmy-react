@@ -12,6 +12,8 @@ interface Props {
   dropdownClass?: string;
   selectedCount: number;
   searchText: string;
+  onLoadMore: () => void;
+  hasMore: boolean;
 }
 
 interface State {
@@ -22,7 +24,7 @@ export class DropdownList extends Component<Props, State> {
   dropdownRef = createRef<HTMLDivElement>();
 
   state: State = {
-    maxHeight: 300, // default fallback height
+    maxHeight: 300,
   };
 
   componentDidMount() {
@@ -45,13 +47,16 @@ export class DropdownList extends Component<Props, State> {
 
     const rect = this.dropdownRef.current.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
-    const spaceBelow = viewportHeight - rect.top - 10; // 10px margin from bottom
+    const spaceBelow = viewportHeight - rect.top - 10;
 
-    this.setState({ maxHeight: spaceBelow > 100 ? spaceBelow : 100 }); // minimum 100px height
+    this.setState({ maxHeight: spaceBelow > 100 ? spaceBelow : 100 });
   };
 
   handleScroll = (e: React.UIEvent<HTMLUListElement>) => {
-    this.props.onScroll(e);
+    const target = e.currentTarget;
+    if (target.scrollHeight - target.scrollTop <= target.clientHeight + 50) {
+      this.props.onScroll(e);
+    }
   };
 
   render() {
@@ -64,6 +69,8 @@ export class DropdownList extends Component<Props, State> {
       onDoneClick,
       selectedCount,
       searchText,
+      onLoadMore,
+      hasMore,
     } = this.props;
     const { maxHeight } = this.state;
 
@@ -122,9 +129,21 @@ export class DropdownList extends Component<Props, State> {
             </li>
           )}
 
-          {/* Bottom loading indicator when loading more and some data already loaded */}
+          {/* Bottom loading indicator */}
           {isLoading && options.length > 0 && (
             <li className="p-2 text-center text-xs dark:text-white select-none">Loading...</li>
+          )}
+
+          {/* Load More Button */}
+          {!isLoading && hasMore && (
+            <li className="p-2 text-center">
+              <button
+                onClick={onLoadMore}
+                className="px-4 py-1 text-xs bg-gray-200 rounded-full dark:bg-gray-700 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600 transition"
+              >
+                Load More
+              </button>
+            </li>
           )}
         </ul>
       </div>

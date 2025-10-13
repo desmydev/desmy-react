@@ -56,7 +56,7 @@ export function renderChart(opt: RenderOptions) {
 
   ctx.clearRect(0, 0, width, height);
 
-  const bg = theme === 'dark' ? '#1f2937' : '#ffffff';
+  const bg = theme === 'dark' ? '#282828' : '#ffffff';
   ctx.fillStyle = bg;
   ctx.fillRect(0, 0, width, height);
 

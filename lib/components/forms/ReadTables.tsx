@@ -1,12 +1,15 @@
-import { Component, createRef } from 'react';
-import { DesmyRxServices } from '../apis/DesmyRxServices';
-import { DesmyState } from '../apis/DesmyState';
-import { DesmyDataSetTable } from '../datatable/DesmyDataSetTable';
-import { DesmyTableCard } from '../datatable/DesmyTableCard';
-import { DesmyNetworkError } from '../errors/DesmyNetworkError';
-import { DesmyButton } from '../button/DesmyButton';
-import DesmyCommons from '../apis/DesmyCommons';
-import { DataSetTableSettingsProps, DesmySmartFormUploadReadTable } from '../apis/SharedProps';
+import React, { Component, createRef } from "react";
+import { DesmyRxServices } from "../apis/DesmyRxServices";
+import { DesmyState } from "../apis/DesmyState";
+import { DesmyDataSetTable } from "../datatable/DesmyDataSetTable";
+import { DesmyTableCard } from "../datatable/DesmyTableCard";
+import { DesmyNetworkError } from "../errors/DesmyNetworkError";
+import { DesmyButton } from "../button/DesmyButton";
+import DesmyCommons from "../apis/DesmyCommons";
+import {
+  DataSetTableSettingsProps,
+  DesmySmartFormUploadReadTable,
+} from "../apis/SharedProps";
 
 interface DataItem {
   [key: string]: any;
@@ -15,34 +18,23 @@ interface DataItem {
 interface ReadTableProps {
   headers: string[];
   datalist: {
+    data: any[];
     meta: {
-      count: number;
-      current_page: number;
-      next_page: number | null;
       total: number;
-      from: number;
-      to: number;
+      current_page: number;
       last_page: number;
       per_page: number;
+      next_page: number | null;
     };
-    links: {
-      first: string | null;
-      last: string | null;
-    };
-    next: string | null;
-    previous: string | null;
-    count: number;
-    data: any[];
   };
-  reader:DesmySmartFormUploadReadTable,
+  reader: DesmySmartFormUploadReadTable;
+  settings: DataSetTableSettingsProps;
   onClose?: () => void;
-  settings: DataSetTableSettingsProps
 }
 
 interface ReadTableState {
   datalist: DataItem[];
   hasRequest: boolean;
-  show: boolean;
   state?: string;
 }
 
@@ -54,98 +46,68 @@ class ReadTable extends Component<ReadTableProps, ReadTableState> {
     this.state = {
       datalist: [],
       hasRequest: false,
-      show: true,
     };
   }
 
-  clearList = (): void => {
-    this.setState({
-      datalist: [],
-    });
-  };
-
   handleOnLoaded = (data: any, state: string): void => {
-    try {
-      if (data !== undefined) {
-        this.clearList();
-        this.setState({ datalist: data, state });
-      }
-    } catch (e) {
-      this.alert()
+    if (data !== undefined) {
+      this.setState({ datalist: data, state });
     }
   };
-  alert=()=>""
+
   handleOnSubmit = (): void => {
+    const { datalist } = this.state;
+    const { reader } = this.props;
+
     DesmyRxServices.sendData(
       {
-        datalist: this.state.datalist,
-        url: this.props.reader?.url,
-        complete_url:this.props.reader?.complete_url,
-        title: this.props.reader?.title,
-        token: this.props.reader?.token,
-        key_name: this.props.reader?.key_name,
+        datalist,
+        url: reader?.url,
+        complete_url: reader?.complete_url,
+        title: reader?.title,
+        token: reader?.token,
+        key_name: reader?.key_name,
       },
       DesmyState.UPLOAD_MANAGER_REQUEST
     );
+
     if (this.props.onClose) this.props.onClose();
   };
 
-  handleOnClose = (): void => {
-    this.setState({ show: false });
-  };
-
   render() {
-    const { datalist, settings } = this.props;
-    const { datalist: stateDatalist, state: loadState, hasRequest } = this.state;
+    const { datalist: propsData, settings } = this.props;
+    const { datalist, state, hasRequest } = this.state;
+
     return (
-      <div className='flex flex-col w-full'>
-        <div className='w-full min-h-[20dvh] max-h-[55dvh] overflow-y-auto overflow-x-hidden'>
+      <div className="flex flex-col w-full">
+        <div className="w-full min-h-[20dvh] max-h-[55dvh] overflow-y-auto overflow-x-hidden">
           <DesmyDataSetTable
-            className={`h-full font-poppinsRegular`}
+            ref={this.customDatatableRef}
+            className="h-full font-poppinsRegular"
             settings={settings}
-            data={datalist}
+            data={propsData}
             handleOnLoaded={this.handleOnLoaded}
           >
-            {
-              (loadState === DesmyState.LOADING) ? 
-                Array.from({ length: 6 }).map((_, i) => (
-                  <DesmyTableCard key={`dtal${i}`} isLoading={true} />
-                ))
-              :loadState === DesmyState.ERROR ? <DesmyNetworkError />
-              :!DesmyCommons.isEmptyOrNull(stateDatalist) ?
-              stateDatalist.map((data, i) => {
-                const bg = i % 2 === 0 ? "dark:bg-[#1c1c1c] bg-[#f3f4f6] dark:hover:bg-white" : "bg-inherit";
-                return (
-                  <DesmyTableCard
-                    data={data}
-                    background={bg}
-                    headers={settings?.headers}
-                    key={`camp${data.id}${i}`}
-                  />
-                );
-              })
-              :<tr>
-              <td colSpan={20}>
-                <div className="flex flex-col space-y-2 w-full h-96 justify-center items-center">
-                  <div className="font-poppinsMedium">No data found</div>
-                </div>
-              </td>
-            </tr>
-            }
-            {/* {stateDatalist.length > 0 ? (
-            stateDatalist.map((data, i) => {
-              console.log(data)
-              const bg = i % 2 === 0 ? "dark:bg-[#1c1c1c] bg-[#f3f4f6] dark:hover:bg-white" : "bg-inherit";
-              return (
+            {state === DesmyState.LOADING ? (
+              Array.from({ length: 6 }).map((_, i) => (
+                <DesmyTableCard key={`dtal${i}`} isLoading={true} />
+              ))
+            ) : state === DesmyState.ERROR ? (
+              <DesmyNetworkError />
+            ) : !DesmyCommons.isEmptyOrNull(datalist) ? (
+              datalist.map((data, i) => (
                 <DesmyTableCard
+                  key={`row-${i}`}
                   data={data}
-                  background={bg}
-                  headers={headers}
-                  key={`camp${data.id}${i}`}
+                  headers={settings.headers}
+                  background={
+                    i % 2 === 0
+                      ? "dark:bg-[#1c1c1c] bg-[#f3f4f6] dark:hover:bg-white"
+                      : "bg-inherit"
+                  }
                 />
-              );
-            })
-            ) : loadState !== DesmyState.LOADING ? (
+              ))
+            ) : (
               <tr>
                 <td colSpan={20}>
                   <div className="flex flex-col space-y-2 w-full h-96 justify-center items-center">
@@ -153,16 +115,12 @@ class ReadTable extends Component<ReadTableProps, ReadTableState> {
                   </div>
                 </td>
               </tr>
-            ) : null}
-            {loadState === DesmyState.LOADING
-              ? Array.from({ length: 6 }).map((_, i) => (
-                  <DesmyTableCard key={`dtal${i}`} isLoading={true} />
-                ))
-              : loadState === DesmyState.ERROR && <DesmyNetworkError />} */}
+            )}
           </DesmyDataSetTable>
         </div>
+
         {!hasRequest && (
-          <div className="flex w-full justify-end relative my-8 ">
+          <div className="flex w-full justify-end relative my-8">
             <DesmyButton
               onClick={this.handleOnSubmit}
               icon={

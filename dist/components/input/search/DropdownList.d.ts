@@ -14,6 +14,8 @@ interface Props {
     dropdownClass?: string;
     selectedCount: number;
     searchText: string;
+    onLoadMore: () => void;
+    hasMore: boolean;
 }
 interface State {
     maxHeight: number;

@@ -8,6 +8,7 @@ declare class DesmyCommons {
     getRandomColor(): string;
     toSentenceCase: (str: string) => string;
     isCurrentPath(urlPaths: string | string[]): boolean;
+    getArrayWithJSONObjectFields(query: string): any;
     generateKey: () => number;
     concat(a: string, b: string): string;
     isObject(data: any): boolean;

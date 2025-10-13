@@ -1,6 +1,13 @@
-import React, { Component, ReactElement, createContext, isValidElement } from "react";
+import React, {
+  Component,
+  ReactElement,
+  createContext,
+  isValidElement,
+} from "react";
 import { Route, useNavigate } from "react-router-dom";
-import DesmyError401 from './DesmyError401'
+import DesmyError401 from "./DesmyError401";
+
+// ---- Types ----
 interface DesmyRoute {
   path: string;
   element: ReactElement | null;
@@ -9,32 +16,53 @@ interface DesmyRoute {
 
 const RoutesContext = createContext<ReactElement | null>(null);
 
+// ---- Recursive extractRouteParams with wildcard support ----
 const extractRouteParams = (
   routePath?: string,
   url: string = window?.location?.pathname || ""
-): { [key: string]: string | undefined } => {
+): Record<string, string | undefined> => {
   if (!routePath) return {};
 
-  const pathParts = routePath.split('/').filter(part => part);
-  const urlParts = url.split('/').filter(part => part);
-  let params: { [key: string]: string | undefined } = {};
+  const pathParts = routePath.split("/").filter(Boolean);
+  const urlParts = url.split("/").filter(Boolean);
 
-  for (let i = 0; i < pathParts.length; i++) {
-    if (pathParts[i].startsWith(':')) {
-      let paramName = pathParts[i].replace(':', '').replace('?', '');
-      let isOptional = pathParts[i].endsWith('?');
+  const recurse = (
+    pParts: string[],
+    uParts: string[],
+    acc: Record<string, string | undefined> = {}
+  ): Record<string, string | undefined> => {
+    if (!pParts.length) return acc;
 
-      if (urlParts[i] !== undefined) {
-        params[paramName] = urlParts[i];
+    const [currentPath, ...restPath] = pParts;
+    const [currentUrl, ...restUrl] = uParts;
+
+    if (currentPath.startsWith(":")) {
+      // Named parameter (:id or :id?)
+      const isOptional = currentPath.endsWith("?");
+      const paramName = currentPath.slice(1, isOptional ? -1 : undefined);
+
+      if (currentUrl !== undefined) {
+        acc[paramName] = currentUrl;
       } else if (!isOptional) {
         throw new Error(`Missing required route parameter: ${paramName}`);
       }
+      return recurse(restPath, restUrl, acc);
     }
-  }
-  return params;
+
+    if (currentPath.startsWith("*")) {
+      // Wildcard parameter (*path)
+      const paramName = currentPath.slice(1) || "wildcard";
+      acc[paramName] = uParts.join("/") || undefined;
+      return acc; // Wildcard consumes everything
+    }
+
+    return recurse(restPath, restUrl, acc);
+  };
+
+  return recurse(pathParts, urlParts);
 };
 
-// Safe hook wrapper to get navigate or fallback no-op on SSR / outside Router context
+// ---- Safe navigate wrapper ----
 function useSafeNavigate() {
   try {
     const navigate = useNavigate();
@@ -45,6 +73,7 @@ function useSafeNavigate() {
   }
 }
 
+// ---- HOC ----
 const DesmyWithRouter = <P extends object>(
   WrappedComponent: React.ComponentType<
     P & {
@@ -79,18 +108,13 @@ const DesmyWithRouter = <P extends object>(
 
 const DesmyRenderRoutes = (routes: DesmyRoute[]): ReactElement[] => {
   return routes.map(({ path, element, children }, index) => {
-    let routeElement = element;
-
-    if (isValidElement(element)) {
-      routeElement = React.cloneElement(
-        element as ReactElement<{ path?: string }>,
-        { path }
-      );
-    }
+    const routeElement = isValidElement(element)
+      ? React.cloneElement(element as ReactElement<{ path?: string }>, { path })
+      : element;
 
     return (
       <Route key={index} path={path} element={routeElement}>
-        {children && DesmyRenderRoutes(children)}
+        {children ? DesmyRenderRoutes(children) : null}
       </Route>
     );
   });

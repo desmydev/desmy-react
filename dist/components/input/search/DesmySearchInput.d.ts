@@ -29,7 +29,7 @@ interface State {
     defaultValue?: string;
     hasLoaded: boolean;
     clear: boolean;
-    total: number;
+    total: number | null;
     isLoading: boolean;
     error: {
         state: boolean;
@@ -38,9 +38,10 @@ interface State {
     searchText: string;
     filteredOptions: DesmyDropdownItem[];
     selectedOptions: DesmyDropdownItem[];
-    page: number;
-    hasMore: boolean;
+    nextLink?: string | null;
+    prevLink?: string | null;
     debounceTimeoutId?: ReturnType<typeof setTimeout>;
+    appliedDefault: boolean;
 }
 declare class DesmySearchInput extends Component<Props, State> {
     private btnDropdownRef;
@@ -53,9 +54,12 @@ declare class DesmySearchInput extends Component<Props, State> {
     componentDidUpdate(prevProps: Props): void;
     handleError: (message?: string) => void;
     openDropdownPopover: () => void;
-    handleScroll: (e: React.UIEvent<HTMLUListElement>) => void;
-    fetchData: (searchText: string, page: number) => Promise<void>;
-    handleDefault: () => void;
+    handleScroll: () => void;
+    handleLoadMore: () => void;
+    /** Fetch by ID for bullet-proof defaults */
+    fetchById: (id: string | number) => Promise<DesmyDropdownItem | null>;
+    fetchData: (searchText: string, url?: string) => Promise<void>;
+    handleDefault: () => Promise<void>;
     handleOnSelect: (data: DesmyDropdownItem | DesmyDropdownItem[]) => void;
     handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     handleClickOutside: (event: MouseEvent) => void;

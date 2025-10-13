@@ -2,7 +2,7 @@ import {DesmyPDFReader} from './components/pdfreader/DesmyPDFReader'
 import {DesmyThemeProvider} from './components/apis/DesmyThemeProvider'
 import {DesmyBroadcasterManager,DesmyBroadcaster} from './components/apis/DesmyBroadcasterManager'
 import {DesmyThemeContext} from './components/apis/DesmyThemeContext'
-import {DataSetTableSettingsProps,DesmyDataTableSettingsProps,DesmyDropdownItem,DesmyCustomDataTableProps,DesmyModalHandlerState,DesmySideBarItemData,DesmySideBarItemProps,DesmySmartFormUploadReadTableFilterColums,DesmyModalHandlerSettingsProps,DesmyDataTableSettingsFilterProps} from './components/apis/SharedProps'
+import {DataSetTableSettingsProps,DesmyDataTableSettingsProps,DesmyDropdownItem,DesmyCustomDataTableProps,DesmyModalHandlerState,DesmySideBarItemData,DesmySideBarItemProps,DesmySmartFormUploadReadTableFilterColums,DesmyModalHandlerSettingsProps,DesmyDataTableSettingsFilterProps,DesmyFilterItem} from './components/apis/SharedProps'
 import {DesmyWithRouter,DesmyRenderRoutes} from './components/apis/DesmyWithRouter'
 import  {DesmyModalHandler} from "./components/dialog/DesmyAlertDialog";
 import  DesmyAuth from './components/apis/DesmyAuth';
@@ -35,6 +35,7 @@ import  {DesmyEmpty} from './components/errors/DesmyEmpty'
 import  {DesmyModalWrapper} from './components/modalcontainer/DesmyModalWrapper'
 import  {DesmyRxServices} from './components/apis/DesmyRxServices'
 import  {DesmyTableCard} from './components/datatable/DesmyTableCard'
+import  {DesmyFilterTags} from './components/datatable/DesmyFilterTags'
 import  {DesmyAccordion} from './components/accordions/DesmyAccordion'
 import  {DesmyToastProvider,useToast} from './components/toasify/DesmyToastContext'
 import  {DesmyToast} from './components/toasify/DesmyToast'
@@ -51,6 +52,7 @@ import {DesmyTrendChart} from './components/chart/trendchart/CanvasTrendChart'
 import {DesmyAreaChart} from './components/chart/DesmyAreaChart'
 import {DesmyPieChart} from './components/chart/DesmyPieChart'
 import {DesmyComboBox} from './components/comboxbox/DesmyComboBox';
+import {DesmyFilter} from './components/utilities/DesmyFilter'
 import './index.css';
 export  {
             DesmyThemeProvider,DesmyThemeContext,
@@ -99,10 +101,11 @@ export  {
             DesmyWithRouter,DesmyRenderRoutes,DesmyDocumentPicker,
             DesmyTimeAgo,DesmyAreaChart,
             DesmyBarChart,DesmyPieChart,DesmyTrendChart,
-            DesmyBroadcasterManager,DesmyBroadcaster
+            DesmyBroadcasterManager,DesmyBroadcaster,
+            DesmyFilter,DesmyFilterTags
             
         }
 
-        export type { DataSetTableSettingsProps,DesmyDataTableSettingsProps,DesmyDropdownItem,DesmyCustomDataTableProps,DesmySideBarItemData ,
+        export type { DataSetTableSettingsProps,DesmyFilterItem,DesmyDataTableSettingsProps,DesmyDropdownItem,DesmyCustomDataTableProps,DesmySideBarItemData ,
             DesmySideBarItemProps,DesmySmartFormUploadReadTableFilterColums,DesmyModalHandlerSettingsProps,DesmyDataTableSettingsFilterProps,DesmyModalHandlerState
         };

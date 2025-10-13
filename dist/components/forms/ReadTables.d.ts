@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { default as React, Component } from 'react';
 import { DataSetTableSettingsProps, DesmySmartFormUploadReadTable } from '../apis/SharedProps';
 interface DataItem {
     [key: string]: any;
@@ -6,43 +6,29 @@ interface DataItem {
 interface ReadTableProps {
     headers: string[];
     datalist: {
+        data: any[];
         meta: {
-            count: number;
-            current_page: number;
-            next_page: number | null;
             total: number;
-            from: number;
-            to: number;
+            current_page: number;
             last_page: number;
             per_page: number;
+            next_page: number | null;
         };
-        links: {
-            first: string | null;
-            last: string | null;
-        };
-        next: string | null;
-        previous: string | null;
-        count: number;
-        data: any[];
     };
     reader: DesmySmartFormUploadReadTable;
-    onClose?: () => void;
     settings: DataSetTableSettingsProps;
+    onClose?: () => void;
 }
 interface ReadTableState {
     datalist: DataItem[];
     hasRequest: boolean;
-    show: boolean;
     state?: string;
 }
 declare class ReadTable extends Component<ReadTableProps, ReadTableState> {
-    customDatatableRef: import('react').RefObject<any>;
+    customDatatableRef: React.RefObject<any>;
     constructor(props: ReadTableProps);
-    clearList: () => void;
     handleOnLoaded: (data: any, state: string) => void;
-    alert: () => string;
     handleOnSubmit: () => void;
-    handleOnClose: () => void;
     render(): import("react/jsx-runtime").JSX.Element;
 }
 export default ReadTable;

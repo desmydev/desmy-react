@@ -1,3 +1,4 @@
+
 import  React,{ Component,JSX } from 'react';
 import axios from 'axios';
 import Commons from '../apis/DesmyCommons';
@@ -53,7 +54,7 @@ class DatatableCard extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      stateList: [ModalState.APPROVED,ModalState.PAID, ModalState.ACTIVE,ModalState.SUBMITTED,ModalState.CONFIRMED,ModalState.PUBLISHED,ModalState.CREATED,ModalState.ACCREDITED, ModalState.RUNNING,ModalState.ADMITTED,ModalState.QUALIFIED, ModalState.IN_PROGRESS,ModalState.ACCEPTED],
+      stateList: [ModalState.APPROVED,ModalState.PAID,ModalState.PASS,ModalState.PASSED, ModalState.ACTIVE,ModalState.ENROLLED,ModalState.SUBMITTED,ModalState.CONFIRMED,ModalState.PUBLISHED,ModalState.CREATED,ModalState.ACCREDITED, ModalState.RUNNING,ModalState.ADMITTED,ModalState.QUALIFIED, ModalState.IN_PROGRESS,ModalState.ACCEPTED],
       imageExtensions: ['jpg', 'jpeg', 'png', 'svg'],
       imgColumnTypes: ['picture', 'photo'],
       title: '',
@@ -226,12 +227,12 @@ class DatatableCard extends Component<Props, State> {
         :
         (["status", "process_state"].includes(this.header.toLowerCase())) ? 
             <div className="flex w-full justify-center items-center">
-              <div className={`min-w-16 max-w-42 text-[8px] px-1 line-clamp-1 rounded-full border ${(this.state.stateList.includes(this.state.title)) ? `bg-green-200 text-green-700 border-green-500 hover:bg-green-500 hover:text-white` : `bg-red-200 text-red-700 border-red-500 hover:bg-red-500 hover:text-white`} py-1 justify-center text-center items-center`}>
+              {!Commons.isEmptyOrNull(this.state.title) && <div className={`min-w-16 max-w-42 text-[8px] px-1 line-clamp-1 rounded-full border ${(this.state.stateList.includes(this.state.title)) ? `bg-green-200 text-green-700 border-green-500 hover:bg-green-500 hover:text-white` : `bg-red-200 text-red-700 border-red-500 hover:bg-red-500 hover:text-white`} py-1 justify-center text-center items-center`}>
                 {String(this.state.title).toLowerCase()}
-              </div> 
+              </div> }
             </div>:
        (this.state.imgColumnTypes.includes(this.header?.toLowerCase() || '') || this.state.imageExtensions.includes((this.state.title?.toLowerCase().split('.').pop() || ''))) ?
-            <div className={`w-8 ml-3`}>
+            <div className={`w-8 ml-3 py-3`}>
                 <img onClick={() => this.onImageClick(this.state.title)} title="View photo" className={`object-center object-cover w-6 h-6 2xl:w-8 2xl:h-8 ${(!(this.props.settings.image == null || this.props.settings.image.rounded == false)) ? 'rounded-full' : ''} cursor-pointer mx-auto`} alt={`photo`} src={imageurl} />
             </div> :
             <div className={`w-full text-xs 2xl:text-sm px-4 py-2 flex items-center`}>

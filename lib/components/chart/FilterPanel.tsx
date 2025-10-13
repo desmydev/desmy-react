@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Filters from '../utilities/Filter';
+import {DesmyFilter} from '../utilities/DesmyFilter';
 import Commons from '../apis/DesmyCommons';
 
 interface FilterItem {
@@ -26,7 +26,7 @@ export class FilterPanel extends Component<FilterPanelProps> {
       <div>
         
         {showFilter && (
-          <Filters
+          <DesmyFilter
             content={filterhead}
             filter={filter}
             onSuccess={onFiltered}

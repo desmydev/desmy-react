@@ -81,7 +81,7 @@ class DesmyPDFReader extends Component<DesmyPDFReaderProps, State> {
       });
     } catch (error) {
       console.error('Error loading PDF:', error);
-      alert('Failed to load PDF. Please ensure it is a valid file or URL.');
+      // alert('Failed to load PDF. Please ensure it is a valid file or URL.');
       this.setState({ isLoading: false });
     }
   };

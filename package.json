@@ -71,6 +71,7 @@
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "face-api.js": "^0.22.2",
+    "file-saver": "^2.0.5",
     "husky": "^9.1.7",
     "jest": "^29.7.0",
     "lodash.debounce": "^4.0.8",
@@ -94,11 +95,13 @@
     "rollup": "^4.34.5",
     "rxjs": "^7.8.1",
     "tslib": "^2.8.1",
-    "vite-plugin-static-copy": "^2.2.0"
+    "vite-plugin-static-copy": "^2.2.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/postcss": "^4.0.3",
+    "@types/file-saver": "^2.0.7",
     "@types/lodash.debounce": "^4.0.9",
     "@types/node": "^22.13.4",
     "@types/paystack__inline-js": "^1.0.1",
@@ -107,6 +110,7 @@
     "@types/react-transition-group": "^4.4.12",
     "@types/react-virtualized": "^9.22.2",
     "@types/react-window": "^1.8.8",
+    "@types/xlsx": "^0.0.35",
     "@typescript-eslint/eslint-plugin": "^8.22.0",
     "@typescript-eslint/parser": "^8.22.0",
     "@vitejs/plugin-react": "^4.3.4",

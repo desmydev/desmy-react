@@ -55,10 +55,10 @@ export class TrendReportPanel extends React.Component<TrendReportPanelProps> {
             {narrativeItems.map(({ title, text }) => (
               <div
                 key={title}
-                className="p-4 bg-gray-50 rounded-lg shadow-sm border-l-4 border-gray-300"
+                className="p-4 bg-gray-50 dark:bg-darkDialogBackground dark:text-white dark:border-darkPrimaryBorder rounded-lg shadow-sm border-l-4 border-gray-300"
               >
                 <h3 className="font-semibold mb-2">{title}</h3>
-                <p className="text-gray-700">{text}</p>
+                <p className="text-gray-700 dark:text-white">{text}</p>
               </div>
             ))}
           </div>
@@ -76,7 +76,7 @@ export class TrendReportPanel extends React.Component<TrendReportPanelProps> {
               return (
                 <div
                   key={idx}
-                  className={`p-4 bg-white rounded-lg shadow border-l-4 ${borderColor}`}
+                  className={`p-4 bg-white dark:bg-darkDialogBackground rounded-lg shadow border-l-4 ${borderColor}`}
                 >
                   <h3 className="text-lg font-semibold mb-3">{item.title}</h3>
 
@@ -90,7 +90,7 @@ export class TrendReportPanel extends React.Component<TrendReportPanelProps> {
                       {item.value}
                     </div>
                   ) : Array.isArray(item.value) && typeof item.value[0] === 'string' ? (
-                    <ul className="list-disc pl-5 text-gray-700 space-y-1">
+                    <ul className="list-disc pl-5 text-black dark:text-white space-y-1">
                       {(item.value as string[]).map((day) => (
                         <li key={day}>{day}</li>
                       ))}
@@ -105,10 +105,10 @@ export class TrendReportPanel extends React.Component<TrendReportPanelProps> {
                         return (
                           <div
                             key={prog.programme}
-                            className={`p-2 bg-gray-50 rounded border-l-4 ${progBorder}`}
+                            className={`p-2 bg-gray-50 dark:bg-darkDialogBackground rounded border-l-4 ${progBorder}`}
                           >
                             <p className="font-medium">{prog.programme}</p>
-                            <p className="text-gray-700">
+                            <p className="text-black dark:text-white">
                               {prog.report}{' '}
                               <span
                                 className={`font-bold ${
