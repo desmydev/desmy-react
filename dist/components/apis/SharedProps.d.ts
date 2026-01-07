@@ -43,6 +43,19 @@ export interface DesmyDataTableSettingsFilterProps {
         };
     }[];
 }
+export interface ExtraAction {
+    name?: string;
+    url: string;
+    icon?: React.ReactNode;
+    className?: string;
+    options?: {
+        confirm?: boolean;
+        redirect?: boolean;
+        formats?: string[];
+        successMessage?: string;
+        confirmationMessage?: string;
+    };
+}
 export interface DesmyDataTableSettingsProps {
     default_sorted_column: string;
     order?: 'asc' | 'desc';
@@ -84,11 +97,7 @@ export interface DesmyDataTableSettingsProps {
     filter?: DesmyDataTableSettingsFilterProps;
     url?: string;
     handleEdit?: (user: any, type?: string) => void;
-    extraActions?: {
-        name?: string;
-        url: string;
-        icon?: React.ReactNode;
-    }[];
+    extraActions?: ExtraAction[];
 }
 export interface DesmyCustomDataTableProps {
     url: string;
@@ -192,6 +201,26 @@ export interface DesmySmartFormUploadReadTable {
         label?: string;
         icon?: string;
     };
+    prerequest?: {
+        url?: string;
+        token?: string;
+        extrafields: DesmySmartFormUploadExtraField[];
+    };
+}
+export interface DesmySmartFormUploadExtraField {
+    name: string;
+    label: string;
+    type: "TEXT" | "DROPDOWN" | "FILE" | "DATE" | "DATETIME" | "DATE_RANGE" | "NUMBER" | "TEXTAREA";
+    accept?: string;
+    placeholder?: string;
+    hint?: string;
+    required?: boolean;
+    child?: DesmySmartFormUploadExtraField & {
+        url: string;
+    };
+    url?: string;
+    token?: string;
+    data?: any[];
 }
 export interface DesmySmartFormUploadReadTableFilterColums {
     parent?: string;

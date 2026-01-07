@@ -12,10 +12,12 @@ interface Props {
     onOptionClick: (option: DesmyDropdownItem) => void;
     onDoneClick: () => void;
     dropdownClass?: string;
+    is_multiple?: boolean;
     selectedCount: number;
     searchText: string;
     onLoadMore: () => void;
     hasMore: boolean;
+    selectedIds: string[];
 }
 interface State {
     maxHeight: number;
@@ -28,6 +30,9 @@ export declare class DropdownList extends Component<Props, State> {
     componentWillUnmount(): void;
     updateMaxHeight: () => void;
     handleScroll: (e: React.UIEvent<HTMLUListElement>) => void;
+    CheckedCircle: ({ checked }: {
+        checked: boolean;
+    }) => import("react/jsx-runtime").JSX.Element;
     render(): import("react/jsx-runtime").JSX.Element;
 }
 export {};

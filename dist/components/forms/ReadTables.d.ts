@@ -18,6 +18,8 @@ interface ReadTableProps {
     reader: DesmySmartFormUploadReadTable;
     settings: DataSetTableSettingsProps;
     onClose?: () => void;
+    /** prerequest formData collected from DesmySmartFormUpload */
+    prerequestPayload?: Record<string, any>;
 }
 interface ReadTableState {
     datalist: DataItem[];
@@ -28,7 +30,7 @@ declare class ReadTable extends Component<ReadTableProps, ReadTableState> {
     customDatatableRef: React.RefObject<any>;
     constructor(props: ReadTableProps);
     handleOnLoaded: (data: any, state: string) => void;
-    handleOnSubmit: () => void;
+    handleOnSubmit: () => Promise<void>;
     render(): import("react/jsx-runtime").JSX.Element;
 }
 export default ReadTable;

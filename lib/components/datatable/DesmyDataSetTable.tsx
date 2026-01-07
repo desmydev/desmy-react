@@ -150,16 +150,27 @@ class DesmyDataSetTable extends Component<DesmyDataSetTableProps, DesmyCustomSta
 
     this.handleScroll = this.handleScroll.bind(this);
   }
-  componentDidUpdate(prevProps: Readonly<DesmyDataSetTableProps>): void {
-    // Detect when Excel-uploaded data changes
-    if (
-      !this.props.settings.server_request?.enable &&
-      this.props.data &&
-      prevProps.data !== this.props.data
-    ) {
-      this.handleExcelDataUpdate();
+ componentDidUpdate(prevProps: Readonly<DesmyDataSetTableProps>): void {
+  // ✅ Attach observer only after bottomRef is ready
+  if (this.bottomRef && !this.observer && !this.props.settings.server_request?.enable) {
+    this.setupAutoLoadObserver();
+  }
+
+  // ✅ Excel upload detection stays here
+  if (
+    !this.props.settings.server_request?.enable &&
+    this.props.data &&
+    prevProps.data !== this.props.data
+  ) {
+    this.handleExcelDataUpdate();
+
+    // Re-attach observer after updating data
+    if (this.observer && this.bottomRef) {
+      this.observer.unobserve(this.bottomRef);
+      this.observer.observe(this.bottomRef);
     }
   }
+}
   handleExcelDataUpdate() {
   try {
     if (!this.props.data?.data?.length) return;
@@ -212,35 +223,66 @@ class DesmyDataSetTable extends Component<DesmyDataSetTableProps, DesmyCustomSta
   }
 
   setupAutoLoadObserver() {
-    if (this.observer) this.observer.disconnect();
-    this.observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) this.autoLoadNextChunk();
-      },
-      { rootMargin: "120px" }
-    );
-    if (this.bottomRef) this.observer.observe(this.bottomRef);
-  }
+      // Clean any existing observer
+      if (this.observer) {
+        this.observer.disconnect();
+        this.observer = undefined;
+      }
+
+      // Create a new observer
+      this.observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            console.log(
+              "📌 Observer triggered | rendered:",
+              this.renderedSettings.length,
+              "of",
+              this.dataCollection.length
+            );
+            this.autoLoadNextChunk();
+          }
+        },
+        { rootMargin: "120px" }
+      );
+
+      // Observe when ref is available
+      if (this.bottomRef) {
+        this.observer.observe(this.bottomRef);
+      }
+    }
+
 
   autoLoadNextChunk = () => {
-    if (
-      !this.isLoading &&
-      !this.props.settings.server_request?.enable &&
-      this.dataCollection.length < (this.state.entities.meta.total ?? 0)
-    ) {
-      this.isLoading = true;
-      this.setState({ isLoading: true }, () => {
-        this.chunkSize = Math.min(this.chunkSize * 2, 1000);
-        setTimeout(() => this.loadNextBatch(), 50);
-      });
+  // ✅ If all data is loaded, stop here
+  if (this.renderedSettings.length >= this.dataCollection.length) {
+    if (this.observer && this.bottomRef) {
+      this.observer.unobserve(this.bottomRef);
     }
-  };
+    this.hasFinished = true;
+    this.setState({ isLoading: false });  // hide spinner
+    return;
+  }
+
+  if (
+    !this.isLoading &&
+    !this.props.settings.server_request?.enable &&
+    this.renderedSettings.length < this.dataCollection.length
+  ) {
+    this.isLoading = true;
+    this.setState({ isLoading: true }, () => {
+      this.chunkSize = Math.min(this.chunkSize + 20, 30);
+      setTimeout(() => this.loadNextBatch(), 50);
+    });
+  }
+};
+
+
 
   handleManualLoadMore = () => {
     if (!this.isLoading) {
       this.isLoading = true;
       this.setState({ isLoading: true }, () => {
-        this.chunkSize = Math.min(this.chunkSize * 2, 1000);
+        this.chunkSize = Math.min(this.chunkSize + 20, 30);
         setTimeout(() => this.loadNextBatch(), 50);
       });
     }
@@ -330,6 +372,18 @@ class DesmyDataSetTable extends Component<DesmyDataSetTableProps, DesmyCustomSta
     this.renderChunk();
     this.currentIndex += this.chunkSize;
     this.isLoading = false;
+
+    // ✅ If all data has been loaded, stop observing and hide spinner
+    if (this.renderedSettings.length >= this.dataCollection.length) {
+      if (this.observer && this.bottomRef) {
+        this.observer.unobserve(this.bottomRef);
+      }
+      this.hasFinished = true;
+      this.setState({ isLoading: false });
+    } else {
+      this.setState({ isLoading: false });
+    }
+
     this.forceUpdate();
   };
 
@@ -526,7 +580,7 @@ class DesmyDataSetTable extends Component<DesmyDataSetTableProps, DesmyCustomSta
             )}
 
           {/* Spinner */}
-          {this.state.isLoading && (
+          {this.state.isLoading && !this.hasFinished && (
             <div className="flex flex-col w-full mt-10 justify-center dark:text-white items-center space-y-4">
               <svg
                 role="status"
@@ -574,6 +628,10 @@ class DesmyDataSetTable extends Component<DesmyDataSetTableProps, DesmyCustomSta
               <div className="text-xs 2xl:text-sm">Loading...</div>
             </div>
           )}
+          <div
+              ref={(ref: HTMLDivElement | null) => { this.bottomRef = ref; }}
+              className="h-1 w-full"
+            ></div>
         </div>
         {!this.props.settings.server_request?.enable &&
             this.dataCollection.length > 0 && (
@@ -651,15 +709,16 @@ class DesmyDataSetTable extends Component<DesmyDataSetTableProps, DesmyCustomSta
                     )}
                   </button>
                 )}
-                <div
-                  ref={(ref: HTMLDivElement | null): void => {
-                    this.bottomRef = ref;
-                  }}
-                  className="absolute bottom-0 h-1 w-full"
-                ></div>
+                {/* 👇 put this just above the sticky footer */}
+
+
               </div>
             )}
-
+            {!this.state.isLoading && this.hasFinished && this.dataCollection.length > 0 && (
+              <div className="flex justify-center text-gray-500 dark:text-gray-300 py-4 text-xs 2xl:text-sm">
+                All {this.dataCollection.length} rows loaded ✅
+              </div>
+            )}
       </div>
     );
   }

@@ -53,6 +53,7 @@ import {DesmyAreaChart} from './components/chart/DesmyAreaChart'
 import {DesmyPieChart} from './components/chart/DesmyPieChart'
 import {DesmyComboBox} from './components/comboxbox/DesmyComboBox';
 import {DesmyFilter} from './components/utilities/DesmyFilter'
+import {DesmyYouTubePlayer} from './components/youtube_player/YouTubePlayer'
 import './index.css';
 export  {
             DesmyThemeProvider,DesmyThemeContext,
@@ -91,6 +92,7 @@ export  {
             DesmySideBarItem,
             DesmyUploadManager,
             DesmySmartFormUpload,
+            DesmyYouTubePlayer,
             DesmyPassportPicker,
             DesmyMultiStepModal,
             DesmyDatePicker,

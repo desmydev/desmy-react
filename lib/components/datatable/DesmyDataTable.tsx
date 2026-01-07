@@ -1,4 +1,10 @@
-import React, { Component, KeyboardEvent, ChangeEvent } from "react";
+import React, {
+  Component,
+  KeyboardEvent,
+  ChangeEvent,
+  ReactNode,
+  ReactElement,
+} from "react";
 import axios from "axios";
 import DesmyAuth from "../apis/DesmyAuth";
 import Commons from "../apis/DesmyCommons";
@@ -17,7 +23,10 @@ import DesmyDownloadOptions from "./DesmyDownloadOptions";
 interface DataTableProps {
   settings: DesmyDataTableSettingsProps;
   content?:
-    | React.ReactElement<{ searchText?: string; filterhead?: DesmyFilterItem[] }>
+    | React.ReactElement<{
+        searchText?: string;
+        filterhead?: DesmyFilterItem[] | string;
+      }>
     | ((args: {
         searchText?: string;
         filterhead?: any | any[];
@@ -30,18 +39,33 @@ interface DataTableProps {
 interface DataTableState {
   isFocused?: boolean;
   searchText?: string;
-  dtablemodal: React.ReactNode | null;
+  dtablemodal: ReactNode | null;
   hasRequest: boolean;
   exceptionalColumns: string[];
   selected: number;
   isLoading: boolean;
   isFetchingMore: boolean;
   showFilter: boolean;
+  confirmExport: boolean;
   filterhead: DesmyFilterItem[];
   showExportOption: boolean;
-  exportDetails: { url?: string; queryString?: string };
+  exportDetails: {
+    url?: string;
+    queryString?: string;
+    options?: {
+      confirm?: boolean;
+      redirect?: boolean;
+      formats?: string[];
+      successMessage?: string;
+      confirmationMessage?: string;
+    };
+  };
   filters: {
-    data: { name: string; data: string; defaults?: { [key: string]: string } }[];
+    data: {
+      name: string;
+      data: string;
+      defaults?: { [key: string]: string };
+    }[];
   };
   input: { search: string; is_searching: boolean };
   entities: {
@@ -99,6 +123,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
       hasRequest: false,
       showFilter: false,
       showExportOption: false,
+      confirmExport: false,
       exportDetails: {},
       filterhead: [],
       filters: { data: [] },
@@ -146,6 +171,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
       },
       scrollTop: 0,
       searchText: "",
+      isFocused: false,
     };
 
     this.search = "";
@@ -157,82 +183,131 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
 
   componentDidMount() {
     if (this.props.onRef) this.props.onRef(this);
-    const custom_settings = this.state.custom_settings;
-    custom_settings.sorted_column = this.props.settings.default_sorted_column;
-    custom_settings.order = this.props.settings.order || "asc";
+
+    const custom_settings = {
+      ...this.state.custom_settings,
+      sorted_column: this.props.settings.default_sorted_column,
+      order: this.props.settings.order || "asc",
+    };
+
     this.setState(
-      { custom_settings, settings: this.props.settings },
-      this.fetchEntities
+      {
+        custom_settings,
+        settings: {
+          ...this.state.settings,
+          ...this.props.settings,
+        },
+      },
+      () => {
+        this.fetchEntities(false);
+        this.handleFiltered();
+      }
     );
-    this.handleFiltered();
   }
 
-  handleExport = (url: string, queryString: string) => {
+  componentWillUnmount() {
+    if (this.debounceTimer) clearTimeout(this.debounceTimer);
+  }
+
+  /* ------------------- EXPORT HANDLING ------------------- */
+
+  handleExport = (
+    url: string,
+    queryString: string,
+    options?: {
+      confirm?: boolean;
+      redirect?: boolean;
+      formats?: string[];
+      successMessage?: string;
+      confirmationMessage?: string;
+    }
+  ) => {
     this.setState({
       showExportOption: true,
-      exportDetails: { url, queryString },
+      confirmExport: options?.confirm ?? false,
+      exportDetails: {
+        url,
+        queryString,
+        options: {
+          confirm: options?.confirm ?? false,
+          redirect: options?.redirect ?? false,
+          formats: options?.formats ?? ["xlsx"],
+          successMessage: options?.successMessage || "Export successful!",
+          confirmationMessage:
+            options?.confirmationMessage ||
+            "Are you sure you want to export this data?",
+        },
+      },
     });
   };
 
-  handleOnFiltered = (data: any) => {
-    const filteredDataAndFilterHead = Object.entries(data)
-      .map(([key, value]) => {
-        if (value && typeof value === "object" && "id" in value) {
-          const filterValue = value as DesmyFilterItem;
+  /* ------------------- FILTER HANDLING ------------------- */
 
-          if (
-            key.toLowerCase().includes("date") &&
-            filterValue.value?.startDate &&
-            filterValue.value?.endDate
-          ) {
+  handleOnFiltered = (data: any) => {
+    const filteredDataAndFilterHead =
+      Object.entries(data)
+        .map(([key, value]) => {
+          if (value && typeof value === "object" && "id" in value) {
+            const filterValue = value as DesmyFilterItem;
+
+            // Date range filter
+            if (
+              key.toLowerCase().includes("date") &&
+              filterValue.value?.startDate &&
+              filterValue.value?.endDate
+            ) {
+              return {
+                queryParam: `start_date=${encodeURIComponent(
+                  String(filterValue.value?.startDate)
+                )}&end_date=${encodeURIComponent(
+                  String(filterValue.value?.endDate)
+                )}`,
+                filterItem: { ...filterValue, label: key },
+              };
+            }
+
+            const rawValue = filterValue.id ?? filterValue.value;
+            if (
+              rawValue === undefined ||
+              rawValue === null ||
+              rawValue === ""
+            ) {
+              return null;
+            }
+
             return {
-              queryParam: `start_date=${encodeURIComponent(
-                String(filterValue.value?.startDate)
-              )}&end_date=${encodeURIComponent(
-                String(filterValue.value?.endDate)
+              queryParam: `${encodeURIComponent(key)}=${encodeURIComponent(
+                String(rawValue)
               )}`,
               filterItem: { ...filterValue, label: key },
             };
           }
 
-          const rawValue = filterValue.id ?? filterValue.value;
-          if (rawValue === undefined || rawValue === null || rawValue === "") {
-            return null;
+          if (Array.isArray(value)) {
+            if (value.length === 0) return null;
+
+            const mapped = value.map((item: any) => ({
+              id: item.id,
+              name: item.name,
+              ...(item.data ? { data: item.data } : {}),
+            }));
+
+            return {
+              queryParam: `${encodeURIComponent(key)}=${encodeURIComponent(
+                JSON.stringify(mapped)
+              )}`,
+              filterItem: {
+                id: key,
+                name: key,
+                value: mapped,
+                label: key,
+              } as DesmyFilterItem,
+            };
           }
 
-          return {
-            queryParam: `${encodeURIComponent(key)}=${encodeURIComponent(
-              String(rawValue)
-            )}`,
-            filterItem: { ...filterValue, label: key },
-          };
-        }
-
-        if (Array.isArray(value)) {
-          if (value.length === 0) return null;
-
-          const mapped = value.map((item: any) => ({
-            id: item.id,
-            name: item.name,
-            ...(item.data ? { data: item.data } : {}),
-          }));
-
-          return {
-            queryParam: `${encodeURIComponent(key)}=${encodeURIComponent(
-              JSON.stringify(mapped)
-            )}`,
-            filterItem: {
-              id: key,
-              name: key,
-              value: mapped,
-              label: key,
-            } as DesmyFilterItem,
-          };
-        }
-
-        return null;
-      })
-      .filter((item) => item !== null);
+          return null;
+        })
+        .filter((item) => item !== null) || [];
 
     const filtered_data = filteredDataAndFilterHead
       .map((item) => item!.queryParam)
@@ -243,10 +318,17 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
 
     this.handleClear();
     this.queryParam = filtered_data;
-    this.setState({ showFilter: false, filterhead }, () => {
-      this.props.onFilteredURL?.(filtered_data);
-      this.fetchEntities();
-    });
+
+    this.setState(
+      {
+        showFilter: false,
+        filterhead,
+      },
+      () => {
+        this.props.onFilteredURL?.(filtered_data);
+        this.fetchEntities(false);
+      }
+    );
   };
 
   handleFiltered = () => {
@@ -256,204 +338,12 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     );
   };
 
-  handleScroll() {
-    if (!this.scrollContainer.current) return;
-    const { scrollTop, clientHeight, scrollHeight } =
-      this.scrollContainer.current;
-
-    const nearBottom = scrollTop + clientHeight >= scrollHeight - 50;
-    if (
-      nearBottom &&
-      !this.state.isLoading &&
-      !this.state.isFetchingMore &&
-      this.state.entities.meta.next
-    ) {
-      this.fetchEntities(true);
-    }
-
-    this.setState({ scrollTop });
-  }
-
-  fetchEntities = async (append = false) => {
-    if (this.debounceTimer) clearTimeout(this.debounceTimer);
-    // 🔹 Show "Loading more..." instantly
-    if (append) {
-      this.setState({ isFetchingMore: true });
-    } else {
-      this.setState({ isLoading: true, error: { state: false } as any });
-    }
-    this.debounceTimer = setTimeout(async () => {
-      try {
-        const { sorted_column, order } = this.state.custom_settings;
-        const { per_page, next } = this.state.entities.meta;
-
-        let fetchUrl: string;
-
-        if (append && next) {
-          fetchUrl = next;
-        } else {
-          fetchUrl = `${this.props.settings.url}/?column=${sorted_column}&order=${order}&per_page=${per_page}&search=${this.search}`;
-          if (this.queryParam) fetchUrl += `&${this.queryParam}`;
-        }
-
-        if (append) {
-          this.setState({ isFetchingMore: true });
-        } else {
-          this.setState({ isLoading: true, error: { state: false } as any });
-        }
-
-        const response = await axios.get(fetchUrl, {
-          headers: {
-            "X-CSRFToken": `${DesmyAuth.getCookie("csrftoken")}`,
-            Authorization: `Token ${DesmyAuth.get(DesmyState.ACCESS_TOKEN)}`,
-          },
-        });
-
-        const data = response.data;
-        if (data.success) {
-          this.setState((prev) => ({
-            isLoading: false,
-            isFetchingMore: false,
-            entities: {
-              data: append
-                ? [...prev.entities.data, ...data.data.data]
-                : data.data.data,
-              meta: {
-                ...data.data.meta,
-                next: data.data.links?.next || null,
-                next_page: data.data.meta.next_page ?? null,
-                next_cursor: data.data.meta.next_cursor ?? null,
-                count: data.data.meta.count ?? null,
-              },
-            },
-          }));
-        } else {
-          this.handleError(data.message, false);
-        }
-      } catch (e) {
-        this.handleError(e);
-      } finally {
-        this.setState({ isFetchingMore: false });
-      }
-    }, 400);
-  };
-
-  handleError = (message: unknown = "", retry = true) => {
-    const msg =
-      typeof message === "string"
-        ? message
-        : message instanceof Error
-        ? message.message
-        : "";
-    const error = this.state.error;
-    const input = this.state.input;
-    input.is_searching = false;
-    error.state = true;
-    error.message = Commons.isEmptyOrNull(msg)
-      ? DesmyState.ERROR_MESSAGE
-      : msg;
-    error.type = DesmyState.ERROR;
-    error.color = "red";
-    error.retry = retry;
-    this.setState({ isLoading: false, error, input });
-  };
-
-  handleClear = () => {
-    const { input, entities, error } = this.state;
-    error.state = false;
-    input.is_searching = false;
-    this.setState({
-      input,
-      entities: { ...entities, data: [], meta: { ...entities.meta, total: 0 } },
-      error,
-    });
-  };
-
-  clearFetchEntities = () => {
-    this.setState(
-      {
-        entities: {
-          data: [],
-          meta: { ...this.state.entities.meta, next: null, total: 0 },
-        },
-      },
-      () => this.fetchEntities(false)
-    );
-  };
-
-  handleSearchInput(event: ChangeEvent<HTMLInputElement>) {
-  const value = event.target.value;
-
-  // ⛔ Block input-triggered search while endpoint still loading
-  if (this.state.isLoading || this.state.isFetchingMore) return;
-
-  this.setState(
-    (prev) => ({
-      input: { ...prev.input, search: value },
-      searchText: value,
-    }),
-    () => {
-      this.search = value;
-       if (!this.state.isLoading && !this.state.isFetchingMore && Commons.isEmptyOrNull(this.search)) {
-        this.clearFetchEntities();
-      }
-    }
-  );
-}
-
-handleSearchKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-  // ⛔ Prevent Enter key search while endpoint still loading
-  if (this.state.isLoading || this.state.isFetchingMore) return;
-
-  if (e.key === "Enter" && !Commons.isEmptyOrNull(this.search)) {
-    this.clearFetchEntities();
-  }
-};
-handleSort = (column: string) => {
-  const custom_settings = this.state.custom_settings;
-
-  // 🧠 Combine built-in exceptional columns and extra_handle names from settings
-  const extraHandles =
-    this.props.settings?.extra_handle?.map((item) =>
-      item.name?.toLowerCase()
-    ) || [];
-
-  const exceptionalColumns = [
-    ...this.state.exceptionalColumns.map((c) => c.toLowerCase()),
-    ...extraHandles,
-  ];
-
-  // 🛑 Skip sorting for any exceptional column (including extra_handle)
-  if (exceptionalColumns.includes(column.toLowerCase())) return;
-
-  // 🔄 Toggle sorting order
-  const order =
-    column === this.state.custom_settings.sorted_column
-      ? this.state.custom_settings.order === "asc"
-        ? "desc"
-        : "asc"
-      : "asc";
-
-  // ♻️ Reset table data and fetch again
-  this.handleClear();
-  custom_settings.current_page = 1;
-  custom_settings.sorted_column = column;
-  custom_settings.order = order;
-
-  this.props.onFilteredURL?.(
-    `column=${custom_settings.sorted_column}&order=${custom_settings.order}&search=${this.search}`
-  );
-
-  this.setState({ isLoading: true, error: {}, custom_settings }, () =>
-    this.fetchEntities(false)
-  );
-};
-
-  removeFilterByName = (data: string) => {
+  removeFilterByName = (name: string) => {
     try {
       const updatedFilters = this.state.filterhead.filter(
-        (filter) => filter.label !== data
+        (filter) => filter.label !== name
       );
+
       const filtered_data = updatedFilters
         .filter((filter) => typeof filter === "object" && "id" in filter)
         .map((filter) => {
@@ -466,12 +356,255 @@ handleSort = (column: string) => {
 
       this.handleClear();
       this.queryParam = filtered_data;
-      this.setState({ filterhead: updatedFilters }, () => {
-        this.props.onFilteredURL?.(filtered_data);
-        this.fetchEntities();
-      });
+
+      this.setState(
+        {
+          filterhead: updatedFilters,
+        },
+        () => {
+          this.props.onFilteredURL?.(filtered_data);
+          this.fetchEntities(false);
+        }
+      );
     } catch (_) {}
   };
+
+  /* ------------------- SCROLL & INFINITE LOAD ------------------- */
+
+  handleScroll() {
+    if (!this.scrollContainer.current) return;
+    const { scrollTop, clientHeight, scrollHeight } =
+      this.scrollContainer.current;
+
+    const nearBottom = scrollTop + clientHeight >= scrollHeight - 50;
+
+    if (
+      nearBottom &&
+      !this.state.isLoading &&
+      !this.state.isFetchingMore &&
+      this.state.entities.meta.next
+    ) {
+      this.fetchEntities(true);
+    }
+
+    this.setState({ scrollTop });
+  }
+
+  /* ------------------- FETCH ENTITIES ------------------- */
+
+  fetchEntities = async (append = false) => {
+    if (this.debounceTimer) clearTimeout(this.debounceTimer);
+
+    const { custom_settings, entities } = this.state;
+    const { sorted_column, order } = custom_settings;
+    const { per_page, next } = entities.meta;
+
+    const startFetch = () => {
+      if (append) {
+        this.setState({ isFetchingMore: true });
+      } else {
+        this.setState({
+          isLoading: true,
+          error: { ...this.state.error, state: false, message: "" },
+        });
+      }
+    };
+
+    startFetch();
+
+    this.debounceTimer = setTimeout(async () => {
+      try {
+        let fetchUrl: string;
+
+        if (append && next) {
+          fetchUrl = next;
+        } else {
+          const base = `${this.props.settings.url}/?column=${sorted_column}&order=${order}&per_page=${per_page}&search=${encodeURIComponent(
+            this.search || ""
+          )}`;
+          fetchUrl = this.queryParam ? `${base}&${this.queryParam}` : base;
+        }
+
+        const response = await axios.get(fetchUrl, {
+          headers: {
+            "X-CSRFToken": `${DesmyAuth.getCookie("csrftoken")}`,
+            Authorization: `Token ${DesmyAuth.get(DesmyState.ACCESS_TOKEN)}`,
+          },
+        });
+
+        const data = response.data;
+
+        if (data.success) {
+          this.setState((prev) => {
+            const newData = append
+              ? [...prev.entities.data, ...data.data.data]
+              : data.data.data;
+
+            return {
+              isLoading: false,
+              isFetchingMore: false,
+              entities: {
+                data: newData,
+                meta: {
+                  ...data.data.meta,
+                  next: data.data.links?.next || null,
+                  next_page: data.data.meta.next_page ?? null,
+                  next_cursor: data.data.meta.next_cursor ?? null,
+                  count: data.data.meta.count ?? null,
+                },
+              },
+            };
+          });
+        } else {
+          this.handleError(data.message, false);
+        }
+      } catch (e) {
+        this.handleError(e);
+      } finally {
+        this.setState({ isFetchingMore: false });
+      }
+    }, 400);
+  };
+
+  /* ------------------- ERROR & CLEARING ------------------- */
+
+  handleError = (message: unknown = "", retry = true) => {
+    const msg =
+      typeof message === "string"
+        ? message
+        : message instanceof Error
+        ? message.message
+        : "";
+
+    const newError = {
+      ...this.state.error,
+      state: true,
+      message: Commons.isEmptyOrNull(msg) ? DesmyState.ERROR_MESSAGE : msg,
+      type: DesmyState.ERROR,
+      color: "red",
+      retry,
+    };
+
+    this.setState((prev) => ({
+      isLoading: false,
+      input: { ...prev.input, is_searching: false },
+      error: newError,
+    }));
+  };
+
+  handleClear = () => {
+    this.setState((prev) => ({
+      input: { ...prev.input, is_searching: false },
+      entities: {
+        ...prev.entities,
+        data: [],
+        meta: {
+          ...prev.entities.meta,
+          total: 0,
+          next: null,
+        },
+      },
+      error: { ...prev.error, state: false, message: "" },
+    }));
+  };
+
+  clearFetchEntities = () => {
+    this.setState(
+      (prev) => ({
+        entities: {
+          data: [],
+          meta: {
+            ...prev.entities.meta,
+            next: null,
+            total: 0,
+          },
+        },
+      }),
+      () => this.fetchEntities(false)
+    );
+  };
+
+  /* ------------------- SEARCH HANDLING ------------------- */
+
+  handleSearchInput(event: ChangeEvent<HTMLInputElement>) {
+    const value = event.target.value;
+
+    // Block input-triggered search while endpoint still loading
+    if (this.state.isLoading || this.state.isFetchingMore) return;
+
+    this.setState(
+      (prev) => ({
+        input: { ...prev.input, search: value },
+        searchText: value,
+      }),
+      () => {
+        this.search = value;
+
+        if (
+          !this.state.isLoading &&
+          !this.state.isFetchingMore &&
+          Commons.isEmptyOrNull(this.search)
+        ) {
+          this.clearFetchEntities();
+        }
+      }
+    );
+  }
+
+  handleSearchKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    // Prevent Enter key search while endpoint still loading
+    if (this.state.isLoading || this.state.isFetchingMore) return;
+
+    if (e.key === "Enter" && !Commons.isEmptyOrNull(this.search)) {
+      this.clearFetchEntities();
+    }
+  };
+
+  /* ------------------- SORT HANDLING (OPTION C) ------------------- */
+
+  handleSort = (column: string) => {
+  const extraHandles =
+    this.props.settings?.extra_handle?.map((item) =>
+      item.name?.toLowerCase()
+    ) || [];
+
+  const exceptionalColumns = [
+    ...this.state.exceptionalColumns.map((c) => c.toLowerCase()),
+    ...extraHandles,
+  ];
+
+  if (exceptionalColumns.includes(column.toLowerCase())) return;
+
+  const { custom_settings } = this.state;
+
+  // ★ KEEP TYPE SAFE
+  const newOrder: "asc" | "desc" =
+    column === custom_settings.sorted_column
+      ? custom_settings.order === "asc"
+        ? "desc"
+        : "asc"
+      : "asc";
+
+  const updatedCustomSettings = {
+    ...custom_settings,
+    sorted_column: column,
+    order: newOrder,
+    current_page: 1,
+  };
+
+  this.setState(
+    {
+      custom_settings: updatedCustomSettings,
+      isLoading: true,
+    },
+    () => {
+      this.handleRetry();
+    }
+  );
+};
+
+
+  /* ------------------- OTHER HANDLERS ------------------- */
 
   renderBreadcrumb() {
     const { breadcrumb } = this.props.settings;
@@ -491,13 +624,13 @@ handleSort = (column: string) => {
                     e.preventDefault();
                     this.props.settings.onURLClick?.(item.url);
                   }}
-                  className="text-gray-700 w-full line-clamp-1 dark:text-white/75 dark:hover:text-blue-500 hover:text-blue-600"
+                  className="text-gray-700 w-full line-clamp-1 dark:text-white/75 dark:hover:text-white dark:text-white hover:text-blue-600"
                 >
                   {item.name}
                 </a>
               ) : (
                 <span
-                  className="text-gray-500 dark:text-white/75"
+                  className="text-gray-500 dark:text:white/75 dark:text-white/75"
                   aria-current="page"
                 >
                   {item.name}
@@ -525,11 +658,16 @@ handleSort = (column: string) => {
   }
 
   handlePageChange = (pageNumber: number) => {
-    const { custom_settings } = this.state;
     this.handleClear();
-    custom_settings.current_page = pageNumber;
-    this.setState({ custom_settings, isLoading: true }, () =>
-      this.fetchEntities(false)
+    this.setState(
+      (prev) => ({
+        custom_settings: {
+          ...prev.custom_settings,
+          current_page: pageNumber,
+        },
+        isLoading: true,
+      }),
+      () => this.fetchEntities(false)
     );
   };
 
@@ -538,11 +676,13 @@ handleSort = (column: string) => {
   };
 
   handleOnSuccess = (index: number) => {
-    const newData = [...this.state.entities.data];
-    newData.splice(index, 1);
-    this.setState((prev) => ({
-      entities: { ...prev.entities, data: newData },
-    }));
+    this.setState((prev) => {
+      const newData = [...prev.entities.data];
+      newData.splice(index, 1);
+      return {
+        entities: { ...prev.entities, data: newData },
+      };
+    });
   };
 
   handleOnOpenFilter = () => {
@@ -555,13 +695,13 @@ handleSort = (column: string) => {
 
   renderExtraActions() {
     const { extraActions } = this.props.settings;
-    const { custom_settings } = this.state;
+    const { custom_settings, entities } = this.state;
     const filterParams = new URLSearchParams();
 
     filterParams.set("page", String(custom_settings.current_page));
     filterParams.set("column", custom_settings.sorted_column);
     filterParams.set("order", custom_settings.order);
-    filterParams.set("per_page", String(this.state.entities.meta.per_page));
+    filterParams.set("per_page", String(entities.meta.per_page));
     filterParams.set("search", this.search || "");
 
     if (this.queryParam) {
@@ -575,34 +715,26 @@ handleSort = (column: string) => {
 
     return (
       <div className="flex w-full justify-end space-x-2 mt-5">
-        {extraActions?.map(
-          (
-            action: {
-              name?: string;
-              url: string;
-              icon?: React.ReactNode;
-              className?: string;
-            },
-            index: number
-          ) => (
-            <button
-              key={index}
-              onClick={() => this.handleExport(action.url, queryString)}
-              className={`flex items-center px-5 py-3 text-xs rounded-full border border-green-500
-                        ${
-                          action.url
-                            ? "bg-green-500 hover:bg-green-600 text-white"
-                            : "bg-gray-100 text-gray-400 cursor-not-allowed"
-                        }
-                        ${action.className || ""}`}
-              disabled={!action.url}
-            >
-              {action.icon && <span className="mr-2">{action.icon}</span>}
-              {action.name ||
-                (index === 0 ? "Export to PDF" : "Export to Excel")}
-            </button>
-          )
-        )}
+        {extraActions?.map((action, index: number) => (
+          <button
+            key={index}
+            onClick={() =>
+              this.handleExport(action.url, queryString, action.options ?? {})
+            }
+            className={`flex items-center px-5 py-3 text-xs rounded-full border border-green-500
+              ${
+                action.url
+                  ? "bg-green-500 hover:bg-green-600 text-white"
+                  : "bg-gray-100 text-gray-400 cursor-not-allowed"
+              }
+              ${action.className || ""}`}
+            disabled={!action.url}
+          >
+            {action.icon && <span className="mr-2">{action.icon}</span>}
+            {action.name ||
+              (index === 0 ? "Export to PDF" : "Export to Excel")}
+          </button>
+        ))}
       </div>
     );
   }
@@ -619,6 +751,8 @@ handleSort = (column: string) => {
     return `${hint} | Loaded ${total}`;
   };
 
+  /* ------------------- RENDER ------------------- */
+
   render() {
     const {
       isFocused,
@@ -632,18 +766,21 @@ handleSort = (column: string) => {
       entities,
       selected,
     } = this.state;
+
     const { settings } = this.props;
-    const isExpanded = isFocused && searchText !== "";
+    const isExpanded = isFocused && (searchText || "") !== "";
 
     return (
       <>
         {this.state.dtablemodal}
+
         {showExportOption && (
           <DesmyDownloadOptions
             exportDetails={exportDetails}
             onClose={this.handleOnClose}
           />
         )}
+
         {showFilter && (
           <DesmyFilter
             content={filterhead}
@@ -657,15 +794,13 @@ handleSort = (column: string) => {
         <div className="flex flex-col w-full mb-5">
           <header className="flex w-full flex-col md:flex-row justify-start md:justify-between items-center space-x-6">
             <div className="flex flex-col w-full mx-10 md:mx-0 ">
-              {settings.header !== undefined && (
+              {settings.header && (
                 <div className="flex w-full flex-col">
                   <h3
                     className={
-                      settings.header !== undefined
-                        ? !Commons.isEmptyOrNull(settings.header.class)
-                          ? settings.header.class
-                          : "text-grey-darkest uppercase text-3xl 2xl:text-5xl dark:text-white font-poppinsBlack"
-                        : ""
+                      !Commons.isEmptyOrNull(settings.header.class)
+                        ? settings.header.class
+                        : "text-grey-darkest uppercase text-3xl 2xl:text-5xl dark:text-white font-poppinsBlack"
                     }
                   >
                     {settings.header.title}
@@ -685,33 +820,35 @@ handleSort = (column: string) => {
                     <div className="w-full">
                       <div className="flex w-full relative">
                         <input
-                            className={`rounded-full py-3 px-4 text-gray-700 text-xs 2xl:text-sm leading-tight border focus:outline-none focus:border-primary dark:focus:border-white  focus:ring-0 bg-inherit dark:text-white transition-all duration-300 ease-in-out ${
-                              isExpanded ? "w-[300px]" : "w-[200px]"
-                            } ${
-                              this.state.isLoading || this.state.isFetchingMore
-                                ? "opacity-50 cursor-not-allowed"
-                                : ""
-                            }`}
-                            disabled={this.state.isLoading || this.state.isFetchingMore}
-                            title={
-                              this.state.isLoading || this.state.isFetchingMore
-                                ? "Please wait for data to finish loading"
-                                : "Search"
-                            }
-                            onFocus={() => this.setState({ isFocused: true })}
-                            onBlur={() => this.setState({ isFocused: false })}
-                            name="search"
-                            onChange={this.handleSearchInput}
-                            onKeyDown={this.handleSearchKeyDown}
-                            id="search"
-                            type="text"
-                            placeholder={
-                              this.state.isLoading || this.state.isFetchingMore
-                                ? "Please wait..."
-                                : "Search"
-                            }
-                            value={searchText || ""}
-                          />
+                          className={`rounded-full py-3 px-4 text-gray-700 text-xs 2xl:text-sm leading-tight border focus:outline-none focus:border-primary dark:focus:border-white  focus:ring-0 bg-inherit dark:text-white transition-all duration-300 ease-in-out ${
+                            isExpanded ? "w-[300px]" : "w-[200px]"
+                          } ${
+                            this.state.isLoading || this.state.isFetchingMore
+                              ? "opacity-50 cursor-not-allowed"
+                              : ""
+                          }`}
+                          disabled={
+                            this.state.isLoading || this.state.isFetchingMore
+                          }
+                          title={
+                            this.state.isLoading || this.state.isFetchingMore
+                              ? "Please wait for data to finish loading"
+                              : "Search"
+                          }
+                          onFocus={() => this.setState({ isFocused: true })}
+                          onBlur={() => this.setState({ isFocused: false })}
+                          name="search"
+                          onChange={this.handleSearchInput}
+                          onKeyDown={this.handleSearchKeyDown}
+                          id="search"
+                          type="text"
+                          placeholder={
+                            this.state.isLoading || this.state.isFetchingMore
+                              ? "Please wait..."
+                              : "Search"
+                          }
+                          value={searchText || ""}
+                        />
                         {this.state.input.is_searching &&
                           !Commons.isEmptyOrNull(this.search) && (
                             <svg
@@ -727,15 +864,21 @@ handleSort = (column: string) => {
                               />
                               <path
                                 d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="#E5E7EB"
+                              />
+                              <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
                                 fill="currentColor"
                               />
                             </svg>
                           )}
                       </div>
                     </div>
+
+                    {/* Retry button */}
                     <div
                       className="flex w-10 h-10 2xl:w-12 2xl:h-12 ml-2 flex-shrink-0 justify-center items-center rounded-full dark:hover:text-black bg-gray-200 border border-gray-200 hover:bg-gray-100 dark:border-gray-800 dark:bg-darkDialogBackground cursor-pointer"
-                      onClick={() => this.handleRetry()}
+                      onClick={this.handleRetry}
                     >
                       <svg
                         viewBox="0 0 512 512"
@@ -761,10 +904,11 @@ handleSort = (column: string) => {
                       </svg>
                     </div>
 
+                    {/* Filter button */}
                     {settings.filter && (
                       <div
                         className="flex w-10 h-10 2xl:w-12 2xl:h-12 ml-2 flex-shrink-0 justify-center items-center rounded-full bg-gray-200 border border-gray-200 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 cursor-pointer"
-                        onClick={() => this.handleOnOpenFilter()}
+                        onClick={this.handleOnOpenFilter}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -789,6 +933,8 @@ handleSort = (column: string) => {
           </header>
 
           {this.renderExtraActions()}
+
+          {/* Optional extra content */}
           {this.props.content != null
             ? typeof this.props.content === "function"
               ? this.props.content({
@@ -796,10 +942,13 @@ handleSort = (column: string) => {
                   filterhead: this.queryParam,
                 })
               : React.isValidElement(this.props.content)
-              ? React.cloneElement(this.props.content as React.ReactElement<any>, {
-                  searchText: this.state.searchText,
-                  filterhead: this.queryParam,
-                })
+              ? React.cloneElement(
+                  this.props.content as ReactElement<any>,
+                  {
+                    searchText: this.state.searchText,
+                    filterhead: this.queryParam,
+                  }
+                )
               : this.props.content
             : null}
         </div>
@@ -808,6 +957,7 @@ handleSort = (column: string) => {
           filters={filterhead}
           onRemove={this.removeFilterByName}
         />
+
         {this.renderBreadcrumb()}
 
         {/* Table */}
@@ -834,9 +984,9 @@ handleSort = (column: string) => {
               selected={selected}
               handleOnSuccess={this.handleOnSuccess}
               settings={settings}
-              handleEdit={(user) => settings.handleEdit?.(user)}
+              handleEdit={(row) => settings.handleEdit?.(row)}
               isLoading={isLoading}
-              rowHeight={48}
+              rowHeight={this.rowHeight}
               hasMore={
                 !!(
                   entities.meta.next ||
@@ -848,8 +998,8 @@ handleSort = (column: string) => {
               error={error}
               entities={entities}
               searchText={this.state.searchText}
-              onRowClick={(user, index) => {
-                settings.handleOnViewClick?.(user);
+              onRowClick={(row, index) => {
+                settings.handleOnViewClick?.(row);
               }}
               isFetchingMore={this.state.isFetchingMore}
             />

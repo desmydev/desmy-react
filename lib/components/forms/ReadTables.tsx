@@ -30,6 +30,9 @@ interface ReadTableProps {
   reader: DesmySmartFormUploadReadTable;
   settings: DataSetTableSettingsProps;
   onClose?: () => void;
+
+  /** prerequest formData collected from DesmySmartFormUpload */
+  prerequestPayload?: Record<string, any>;
 }
 
 interface ReadTableState {
@@ -50,26 +53,75 @@ class ReadTable extends Component<ReadTableProps, ReadTableState> {
   }
 
   handleOnLoaded = (data: any, state: string): void => {
-    if (data !== undefined) {
-      this.setState({ datalist: data, state });
-    }
+    if (data !== undefined) this.setState({ datalist: data, state });
   };
+  handleOnSubmit = async (): Promise<void> => {
+    const { reader, prerequestPayload, datalist: propsData } = this.props;
 
-  handleOnSubmit = (): void => {
-    const { datalist } = this.state;
-    const { reader } = this.props;
+    this.setState({ hasRequest: true });
 
-    DesmyRxServices.sendData(
-      {
-        datalist,
-        url: reader?.url,
-        complete_url: reader?.complete_url,
-        title: reader?.title,
-        token: reader?.token,
-        key_name: reader?.key_name,
-      },
-      DesmyState.UPLOAD_MANAGER_REQUEST
-    );
+    let prerequestId: any = null;
+
+    try {
+        if (reader?.prerequest?.url && prerequestPayload) {
+          const formData = new FormData();
+
+          Object.entries(prerequestPayload).forEach(([key, val]) => {
+            if (val instanceof File) formData.append(key, val);
+            else formData.append(key, String(val));
+          });
+
+          const response = await fetch(reader.prerequest.url, {
+            method: "POST",
+            headers: {
+              Authorization: `Token ${reader.prerequest.token ?? ""}`,
+            },
+            body: formData,
+          });
+
+          const prereqResult = await response.json();
+          prerequestId =
+            prereqResult?.id ??
+            prereqResult?.data?.id ??
+            prereqResult?.payload?.id ??
+            prereqResult?.uuid ??
+            null;
+
+          if (!prerequestId) {
+            this.setState({ hasRequest: false });
+            return;
+          }
+        }
+
+      /** STEP 2 — Now upload Excel rows */
+      const fullData = propsData.data;
+      const chunkSize = 1000;
+      let uploadUrl = reader.url;
+      if (uploadUrl && prerequestId) {
+        uploadUrl = uploadUrl.replace("<requestid>", String(prerequestId));
+      }
+      
+      for (let i = 0; i < fullData.length; i += chunkSize) {
+        const chunk = fullData.slice(i, i + chunkSize);
+
+        await DesmyRxServices.sendData(
+          {
+            url: uploadUrl,
+            complete_url: reader.complete_url,
+            datalist: chunk,
+            token: reader.token,
+            title: reader.title,
+            key_name: reader.key_name,
+            prerequest_id: prerequestId,
+          },
+          DesmyState.UPLOAD_MANAGER_REQUEST
+        );
+      }
+      this.props.onClose?.()
+    } catch (_) {
+    }
+
+    this.setState({ hasRequest: false });
 
     if (this.props.onClose) this.props.onClose();
   };
@@ -80,67 +132,42 @@ class ReadTable extends Component<ReadTableProps, ReadTableState> {
 
     return (
       <div className="flex flex-col w-full">
-        <div className="w-full min-h-[20dvh] max-h-[55dvh] overflow-y-auto overflow-x-hidden">
+        <div className="w-full min-h-[20dvh] max-h-[55dvh] overflow-y-auto">
           <DesmyDataSetTable
             ref={this.customDatatableRef}
-            className="h-full font-poppinsRegular"
+            className="h-full"
             settings={settings}
             data={propsData}
             handleOnLoaded={this.handleOnLoaded}
           >
             {state === DesmyState.LOADING ? (
               Array.from({ length: 6 }).map((_, i) => (
-                <DesmyTableCard key={`dtal${i}`} isLoading={true} />
+                <DesmyTableCard key={i} isLoading={true} />
               ))
             ) : state === DesmyState.ERROR ? (
               <DesmyNetworkError />
             ) : !DesmyCommons.isEmptyOrNull(datalist) ? (
-              datalist.map((data, i) => (
+              datalist.map((row, i) => (
                 <DesmyTableCard
                   key={`row-${i}`}
-                  data={data}
+                  data={row}
                   headers={settings.headers}
-                  background={
-                    i % 2 === 0
-                      ? "dark:bg-[#1c1c1c] bg-[#f3f4f6] dark:hover:bg-white"
-                      : "bg-inherit"
-                  }
+                  background={i % 2 === 0 ? "bg-gray-100" : ""}
                 />
               ))
             ) : (
               <tr>
-                <td colSpan={20}>
-                  <div className="flex flex-col space-y-2 w-full h-96 justify-center items-center">
-                    <div className="font-poppinsMedium">No data found</div>
-                  </div>
+                <td colSpan={20} className="text-center py-12">
+                  No data found
                 </td>
               </tr>
             )}
           </DesmyDataSetTable>
         </div>
 
-        {!hasRequest && (
-          <div className="flex w-full justify-end relative my-8">
-            <DesmyButton
-              onClick={this.handleOnSubmit}
-              icon={
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-6 h-6 inline-block lg:mr-1"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              }
-              label="Continue"
-            />
+        <div className="flex justify-end my-6">
+            <DesmyButton  hasRequest={hasRequest} label_request='Please wait' label="Continue" onClick={this.handleOnSubmit} />
           </div>
-        )}
       </div>
     );
   }

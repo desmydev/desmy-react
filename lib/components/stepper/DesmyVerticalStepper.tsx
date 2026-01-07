@@ -43,7 +43,7 @@ class DesmyVerticalStepper extends Component<DesmyVerticalStepperProps, DesmyVer
     );
 
     return (
-      <div className="flex space-x-5 dark:bg-darkDialogBackground font-poppinsRegular">
+      <div className="flex bg-herit dark:bg-darkDialogBackground font-poppinsRegular">
         <div className="lg:w-64 flex-shrink-0 dark:bg-darkBackground border-0 dark:border-darkPrimaryBorder">
           <ul className="mr-2 space-y-2">
             {tabs.map((tab) => (
@@ -57,13 +57,13 @@ class DesmyVerticalStepper extends Component<DesmyVerticalStepperProps, DesmyVer
                 onClick={() => this.handleTabChange(tab.id)}
               >
                 {tab.icon && <span className="lg:mr-2">{tab.icon}</span>}
-                <span className="hidden lg:inline-block">{tab.name}</span>
+                <span className="hidden lg:flex">{tab.name}</span>
               </li>
             ))}
           </ul>
         </div>
-        <div className="w-full bg-gray-100 dark:bg-inherit">
-          <div className="rounded-lg p-3">
+        <div className="flex flex-col w-full">
+          <div className="w-full rounded-none">
             {activeContent || <div>No content available for this tab.</div>}
           </div>
         </div>

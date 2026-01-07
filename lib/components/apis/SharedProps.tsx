@@ -45,6 +45,19 @@ export interface DesmyDataTableSettingsFilterProps {
       };
   }[];
 };
+export interface ExtraAction {
+  name?: string;
+  url: string;
+  icon?: React.ReactNode;
+  className?: string;
+  options?: {
+    confirm?: boolean;
+    redirect?: boolean;
+    formats?: string[];
+    successMessage?: string;
+    confirmationMessage?: string;
+  };
+}
 export interface DesmyDataTableSettingsProps{
     default_sorted_column: string;
     order?: 'asc' | 'desc'; 
@@ -75,7 +88,8 @@ export interface DesmyDataTableSettingsProps{
     filter?: DesmyDataTableSettingsFilterProps,
     url?: string;
     handleEdit?: (user: any,type?:string) => void;
-    extraActions?: {name?: string; url: string; icon?: React.ReactNode}[];
+    extraActions?: ExtraAction[];
+
   };
 
 export interface DesmyCustomDataTableProps {
@@ -177,11 +191,34 @@ export interface DesmySmartFormUploadReadTable{
     label?:string,
     icon?:string
   }
+  prerequest?: {
+    url?: string;                
+    token?: string;
+    extrafields: DesmySmartFormUploadExtraField[];
+  };
 }
+export interface DesmySmartFormUploadExtraField {
+  name: string;
+  label: string;
+  type: "TEXT" | "DROPDOWN" | "FILE" | "DATE" | "DATETIME" | "DATE_RANGE" | "NUMBER" | "TEXTAREA";
+  accept?: string;        // e.g. "image/*"
+  placeholder?: string;   // optional file placeholder icon/image
+  hint?: string;    
+  required?: boolean;
+  child?: DesmySmartFormUploadExtraField & {
+    url: string; // dynamic URL with <parent_id>
+  };
+  // Dropdown support
+  url?: string;         // endpoint to fetch dropdown
+  token?: string;       // auth token
+  data?: any[];         // static dropdown options (if any)
+}
+
 export interface DesmySmartFormUploadReadTableFilterColums {
   parent?: string;
   custom?: string;
   unique_fields?: string[];
+  
 };
 
 export interface DesmyModalHandlerSettingsProps {

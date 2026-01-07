@@ -33,7 +33,7 @@ export class DropdownButton extends Component<Props> {
       <div className={`relative w-full h-12 border font-poppinsRegular bg-inherit border-black dark:border-white`}>
         
         <div
-          className="relative h-full w-full text-sm bg-inherit"
+          className="relative h-full w-full text-xs bg-inherit"
           ref={buttonRef}
           onClick={() => {
             if (!disabled) onClick();
@@ -62,7 +62,7 @@ export class DropdownButton extends Component<Props> {
           >
             <div className="flex w-full justify-between">
               <div className='pr-5'>
-                <div className={`mr-2 bg-inherit text-black text-sm dark:text-white w-full justify-start text-start line-clamp-1`}>
+                <div className={`mr-2 bg-inherit text-black text-xs dark:text-white w-full justify-start text-start line-clamp-1`}>
                 {selectedMultiple.length > 0
                   ? selectedMultiple.map((i) => i.name).join(', ')
                   : selectedList.name || (all && selectedAll ? all : '')}

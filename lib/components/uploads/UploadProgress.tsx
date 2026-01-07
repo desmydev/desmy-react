@@ -203,7 +203,7 @@ export default class UploadManager extends Component<UploadManagerProps, UploadM
 
   private getProgressBarBackground = (): string => {
     const { error, completed, currentIndex } = this.state;
-    const total = this.props.data.datalist.length;
+    const total = this.props.data?.datalist?.length;
 
     if (error) return '#ef4444';
     if (completed) return 'linear-gradient(to right, #22c55e, #15803d)';

@@ -1,5 +1,5 @@
 import { default as React, Component } from 'react';
-import { DataSetTableSettingsProps, DesmySmartFormUploadReadTable, DesmySmartFormUploadReadTableFilterColums } from '../apis/SharedProps';
+import { DataSetTableSettingsProps, DesmySmartFormUploadReadTable, DesmySmartFormUploadReadTableFilterColums, DesmySmartFormUploadExtraField } from '../apis/SharedProps';
 interface DataItem {
     [key: string]: any;
 }
@@ -11,6 +11,7 @@ interface Props {
     filter_column?: DesmySmartFormUploadReadTableFilterColums;
     settings: DataSetTableSettingsProps;
     reader: DesmySmartFormUploadReadTable;
+    onClose?: () => void;
 }
 interface State {
     hasRequest: boolean;
@@ -33,18 +34,31 @@ interface State {
         };
         data: DataItem[];
     };
+    showForm: boolean;
+    prerequestPayload: Record<string, any>;
 }
 declare class DesmySmartFormUpload extends Component<Props, State> {
     constructor(props: Props);
-    /** Handles Excel file upload and initial parsing */
-    handleFileUpload: (event: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
-    /** Cancels the current upload */
-    cancelUpload: () => void;
-    /** Reset everything after cancellation or completion */
-    resetAll: () => void;
-    /** Processes Excel rows in batches to prevent UI freezing */
+    /** Store prerequest values */
+    updatePrerequestField: (key: string, value: any) => void;
+    /** Validate required fields */
+    validatePrerequest: () => boolean;
+    /** Continue from prerequest form */
+    handlePrerequestContinue: () => void;
+    /** Upload Excel file */
+    handleFileUpload: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
+    /** Process rows gradually */
     processChunkedRows: (initial?: boolean) => void;
-    /** Load remaining unprocessed rows */
+    resetAll: () => void;
+    /** Render prerequest extra fields */
+    renderExtraField: (f: DesmySmartFormUploadExtraField) => import("react/jsx-runtime").JSX.Element | null;
+    /** -----------------------------------------
+     * 🔥 CHILD DROPDOWN SUPPORT (clean + safe)
+     * ----------------------------------------*/
+    renderDropdownWithChild: (f: DesmySmartFormUploadExtraField) => import("react/jsx-runtime").JSX.Element;
+    /** Cancel Upload */
+    cancelUpload: () => void;
+    /** Load remaining rows */
     handleLoadRemaining: () => void;
     render(): import("react/jsx-runtime").JSX.Element;
 }

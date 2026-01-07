@@ -1,10 +1,10 @@
-import { default as React, Component, KeyboardEvent, ChangeEvent } from 'react';
+import { default as React, Component, KeyboardEvent, ChangeEvent, ReactNode } from 'react';
 import { DesmyDataTableSettingsProps, DesmyFilterItem } from '../apis/SharedProps';
 interface DataTableProps {
     settings: DesmyDataTableSettingsProps;
     content?: React.ReactElement<{
         searchText?: string;
-        filterhead?: DesmyFilterItem[];
+        filterhead?: DesmyFilterItem[] | string;
     }> | ((args: {
         searchText?: string;
         filterhead?: any | any[];
@@ -16,18 +16,26 @@ interface DataTableProps {
 interface DataTableState {
     isFocused?: boolean;
     searchText?: string;
-    dtablemodal: React.ReactNode | null;
+    dtablemodal: ReactNode | null;
     hasRequest: boolean;
     exceptionalColumns: string[];
     selected: number;
     isLoading: boolean;
     isFetchingMore: boolean;
     showFilter: boolean;
+    confirmExport: boolean;
     filterhead: DesmyFilterItem[];
     showExportOption: boolean;
     exportDetails: {
         url?: string;
         queryString?: string;
+        options?: {
+            confirm?: boolean;
+            redirect?: boolean;
+            formats?: string[];
+            successMessage?: string;
+            confirmationMessage?: string;
+        };
     };
     filters: {
         data: {
@@ -93,9 +101,17 @@ declare class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     rowHeight: number;
     constructor(props: DataTableProps);
     componentDidMount(): void;
-    handleExport: (url: string, queryString: string) => void;
+    componentWillUnmount(): void;
+    handleExport: (url: string, queryString: string, options?: {
+        confirm?: boolean;
+        redirect?: boolean;
+        formats?: string[];
+        successMessage?: string;
+        confirmationMessage?: string;
+    }) => void;
     handleOnFiltered: (data: any) => void;
     handleFiltered: () => void;
+    removeFilterByName: (name: string) => void;
     handleScroll(): void;
     fetchEntities: (append?: boolean) => Promise<void>;
     handleError: (message?: unknown, retry?: boolean) => void;
@@ -104,7 +120,6 @@ declare class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     handleSearchInput(event: ChangeEvent<HTMLInputElement>): void;
     handleSearchKeyDown: (e: KeyboardEvent<HTMLInputElement>) => void;
     handleSort: (column: string) => void;
-    removeFilterByName: (data: string) => void;
     renderBreadcrumb(): import("react/jsx-runtime").JSX.Element | null;
     handlePageChange: (pageNumber: number) => void;
     handleOnClose: () => void;

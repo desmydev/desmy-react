@@ -6,7 +6,6 @@ import { viteStaticCopy } from 'vite-plugin-static-copy';
 import react from "@vitejs/plugin-react-swc";
 import { resolve } from "path";
 import dts from "vite-plugin-dts";
-import tailwindcss from '@tailwindcss/vite'
 
 const require = createRequire(import.meta.url);
 const cMapsDir = normalizePath(
@@ -46,5 +45,5 @@ export default defineConfig({
         { src: standardFontsDir, dest: '' },
       ],
     }),
-    react(),tailwindcss(), dts({ rollupTypes: false })],
+    react(), dts({ rollupTypes: false })],
 });

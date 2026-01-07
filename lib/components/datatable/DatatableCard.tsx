@@ -54,7 +54,7 @@ class DatatableCard extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      stateList: [ModalState.APPROVED,ModalState.PAID,ModalState.PASS,ModalState.PASSED, ModalState.ACTIVE,ModalState.ENROLLED,ModalState.SUBMITTED,ModalState.CONFIRMED,ModalState.PUBLISHED,ModalState.CREATED,ModalState.ACCREDITED, ModalState.RUNNING,ModalState.ADMITTED,ModalState.QUALIFIED, ModalState.IN_PROGRESS,ModalState.ACCEPTED],
+      stateList: [ModalState.APPROVED,ModalState.PAID,ModalState.PASS,ModalState.DOWNLOADED,ModalState.COMPLETED,ModalState.PASSED, ModalState.ACTIVE, ModalState.ALLOCATED,ModalState.ENROLLED,ModalState.SUBMITTED,ModalState.CONFIRMED,ModalState.PUBLISHED,ModalState.CREATED,ModalState.ACCREDITED, ModalState.RUNNING,ModalState.ADMITTED,ModalState.QUALIFIED, ModalState.IN_PROGRESS,ModalState.ACCEPTED,ModalState.SENT],
       imageExtensions: ['jpg', 'jpeg', 'png', 'svg'],
       imgColumnTypes: ['picture', 'photo'],
       title: '',
@@ -225,7 +225,7 @@ class DatatableCard extends Component<Props, State> {
             }
         </div> 
         :
-        (["status", "process_state"].includes(this.header.toLowerCase())) ? 
+        (["status", "process_state",'notification_state'].includes(this.header.toLowerCase())) ? 
             <div className="flex w-full justify-center items-center">
               {!Commons.isEmptyOrNull(this.state.title) && <div className={`min-w-16 max-w-42 text-[8px] px-1 line-clamp-1 rounded-full border ${(this.state.stateList.includes(this.state.title)) ? `bg-green-200 text-green-700 border-green-500 hover:bg-green-500 hover:text-white` : `bg-red-200 text-red-700 border-red-500 hover:bg-red-500 hover:text-white`} py-1 justify-center text-center items-center`}>
                 {String(this.state.title).toLowerCase()}

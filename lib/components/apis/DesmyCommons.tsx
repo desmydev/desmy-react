@@ -95,6 +95,7 @@ class DesmyCommons {
         return typeof data === 'object' && data !== null && !Array.isArray(data) && !(data instanceof File);
     }
     
+    
     isEmptyOrNull(data: any, isForce: boolean = false): boolean {
         if (data == null) {
             return true; // handles null and undefined

@@ -20,7 +20,17 @@ export class SearchInput extends Component<Props> {
   }
 
   render() {
-    const { value, placeholder, disabled, autoFocus, maxLength, inputClassName, label, onFocus, onChange } = this.props;
+    const {
+      value,
+      placeholder,
+      disabled,
+      autoFocus,
+      maxLength,
+      inputClassName,
+      label,
+      onFocus,
+      onChange,
+    } = this.props;
 
     return (
       <div className="relative w-full bg-inherit">

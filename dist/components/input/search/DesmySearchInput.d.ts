@@ -52,18 +52,20 @@ declare class DesmySearchInput extends Component<Props, State> {
     componentDidMount(): void;
     componentWillUnmount(): void;
     componentDidUpdate(prevProps: Props): void;
+    mergeUniqueById: (prev: DesmyDropdownItem[], next: DesmyDropdownItem[]) => DesmyDropdownItem[];
+    getDefaultIds: () => string[];
     handleError: (message?: string) => void;
     openDropdownPopover: () => void;
+    closeDropdownPopover: () => void;
     handleScroll: () => void;
     handleLoadMore: () => void;
-    /** Fetch by ID for bullet-proof defaults */
+    clearSelectionIfNoDefault: () => void;
     fetchById: (id: string | number) => Promise<DesmyDropdownItem | null>;
     fetchData: (searchText: string, url?: string) => Promise<void>;
     handleDefault: () => Promise<void>;
     handleOnSelect: (data: DesmyDropdownItem | DesmyDropdownItem[]) => void;
     handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     handleClickOutside: (event: MouseEvent) => void;
-    closeDropdownPopover: () => void;
     handleOptionClick: (option: DesmyDropdownItem) => void;
     handleChipRemove: (option: DesmyDropdownItem) => void;
     render(): import("react/jsx-runtime").JSX.Element;

@@ -271,7 +271,7 @@ class Days extends Component<DaysProps, DaysState> {
     const isNextDisabled = maxDate && isAfter(currentMonth, maxDate);
 
     return (
-      <div className="w-full text-xs min-h-72  p-4 font-poppinsRegular">
+      <div className="w-full text-xs min-h-72  p-4 font-poppinsRegular  dark:text-white">
         <div className="flex justify-between items-center mb-2">
           <button
             className={`p-1 text-gray-500 hover:bg-gray-200 rounded ${isPrevDisabled ? "cursor-not-allowed text-gray-300" : ""}`}
@@ -285,7 +285,7 @@ class Days extends Component<DaysProps, DaysState> {
           </button>
           <div className="flex justify-between w-full space-x-2 px-10">
             <span
-              className={`text-lg font-semibold cursor-pointer ${
+              className={`text-lg font-poppinsMedium cursor-pointer ${
                 viewMode === "months" ? "text-blue-500 underline" : "hover:text-blue-500"
               }`}
               onClick={() => this.setState({ viewMode: viewMode === "months" ? "days" : "months" })}
@@ -293,7 +293,7 @@ class Days extends Component<DaysProps, DaysState> {
               {format(currentMonth, "MMM")}
             </span>
             <span
-              className={`text-lg font-semibold cursor-pointer ${
+              className={`text-lg font-poppinsMedium cursor-pointer ${
                 viewMode === "years" ? "text-blue-500 dark:text-white underline" : "hover:text-blue-500 dark:text-white"
               }`}
               onClick={() => this.setState({ viewMode: viewMode === "years" ? "days" : "years" })}
@@ -336,7 +336,7 @@ class Days extends Component<DaysProps, DaysState> {
         {/* Days Grid */}
         {viewMode === "days" && (
           <>
-            <div className="w-full grid grid-cols-7 gap-1 text-center font-semibold text-gray-600 dark:text-white">
+            <div className="w-full grid grid-cols-7 gap-1 text-center font-poppinsMedium text-gray-600 dark:text-white">
               {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
                 <div key={day} className="h-8">{day}</div>
               ))}
