@@ -94,71 +94,97 @@ class DesmyCommons {
     isObject(data: any): boolean {
         return typeof data === 'object' && data !== null && !Array.isArray(data) && !(data instanceof File);
     }
-    
-    
-    isEmptyOrNull(data: any, isForce: boolean = false): boolean {
-        if (data == null) {
-            return true; // handles null and undefined
-        }
-        
-    
-        if (Array.isArray(data)) {
-            return data.length === 0;
-        }
-    
-        if (typeof data === 'object' && !Array.isArray(data) && !(data instanceof File)) {
-            const keys = Object.keys(data);
-    
-            if (keys.length === 0) {
-                return true; // Empty object
-            }
-    
-            if (isForce) {
-                return keys.every(key => {
-                    const value = data[key];
-                    if (typeof value === 'string') {
-                        return value.trim() === "";
-                    } else if (typeof value === 'boolean') {
-                        return value === false;
-                    } else if (typeof value === 'number') {
-                        return value === 0;
-                    } else if (Array.isArray(value)) {
-                        return value.length === 0;
-                    } else if (value instanceof File) {
-                        return value.size === 0;
-                    } else if (typeof value === 'object' && value !== null) {
-                        return Object.keys(value).length === 0;
-                    }
-                    return value == null;
-                });
-            } else {
-                return !keys.some(key => {
-                    const value = data[key];
-                    if (typeof value === 'string') {
-                        return value.trim() !== "";
-                    } else if (typeof value === 'boolean') {
-                        return value === true;
-                    } else if (typeof value === 'number') {
-                        return value !== 0;
-                    } else if (Array.isArray(value)) {
-                        return value.length !== 0;
-                    } else if (value instanceof File) {
-                        return value.size !== 0;
-                    } else if (typeof value === 'object' && value !== null) {
-                        return Object.keys(value).length !== 0;
-                    }
-                    return value != null;
-                });
-            }
-        }
-        
-        if (data instanceof File) {
-            
-            return data.size === 0;
-        }
-    
-        return data === "";
+    normalizeFilterHead = (filterhead: any): string => {
+    if (!filterhead) return '';
+
+    // --------------------
+    // Case 1: already a query string
+    // --------------------
+    if (typeof filterhead === 'string') {
+        return filterhead.endsWith('&') ? filterhead : `${filterhead}&`;
     }
+
+    // --------------------
+    // Case 2: plain object
+    // --------------------
+    if (typeof filterhead === 'object' && !Array.isArray(filterhead)) {
+        return (
+        Object.entries(filterhead)
+            .filter(([_, v]) => v !== undefined && v !== null && v !== '')
+            .map(
+            ([k, v]) =>
+                `${encodeURIComponent(k)}=${encodeURIComponent(String(v))}`
+            )
+            .join('&') + '&'
+        );
+    }
+
+    // --------------------
+    // Case 3: array of objects (label=id)
+    // --------------------
+    if (Array.isArray(filterhead)) {
+        return (
+        filterhead
+            .filter(item => item?.label && item?.id)
+            .map(
+            item =>
+                `${encodeURIComponent(item.label)}=${encodeURIComponent(item.id)}`
+            )
+            .join('&') + '&'
+        );
+    }
+
+    return '';
+    };
+     calculateAge(dob:any) {
+        const birthDate = new Date(dob);
+        const today = new Date();
+
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        const dayDiff = today.getDate() - birthDate.getDate();
+
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+            age--;
+        }
+
+        return age;
+        }
+    isEmptyOrNull(data: any, isForce: boolean = false): boolean {
+            // null / undefined
+            if (data === null || data === undefined) return true;
+
+            // File
+            if (data instanceof File) return data.size === 0;
+
+            // Array
+            if (Array.isArray(data)) return data.length === 0;
+
+            // String
+            if (typeof data === "string") return data.trim() === "";
+
+            // Number (never empty unless NaN, optional)
+            if (typeof data === "number") return isNaN(data);
+
+            // Boolean (never empty)
+            if (typeof data === "boolean") return false;
+
+            // Object (excluding File & Array already handled)
+            if (typeof data === "object") {
+                const keys = Object.keys(data);
+
+                if (keys.length === 0) return true;
+
+                if (isForce) {
+                    return keys.every(key => this.isEmptyOrNull(data[key], true));
+                }
+
+                return keys.every(key => this.isEmptyOrNull(data[key], false));
+            }
+
+            return false;
+    }
+
     
 
     toBoolean(data: any): boolean {

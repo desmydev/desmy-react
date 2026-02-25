@@ -1,22 +1,36 @@
 import React, { Component } from "react";
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
+
 import { DesmyModalContainer } from "../modalcontainer/DesmyModalContainer";
-import  {DesmyModalHandler} from "../dialog/DesmyAlertDialog";
+import { DesmyModalHandler } from "../dialog/DesmyAlertDialog";
+
 import DesmyAuth from "../apis/DesmyAuth";
 import { DesmyState } from "../apis/DesmyState";
+
 import { DesmyButton } from "../button/DesmyButton";
 import { DesmyTextInput } from "../input/DesmyTextInput";
 import { DesmyToast } from "../toasify/DesmyToast";
+
 import { DesmyDropdownItem } from "../apis/SharedProps";
 import { DesmyDropdown } from "../dropdown/DesmyDropdown";
 import DesmyCommons from "../apis/DesmyCommons";
 
+/* -------------------------------------------
+   TYPES
+--------------------------------------------*/
+
 interface ExportOptions {
   confirm?: boolean;
   redirect?: boolean;
-  formats?: string[];
   successMessage?: string;
   confirmationMessage?: string;
+}
+
+interface ExportExtraDropdown {
+  title: string;
+  key: string;
+  endpoint: string;
+  dependsOn?: string;
 }
 
 interface CreateProps {
@@ -24,208 +38,372 @@ interface CreateProps {
     url?: string;
     queryString?: string;
     options?: ExportOptions;
+    data?: ExportExtraDropdown[];
   };
   onClose: () => void;
   onSuccess?: (data: any) => void;
 }
 
 interface InputState {
-  name?: string;
-  format?: string;
-  redirect?: boolean;
-  confirm?: boolean;
+  name: string;
+  format: string;
+  redirect: boolean;
+  confirm: boolean;
+  extraSelections: Record<string, any>;
 }
 
 interface CreateState {
   hasRequest: boolean;
-  isLoading: boolean;
   input: InputState;
-  optionsList: DesmyDropdownItem[];
-  modal?: React.ReactNode | null; // ✅ for confirmation dialog
+  formatList: DesmyDropdownItem[];
+  extraDropdownLists: Record<string, DesmyDropdownItem[]>;
+  modal?: React.ReactNode | null;
 }
+
+/* -------------------------------------------
+   COMPONENT
+--------------------------------------------*/
 
 class DesmyDownloadOptions extends Component<CreateProps, CreateState> {
   constructor(props: CreateProps) {
     super(props);
 
-    const formats = props.exportDetails.options?.formats ?? ["xlsx"];
-    const dropdownItems = formats.map((fmt) => ({
-      id: fmt,
-      name: fmt.toUpperCase(),
-    })) as DesmyDropdownItem[];
-
     this.state = {
-      isLoading: false,
       hasRequest: false,
-      optionsList: dropdownItems,
+      formatList: [{ id: "xlsx", name: "XLSX" }],
+      extraDropdownLists: {},
       input: {
         name: "",
-        format: dropdownItems[0]?.id ?? "xlsx",
+        format: "xlsx",
         confirm: props.exportDetails.options?.confirm ?? false,
         redirect: props.exportDetails.options?.redirect ?? false,
+        extraSelections: {},
       },
       modal: null,
     };
   }
 
-  handleError = (message: string) => {
-    DesmyToast.error(message || DesmyState.ERROR_MESSAGE);
-    this.setState({ isLoading: false, hasRequest: false });
+  componentDidMount() {
+    this.loadInitialDropdowns();
+  }
+
+  /* -------------------------------------------
+     COMMON REQUEST CONFIG
+  --------------------------------------------*/
+
+  private getAuthConfig(): AxiosRequestConfig {
+    return {
+      headers: {
+        Authorization: `Token ${DesmyAuth.get(
+          DesmyState.ACCESS_TOKEN
+        )}`,
+        "X-CSRFToken": DesmyAuth.getCookie("csrftoken"),
+      },
+    };
+  }
+
+  /* -------------------------------------------
+     FETCH HELPERS
+  --------------------------------------------*/
+
+  private async fetchDropdown(
+    endpoint: string
+  ): Promise<DesmyDropdownItem[]> {
+    const response = await axios.get(endpoint, this.getAuthConfig());
+
+    if (!response.data?.success) return [];
+
+    return (
+      response.data.data?.map((row: any) => ({
+        id: row.id,
+        name: row.name,
+        data: row.data || {}, // ✅ preserve metadata
+      })) || []
+    );
+  }
+
+  /* -------------------------------------------
+     LOAD DROPDOWNS
+  --------------------------------------------*/
+
+  loadInitialDropdowns = async () => {
+    try {
+      const dropdowns = this.props.exportDetails.data || [];
+      const lists: Record<string, DesmyDropdownItem[]> = {};
+
+      for (const item of dropdowns) {
+        if (item.dependsOn) continue;
+        lists[item.key] = await this.fetchDropdown(item.endpoint);
+      }
+
+      this.setState({ extraDropdownLists: lists });
+    } catch (err) {
+      console.error("Dropdown load failed:", err);
+    }
   };
 
-  /** ✅ Confirmation dialog */
-  handleConfirmation = (e?: React.MouseEvent<HTMLButtonElement>) => {
-    if (e) e.preventDefault();
+  loadDependentDropdown = async (
+    dropdown: ExportExtraDropdown,
+    parentValue: string
+  ) => {
+    if (!parentValue) return;
 
     try {
-      const confirmationText =
-        this.props.exportDetails.options?.confirmationMessage ||
-        "Are you sure you want to export this data?";
+      const endpoint = `${dropdown.endpoint}?${dropdown.dependsOn}=${parentValue}`;
+      const list = await this.fetchDropdown(endpoint);
 
-      const settings = {
-        title: "Confirmation!",
-        btnPosition: "Continue",
-        btnNegative: "Cancel",
-        loadinghint: "Processing export, please wait...",
-        loading: true,
-      };
-
-      const handleClose = (state: { status: boolean }) => {
-        if (state.status) {
-          this.setState({ modal: null }, () => this.handleOnSubmit());
-          return;
-        }
-        this.setState({ modal: null });
-      };
-
-      const modal = (
-        <DesmyModalHandler settings={settings} onClose={handleClose}>
-          <div className="flex flex-col w-full text-sm py-2">
-            {confirmationText}
-
-            <br /><br /><br />
-            Are you sure you want to continue?
-          </div>
-        </DesmyModalHandler>
-      );
-
-      this.setState({ modal });
-    } catch (_) {}
+      this.setState((prev) => ({
+        extraDropdownLists: {
+          ...prev.extraDropdownLists,
+          [dropdown.key]: list,
+        },
+      }));
+    } catch (err) {
+      console.error("Dependent dropdown load failed:", err);
+    }
   };
 
-  /** ✅ Export logic */
+  /* -------------------------------------------
+     DEPENDENCY LOGIC
+  --------------------------------------------*/
+
+  private shouldShowDropdown(
+    item: ExportExtraDropdown
+  ): boolean {
+    const { input, extraDropdownLists } = this.state;
+
+    if (!item.dependsOn) return true;
+
+    const parentValue = input.extraSelections[item.dependsOn];
+    if (!parentValue) return false;
+
+    const parentList =
+      extraDropdownLists[item.dependsOn] || [];
+
+    const selectedParent = parentList.find(
+      (p) => p.id === parentValue
+    );
+
+    return selectedParent?.data?.show_dependant === true;
+  }
+
+  /* -------------------------------------------
+     HANDLE DROPDOWN CHANGE
+  --------------------------------------------*/
+
+  private handleDropdownChange = (
+    item: ExportExtraDropdown,
+    value: DesmyDropdownItem
+  ) => {
+    const dropdowns = this.props.exportDetails.data || [];
+
+    const childDropdowns = dropdowns.filter(
+      (d) => d.dependsOn === item.key
+    );
+
+    this.setState(
+      (prev) => {
+        const updatedSelections = {
+          ...prev.input.extraSelections,
+          [item.key]: value.id,
+        };
+
+        // ✅ auto-clear children
+        childDropdowns.forEach((child) => {
+          delete updatedSelections[child.key];
+        });
+
+        return {
+          input: {
+            ...prev.input,
+            extraSelections: updatedSelections,
+          },
+        };
+      },
+      () => {
+        // ✅ only load children if allowed
+        if (value?.data?.show_dependant) {
+          childDropdowns.forEach((child) => {
+            this.loadDependentDropdown(child, value.id);
+          });
+        }
+      }
+    );
+  };
+
+  /* -------------------------------------------
+     EXPORT SUBMIT
+  --------------------------------------------*/
+
   handleOnSubmit = async () => {
     try {
       const { exportDetails } = this.props;
       const { input } = this.state;
-      
+
       if (!exportDetails.url) {
-        this.handleError("Export URL is missing.");
-        return;
-      }
-      if (!input.name) {
-        this.handleError("Please enter a file name.");
+        DesmyToast.error("Invalid export URL.");
         return;
       }
 
-      this.setState({ hasRequest: true, isLoading: true });
+      this.setState({ hasRequest: true });
 
-      const postUrl = `${exportDetails.url}`;
-      const response = await axios.post(
-        postUrl,
-        { filename: input.name, exportDetails },
-        {
-          headers: {
-            'X-CSRFToken': `${DesmyAuth.getCookie('csrftoken')}`,
-            Authorization: `Token ${DesmyAuth.get(DesmyState.ACCESS_TOKEN)}`,
-          },
-        }
+      const urlParams = new URLSearchParams(
+        exportDetails.queryString || ""
       );
 
-      if (response.data && response.data.data?.url) {
-        const downloadUrl = response.data.data.url;
-
-        if (input.redirect || !exportDetails?.options?.confirm) {
-          window.open(downloadUrl, "_blank");
-        } else {
-          DesmyToast.success(response.data.message || "Export successful!");
+      Object.entries(input.extraSelections).forEach(([k, v]) => {
+        if (!DesmyCommons.isEmptyOrNull(v)) {
+          urlParams.set(k, String(v));
         }
+      });
+
+      urlParams.set("format", input.format);
+
+      const response = await axios.post(
+        exportDetails.url,
+        {
+          filename: input.name,
+          exportDetails: {
+            queryString: urlParams.toString(),
+            options: { confirm: input.confirm },
+          },
+        },
+        this.getAuthConfig()
+      );
+
+      const fileUrl = response.data?.data?.url;
+
+      if (fileUrl) {
+        if (input.redirect) {
+          window.open(fileUrl, "_blank");
+        }
+
+        DesmyToast.success(
+          response.data.message ||
+            exportDetails.options?.successMessage ||
+            "Export successful!"
+        );
+
         this.props.onSuccess?.(response.data);
-        this.props.onClose?.();
+        this.props.onClose();
       } else {
-        this.handleError("Export failed: No download URL returned.");
+        DesmyToast.error("Export failed.");
       }
     } catch (error: any) {
-      this.handleError(error?.message || "Export failed. Please try again.");
+      DesmyToast.error(
+        error?.response?.data?.detail ||
+          error?.message ||
+          "Export failed."
+      );
     } finally {
-      this.setState({ hasRequest: false, isLoading: false });
+      this.setState({ hasRequest: false });
     }
   };
 
-  /** ✅ Trigger confirmation or export directly */
-  handleExportClick = (e?: React.MouseEvent<HTMLButtonElement>) => {
+   handleConfirmation = (e?: React.MouseEvent<HTMLButtonElement>) => {
+    if (e) e.preventDefault();
+
+    const confirmationText =
+      this.props.exportDetails.options?.confirmationMessage ||
+      "Are you sure you want to export this data?";
+
+    const settings = {
+      title: "Confirmation!",
+      btnPosition: "Continue",
+      btnNegative: "Cancel",
+      loadinghint: "Processing export, please wait...",
+      loading: true,
+    };
+
+    const handleClose = (state: { status: boolean }) => {
+      if (state.status) {
+        this.setState({ modal: null }, this.handleOnSubmit);
+      } else {
+        this.setState({ modal: null });
+      }
+    };
+
+    this.setState({
+      modal: (
+        <DesmyModalHandler settings={settings} onClose={handleClose}>
+          <div className="flex flex-col w-full text-sm py-2">
+            {confirmationText}
+            <br />
+            <br />
+            Are you sure you want to continue?
+          </div>
+        </DesmyModalHandler>
+      ),
+    });
+  };
+
+  handleExportClick = () => {
     const { confirm } = this.props.exportDetails.options ?? {};
     if (confirm) {
-      this.handleConfirmation(e);
+      this.handleConfirmation();
     } else {
       this.handleOnSubmit();
     }
   };
 
+  
+  /* -------------------------------------------
+     RENDER
+  --------------------------------------------*/
+
   render() {
-    const { input, hasRequest, optionsList, modal } = this.state;
+    const { input, hasRequest, extraDropdownLists, modal } =
+      this.state;
+
+    const dropdowns = this.props.exportDetails.data || [];
 
     return (
       <>
         {modal}
+
         <DesmyModalContainer
-          data={{ title: `Export Options` }}
+          data={{ title: "Export Options" }}
           containerClassName="bg-white dark:bg-darkBackground border border-gray-100 dark:border-darkDialogBackground"
-          className="add-event-multi-modal max-w-lg p-2 transition-all"
+          className="add-event-multi-modal max-w-lg p-4 transition-all"
           onClose={this.props.onClose}
         >
-          <div className="flex flex-col w-full min-h-24 space-y-6">
-            {/* File Name Input */}
-            <div className="w-full mt-5">
-              <DesmyTextInput
-                autoFocus
-                defaultValue={input.name}
-                label="Enter File Name"
-                onChange={(data: string) =>
-                  this.setState((prev) => ({
-                    input: { ...prev.input, name: data },
-                  }))
-                }
-              />
-            </div>
+          <div className="flex flex-col space-y-6">
+            <DesmyTextInput
+              autoFocus
+              defaultValue={input.name}
+              label="Enter File Name"
+              onChange={(value: string) =>
+                this.setState((prev) => ({
+                  input: { ...prev.input, name: value },
+                }))
+              }
+            />
 
-            {/* ✅ Show dropdown only if multiple formats exist */}
-            {optionsList.length > 1 && (
-              <div className="w-full">
-                <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">
-                  Select File Format
-                </label>
+            {dropdowns.map((item) => {
+              if (!this.shouldShowDropdown(item))
+                return null;
+
+              return (
                 <DesmyDropdown
-                  data={optionsList}
-                  defaultValue={input.format}
-                  handleChange={(data: DesmyDropdownItem | DesmyDropdownItem[]) => {
-                    if (!DesmyCommons.isEmptyOrNull(data)) {
-                      const selected =
-                        Array.isArray(data) && data.length > 0
-                          ? data[0]?.id
-                          : (data as DesmyDropdownItem)?.id;
-                      this.setState((prev) => ({
-                        input: { ...prev.input, format: selected },
-                      }));
-                    }
-                  }}
-                  placeholder="Select Format"
+                  key={item.key}
+                  data={
+                    extraDropdownLists[item.key] || []
+                  }
+                  defaultValue={
+                    input.extraSelections[item.key]
+                  }
+                  placeholder={`Select ${item.title}`}
+                  handleChange={(value: any) =>
+                    this.handleDropdownChange(
+                      item,
+                      value
+                    )
+                  }
                 />
-              </div>
-            )}
+              );
+            })}
 
-            {/* Action Button */}
-            <div className="flex justify-end mt-5">
+            <div className="flex justify-end">
               <DesmyButton
                 onClick={this.handleExportClick}
                 hasRequest={hasRequest}

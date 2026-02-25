@@ -262,3 +262,20 @@ body {
 .animate-error-glow {
   animation: error-glow 1.5s ease-in-out infinite;
 }
+
+
+@keyframes dropdownFade {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px) scale(1);
+  }
+}
+
+.animate-dropdown {
+  animation: dropdownFade 0.18s ease-out forwards;
+  transform-origin: top right;
+}

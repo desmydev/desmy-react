@@ -74,7 +74,10 @@ export class DropdownList extends Component<Props> {
         title={handleEncrypt(item.name)}
       >
         {item.icon && <img className="w-4 h-4 mr-2" alt="icon" src={handleEncrypt(item.icon)} />}
-        <div className="line-clamp-1">{handleEncrypt(item.name)}</div>
+        <div className='flex flex-col w-full '>
+            <div className="line-clamp-1">{handleEncrypt(item.name)}</div>
+            {item.hint && <div className="line-clamp-1 text-xs">{handleEncrypt(item.hint)}</div>}
+        </div>
         {isSelected ? (
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 ml-auto">
             <path

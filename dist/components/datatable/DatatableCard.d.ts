@@ -32,6 +32,8 @@ interface Props {
     exceptional_columns: string[];
     handleEdit: (user: any) => void;
     error: (error: any) => void;
+    /** ✅ multi select mode */
+    multiSelectEnabled?: boolean;
 }
 interface State {
     stateList: string[];
@@ -57,13 +59,15 @@ declare class DatatableCard extends Component<Props, State> {
     private header;
     private status;
     constructor(props: Props);
-    handleDelete: () => void;
+    /** ✅ Stop bubbling always */
+    stopEvent: (e: React.MouseEvent) => void;
+    handleDelete: (e?: React.MouseEvent) => void;
     handleError: (message?: string) => void;
     handleDeleteRequest: () => void;
-    handleEdit: () => void;
-    onImageClick: (_data: string) => void;
+    handleEdit: (e?: React.MouseEvent) => void;
+    handleView: (e?: React.MouseEvent) => void;
     componentDidMount(): Promise<void>;
-    toggleView: () => void;
+    toggleView: (e?: React.MouseEvent) => void;
     extra_handle: () => false | {
         name: string;
         icon: React.ReactNode;

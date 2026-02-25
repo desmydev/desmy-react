@@ -1,4 +1,26 @@
 import { ReactNode } from 'react';
+export interface DesmyMultiSelectSubmitProps {
+    endpoint?: string;
+    method?: "POST" | "PUT" | "PATCH";
+    payloadKey?: string;
+    extraPayload?: any;
+    successMessage?: string;
+    errorMessage?: string;
+}
+export interface DesmyMergeSelectionProps {
+    enabled?: boolean;
+    endpoint?: string;
+    method?: "POST" | "PUT" | "PATCH";
+    payloadKeys?: {
+        selectedKey?: string;
+        mergeWithKey?: string;
+    };
+    dropdownColumns?: string[];
+    title?: string;
+    hint?: string;
+    successMessage?: string;
+    errorMessage?: string;
+}
 export interface DataSetTableSettingsProps {
     url?: string;
     default_sorted_column?: string;
@@ -31,6 +53,10 @@ export interface DataSetTableSettingsProps {
     headers?: string[];
     columns?: string[];
     table_data?: any[];
+    multiSelectEnabled?: boolean;
+    multiSelectIdColumn?: string;
+    multiSelectSubmit?: DesmyMultiSelectSubmitProps;
+    mergeSelection?: DesmyMergeSelectionProps;
 }
 export interface DesmyDataTableSettingsFilterProps {
     title?: string;
@@ -43,22 +69,43 @@ export interface DesmyDataTableSettingsFilterProps {
         };
     }[];
 }
+export interface ExtraActionDropdownItem {
+    label: string;
+    url: string;
+    formats?: string[];
+    icon?: React.ReactNode;
+}
 export interface ExtraAction {
     name?: string;
-    url: string;
+    /**
+     * Direct export URL (used if no dropdown is provided)
+     */
+    url?: string;
     icon?: React.ReactNode;
     className?: string;
+    /**
+     * Optional dependent filter dropdowns (Programme, Course, etc.)
+     */
+    data?: {
+        title: string;
+        key: string;
+        endpoint: string;
+        dependsOn?: string;
+    }[];
+    /**
+     * ✅ Dropdown export options
+     */
+    dropdown?: ExtraActionDropdownItem[];
     options?: {
         confirm?: boolean;
         redirect?: boolean;
-        formats?: string[];
         successMessage?: string;
         confirmationMessage?: string;
     };
 }
 export interface DesmyDataTableSettingsProps {
     default_sorted_column: string;
-    order?: 'asc' | 'desc';
+    order?: "asc" | "desc";
     onURLClick?: (url: any) => void;
     header: {
         title?: string;
@@ -98,6 +145,10 @@ export interface DesmyDataTableSettingsProps {
     url?: string;
     handleEdit?: (user: any, type?: string) => void;
     extraActions?: ExtraAction[];
+    multiSelectEnabled?: boolean;
+    multiSelectIdColumn?: string;
+    multiSelectSubmit?: DesmyMultiSelectSubmitProps;
+    mergeSelection?: DesmyMergeSelectionProps;
 }
 export interface DesmyCustomDataTableProps {
     url: string;
@@ -128,6 +179,10 @@ export interface DesmyCustomDataTableProps {
     headers: any[];
     columns: any[];
     table_data: any[];
+    multiSelectEnabled?: boolean;
+    multiSelectIdColumn?: string;
+    multiSelectSubmit?: DesmyMultiSelectSubmitProps;
+    mergeSelection?: DesmyMergeSelectionProps;
 }
 export interface DesmyDropdownItem {
     id: any | null;

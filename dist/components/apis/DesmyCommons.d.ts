@@ -12,6 +12,8 @@ declare class DesmyCommons {
     generateKey: () => number;
     concat(a: string, b: string): string;
     isObject(data: any): boolean;
+    normalizeFilterHead: (filterhead: any) => string;
+    calculateAge(dob: any): number;
     isEmptyOrNull(data: any, isForce?: boolean): boolean;
     toBoolean(data: any): boolean;
     toStringDefault(data: any, defaultValue?: string): string;

@@ -32,14 +32,15 @@ interface TableBodyProps {
         };
     };
     searchText?: string;
+    /** ✅ MULTI SELECT SUPPORT */
+    multiSelectEnabled?: boolean;
+    selectedRows?: number[];
+    onToggleRowSelect?: (index: number) => void;
 }
-interface TableBodyState {
-    visibleCount: number;
-}
-export declare class TableBody extends Component<TableBodyProps, TableBodyState> {
+export declare class TableBody extends Component<TableBodyProps> {
     tableBodyRef: React.RefObject<HTMLTableSectionElement | null>;
-    constructor(props: TableBodyProps);
-    componentDidUpdate(prevProps: TableBodyProps): void;
+    /** ✅ prevent row click when clicking on special elements */
+    isBlockedClickTarget: (target: HTMLElement) => HTMLAnchorElement | HTMLButtonElement | SVGSVGElement | HTMLInputElement | null;
     render(): import("react/jsx-runtime").JSX.Element;
 }
 export {};

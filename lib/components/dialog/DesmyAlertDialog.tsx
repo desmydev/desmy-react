@@ -243,7 +243,7 @@ class Dialog extends React.Component<DialogProps, DialogState> {
                 }
                 {
                   (settings.btnNegative != null && settings.btnNegative !== undefined && !Commons.isEmptyOrNull(settings.btnNegative)) ?
-                  <span className="mt-3 flex w-full rounded-md sm:mt-0 sm:w-auto">
+                  <span className=" flex w-full rounded-md sm:mt-0 sm:w-auto">
                       <button type="button" onClick={() => this.handleClose(false)}
                           className="uppercase inline-flex justify-center w-full rounded-md border border-transparent px-2 py-2 font-poppinsBold text-primary dark:text-white  focus:outline-none focus:shadow-outline-green transition ease-in-out duration-150 text-sm">
                           {settings.btnNegative}

@@ -152,7 +152,7 @@ class ReadTable extends Component<ReadTableProps, ReadTableState> {
                   key={`row-${i}`}
                   data={row}
                   headers={settings.headers}
-                  background={i % 2 === 0 ? "bg-gray-100" : ""}
+                  background={i % 2 === 0 ? "bg-gray-100 dark:bg-darkPrimary" : "bg-gray-300 dark:bg-darkDialogBackground"}
                 />
               ))
             ) : (

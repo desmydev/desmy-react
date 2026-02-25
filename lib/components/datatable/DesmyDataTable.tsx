@@ -10,8 +10,11 @@ import DesmyAuth from "../apis/DesmyAuth";
 import Commons from "../apis/DesmyCommons";
 import { DesmyState } from "../apis/DesmyState";
 import { DesmyFilter } from "../utilities/DesmyFilter";
+import { DesmyMerge } from "../utilities/DesmyMerge";
+import { DesmyInfiniteScroll } from "../utilities/DesmyInfiniteScroll";
 import {
   DesmyDataTableSettingsProps,
+  DesmyDropdownItem,
   DesmyFilterItem,
 } from "../apis/SharedProps";
 
@@ -19,6 +22,21 @@ import { TableHeader } from "./TableHeader";
 import { TableBody } from "./TableBody";
 import { DesmyFilterTags } from "./DesmyFilterTags";
 import DesmyDownloadOptions from "./DesmyDownloadOptions";
+import { DesmyToast } from "../toasify/DesmyToast";
+
+/* ------------------- INLINE MERGE MODAL ------------------- */
+
+interface MergeSelectionModalProps {
+  open: boolean;
+  options: DesmyDropdownItem[];
+  mergeTarget: any | null;
+  onChangeTarget: (item: any) => void;
+  onClose: () => void;
+  onSubmit: () => void;
+  loading?: boolean;
+}
+
+/* ------------------- DATATABLE PROPS & STATE ------------------- */
 
 interface DataTableProps {
   settings: DesmyDataTableSettingsProps;
@@ -26,11 +44,16 @@ interface DataTableProps {
     | React.ReactElement<{
         searchText?: string;
         filterhead?: DesmyFilterItem[] | string;
+        entities?: any[];
+        meta?: DataTableState["entities"]["meta"];
       }>
     | ((args: {
         searchText?: string;
         filterhead?: any | any[];
+        entities?: any[];
+        meta?: DataTableState["entities"]["meta"];
       }) => React.ReactNode);
+
   className?: string;
   onRef?: (ref: DesmyDataTable | null) => void;
   onFilteredURL?: (data: any) => void;
@@ -39,27 +62,51 @@ interface DataTableProps {
 interface DataTableState {
   isFocused?: boolean;
   searchText?: string;
+
+  /** ✅ action dropdown state */
+  openActionDropdown: number | null;
+
   dtablemodal: ReactNode | null;
   hasRequest: boolean;
   exceptionalColumns: string[];
   selected: number;
   isLoading: boolean;
+
+  /** ✅ multi-select state */
+  selectedRows: number[];
+  mergeTarget: any | null;
+  isSubmittingSelected: boolean;
+
   isFetchingMore: boolean;
   showFilter: boolean;
   confirmExport: boolean;
   filterhead: DesmyFilterItem[];
   showExportOption: boolean;
+
   exportDetails: {
-    url?: string;
-    queryString?: string;
-    options?: {
-      confirm?: boolean;
-      redirect?: boolean;
-      formats?: string[];
-      successMessage?: string;
-      confirmationMessage?: string;
-    };
+  url?: string;
+  queryString?: string;
+  data?: {
+    title: string;
+    key: string;
+    endpoint: string;
+    dependsOn?: string;
+  }[];
+  dropdown?: {
+    label: string;
+    url: string;
+    formats?: string[];
+    icon?: ReactNode;
+  }[];
+
+  options?: {
+    confirm?: boolean;
+    redirect?: boolean;
+    successMessage?: string;
+    confirmationMessage?: string;
   };
+};
+
   filters: {
     data: {
       name: string;
@@ -67,7 +114,9 @@ interface DataTableState {
       defaults?: { [key: string]: string };
     }[];
   };
+
   input: { search: string; is_searching: boolean };
+
   entities: {
     data: any[];
     meta: {
@@ -80,9 +129,16 @@ interface DataTableState {
       next?: string | null;
       next_page?: number | null;
       next_cursor?: string | null;
+      has_next?: boolean;
       count?: number | null;
+
+      /** optional server extras */
+      prev_cursor?: string | null;
+      cursor_ttl?: number | null;
+      cursor_expires_at?: number | null;
     };
   };
+
   custom_settings: {
     sorted_column: string;
     order: "asc" | "desc";
@@ -90,9 +146,11 @@ interface DataTableState {
     current_page: number;
     offset: number;
   };
+
   settings: DesmyDataTableSettingsProps & {
     table_data?: { name: string; class: string }[];
   };
+
   error: {
     state?: boolean;
     message?: string;
@@ -100,15 +158,28 @@ interface DataTableState {
     color?: string;
     retry?: boolean;
   };
+
   alerterror: { state: boolean; message: string; type: string; color: string };
   scrollTop: number;
 }
 
+/* ------------------- DATATABLE CLASS ------------------- */
+
 class DesmyDataTable extends Component<DataTableProps, DataTableState> {
   search: string;
   queryParam: string;
-  debounceTimer?: ReturnType<typeof setTimeout>;
+
+  infiniteScroll = new DesmyInfiniteScroll();
+
+  sentinelRef = React.createRef<HTMLDivElement>();
   scrollContainer = React.createRef<HTMLDivElement>();
+
+  DEBUG_INFINITE_SCROLL = false;
+
+  /** fallback scroll-based loading */
+  private lastFallbackTriggerAt = 0;
+  private FALLBACK_THRESHOLD_PX = 140;
+  private FALLBACK_COOLDOWN_MS = 800;
 
   rowHeight: number = 48;
 
@@ -117,8 +188,18 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     this.state = {
       exceptionalColumns: ["view", "edit", "delete"],
       selected: -1,
+
+      /** ✅ multi-select defaults */
+      selectedRows: [],
+      mergeTarget: null,
+      isSubmittingSelected: false,
+
       isLoading: true,
       isFetchingMore: false,
+
+      /** ✅ action dropdown default */
+      openActionDropdown: null,
+
       dtablemodal: null,
       hasRequest: false,
       showFilter: false,
@@ -138,6 +219,13 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
           to: 1,
           total: 0,
           next: null,
+          next_page: null,
+          next_cursor: null,
+          has_next: false,
+          count: null,
+          prev_cursor: null,
+          cursor_ttl: null,
+          cursor_expires_at: null,
         },
       },
       custom_settings: {
@@ -177,8 +265,8 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     this.search = "";
     this.queryParam = "";
 
-    this.handleScroll = this.handleScroll.bind(this);
     this.handleSearchInput = this.handleSearchInput.bind(this);
+    this.handleScroll = this.handleScroll.bind(this);
   }
 
   componentDidMount() {
@@ -201,269 +289,401 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
       () => {
         this.fetchEntities(false);
         this.handleFiltered();
+
+        requestAnimationFrame(() => {
+          const sentinel = this.sentinelRef.current;
+          const container = this.scrollContainer.current;
+          if (!sentinel || !container) return;
+
+          this.infiniteScroll.observe(sentinel, this.handleInfiniteLoad, {
+            root: container,
+            rootMargin: "260px",
+            threshold: 0,
+          });
+        });
       }
     );
+
+    // ✅ close dropdown when clicking outside
+    document.addEventListener("mousedown", this.handleOutsideClick);
   }
 
   componentWillUnmount() {
-    if (this.debounceTimer) clearTimeout(this.debounceTimer);
+    this.infiniteScroll.disconnect();
+    document.removeEventListener("mousedown", this.handleOutsideClick);
   }
 
-  /* ------------------- EXPORT HANDLING ------------------- */
+  /* ------------------- OUTSIDE CLICK ------------------- */
 
-  handleExport = (
-    url: string,
-    queryString: string,
+  handleOutsideClick = (e: MouseEvent) => {
+    if (this.state.openActionDropdown === null) return;
+
+    const target = e.target as HTMLElement;
+    if (!target?.closest?.(".desmy-extra-action-dropdown")) {
+      this.setState({ openActionDropdown: null });
+    }
+  };
+
+  /* ------------------- HELPERS ------------------- */
+
+  hasMore = () => {
+    const meta = this.state.entities.meta;
+
+    // prefer has_next if backend provides it
+    if (typeof meta.has_next === "boolean") return meta.has_next;
+
+    // fallback legacy fields
+    return !!(meta.next || meta.next_cursor || meta.next_page);
+  };
+
+  multiSelectEnabled = () => {
+    return !!this.props.settings.multiSelectEnabled;
+  };
+
+  mergeEnabled = () => {
+    return !!this.props.settings.mergeSelection?.enabled;
+  };
+
+  buildMergeLabel = (item: any) => {
+    const columns = this.props.settings.mergeSelection?.dropdownColumns || [];
+    const values = columns
+      .map((c) => item?.[c])
+      .filter((v) => v !== undefined && v !== null && String(v).trim() !== "");
+
+    if (values.length > 0) return values.join(" - ");
+    return item?.name ?? item?.title ?? item?.id ?? "Unnamed";
+  };
+
+  /* ------------------- EXPORT HANDLING ------------------- */
+handleExport = (
+  action: {
+    url?: string;
+    dropdown?: {
+      label: string;
+      url: string;
+      formats?: string[];
+      icon?: ReactNode;
+    }[];
     options?: {
       confirm?: boolean;
       redirect?: boolean;
-      formats?: string[];
       successMessage?: string;
       confirmationMessage?: string;
-    }
-  ) => {
-    this.setState({
-      showExportOption: true,
-      confirmExport: options?.confirm ?? false,
-      exportDetails: {
-        url,
-        queryString,
-        options: {
-          confirm: options?.confirm ?? false,
-          redirect: options?.redirect ?? false,
-          formats: options?.formats ?? ["xlsx"],
-          successMessage: options?.successMessage || "Export successful!",
-          confirmationMessage:
-            options?.confirmationMessage ||
-            "Are you sure you want to export this data?",
-        },
+    };
+    data?: {
+      title: string;
+      key: string;
+      endpoint: string;
+      dependsOn?: string;
+    }[];
+  },
+  queryString: string
+) => {
+  this.setState({
+    showExportOption: true,
+    confirmExport: action.options?.confirm ?? false,
+
+    exportDetails: {
+      url: action.url,
+      queryString,
+      dropdown: action.dropdown ?? [],
+      data: action.data ?? [],
+      options: {
+        confirm: action.options?.confirm ?? false,
+        redirect: action.options?.redirect ?? false,
+        successMessage:
+          action.options?.successMessage || "Export successful!",
+        confirmationMessage:
+          action.options?.confirmationMessage ||
+          "Are you sure you want to export this data?",
       },
+    },
+
+    openActionDropdown: null,
+  });
+};
+
+  /* ------------------- MULTI SELECT ------------------- */
+
+  logScroll = (...args: any[]) => {
+    if (this.DEBUG_INFINITE_SCROLL) {
+      console.log("[DesmyInfiniteScroll]", ...args);
+    }
+  };
+
+  toggleRowSelect = (index: number) => {
+    this.setState((prev) => {
+      const exists = prev.selectedRows.includes(index);
+      const selectedRows = exists
+        ? prev.selectedRows.filter((i) => i !== index)
+        : [...prev.selectedRows, index];
+
+      const selectedItems = selectedRows.map((i) => prev.entities.data[i]);
+
+      let mergeTarget = prev.mergeTarget;
+      if (mergeTarget && !selectedItems.includes(mergeTarget)) mergeTarget = null;
+
+      return { selectedRows, mergeTarget };
     });
   };
 
-  /* ------------------- FILTER HANDLING ------------------- */
+  toggleSelectAll = () => {
+    this.setState((prev) => {
+      const allIndexes = prev.entities.data.map((_, i) => i);
+      const isAllSelected =
+        prev.selectedRows.length === allIndexes.length && allIndexes.length > 0;
 
-  handleOnFiltered = (data: any) => {
-    const filteredDataAndFilterHead =
-      Object.entries(data)
-        .map(([key, value]) => {
-          if (value && typeof value === "object" && "id" in value) {
-            const filterValue = value as DesmyFilterItem;
+      return {
+        selectedRows: isAllSelected ? [] : allIndexes,
+        mergeTarget: null,
+      };
+    });
+  };
 
-            // Date range filter
-            if (
-              key.toLowerCase().includes("date") &&
-              filterValue.value?.startDate &&
-              filterValue.value?.endDate
-            ) {
-              return {
-                queryParam: `start_date=${encodeURIComponent(
-                  String(filterValue.value?.startDate)
-                )}&end_date=${encodeURIComponent(
-                  String(filterValue.value?.endDate)
-                )}`,
-                filterItem: { ...filterValue, label: key },
-              };
-            }
+  /* ------------------- MERGE MODAL LOGIC ------------------- */
 
-            const rawValue = filterValue.id ?? filterValue.value;
-            if (
-              rawValue === undefined ||
-              rawValue === null ||
-              rawValue === ""
-            ) {
-              return null;
-            }
+  openMergeModal = () => {
+    if (!this.mergeEnabled()) return;
 
-            return {
-              queryParam: `${encodeURIComponent(key)}=${encodeURIComponent(
-                String(rawValue)
-              )}`,
-              filterItem: { ...filterValue, label: key },
-            };
-          }
-
-          if (Array.isArray(value)) {
-            if (value.length === 0) return null;
-
-            const mapped = value.map((item: any) => ({
-              id: item.id,
-              name: item.name,
-              ...(item.data ? { data: item.data } : {}),
-            }));
-
-            return {
-              queryParam: `${encodeURIComponent(key)}=${encodeURIComponent(
-                JSON.stringify(mapped)
-              )}`,
-              filterItem: {
-                id: key,
-                name: key,
-                value: mapped,
-                label: key,
-              } as DesmyFilterItem,
-            };
-          }
-
-          return null;
-        })
-        .filter((item) => item !== null) || [];
-
-    const filtered_data = filteredDataAndFilterHead
-      .map((item) => item!.queryParam)
-      .join("&");
-    const filterhead = filteredDataAndFilterHead.map(
-      (item) => item!.filterItem
-    ) as DesmyFilterItem[];
-
-    this.handleClear();
-    this.queryParam = filtered_data;
-
-    this.setState(
-      {
-        showFilter: false,
-        filterhead,
-      },
-      () => {
-        this.props.onFilteredURL?.(filtered_data);
-        this.fetchEntities(false);
-      }
+    const selectedItems = this.state.selectedRows.map(
+      (i) => this.state.entities.data[i]
     );
-  };
 
-  handleFiltered = () => {
-    const { sorted_column, order } = this.state.custom_settings;
-    this.props.onFilteredURL?.(
-      `column=${sorted_column}&order=${order}&search=${this.search}`
-    );
-  };
-
-  removeFilterByName = (name: string) => {
-    try {
-      const updatedFilters = this.state.filterhead.filter(
-        (filter) => filter.label !== name
-      );
-
-      const filtered_data = updatedFilters
-        .filter((filter) => typeof filter === "object" && "id" in filter)
-        .map((filter) => {
-          const { id, value, label } = filter as DesmyFilterItem;
-          return `${encodeURIComponent(String(label))}=${encodeURIComponent(
-            String(id ?? value ?? "")
-          )}`;
-        })
-        .join("&");
-
-      this.handleClear();
-      this.queryParam = filtered_data;
-
-      this.setState(
-        {
-          filterhead: updatedFilters,
-        },
-        () => {
-          this.props.onFilteredURL?.(filtered_data);
-          this.fetchEntities(false);
-        }
-      );
-    } catch (_) {}
-  };
-
-  /* ------------------- SCROLL & INFINITE LOAD ------------------- */
-
-  handleScroll() {
-    if (!this.scrollContainer.current) return;
-    const { scrollTop, clientHeight, scrollHeight } =
-      this.scrollContainer.current;
-
-    const nearBottom = scrollTop + clientHeight >= scrollHeight - 50;
-
-    if (
-      nearBottom &&
-      !this.state.isLoading &&
-      !this.state.isFetchingMore &&
-      this.state.entities.meta.next
-    ) {
-      this.fetchEntities(true);
+    if (selectedItems.length < 2) {
+      DesmyToast.error("Select at least 2 items to merge.");
+      return;
     }
 
-    this.setState({ scrollTop });
-  }
+    const mergeConfig = this.props.settings.mergeSelection;
+
+    if (!mergeConfig?.endpoint) {
+      DesmyToast.error("Merge endpoint missing in settings.");
+      return;
+    }
+
+    this.setState({
+      openActionDropdown: null, // ✅ close dropdown if open
+      dtablemodal: (
+        <DesmyMerge
+          selectedItems={selectedItems}
+          mergeConfig={{
+            endpoint: mergeConfig.endpoint,
+            method: mergeConfig.method || "POST",
+            payloadKeys: mergeConfig.payloadKeys,
+            dropdownColumns: mergeConfig.dropdownColumns,
+            successMessage: mergeConfig.successMessage,
+            errorMessage: mergeConfig.errorMessage,
+          }}
+          onClose={() => this.setState({ dtablemodal: null })}
+          onSuccess={() => {
+            this.setState({ selectedRows: [] }, () => this.clearFetchEntities());
+          }}
+        />
+      ),
+    });
+  };
+
+  /* ------------------- INFINITE LOAD (OBSERVER) ------------------- */
+
+  handleInfiniteLoad = () => {
+    const meta = this.state.entities.meta;
+
+    if (this.state.isLoading) {
+      this.logScroll("Blocked: initial loading in progress");
+      return;
+    }
+
+    if (this.state.isFetchingMore) {
+      this.logScroll("Blocked: already fetching more");
+      return;
+    }
+
+    if (!this.hasMore()) {
+      this.logScroll("Blocked: no more data");
+      return;
+    }
+
+    if (!this.infiniteScroll.shouldFetch(meta)) {
+      this.logScroll("Blocked: cursor/page already fetched", meta.next_cursor);
+      return;
+    }
+
+    this.logScroll("Observer trigger. Fetching next cursor:", meta.next_cursor);
+    this.fetchEntities(true);
+  };
+
+  /* ------------------- FALLBACK SCROLL ------------------- */
+
+  handleScroll = () => {
+    // ✅ close dropdown when scrolling table area
+    if (this.state.openActionDropdown !== null) {
+      this.setState({ openActionDropdown: null });
+    }
+
+    const container = this.scrollContainer.current;
+    if (!container) return;
+
+    const { scrollTop, clientHeight, scrollHeight } = container;
+
+    if (this.state.scrollTop !== scrollTop) {
+      this.setState({ scrollTop });
+    }
+
+    const distToBottom = scrollHeight - (scrollTop + clientHeight);
+    const now = Date.now();
+
+    if (distToBottom > this.FALLBACK_THRESHOLD_PX) return;
+    if (now - this.lastFallbackTriggerAt < this.FALLBACK_COOLDOWN_MS) return;
+
+    if (this.state.isLoading || this.state.isFetchingMore) return;
+    if (!this.hasMore()) return;
+
+    if (!this.infiniteScroll.shouldFetch(this.state.entities.meta)) return;
+
+    this.lastFallbackTriggerAt = now;
+    this.logScroll("Fallback scroll trigger. Fetching…");
+    this.fetchEntities(true);
+  };
 
   /* ------------------- FETCH ENTITIES ------------------- */
 
   fetchEntities = async (append = false) => {
-    if (this.debounceTimer) clearTimeout(this.debounceTimer);
+    if (append && this.state.isFetchingMore) return;
+
+    const container = this.scrollContainer.current;
+
+    const anchor =
+      append && container ? this.infiniteScroll.captureAnchor(container) : null;
 
     const { custom_settings, entities } = this.state;
     const { sorted_column, order } = custom_settings;
-    const { per_page, next } = entities.meta;
+    const meta = entities.meta;
+    const per_page = meta.per_page;
 
-    const startFetch = () => {
+    if (append) {
+      this.setState({ isFetchingMore: true });
+    } else {
+      this.setState({
+        isLoading: true,
+        error: { ...this.state.error, state: false, message: "" },
+      });
+    }
+
+    try {
+      let fetchUrl: string;
+
       if (append) {
-        this.setState({ isFetchingMore: true });
+        if (meta.next) {
+          fetchUrl = meta.next;
+        } else if (meta.next_cursor) {
+          fetchUrl =
+            `${this.props.settings.url}/?` +
+            `column=${sorted_column}` +
+            `&order=${order}` +
+            `&per_page=${per_page}` +
+            `&search=${encodeURIComponent(this.search || "")}` +
+            `&cursor=${encodeURIComponent(meta.next_cursor)}` +
+            (this.queryParam ? `&${this.queryParam}` : "");
+        } else if (meta.next_page) {
+          fetchUrl =
+            `${this.props.settings.url}/?` +
+            `column=${sorted_column}` +
+            `&order=${order}` +
+            `&per_page=${per_page}` +
+            `&search=${encodeURIComponent(this.search || "")}` +
+            `&page=${meta.next_page}` +
+            (this.queryParam ? `&${this.queryParam}` : "");
+        } else {
+          this.setState({ isFetchingMore: false });
+          return;
+        }
       } else {
-        this.setState({
-          isLoading: true,
-          error: { ...this.state.error, state: false, message: "" },
-        });
+        fetchUrl =
+          `${this.props.settings.url}/?` +
+          `column=${sorted_column}` +
+          `&order=${order}` +
+          `&per_page=${per_page}` +
+          `&search=${encodeURIComponent(this.search || "")}` +
+          (this.queryParam ? `&${this.queryParam}` : "");
       }
-    };
 
-    startFetch();
+      this.logScroll("Fetch URL:", fetchUrl);
 
-    this.debounceTimer = setTimeout(async () => {
-      try {
-        let fetchUrl: string;
+      const response = await axios.get(fetchUrl, {
+        headers: {
+          "X-CSRFToken": `${DesmyAuth.getCookie("csrftoken")}`,
+          Authorization: `Token ${DesmyAuth.get(DesmyState.ACCESS_TOKEN)}`,
+        },
+      });
 
-        if (append && next) {
-          fetchUrl = next;
-        } else {
-          const base = `${this.props.settings.url}/?column=${sorted_column}&order=${order}&per_page=${per_page}&search=${encodeURIComponent(
-            this.search || ""
-          )}`;
-          fetchUrl = this.queryParam ? `${base}&${this.queryParam}` : base;
-        }
+      const payload = response.data;
 
-        const response = await axios.get(fetchUrl, {
-          headers: {
-            "X-CSRFToken": `${DesmyAuth.getCookie("csrftoken")}`,
-            Authorization: `Token ${DesmyAuth.get(DesmyState.ACCESS_TOKEN)}`,
-          },
-        });
+      if (!payload?.success) {
+        this.handleError(payload?.message, false);
+        return;
+      }
 
-        const data = response.data;
+      const apiWrap = payload.data;
+      const apiMeta = apiWrap?.meta || {};
+      const apiLinks = apiWrap?.links || {};
+      const apiRows = Array.isArray(apiWrap?.data)
+        ? apiWrap.data
+        : Array.isArray(apiWrap?.data?.data)
+        ? apiWrap.data.data
+        : [];
 
-        if (data.success) {
-          this.setState((prev) => {
-            const newData = append
-              ? [...prev.entities.data, ...data.data.data]
-              : data.data.data;
+      this.setState(
+        (prev) => {
+          const mergedData = append
+            ? [...prev.entities.data, ...apiRows]
+            : apiRows;
 
-            return {
-              isLoading: false,
-              isFetchingMore: false,
-              entities: {
-                data: newData,
-                meta: {
-                  ...data.data.meta,
-                  next: data.data.links?.next || null,
-                  next_page: data.data.meta.next_page ?? null,
-                  next_cursor: data.data.meta.next_cursor ?? null,
-                  count: data.data.meta.count ?? null,
-                },
+          return {
+            isLoading: false,
+            isFetchingMore: false,
+            entities: {
+              data: mergedData,
+              meta: {
+                ...prev.entities.meta,
+                ...apiMeta,
+                next: apiLinks?.next ?? apiMeta?.next ?? null,
+                next_cursor: apiMeta?.next_cursor ?? null,
+                prev_cursor: apiMeta?.prev_cursor ?? null,
+                has_next:
+                  typeof apiMeta?.has_next === "boolean"
+                    ? apiMeta.has_next
+                    : Boolean(
+                        apiLinks?.next ||
+                          apiMeta?.next_cursor ||
+                          apiMeta?.next_page
+                      ),
+                cursor_ttl: apiMeta?.cursor_ttl ?? null,
+                cursor_expires_at: apiMeta?.cursor_expires_at ?? null,
               },
-            };
-          });
-        } else {
-          this.handleError(data.message, false);
+            },
+          };
+        },
+        () => {
+          if (anchor && container) {
+            this.infiniteScroll.restoreAnchor(container, anchor);
+          }
+
+          const loaded = this.state.entities.data.length;
+          const total = this.state.entities.meta.total ?? 0;
+          const remaining = Math.max(total - loaded, 0);
+
+          this.logScroll("Loaded:", loaded);
+          this.logScroll("Total:", total);
+          this.logScroll("Remaining:", remaining);
+          this.logScroll("Next cursor:", this.state.entities.meta.next_cursor);
+          this.logScroll("Has next:", this.hasMore());
+
+          this.infiniteScroll.resetObservation();
         }
-      } catch (e) {
-        this.handleError(e);
-      } finally {
-        this.setState({ isFetchingMore: false });
-      }
-    }, 400);
+      );
+    } catch (e) {
+      this.handleError(e);
+    }
   };
 
   /* ------------------- ERROR & CLEARING ------------------- */
@@ -489,6 +709,7 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
       isLoading: false,
       input: { ...prev.input, is_searching: false },
       error: newError,
+      isFetchingMore: false,
     }));
   };
 
@@ -502,6 +723,9 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
           ...prev.entities.meta,
           total: 0,
           next: null,
+          next_cursor: null,
+          next_page: null,
+          has_next: false,
         },
       },
       error: { ...prev.error, state: false, message: "" },
@@ -509,6 +733,9 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
   };
 
   clearFetchEntities = () => {
+    this.infiniteScroll.reset();
+    this.lastFallbackTriggerAt = 0;
+
     this.setState(
       (prev) => ({
         entities: {
@@ -516,6 +743,9 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
           meta: {
             ...prev.entities.meta,
             next: null,
+            next_cursor: null,
+            next_page: null,
+            has_next: false,
             total: 0,
           },
         },
@@ -524,86 +754,6 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     );
   };
 
-  /* ------------------- SEARCH HANDLING ------------------- */
-
-  handleSearchInput(event: ChangeEvent<HTMLInputElement>) {
-    const value = event.target.value;
-
-    // Block input-triggered search while endpoint still loading
-    if (this.state.isLoading || this.state.isFetchingMore) return;
-
-    this.setState(
-      (prev) => ({
-        input: { ...prev.input, search: value },
-        searchText: value,
-      }),
-      () => {
-        this.search = value;
-
-        if (
-          !this.state.isLoading &&
-          !this.state.isFetchingMore &&
-          Commons.isEmptyOrNull(this.search)
-        ) {
-          this.clearFetchEntities();
-        }
-      }
-    );
-  }
-
-  handleSearchKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    // Prevent Enter key search while endpoint still loading
-    if (this.state.isLoading || this.state.isFetchingMore) return;
-
-    if (e.key === "Enter" && !Commons.isEmptyOrNull(this.search)) {
-      this.clearFetchEntities();
-    }
-  };
-
-  /* ------------------- SORT HANDLING (OPTION C) ------------------- */
-
-  handleSort = (column: string) => {
-  const extraHandles =
-    this.props.settings?.extra_handle?.map((item) =>
-      item.name?.toLowerCase()
-    ) || [];
-
-  const exceptionalColumns = [
-    ...this.state.exceptionalColumns.map((c) => c.toLowerCase()),
-    ...extraHandles,
-  ];
-
-  if (exceptionalColumns.includes(column.toLowerCase())) return;
-
-  const { custom_settings } = this.state;
-
-  // ★ KEEP TYPE SAFE
-  const newOrder: "asc" | "desc" =
-    column === custom_settings.sorted_column
-      ? custom_settings.order === "asc"
-        ? "desc"
-        : "asc"
-      : "asc";
-
-  const updatedCustomSettings = {
-    ...custom_settings,
-    sorted_column: column,
-    order: newOrder,
-    current_page: 1,
-  };
-
-  this.setState(
-    {
-      custom_settings: updatedCustomSettings,
-      isLoading: true,
-    },
-    () => {
-      this.handleRetry();
-    }
-  );
-};
-
-
   /* ------------------- OTHER HANDLERS ------------------- */
 
   renderBreadcrumb() {
@@ -611,7 +761,6 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     if (!breadcrumb || breadcrumb.length === 0) {
       return null;
     }
-
     return (
       <nav className="flex text-sm mb-4" aria-label="Breadcrumb">
         <ol className="inline-flex items-center space-x-1 md:space-x-3">
@@ -657,99 +806,422 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     );
   }
 
-  handlePageChange = (pageNumber: number) => {
-    this.handleClear();
+  /* ------------------- SEARCH ------------------- */
+
+  handleSearchInput(event: ChangeEvent<HTMLInputElement>) {
+    const value = event.target.value;
+    if (this.state.isLoading || this.state.isFetchingMore) return;
+
     this.setState(
       (prev) => ({
-        custom_settings: {
-          ...prev.custom_settings,
-          current_page: pageNumber,
-        },
-        isLoading: true,
+        input: { ...prev.input, search: value },
+        searchText: value,
       }),
-      () => this.fetchEntities(false)
+      () => {
+        this.search = value;
+
+        if (
+          !this.state.isLoading &&
+          !this.state.isFetchingMore &&
+          Commons.isEmptyOrNull(this.search)
+        ) {
+          this.clearFetchEntities();
+        }
+      }
+    );
+  }
+
+  handleSearchKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (this.state.isLoading || this.state.isFetchingMore) return;
+
+    if (e.key === "Enter" && !Commons.isEmptyOrNull(this.search)) {
+      this.clearFetchEntities();
+    }
+  };
+
+  /* ------------------- SORT ------------------- */
+
+  handleSort = (column: string) => {
+    const extraHandles =
+      this.props.settings?.extra_handle?.map((item) =>
+        item.name?.toLowerCase()
+      ) || [];
+
+    const exceptionalColumns = [
+      ...this.state.exceptionalColumns.map((c) => c.toLowerCase()),
+      ...extraHandles,
+    ];
+
+    if (exceptionalColumns.includes(column.toLowerCase())) return;
+
+    const { custom_settings } = this.state;
+
+    const newOrder: "asc" | "desc" =
+      column === custom_settings.sorted_column
+        ? custom_settings.order === "asc"
+          ? "desc"
+          : "asc"
+        : "asc";
+
+    const updatedCustomSettings = {
+      ...custom_settings,
+      sorted_column: column,
+      order: newOrder,
+      current_page: 1,
+    };
+
+    this.setState(
+      {
+        custom_settings: updatedCustomSettings,
+        isLoading: true,
+      },
+      () => {
+        this.handleRetry();
+      }
+    );
+  };
+
+  /* ------------------- OTHER ------------------- */
+
+  handleOnFiltered = (data: any) => {
+    const filteredDataAndFilterHead =
+      Object.entries(data)
+        .map(([key, value]) => {
+          if (value && typeof value === "object" && "id" in value) {
+            const filterValue = value as DesmyFilterItem;
+
+            if (
+              key.toLowerCase().includes("date") &&
+              filterValue.value?.startDate &&
+              filterValue.value?.endDate
+            ) {
+              return {
+                queryParam: `start_date=${encodeURIComponent(
+                  String(filterValue.value?.startDate)
+                )}&end_date=${encodeURIComponent(
+                  String(filterValue.value?.endDate)
+                )}`,
+                filterItem: { ...filterValue, label: key },
+              };
+            }
+
+            const rawValue =
+              (filterValue as any).id ?? (filterValue as any).value;
+            if (rawValue === undefined || rawValue === null || rawValue === "")
+              return null;
+
+            return {
+              queryParam: `${encodeURIComponent(key)}=${encodeURIComponent(
+                String(rawValue)
+              )}`,
+              filterItem: { ...filterValue, label: key },
+            };
+          }
+
+          if (Array.isArray(value)) {
+            if (value.length === 0) return null;
+
+            const mapped = value.map((item: any) => ({
+              id: item.id,
+              name: item.name,
+              ...(item.data ? { data: item.data } : {}),
+            }));
+
+            return {
+              queryParam: `${encodeURIComponent(key)}=${encodeURIComponent(
+                JSON.stringify(mapped)
+              )}`,
+              filterItem: {
+                id: key,
+                name: key,
+                value: mapped,
+                label: key,
+              } as DesmyFilterItem,
+            };
+          }
+
+          return null;
+        })
+        .filter((item) => item !== null) || [];
+
+    const filtered_data = filteredDataAndFilterHead
+      .map((item) => item!.queryParam)
+      .join("&");
+
+    const filterhead = filteredDataAndFilterHead.map(
+      (item) => item!.filterItem
+    ) as DesmyFilterItem[];
+
+    this.handleClear();
+    this.queryParam = filtered_data;
+
+    this.setState(
+      {
+        showFilter: false,
+        filterhead,
+        openActionDropdown: null, // ✅ close dropdown when filtering
+      },
+      () => {
+        this.props.onFilteredURL?.(filtered_data);
+        this.fetchEntities(false);
+      }
+    );
+  };
+
+  handleFiltered = () => {
+    const { sorted_column, order } = this.state.custom_settings;
+    this.props.onFilteredURL?.(
+      `column=${sorted_column}&order=${order}&search=${this.search}`
     );
   };
 
   handleOnClose = () => {
-    this.setState({ showFilter: false, showExportOption: false });
+    this.setState({
+      showFilter: false,
+      showExportOption: false,
+      dtablemodal: null,
+      openActionDropdown: null, // ✅ NEW
+    });
   };
+
+  handleOnOpenFilter = () => {
+    this.setState({ showFilter: true, openActionDropdown: null });
+  };
+
+  handleRetry = () => {
+    this.setState(
+      { isLoading: true, openActionDropdown: null },
+      this.clearFetchEntities
+    );
+  };
+
+  handleHint() {
+    const { settings, error, entities, isLoading, isFetchingMore } = this.state;
+
+    if (error.state) return "";
+
+    const hint = settings?.header?.hint || "";
+
+    const loaded = entities?.data?.length ?? 0;
+    const total = entities?.meta?.total ?? 0;
+    const remaining = Math.max(total - loaded, 0);
+
+    let statusText = "";
+
+    if (isLoading) {
+      statusText = "Loading data...";
+    } else if (isFetchingMore) {
+      statusText = `Loaded ${loaded} of ${total} • Fetching more...`;
+    } else if (total > 0) {
+      if (remaining === 0) {
+        statusText = `Loaded ${loaded} of ${total}`;
+      } else {
+        statusText = `Loaded ${loaded} of ${total} • ${remaining} remaining`;
+      }
+    } else {
+      statusText = "No data found";
+    }
+
+    if (!hint) return statusText;
+
+    return `${hint} | ${statusText}`;
+  }
 
   handleOnSuccess = (index: number) => {
     this.setState((prev) => {
       const newData = [...prev.entities.data];
       newData.splice(index, 1);
-      return {
-        entities: { ...prev.entities, data: newData },
-      };
+      return { entities: { ...prev.entities, data: newData } };
     });
   };
 
-  handleOnOpenFilter = () => {
-    this.setState({ showFilter: true });
-  };
+  removeFilterByName = (name: string) => {
+    try {
+      const updatedFilters = this.state.filterhead.filter(
+        (filter) => filter.label !== name
+      );
 
-  handleRetry = () => {
-    this.setState({ isLoading: true }, this.clearFetchEntities);
-  };
+      const filtered_data = updatedFilters
+        .filter((filter) => typeof filter === "object" && "id" in filter)
+        .map((filter) => {
+          const { id, value, label } = filter as DesmyFilterItem;
+          return `${encodeURIComponent(String(label))}=${encodeURIComponent(
+            String((id as any) ?? (value as any) ?? "")
+          )}`;
+        })
+        .join("&");
 
-  renderExtraActions() {
-    const { extraActions } = this.props.settings;
-    const { custom_settings, entities } = this.state;
-    const filterParams = new URLSearchParams();
+      this.handleClear();
+      this.queryParam = filtered_data;
 
-    filterParams.set("page", String(custom_settings.current_page));
-    filterParams.set("column", custom_settings.sorted_column);
-    filterParams.set("order", custom_settings.order);
-    filterParams.set("per_page", String(entities.meta.per_page));
-    filterParams.set("search", this.search || "");
-
-    if (this.queryParam) {
-      this.queryParam.split("&").forEach((kv) => {
-        const [key, value] = kv.split("=");
-        if (key && value !== undefined) filterParams.set(key, value);
+      this.setState({ filterhead: updatedFilters, openActionDropdown: null }, () => {
+        this.props.onFilteredURL?.(filtered_data);
+        this.fetchEntities(false);
       });
-    }
+    } catch (_) {}
+  };
 
-    const queryString = filterParams.toString();
+  /* ------------------- EXTRA ACTIONS ------------------- */
 
-    return (
-      <div className="flex w-full justify-end space-x-2 mt-5">
-        {extraActions?.map((action, index: number) => (
-          <button
-            key={index}
-            onClick={() =>
-              this.handleExport(action.url, queryString, action.options ?? {})
-            }
-            className={`flex items-center px-5 py-3 text-xs rounded-full border border-green-500
-              ${
-                action.url
-                  ? "bg-green-500 hover:bg-green-600 text-white"
-                  : "bg-gray-100 text-gray-400 cursor-not-allowed"
-              }
-              ${action.className || ""}`}
-            disabled={!action.url}
-          >
-            {action.icon && <span className="mr-2">{action.icon}</span>}
-            {action.name ||
-              (index === 0 ? "Export to PDF" : "Export to Excel")}
-          </button>
-        ))}
-      </div>
-    );
+renderExtraActions() {
+  const { extraActions } = this.props.settings;
+  const { custom_settings, entities, openActionDropdown } = this.state;
+
+  const filterParams = new URLSearchParams();
+
+  filterParams.set("page", String(custom_settings.current_page));
+  filterParams.set("column", custom_settings.sorted_column);
+  filterParams.set("order", custom_settings.order);
+  filterParams.set("per_page", String(entities.meta.per_page));
+  filterParams.set("search", this.search || "");
+
+  if (this.queryParam) {
+    this.queryParam.split("&").forEach((kv) => {
+      const [key, value] = kv.split("=");
+      if (key && value !== undefined) filterParams.set(key, value);
+    });
   }
 
-  handleHint = () => {
-    const { settings, error, entities } = this.state;
-    if (error.state) return "";
-    const hint = settings?.header?.hint || "";
-    const total = entities?.meta?.total ?? 0;
+  const queryString = filterParams.toString();
 
-    if (!hint) {
-      return `Loaded ${total} data`;
-    }
-    return `${hint} | Loaded ${total}`;
-  };
+  const multiEnabled = this.multiSelectEnabled();
+  const mergeEnabled = this.mergeEnabled();
+  const canMerge =
+    multiEnabled && mergeEnabled && this.state.selectedRows.length > 1;
+
+  return (
+    <div className="flex w-full justify-end space-x-2 mt-5 relative">
+      {canMerge && (
+        <button
+          onClick={this.openMergeModal}
+          className="flex items-center px-5 py-3 text-xs rounded-full border border-blue-500 bg-blue-500 hover:bg-blue-600 text-white"
+        >
+          Merge Selected ({this.state.selectedRows.length})
+        </button>
+      )}
+
+      {extraActions?.map((action, index) => {
+        const hasDropdown =
+          Array.isArray(action.dropdown) && action.dropdown.length > 0;
+
+        const hasDirectUrl = !!action.url;
+
+        return (
+          <div
+            key={index}
+            className="relative desmy-extra-action-dropdown"
+          >
+            {/* MAIN BUTTON */}
+            <button
+              onClick={() => {
+                if (hasDropdown) {
+                  this.setState({
+                    openActionDropdown:
+                      openActionDropdown === index ? null : index,
+                  });
+                } else if (hasDirectUrl) {
+                  // ✅ NEW CORRECT CALL
+                  this.handleExport(action, queryString);
+                }
+              }}
+              disabled={!hasDropdown && !hasDirectUrl}
+              className={`flex items-center px-5 py-3 text-xs rounded-full border border-green-500
+                ${
+                  hasDropdown || hasDirectUrl
+                    ? "bg-green-500 hover:bg-green-600 text-white"
+                    : "bg-gray-100 text-gray-400 cursor-not-allowed"
+                }
+                ${action.className || ""}`}
+            >
+              {action.icon && <span className="mr-2">{action.icon}</span>}
+              {action.name}
+
+              {hasDropdown && (
+                <svg
+                  className="w-3 h-3 ml-2"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              )}
+            </button>
+
+            {/* DROPDOWN */}
+            {hasDropdown && openActionDropdown === index && (
+              <div
+                className="
+                  absolute right-0 mt-2 w-56
+                  bg-white dark:bg-gray-800
+                  border border-gray-200 dark:border-gray-700
+                  rounded-xl shadow-xl z-50 overflow-hidden
+                "
+              >
+                <div className="py-2">
+                  {action.dropdown!.map((item, i) => (
+                    <button
+                      key={i}
+                      onClick={() => {
+                        this.setState({ openActionDropdown: null });
+
+                        // ✅ PASS SELECTED DROPDOWN ITEM PROPERLY
+                        this.handleExport(
+                          {
+                            ...action,
+                            url: item.url,
+                            dropdown: [
+                              {
+                                label: item.label,
+                                url: item.url,
+                                formats: item.formats,
+                                icon: item.icon,
+                              },
+                            ],
+                          },
+                          queryString
+                        );
+                      }}
+                      className="
+                        w-full text-left px-4 py-2.5 text-sm
+                        flex items-center
+                        text-gray-700 dark:text-gray-200
+                        hover:bg-gray-100 dark:hover:bg-gray-700
+                      "
+                    >
+                      {item.icon && (
+                        <span className="mr-3">{item.icon}</span>
+                      )}
+                      <span className="font-medium">
+                        {item.label}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+  getContentPayload() {
+    const { searchText, filterhead, entities } = this.state;
+
+    return {
+      searchText,
+      filterhead,
+      entities: entities.data,
+      meta: entities.meta,
+    };
+  }
 
   /* ------------------- RENDER ------------------- */
 
@@ -768,10 +1240,29 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
     } = this.state;
 
     const { settings } = this.props;
+
     const isExpanded = isFocused && (searchText || "") !== "";
+    const multiEnabled = this.multiSelectEnabled();
+
+    const allSelected =
+      this.state.selectedRows.length === this.state.entities.data.length &&
+      this.state.entities.data.length > 0;
+
+    const computedHeaders = settings.headers;
+    const contentPayload = this.getContentPayload();
+
+    const contentNode =
+      typeof this.props.content === "function"
+        ? this.props.content(contentPayload)
+        : this.props.content
+        ? React.cloneElement(
+            this.props.content as ReactElement<any>,
+            contentPayload
+          )
+        : null;
 
     return (
-      <>
+      <div className="flex flex-col h-[100dvh] w-full">
         {this.state.dtablemodal}
 
         {showExportOption && (
@@ -790,222 +1281,186 @@ class DesmyDataTable extends Component<DataTableProps, DataTableState> {
           />
         )}
 
-        {/* Header */}
-        <div className="flex flex-col w-full mb-5">
-          <header className="flex w-full flex-col md:flex-row justify-start md:justify-between items-center space-x-6">
-            <div className="flex flex-col w-full mx-10 md:mx-0 ">
-              {settings.header && (
-                <div className="flex w-full flex-col">
-                  <h3
-                    className={
-                      !Commons.isEmptyOrNull(settings.header.class)
-                        ? settings.header.class
-                        : "text-grey-darkest uppercase text-3xl 2xl:text-5xl dark:text-white font-poppinsBlack"
-                    }
-                  >
-                    {settings.header.title}
-                  </h3>
-                  <div className="text-grey font-thin text-xs 2xl:text-sm dark:text-white">
-                    {this.handleHint()}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Search + Filter */}
-            <div className="flex w-max flex-col lg:items-end justify-start lg:justify-end">
-              <div className="flex flex-col lg:items-end justify-start lg:justify-end ">
-                <div className="flex items-center w-full lg:max-w-md justify-start lg:justify-end mt-5 lg:mt-0">
-                  <div className="flex w-full text-grey font-thin text-sm dark:text-white">
-                    <div className="w-full">
-                      <div className="flex w-full relative">
-                        <input
-                          className={`rounded-full py-3 px-4 text-gray-700 text-xs 2xl:text-sm leading-tight border focus:outline-none focus:border-primary dark:focus:border-white  focus:ring-0 bg-inherit dark:text-white transition-all duration-300 ease-in-out ${
-                            isExpanded ? "w-[300px]" : "w-[200px]"
-                          } ${
-                            this.state.isLoading || this.state.isFetchingMore
-                              ? "opacity-50 cursor-not-allowed"
-                              : ""
-                          }`}
-                          disabled={
-                            this.state.isLoading || this.state.isFetchingMore
-                          }
-                          title={
-                            this.state.isLoading || this.state.isFetchingMore
-                              ? "Please wait for data to finish loading"
-                              : "Search"
-                          }
-                          onFocus={() => this.setState({ isFocused: true })}
-                          onBlur={() => this.setState({ isFocused: false })}
-                          name="search"
-                          onChange={this.handleSearchInput}
-                          onKeyDown={this.handleSearchKeyDown}
-                          id="search"
-                          type="text"
-                          placeholder={
-                            this.state.isLoading || this.state.isFetchingMore
-                              ? "Please wait..."
-                              : "Search"
-                          }
-                          value={searchText || ""}
-                        />
-                        {this.state.input.is_searching &&
-                          !Commons.isEmptyOrNull(this.search) && (
-                            <svg
-                              role="status"
-                              className="inline absolute top-2.5 bottom-0 right-2 w-4 h-4 2xl:w-6 2xl:h-6 text-primary dark:text-white animate-spin"
-                              viewBox="0 0 100 101"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                fill="#E5E7EB"
-                              />
-                              <path
-                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                fill="#E5E7EB"
-                              />
-                              <path
-                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                fill="currentColor"
-                              />
-                            </svg>
-                          )}
-                      </div>
-                    </div>
-
-                    {/* Retry button */}
-                    <div
-                      className="flex w-10 h-10 2xl:w-12 2xl:h-12 ml-2 flex-shrink-0 justify-center items-center rounded-full dark:hover:text-black bg-gray-200 border border-gray-200 hover:bg-gray-100 dark:border-gray-800 dark:bg-darkDialogBackground cursor-pointer"
-                      onClick={this.handleRetry}
+        <div className="shrink-0">
+          <div className="flex flex-col w-full mb-5">
+            <header className="flex w-full flex-col md:flex-row justify-start md:justify-between items-center space-x-6">
+              <div className="flex flex-col w-full mx-10 md:mx-0 ">
+                {settings.header && (
+                  <div className="flex w-full flex-col">
+                    <h3
+                      className={
+                        !Commons.isEmptyOrNull(settings.header.class)
+                          ? settings.header.class
+                          : "text-grey-darkest uppercase text-3xl 2xl:text-5xl dark:text-white font-poppinsBlack"
+                      }
                     >
-                      <svg
-                        viewBox="0 0 512 512"
-                        fill="currentColor"
-                        className="w-4 h-4 2xl:w-5 2xl:h-5"
-                      >
-                        <path
-                          fill="none"
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeMiterlimit={10}
-                          strokeWidth={32}
-                          d="M320 146s24.36-12-64-12a160 160 0 10160 160"
-                        />
-                        <path
-                          fill="none"
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={32}
-                          d="M256 58l80 80-80 80"
-                        />
-                      </svg>
+                      {settings.header.title}
+                    </h3>
+                    <div className="text-grey font-thin text-xs 2xl:text-sm dark:text-white">
+                      {this.handleHint()}
                     </div>
+                  </div>
+                )}
+              </div>
 
-                    {/* Filter button */}
-                    {settings.filter && (
+              <div className="flex w-max flex-col lg:items-end justify-start lg:justify-end">
+                <div className="flex flex-col lg:items-end justify-start lg:justify-end ">
+                  <div className="flex items-center w-full lg:max-w-md justify-start lg:justify-end mt-5 lg:mt-0">
+                    <div className="flex w-full text-grey font-thin text-sm dark:text-white">
+                      <div className="w-full">
+                        <div className="flex w-full relative">
+                          <input
+                            className={`rounded-full py-3 px-4 text-gray-700 text-xs 2xl:text-sm leading-tight border focus:outline-none focus:border-primary dark:focus:border-white  focus:ring-0 bg-inherit dark:text-white transition-all duration-300 ease-in-out ${
+                              isExpanded ? "w-[300px]" : "w-[200px]"
+                            } ${
+                              this.state.isLoading || this.state.isFetchingMore
+                                ? "opacity-50 cursor-not-allowed"
+                                : ""
+                            }`}
+                            disabled={
+                              this.state.isLoading || this.state.isFetchingMore
+                            }
+                            title={
+                              this.state.isLoading || this.state.isFetchingMore
+                                ? "Please wait for data to finish loading"
+                                : "Search"
+                            }
+                            onFocus={() =>
+                              this.setState({
+                                isFocused: true,
+                                openActionDropdown: null,
+                              })
+                            }
+                            onBlur={() => this.setState({ isFocused: false })}
+                            name="search"
+                            onChange={this.handleSearchInput}
+                            onKeyDown={this.handleSearchKeyDown}
+                            id="search"
+                            type="text"
+                            placeholder={
+                              this.state.isLoading || this.state.isFetchingMore
+                                ? "Please wait..."
+                                : "Search"
+                            }
+                            value={searchText || ""}
+                          />
+                        </div>
+                      </div>
+
                       <div
-                        className="flex w-10 h-10 2xl:w-12 2xl:h-12 ml-2 flex-shrink-0 justify-center items-center rounded-full bg-gray-200 border border-gray-200 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 cursor-pointer"
-                        onClick={this.handleOnOpenFilter}
+                        className="flex w-10 h-10 2xl:w-12 2xl:h-12 ml-2 flex-shrink-0 justify-center items-center rounded-full dark:hover:text-black bg-gray-200 border border-gray-200 hover:bg-gray-100 dark:border-gray-800 dark:bg-darkDialogBackground cursor-pointer"
+                        onClick={this.handleRetry}
                       >
                         <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-5 h-5"
+                          viewBox="0 0 512 512"
+                          fill="currentColor"
+                          className="w-4 h-4 2xl:w-5 2xl:h-5"
                         >
                           <path
+                            fill="none"
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeMiterlimit={10}
+                            strokeWidth={32}
+                            d="M320 146s24.36-12-64-12a160 160 0 10160 160"
+                          />
+                          <path
+                            fill="none"
+                            stroke="currentColor"
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z"
+                            strokeWidth={32}
+                            d="M256 58l80 80-80 80"
                           />
                         </svg>
                       </div>
-                    )}
+
+                      {settings.filter && (
+                        <div
+                          className="flex w-10 h-10 2xl:w-12 2xl:h-12 ml-2 flex-shrink-0 justify-center items-center rounded-full bg-gray-200 border border-gray-200 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 cursor-pointer"
+                          onClick={this.handleOnOpenFilter}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-5 h-5"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z"
+                            />
+                          </svg>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </header>
+            </header>
 
-          {this.renderExtraActions()}
+            {contentNode && (
+              <div className="w-full md:w-auto mt-7 md:mt-0">{contentNode}</div>
+            )}
 
-          {/* Optional extra content */}
-          {this.props.content != null
-            ? typeof this.props.content === "function"
-              ? this.props.content({
-                  searchText: this.state.searchText,
-                  filterhead: this.queryParam,
-                })
-              : React.isValidElement(this.props.content)
-              ? React.cloneElement(
-                  this.props.content as ReactElement<any>,
-                  {
-                    searchText: this.state.searchText,
-                    filterhead: this.queryParam,
-                  }
-                )
-              : this.props.content
-            : null}
+            {this.renderExtraActions()}
+          </div>
+
+          <DesmyFilterTags
+            filters={filterhead}
+            onRemove={this.removeFilterByName}
+          />
+          {this.renderBreadcrumb()}
         </div>
 
-        <DesmyFilterTags
-          filters={filterhead}
-          onRemove={this.removeFilterByName}
-        />
+        <div className="flex-1 min-h-0">
+          <div
+            ref={this.scrollContainer}
+            className="scrollable_table pb-20 mb-16 flex flex-col h-full overflow-auto scrollbar-width"
+            onScroll={this.handleScroll}
+          >
+            <table>
+              <TableHeader
+                headers={computedHeaders}
+                sortedColumn={this.state.custom_settings.sorted_column}
+                order={this.state.custom_settings.order}
+                exceptionalColumns={this.state.exceptionalColumns}
+                onSort={this.handleSort}
+                tableDataSettings={settings.table_data}
+                multiSelectEnabled={multiEnabled}
+                allSelected={allSelected}
+                onToggleSelectAll={this.toggleSelectAll}
+              />
 
-        {this.renderBreadcrumb()}
+              <TableBody
+                dataCollection={entities.data}
+                headers={computedHeaders}
+                exceptionalColumns={this.state.exceptionalColumns}
+                selected={selected}
+                handleOnSuccess={this.handleOnSuccess}
+                settings={settings}
+                handleEdit={(row: any) => settings.handleEdit?.(row)}
+                isLoading={isLoading}
+                rowHeight={this.rowHeight}
+                hasMore={this.hasMore()}
+                onRetry={this.handleRetry}
+                error={error}
+                entities={entities}
+                searchText={this.state.searchText}
+                isFetchingMore={this.state.isFetchingMore}
+                multiSelectEnabled={multiEnabled}
+                selectedRows={this.state.selectedRows}
+                onToggleRowSelect={this.toggleRowSelect}
+              />
+            </table>
 
-        {/* Table */}
-        <div
-          ref={this.scrollContainer}
-          className={`scrollable_table pb-16 flex flex-col min-h-[200px] ${
-            entities.data.length > 10 ? `h-[75vh]` : `h-auto`
-          } overflow-auto scrollbar-width`}
-          onScroll={this.handleScroll}
-        >
-          <table>
-            <TableHeader
-              headers={settings.headers}
-              sortedColumn={this.state.custom_settings.sorted_column}
-              order={this.state.custom_settings.order}
-              exceptionalColumns={this.state.exceptionalColumns}
-              onSort={this.handleSort}
-              tableDataSettings={settings.table_data}
-            />
-            <TableBody
-              dataCollection={entities.data}
-              headers={settings.headers}
-              exceptionalColumns={this.state.exceptionalColumns}
-              selected={selected}
-              handleOnSuccess={this.handleOnSuccess}
-              settings={settings}
-              handleEdit={(row) => settings.handleEdit?.(row)}
-              isLoading={isLoading}
-              rowHeight={this.rowHeight}
-              hasMore={
-                !!(
-                  entities.meta.next ||
-                  entities.meta.next_cursor ||
-                  entities.meta.next_page
-                )
-              }
-              onRetry={this.handleRetry}
-              error={error}
-              entities={entities}
-              searchText={this.state.searchText}
-              onRowClick={(row, index) => {
-                settings.handleOnViewClick?.(row);
-              }}
-              isFetchingMore={this.state.isFetchingMore}
-            />
-          </table>
+            <div ref={this.sentinelRef} className="h-1 w-full" />
+          </div>
         </div>
-      </>
+      </div>
     );
   }
 }

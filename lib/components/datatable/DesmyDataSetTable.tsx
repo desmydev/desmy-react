@@ -635,7 +635,7 @@ class DesmyDataSetTable extends Component<DesmyDataSetTableProps, DesmyCustomSta
         </div>
         {!this.props.settings.server_request?.enable &&
             this.dataCollection.length > 0 && (
-              <div className="sticky bottom-0 left-0 right-0 flex justify-between items-center px-6 py-3 text-xs 2xl:text-sm text-gray-700 dark:text-white border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-darkPrimary/80 backdrop-blur-sm z-10 shadow-sm">
+              <div className="sticky bottom-0 left-0 right-0 flex justify-between items-center px-6 py-3 text-xs 2xl:text-sm text-gray-700 dark:text-white border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-darkPrimary backdrop-blur-sm z-10 shadow-sm">
                 <div className="flex items-center space-x-1">
                   <span>Showing</span>
                   <span className="font-poppinsSemiBold">
